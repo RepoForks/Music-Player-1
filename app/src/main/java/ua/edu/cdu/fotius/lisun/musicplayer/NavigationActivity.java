@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.app.Activity;
 import android.media.AudioManager;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +11,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -26,12 +29,17 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.f
 
 public class NavigationActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     private final String ARTISTS_BROWSER_FRAGMENT_TAG = "artists_browser_fragment";
     private final String ALBUMS_BROWSER_FRAGMENT_TAG = "albums_browser_fragment";
     private final String SONGS_BROWSER_FRAGMENT_TAG = "songs_browser_fragment";
     private final String MY_PLAYLISTS_BROWSER_FRAGMENT_TAG = "my_playlists_browser_fragment";
 
-    private final String CURRENT_FRAGMENT_TAG = "current_fragment_tag";
+    private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
+    private Fragment mCurrentFragment;
+
+    private String mCurrentFragmentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +51,28 @@ public class NavigationActivity extends AppCompatActivity {
 
         setUpToolbarAndNavigationView();
 
-        Fragment initialFragment = null;
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
-        if(savedInstanceState == null) {
-            String savedTag = savedInstanceState.getString(CURRENT_FRAGMENT_TAG);
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, )
+        if(savedInstanceState != null) {
+            mCurrentFragmentTag = savedInstanceState.getString(CURRENT_FRAGMENT_TAG_KEY);
+            mCurrentFragment = getSupportFragmentManager().findFragmentByTag(mCurrentFragmentTag);
         }
+
         //if activity runs for the first time set Songs fragment as
         //initial fragment
+        if(mCurrentFragment == null) {
+            mCurrentFragment = new SongsBrowserFragment();
+            mCurrentFragmentTag = SONGS_BROWSER_FRAGMENT_TAG;
+            getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, mCurrentFragment, mCurrentFragmentTag)
+                .commit();
+        }
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(CURRENT_FRAGMENT_TAG_KEY, mCurrentFragmentTag);
+        super.onSaveInstanceState(outState);
     }
 
     private void setUpToolbarAndNavigationView() {
@@ -83,66 +103,71 @@ public class NavigationActivity extends AppCompatActivity {
                     case R.id.navigation_item_artists:
 
                         //check if fragment already exsists
-                        Fragment artistsBrowserFragment
+                        mCurrentFragment
                                 = (ArtistsBrowserFragment)getSupportFragmentManager()
                                 .findFragmentByTag(ARTISTS_BROWSER_FRAGMENT_TAG);
 
-                        if(artistsBrowserFragment == null) {
-                            artistsBrowserFragment = new ArtistsBrowserFragment();
+                        if(mCurrentFragment == null) {
+                            mCurrentFragment = new ArtistsBrowserFragment();
                         }
 
-                        replaceFragment(artistsBrowserFragment);
+                        replaceFragment(mCurrentFragment, ARTISTS_BROWSER_FRAGMENT_TAG);
 
                         break;
                     case R.id.navigation_item_albums:
 
-                        Fragment albumsBrowserFragment
+                        mCurrentFragment
                                 = (AlbumsBrowserFragment)getSupportFragmentManager()
                                 .findFragmentByTag(ALBUMS_BROWSER_FRAGMENT_TAG);
 
-                        if(albumsBrowserFragment == null) {
-                           albumsBrowserFragment = new AlbumsBrowserFragment();
+                        if(mCurrentFragment == null) {
+                            mCurrentFragment = new AlbumsBrowserFragment();
                         }
 
-                        replaceFragment(albumsBrowserFragment);
+                        replaceFragment(mCurrentFragment, ALBUMS_BROWSER_FRAGMENT_TAG);
 
                         break;
                     case R.id.navigation_item_songs:
-                        Fragment songsBrowserFragment
+                        mCurrentFragment
                                 = (AlbumsBrowserFragment)getSupportFragmentManager()
-                                .findFragmentByTag(ALBUMS_BROWSER_FRAGMENT_TAG);
+                                .findFragmentByTag(SONGS_BROWSER_FRAGMENT_TAG);
 
-                        if(songsBrowserFragment == null) {
-                            songsBrowserFragment = new SongsBrowserFragment();
+                        if(mCurrentFragment == null) {
+                            mCurrentFragment = new SongsBrowserFragment();
                         }
 
-                        replaceFragment(songsBrowserFragment);
+                        replaceFragment(mCurrentFragment, SONGS_BROWSER_FRAGMENT_TAG);
                         break;
                     case R.id.navigation_item_my_playlists:
-                        Fragment myPlaylistsBrowserFragment
+                        mCurrentFragment
                                 = (AlbumsBrowserFragment)getSupportFragmentManager()
-                                .findFragmentByTag(ALBUMS_BROWSER_FRAGMENT_TAG);
+                                .findFragmentByTag(MY_PLAYLISTS_BROWSER_FRAGMENT_TAG);
 
-                        if(myPlaylistsBrowserFragment == null) {
-                            myPlaylistsBrowserFragment = new MyPlaylistsBrowserFragment();
+                        if(mCurrentFragment == null) {
+                            mCurrentFragment = new MyPlaylistsBrowserFragment();
                         }
 
-                        replaceFragment(myPlaylistsBrowserFragment);
+                        replaceFragment(mCurrentFragment, MY_PLAYLISTS_BROWSER_FRAGMENT_TAG);
                         break;
                     case R.id.navigation_item_settings:
                         //TODO: call settings fragment
                         Toast.makeText(NavigationActivity.this, "Settings", Toast.LENGTH_SHORT).show();
                         break;
                 }
+
+                //TODO:Debug
+                Log.d(TAG, "Fragment tag:" + mCurrentFragment.getTag() + "\tFragment ID: " + mCurrentFragment.getId());
+
                 return false;
             }
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment, String fragmentTag) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, ARTISTS_BROWSER_FRAGMENT_TAG)
+                .replace(R.id.fragment_container, fragment, fragmentTag)
                 .commit();
+        mCurrentFragmentTag = fragmentTag;
     }
 
     @Override
