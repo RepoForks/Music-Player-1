@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Music Player</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <!--NavigationView-->
+    <string name="artists_label">Artists</string>
+    <string name="albums_label">Albums</string>
+    <string name="songs_label">Songs</string>
+    <string name="playlists_label">My playlists</string>
+    <string name="settings_label">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+</resources>

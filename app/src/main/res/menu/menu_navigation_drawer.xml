@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_artists"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/artists_label" />
+
+        <item
+            android:id="@+id/navigation_item_albums"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/albums_label" />
+
+        <item
+            android:id="@+id/navigation_item_songs"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/songs_label" />
+
+        <item
+            android:id="@+id/navigation_item_my_playlists"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/playlists_label" />
+
+        <item
+            android:id="@+id/navigation_item_settings"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/settings_label" />
+    </group>
+</menu>
