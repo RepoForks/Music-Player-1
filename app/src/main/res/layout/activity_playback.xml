@@ -10,20 +10,27 @@
         android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-    
-    <ImageView
-        android:id="@+id/album_cover"
-        android:layout_width="@dimen/album_cover_image_size"
-        android:layout_height="@dimen/album_cover_image_size"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center_horizontal"
-        android:cropToPadding="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/album_cover"
+            android:layout_width="@dimen/album_cover_image_size"
+            android:layout_height="@dimen/album_cover_image_size"
+            android:src="@mipmap/ic_launcher"
+            android:cropToPadding="true" />
+
+    </LinearLayout>
 
     <fragment
         android:name="ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackControlPanelFragment"
         android:id="@+id/playback_control_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"/>
+        android:layout_gravity="center"/>
 
 </LinearLayout>
