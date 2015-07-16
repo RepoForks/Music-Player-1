@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="row_songs_list_album_art_size">70dp</dimen>
+    <!--PlaybackActivity-->
+    <dimen name="album_cover_image_size">150dp</dimen>
 </resources>

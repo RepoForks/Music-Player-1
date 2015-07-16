@@ -4,17 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/album_art"
-        android:layout_alignParentLeft="true"
-        android:layout_width="@dimen/row_songs_list_album_art_size"
-        android:layout_height="@dimen/row_songs_list_album_art_size" />
 
     <!--TODO: song title shoud be with regular text color, but artists should be with grey color and
     smaller font size-->
 
     <LinearLayout
-        android:layout_toRightOf="@+id/album_art"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="wrap_content"
@@ -31,5 +26,7 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <!--TODO:add ImageView indicating now playing track-->
 
 </RelativeLayout>
