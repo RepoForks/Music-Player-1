@@ -49,7 +49,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         //adapter and call onLoadFinished()
         //everytime on config changes
         setRetainInstance(true);
-        
+
         mCursorAdapter = (SimpleCursorAdapter)getCursorAdapter();
         setListAdapter(mCursorAdapter);
 
@@ -87,13 +87,13 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-        String[] mProjection = new String[] {
+        String[] projection = new String[] {
                 MediaStore.Audio.Media._ID,
                 TRACK_TITLE_COLUMN,
                 ARTIST_TITLE_COLUMN
         };
         return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                mProjection, null, null, CURSOR_SORT_ORDER);
+                projection, null, null, CURSOR_SORT_ORDER);
     }
 
     @Override
