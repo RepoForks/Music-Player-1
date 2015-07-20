@@ -12,10 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 
 
 public class NavigationActivity extends AppCompatActivity {

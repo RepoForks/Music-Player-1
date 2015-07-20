@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.os.Bundle;

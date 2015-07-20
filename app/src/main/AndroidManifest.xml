@@ -3,6 +3,10 @@
     package="ua.edu.cdu.fotius.lisun.musicplayer" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +26,9 @@
             android:name=".PlaybackActivity"
             android:label="@string/title_activity_playback" >
         </activity>
+
+        <service android:name=".MediaPlaybackService"/>
+
     </application>
 
 </manifest>

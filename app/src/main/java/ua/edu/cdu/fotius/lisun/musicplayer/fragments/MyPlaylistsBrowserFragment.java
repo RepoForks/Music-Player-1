@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.app.Activity;
@@ -15,11 +15,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArtistsBrowserFragment extends Fragment {
+public class MyPlaylistsBrowserFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
 
-    public ArtistsBrowserFragment() {
+    public MyPlaylistsBrowserFragment() {
         // Required empty public constructor
         Log.d(TAG, "Constructor");
     }
@@ -43,7 +43,7 @@ public class ArtistsBrowserFragment extends Fragment {
 
         Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_artists_browser, container, false);
+        return inflater.inflate(R.layout.fragment_my_playlists_browser, container, false);
     }
 
     @Override

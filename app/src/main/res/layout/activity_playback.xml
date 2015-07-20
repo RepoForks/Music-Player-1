@@ -27,7 +27,7 @@
     </LinearLayout>
 
     <fragment
-        android:name="ua.edu.cdu.fotius.lisun.musicplayer.ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackControlPanelFragment"
+        android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackControlPanelFragment"
         android:id="@+id/playback_control_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
