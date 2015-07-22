@@ -1,7 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,11 +10,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 
@@ -61,7 +58,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     private CursorAdapter getCursorAdapter() {
         String[] from = new String[] { TRACK_TITLE_COLUMN, ARTIST_TITLE_COLUMN };
-        int[] to = new int[] { R.id.song_title, R.id.artist_title };
+        int[] to = new int[] { R.id.track_title, R.id.artist_name};
 
         return new SimpleCursorAdapter(getActivity(),
                 R.layout.row_songs_list, /*cursor*/null,

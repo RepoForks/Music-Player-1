@@ -48,12 +48,11 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().initLoader(ALBUMS_LOADER_ID, null, this);
 
         String[] from = new String[] { ALBUM_TITLE_COLUMN, ARTIST_NAME_COLUMN };
-        int[] to = new int[] { R.id.album_title, R.id.artist_title };
+        int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
-        mCursorAdapter = new SimpleCursorAdapter(getActivity(),
+        mCursorAdapter = new AlbumCursorAdapter(getActivity(),
                 R.layout.grid_item_albums, /*cursor*/null,
-                from, to, /*don't observe changes*/0);
-
+                from, to);
 
         /*Move this here to aim some similarity
         of creating fragments. Also don't need

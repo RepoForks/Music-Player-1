@@ -21,4 +21,8 @@
 
     <!--MediaPlaybackService-->
     <string name="playback_failed">The player doesn\'t support this type of audio file.</string>
+
+    <!---->
+    <string name="unknown_album">Unknown album</string>
+    <string name="unknown_artist">Unknown artist</string>
 </resources>
