@@ -16,15 +16,17 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.OnFragmentReplaceListener;
 
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements OnFragmentReplaceListener {
 
     private final String TAG = getClass().getSimpleName();
 
+    //TODO: All these tags to their fragments
+    public static final String TRACK_BROWSER_FRAGMENT_TAG = "track_browser_fragment";
     private final String ARTISTS_BROWSER_FRAGMENT_TAG = "artists_browser_fragment";
-    private final String ALBUMS_BROWSER_FRAGMENT_TAG = "albums_browser_fragment";
-    private final String SONGS_BROWSER_FRAGMENT_TAG = "songs_browser_fragment";
+    public static final String ALBUMS_BROWSER_FRAGMENT_TAG = "albums_browser_fragment";
     private final String MY_PLAYLISTS_BROWSER_FRAGMENT_TAG = "my_playlists_browser_fragment";
 
     private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
@@ -55,7 +57,7 @@ public class NavigationActivity extends AppCompatActivity {
         if(mCurrentFragment == null) {
             mCurrentFragment = new TrackBrowserFragment();
             getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mCurrentFragment, SONGS_BROWSER_FRAGMENT_TAG)
+                .add(R.id.fragment_container, mCurrentFragment, TRACK_BROWSER_FRAGMENT_TAG)
                 .commit();
         }
     }
@@ -67,8 +69,6 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {
-
-        //final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         final NavigationView navigationView =
                 (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(
@@ -92,9 +92,9 @@ public class NavigationActivity extends AppCompatActivity {
                                 }
                                 break;
                             case R.id.navigation_item_songs:
-                                if(!isSameFragment(SONGS_BROWSER_FRAGMENT_TAG)) {
+                                if(!isSameFragment(TRACK_BROWSER_FRAGMENT_TAG)) {
                                     replaceFragment(new TrackBrowserFragment(),
-                                            SONGS_BROWSER_FRAGMENT_TAG);
+                                            TRACK_BROWSER_FRAGMENT_TAG);
                                 }
                                 break;
                             case R.id.navigation_item_my_playlists:
@@ -122,13 +122,6 @@ public class NavigationActivity extends AppCompatActivity {
                             return true;
                         }
                         return false;
-                    }
-
-                    private void replaceFragment(Fragment fragment, String fragmentTag) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, fragment, fragmentTag)
-                                .commit();
-                        mCurrentFragment = fragment;
                     }
                 });
         return navigationView;
@@ -173,5 +166,19 @@ public class NavigationActivity extends AppCompatActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Replacing fragments here, because need to track
+     * which fragment in foreground and active now
+     * @param fragment - fragment which will replace current
+     * @param fragmentTag - tag of new fragment
+     */
+    @Override
+    public void replaceFragment(Fragment fragment, String fragmentTag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragmentTag)
+                .commit();
+        mCurrentFragment = fragment;
     }
 }

@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,14 +17,15 @@ import android.widget.TextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 /**
- *
+ *An easy adapter to map columns from a cursor to TextViews or ImageViews defined in an XML file.
+ * Template method pattern is used to define fragment specific behaviour, such as getting unknown
+ * string({@link ua.edu.cdu.fotius.lisun.musicplayer.fragments
+ * .BaseSimpleCursorAdapter#getUnknownText(android.content.Context, android.database.Cursor, int)})
  */
-public class AlbumCursorAdapter extends SimpleCursorAdapter {
+public abstract class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
 
-    private final String TAG = getClass().getSimpleName();
-
-    public AlbumCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
-        super(context, layout, c, from, to, /*don't register content observer*/0);
+    public BaseSimpleCursorAdapter(Context context, int layout, String[] from, int[] to) {
+        super(context, layout, /*cursor*/null, from, to, /*don't register content observer*/0);
     }
 
     @Override
@@ -32,10 +33,6 @@ public class AlbumCursorAdapter extends SimpleCursorAdapter {
         final int count = mTo.length;
         final int[] from = mFrom;
         final int[] to = mTo;
-        final int albumTitleColumnIndex
-                = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM);
-        final int artistNameColumnIndex
-                = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ARTIST);
 
         for (int i = 0; i < count; i++) {
             final View v = view.findViewById(to[i]);
@@ -47,15 +44,7 @@ public class AlbumCursorAdapter extends SimpleCursorAdapter {
             if (text == null) {
                 text = "";
             } else if(text.equals(MediaStore.UNKNOWN_STRING)) {
-                /*if artist name or album title is unknown
-                * set string according to resource. Don't set
-                * MediaStore.UNKNOWN_STRING, because now it's
-                * <unknown>, but tomorrow can be <null>*/
-                if(from[i] == albumTitleColumnIndex) {
-                   text = context.getResources().getString(R.string.unknown_album);
-                } else if(from[i] == artistNameColumnIndex){
-                    text = context.getResources().getString(R.string.unknown_artist);
-                }
+                text = getUnknownText(context, cursor, from[i]);
             }
 
             if (v instanceof TextView) {
@@ -68,4 +57,7 @@ public class AlbumCursorAdapter extends SimpleCursorAdapter {
             }
         }
     }
+
+    public abstract String getUnknownText(final Context context,
+                                          final Cursor cursor, final int columnIndex);
 }

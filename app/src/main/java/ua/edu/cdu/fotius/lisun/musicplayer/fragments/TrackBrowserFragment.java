@@ -8,8 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,9 @@ import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.TrackSimpleCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.OnFragmentReplaceListener;
 
 /**
  * A simple {@link ListFragment} subclass.
@@ -25,14 +27,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
  */
 public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    public static final String ARTIST_TITLE_COLUMN = MediaStore.Audio.Media.ARTIST;
     private final String TRACK_TITLE_COLUMN = MediaStore.Audio.Media.TITLE;
-    private final String ARTIST_TITLE_COLUMN = MediaStore.Audio.Media.ARTIST;
-    private final String CURSOR_SORT_ORDER = TRACK_TITLE_COLUMN + " ASC";
+    private final String TRACKS_CURSOR_SORT_ORDER = TRACK_TITLE_COLUMN + " ASC";
     private final int TRACK_LOADER_ID = 1;
     private final String TAG = getClass().getSimpleName();
 
-    private SimpleCursorAdapter mCursorAdapter;
+    private BaseSimpleCursorAdapter mCursorAdapter;
     private MediaPlaybackServiceWrapper mServiceWrapper;
+    private long mAlbumId = -1;
 
     public TrackBrowserFragment() {
     }
@@ -41,13 +44,22 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //do we actually need this if we use Loader?
-        //definitely, because don't need to create
-        //adapter and call onLoadFinished()
-        //everytime on config changes
+        /*do we actually need this if we use Loader?
+        * definitely, because don't need to create
+        * adapter and call onLoadFinished()
+        * everytime on config changes*/
         setRetainInstance(true);
 
-        mCursorAdapter = (SimpleCursorAdapter)getCursorAdapter();
+        /*if called with album id
+        * then need to list tracks for
+        * concrete album*/
+         Bundle args = getArguments();
+         if(args != null) {
+            mAlbumId =
+                    args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY);
+         }
+
+        mCursorAdapter = getCursorAdapter();
         setListAdapter(mCursorAdapter);
 
         getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
@@ -56,13 +68,12 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         mServiceWrapper.bindService(getActivity());
     }
 
-    private CursorAdapter getCursorAdapter() {
+    private BaseSimpleCursorAdapter getCursorAdapter() {
         String[] from = new String[] { TRACK_TITLE_COLUMN, ARTIST_TITLE_COLUMN };
         int[] to = new int[] { R.id.track_title, R.id.artist_name};
 
-        return new SimpleCursorAdapter(getActivity(),
-                R.layout.row_songs_list, /*cursor*/null,
-                from, to, /*don't observe changes*/0);
+        return new TrackSimpleCursorAdapter(getActivity(),
+                R.layout.row_tracks_list, from, to);
     }
 
     @Override
@@ -73,7 +84,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_songs_browser, container, false);
+        return inflater.inflate(R.layout.fragment_tracks_browser, container, false);
     }
 
     @Override
@@ -89,8 +100,14 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
                 TRACK_TITLE_COLUMN,
                 ARTIST_TITLE_COLUMN
         };
+
+        Log.d(TAG, "onCreateLoader: albumId: " + mAlbumId);
+
         return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection, null, null, CURSOR_SORT_ORDER);
+                projection,
+                (mAlbumId == -1) ? null : MediaStore.Audio.Media.ALBUM_ID + " = ?",
+                (mAlbumId == -1) ? null : new String[]{Long.toString(mAlbumId)},
+                TRACKS_CURSOR_SORT_ORDER);
     }
 
     @Override

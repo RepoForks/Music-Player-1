@@ -15,6 +15,9 @@
     <!--TrackBrowserFragment-->
     <string name="no_tracks_label">There is no tracks to play</string>
 
+    <!--ArtistsBrowserFragment-->
+    <string name="no_artists_label">There is no artists</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_playback">PlaybackActivity</string>
@@ -25,4 +28,5 @@
     <!---->
     <string name="unknown_album">Unknown album</string>
     <string name="unknown_artist">Unknown artist</string>
+    <string name="undefined_unknown">Unknown</string>
 </resources>
