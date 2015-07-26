@@ -15,23 +15,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.NavigationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.AlbumSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.OnFragmentReplaceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AlbumsBrowserFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    public static final String TAG = "albums_browser_fragment";
+
     public static final  String ALBUM_ID_KEY = "album_id";
     public static final String ALBUM_TITLE_COLUMN = MediaStore.Audio.Albums.ALBUM;
     public static final String ARTIST_NAME_COLUMN = MediaStore.Audio.Albums.ARTIST;
     private static final String ALBUM_ID_COLUMN = MediaStore.Audio.Albums._ID;
 
-    private final String TAG = getClass().getSimpleName();
     private final int ALBUMS_LOADER_ID = 1;
 
     private final String CURSOR_SORT_ORDER = ALBUM_TITLE_COLUMN + " ASC";
@@ -107,7 +107,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
                 ALBUM_TITLE_COLUMN,
                 ARTIST_NAME_COLUMN
         };
-        
+
         Log.d(TAG, "mArtistId: " + mArtistId);
 
         //TODO: find out about MediaStore.Audio.Albums.ARTIST_ID
@@ -144,7 +144,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
                 Bundle bundle = new Bundle();
                 bundle.putLong(ALBUM_ID_KEY, albumId);
                 fragment.setArguments(bundle);
-                mCallback.replaceFragment(fragment, NavigationActivity.TRACK_BROWSER_FRAGMENT_TAG);
+                mCallback.replaceFragment(fragment, TrackBrowserFragment.TAG);
             }
         }
     };

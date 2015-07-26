@@ -17,7 +17,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
  */
 public class MyPlaylistsBrowserFragment extends Fragment {
 
-    private final String TAG = getClass().getSimpleName();
+    public static final String TAG = "my_playlists_browser_fragment";
 
     public MyPlaylistsBrowserFragment() {
         // Required empty public constructor

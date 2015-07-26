@@ -5,33 +5,27 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Filter;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.NavigationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.AlbumSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.ArtistSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.OnFragmentReplaceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ArtistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private final String TAG = getClass().getSimpleName();
+    public static final String TAG = "artists_browser_fragment";
 
     //TODO: Maybe move this to another class
     public static final String ARTIST_COLUMN_NAME = MediaStore.Audio.Artists.ARTIST;
@@ -119,7 +113,7 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
             bundle.putLong(ARTIST_ID_KEY, artistId);
             Fragment fragment = new AlbumsBrowserFragment();
             fragment.setArguments(bundle);
-            mCallback.replaceFragment(fragment, NavigationActivity.ALBUMS_BROWSER_FRAGMENT_TAG);
+            mCallback.replaceFragment(fragment, AlbumsBrowserFragment.TAG);
         }
     }
 }

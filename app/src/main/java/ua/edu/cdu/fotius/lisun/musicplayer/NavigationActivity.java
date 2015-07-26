@@ -16,34 +16,27 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.OnFragmentReplaceListener;
 
 
 public class NavigationActivity extends AppCompatActivity implements OnFragmentReplaceListener {
 
-    private final String TAG = getClass().getSimpleName();
-
-    //TODO: All these tags to their fragments
-    public static final String TRACK_BROWSER_FRAGMENT_TAG = "track_browser_fragment";
-    private final String ARTISTS_BROWSER_FRAGMENT_TAG = "artists_browser_fragment";
-    public static final String ALBUMS_BROWSER_FRAGMENT_TAG = "albums_browser_fragment";
-    private final String MY_PLAYLISTS_BROWSER_FRAGMENT_TAG = "my_playlists_browser_fragment";
-
     private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
     private Fragment mCurrentFragment;
+
+    private MediaPlaybackServiceWrapper mServiceWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
         setContentView(R.layout.activity_navigation);
+
+        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper.bindService(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         NavigationView navigationView = setUpNavigationView(drawer);
         setUpToolbar(drawer, navigationView);
-        //setUpToolbarAndNavigationView();
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -57,9 +50,15 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
         if(mCurrentFragment == null) {
             mCurrentFragment = new TrackBrowserFragment();
             getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mCurrentFragment, TRACK_BROWSER_FRAGMENT_TAG)
+                .add(R.id.fragment_container, mCurrentFragment, TrackBrowserFragment.TAG)
                 .commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mServiceWrapper.unbindService(this);
     }
 
     @Override
@@ -80,28 +79,20 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
                         //Fragment#OnCreate() where database time consuming operations are performed
                         switch (menuItem.getItemId()){
                             case R.id.navigation_item_artists:
-                                if(!isSameFragment(ARTISTS_BROWSER_FRAGMENT_TAG)) {
-                                    replaceFragment(new ArtistsBrowserFragment(),
-                                            ARTISTS_BROWSER_FRAGMENT_TAG);
-                                }
+                                replaceFragment(new ArtistsBrowserFragment(),
+                                        ArtistsBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_albums:
-                                if(!isSameFragment(ALBUMS_BROWSER_FRAGMENT_TAG)) {
-                                    replaceFragment(new AlbumsBrowserFragment(),
-                                            ALBUMS_BROWSER_FRAGMENT_TAG);
-                                }
+                                replaceFragment(new AlbumsBrowserFragment(),
+                                        AlbumsBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_songs:
-                                if(!isSameFragment(TRACK_BROWSER_FRAGMENT_TAG)) {
-                                    replaceFragment(new TrackBrowserFragment(),
-                                            TRACK_BROWSER_FRAGMENT_TAG);
-                                }
+                                replaceFragment(new TrackBrowserFragment(),
+                                        TrackBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_my_playlists:
-                                if(!isSameFragment(MY_PLAYLISTS_BROWSER_FRAGMENT_TAG)) {
-                                    replaceFragment(new MyPlaylistsBrowserFragment(),
-                                            MY_PLAYLISTS_BROWSER_FRAGMENT_TAG);
-                                }
+                                replaceFragment(new MyPlaylistsBrowserFragment(),
+                                        MyPlaylistsBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_settings:
                                 //TODO: initialize selectedFragment
@@ -116,20 +107,12 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
                         //true to display item as selected
                         return true;
                     }
-
-                    private boolean isSameFragment(String fragmentTag) {
-                        if((mCurrentFragment.getTag()).equals(fragmentTag)) {
-                            return true;
-                        }
-                        return false;
-                    }
                 });
         return navigationView;
     }
 
     private Toolbar setUpToolbar(final DrawerLayout drawer, final NavigationView navigationView) {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         if(toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -142,7 +125,6 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
                 }
             });
         }
-
         return toolbar;
     }
 
@@ -155,16 +137,6 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 

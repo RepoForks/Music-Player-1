@@ -1,26 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center" >
-
-        <TextView
-            android:id="@+id/track_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/artist_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +46,7 @@
             android:layout_height="52dp"
             android:layout_gravity="center_vertical" />
 
-        <org.android.music.RepeatingImageButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton
             android:id="@+id/prev"
             style="@android:style/MediaButton.Previous" />
 
@@ -76,7 +54,7 @@
             android:id="@+id/pause"
             style="@android:style/MediaButton.Play" />
 
-        <org.android.music.RepeatingImageButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton
             android:id="@+id/next"
             style="@android:style/MediaButton.Next" />
 
@@ -87,6 +65,4 @@
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
-
-
-</LinearLayout>
+</merge>
