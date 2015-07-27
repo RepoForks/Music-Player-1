@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -33,7 +33,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     private final int TRACK_LOADER_ID = 1;
 
     private BaseSimpleCursorAdapter mCursorAdapter;
-    //private MediaPlaybackServiceWrapper mServiceWrapper;
+    private MediaPlaybackServiceWrapper mServiceWrapper;
     private long mAlbumId = -1;
 
     public TrackBrowserFragment() {
@@ -65,8 +65,8 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
         getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
 
-//        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-//        mServiceWrapper.bindService(getActivity());
+        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper.bindService(getActivity());
     }
 
     private BaseSimpleCursorAdapter getCursorAdapter() {
@@ -79,7 +79,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //mServiceWrapper.playAll(mCursorAdapter.getCursor(), position);
+        mServiceWrapper.playAll(mCursorAdapter.getCursor(), position);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mServiceWrapper.unbindService(getActivity());
+        mServiceWrapper.unbindService(getActivity());
     }
 
     @Override

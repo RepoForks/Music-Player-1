@@ -6,26 +6,42 @@
     android:id="@+id/drawer"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:id="@+id/main_view"
+    <ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_up_panel_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="68dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <!--MAIN VIEW-->
+        <LinearLayout
+            android:id="@+id/main_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/abc_action_bar_default_height_material"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <!--COLLAPSABLE VIEW-->
+        <fragment
+            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.MediaPlaybackFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

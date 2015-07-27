@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,27 +18,32 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends AppCompatActivity implements OnFragmentReplaceListener {
+public class NavigationActivity extends AppCompatActivity implements OnFragmentReplaceListener{
+
+    private final String TAG = getClass().getSimpleName();
 
     private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
     private Fragment mCurrentFragment;
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private DrawerLayout mDrawerLayout;
+    private SlidingUpPanelLayout mSlidingPanel;
 
+    //TODO: this also called on config changes. Maybe it's possible to disable calling this method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
 
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindService(this);
+        mSlidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        mSlidingPanel.setPanelSlideListener(mSlidingPanelListener);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
-        NavigationView navigationView = setUpNavigationView(drawer);
-        setUpToolbar(drawer, navigationView);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        NavigationView navigationView = setUpNavigationView(mDrawerLayout);
+        setUpToolbar(mDrawerLayout, navigationView);
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -58,7 +65,6 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mServiceWrapper.unbindService(this);
     }
 
     @Override
@@ -153,4 +159,31 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
                 .commit();
         mCurrentFragment = fragment;
     }
+
+    private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
+        @Override
+        public void onPanelSlide(View panel, float slideOffset) {
+            Log.d(TAG, "slideOffset: " + slideOffset);
+            if(slideOffset == 0.6) {
+                //TODO: disable upper control buttons
+            }
+        }
+
+        @Override
+        public void onPanelCollapsed(View panel) {
+            //enable ability of opening navigation menu
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
+        @Override
+        public void onPanelExpanded(View panel) {
+            //disable ability of opening navigation menu
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+
+        @Override
+        public void onPanelAnchored(View panel) {}
+        @Override
+        public void onPanelHidden(View panel) {}
+    };
 }
