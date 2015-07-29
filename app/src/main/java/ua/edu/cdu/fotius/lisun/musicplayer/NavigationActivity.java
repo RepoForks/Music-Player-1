@@ -21,7 +21,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends AppCompatActivity implements OnFragmentReplaceListener{
+public class NavigationActivity extends AppCompatActivity
+        implements OnFragmentReplaceListener, OnCallToServiceListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -30,8 +31,9 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
 
     private DrawerLayout mDrawerLayout;
     private SlidingUpPanelLayout mSlidingPanel;
+    private MediaPlaybackServiceWrapper mServiceWrapper
+            = MediaPlaybackServiceWrapper.getInstance();
 
-    //TODO: this also called on config changes. Maybe it's possible to disable calling this method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +160,23 @@ public class NavigationActivity extends AppCompatActivity implements OnFragmentR
                 .replace(R.id.fragment_container, fragment, fragmentTag)
                 .commit();
         mCurrentFragment = fragment;
+    }
+
+    @Override
+    public void bindToService() {
+        mServiceWrapper.bindService(this);
+    }
+
+    @Override
+    public void unbindFromService() {
+        mServiceWrapper.unbindService(this);
+    }
+
+    //TODO: if service unbind for this context finish app and
+    //let the user restart it
+    @Override
+    public void playAll(Cursor cursor, int position) {
+        mServiceWrapper.playAll(cursor, position);
     }
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {

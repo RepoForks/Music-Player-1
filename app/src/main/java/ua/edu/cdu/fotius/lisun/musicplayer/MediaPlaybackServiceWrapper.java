@@ -11,6 +11,9 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.util.Objects;
+
+//TODO: all public methods should check if mBoundToService == true
 /**
  * Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * Class is mediator between this specific application and more general
@@ -22,6 +25,8 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
     private final String TAG = getClass().getSimpleName();
 
     private static MediaPlaybackServiceWrapper instance = null;
+
+    private boolean mBoundToService;
 
     /**
      * @return instance of
@@ -36,7 +41,9 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
 
     private IMediaPlaybackService mService = null;
 
-    private MediaPlaybackServiceWrapper() {}
+    private MediaPlaybackServiceWrapper() {
+        Log.d(TAG, "MediaPlaybackServiceWrapper() called");
+    }
 
     /**
      * Binds specified Context to
@@ -44,9 +51,14 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
      * @param context which binds to service
      */
     public void bindService(Context context) {
+        Log.d(TAG, "Entered bindService method");
+        //better to use application context, because
+        //after recreating activity on configuration changes
+        //context which was bind to service doesn't exists
+        context = context.getApplicationContext();
         Intent service = new Intent(context, MediaPlaybackService.class);
-        Log.d(TAG, "bind service");
-        context.bindService(service, this, Context.BIND_AUTO_CREATE);
+        //if service already bounded, nothing is going to happen
+        context.bindService(service, this, ContextWrapper.BIND_AUTO_CREATE);
     }
 
     /**
@@ -55,8 +67,12 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
      * @param context which unbinds from service
      */
     public void unbindService(Context context) {
-        Log.d(TAG, "unbind service");
-        context.unbindService(this);
+        if(mBoundToService) {
+            Log.e(TAG, "Entered unbindService if statement");
+            context = context.getApplicationContext();
+            context.unbindService(this);
+            mBoundToService = false;
+        }
     }
 
     /**
@@ -65,8 +81,10 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
      * @param position - first track to play
      */
     public void playAll(Cursor cursor, int position) {
-        long[] playlist = getPlaylistFromCursor(cursor);
-        playAll(playlist, position);
+        if(mBoundToService) {
+            long[] playlist = getPlaylistFromCursor(cursor);
+            playAll(playlist, position);
+        }
     }
 
     private void playAll(long[] playlist, int position) {
@@ -104,6 +122,7 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(TAG, "onServiceConnected");
         mService = IMediaPlaybackService.Stub.asInterface(service);
+        mBoundToService = true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.OnCallToServiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 /**
@@ -16,25 +18,30 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
  */
 public class MediaPlaybackFragment extends Fragment {
 
-
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private OnCallToServiceListener mServiceCallbacks;
 
     public MediaPlaybackFragment() {
         // Required empty public constructor
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mServiceCallbacks = (OnCallToServiceListener) activity;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindService(getActivity());
+        mServiceCallbacks.bindToService();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mServiceWrapper.unbindService(getActivity());
+        mServiceCallbacks.unbindFromService();
     }
 
     @Override
@@ -43,6 +50,4 @@ public class MediaPlaybackFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_media_playback, container, false);
     }
-
-
 }
