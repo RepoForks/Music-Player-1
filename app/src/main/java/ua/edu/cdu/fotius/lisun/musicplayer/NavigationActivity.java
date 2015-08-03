@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -178,6 +179,32 @@ public class NavigationActivity extends AppCompatActivity
     public void playAll(Cursor cursor, int position) {
         mServiceWrapper.playAll(cursor, position);
     }
+
+    @Override
+    public long position() throws RemoteException {
+         return mServiceWrapper.position();
+    }
+
+    @Override
+    public void prev() throws RemoteException {
+        mServiceWrapper.prev();
+    }
+
+    @Override
+    public void seek(long position) throws RemoteException {
+        mServiceWrapper.seek(position);
+    }
+
+    @Override
+    public void next() throws RemoteException {
+        mServiceWrapper.next();
+    }
+
+    @Override
+    public void play() throws RemoteException {
+        mServiceWrapper.play();
+    }
+
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
         @Override

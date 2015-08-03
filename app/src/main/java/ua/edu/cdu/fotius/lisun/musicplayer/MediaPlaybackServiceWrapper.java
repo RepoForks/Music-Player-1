@@ -118,6 +118,26 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
         return playlist;
     }
 
+    public long position() throws RemoteException {
+        return mService.position();
+    }
+
+    public void prev() throws RemoteException {
+        mService.prev();
+    }
+
+    public void seek(long position) throws RemoteException {
+        mService.seek(position);
+    }
+
+    public void next() throws RemoteException{
+        mService.next();
+    }
+
+    public void play()throws RemoteException {
+        mService.play();
+    }
+
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(TAG, "onServiceConnected");
