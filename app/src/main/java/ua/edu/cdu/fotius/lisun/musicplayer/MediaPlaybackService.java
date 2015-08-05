@@ -277,6 +277,7 @@ public class MediaPlaybackService extends Service {
         reloadQueue();
         //Calls saveQueue(true)
         notifyChange(QUEUE_CHANGED);
+        Log.d(TAG, "Service#OnCreate()");
         notifyChange(META_CHANGED);
 
 //        IntentFilter commandFilter = new IntentFilter();

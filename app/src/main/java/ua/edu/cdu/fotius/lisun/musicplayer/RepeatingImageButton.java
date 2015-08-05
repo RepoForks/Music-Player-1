@@ -17,7 +17,7 @@ public class RepeatingImageButton extends ImageButton {
     private long mStartTime;
     private int mRepeatCount;
     private RepeatListener mListener;
-    private long mInterval = 500;
+    private long mInterval = 260;
     
     public RepeatingImageButton(Context context) {
         this(context, null);
@@ -34,21 +34,17 @@ public class RepeatingImageButton extends ImageButton {
     }
     
     /**
-     * Sets the listener to be called while the button is pressed and
-     * the interval in milliseconds with which it will be called.
+     * Sets the listener to be called while the button is pressed.
      * @param l The listener that will be called
-     * @param interval The interval in milliseconds for calls 
      */
-    public void setRepeatListener(RepeatListener l, long interval) {
+    public void setRepeatListener(RepeatListener l) {
         mListener = l;
-        mInterval = interval;
     }
     
     @Override
     public boolean performLongClick() {
         mStartTime = SystemClock.elapsedRealtime();
         mRepeatCount = 0;
-        //Add Runnable(mRepeater) to message queue
         post(mRepeater);
         return true;
     }
@@ -56,8 +52,8 @@ public class RepeatingImageButton extends ImageButton {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            // remove the repeater, but call the hook one more time
-            //TODO: move to separate method
+            // remove the repeater, but call
+            // the hook one more time
             removeCallbacks(mRepeater);
             if (mStartTime != 0) {
                 doRepeat(true);
@@ -67,35 +63,6 @@ public class RepeatingImageButton extends ImageButton {
         return super.onTouchEvent(event);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-            case KeyEvent.KEYCODE_ENTER:
-                // need to call super to make long press work, but return
-                // true so that the application doesn't get the down event.
-                super.onKeyDown(keyCode, event);
-                return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-        case KeyEvent.KEYCODE_DPAD_CENTER:
-        case KeyEvent.KEYCODE_ENTER:
-            // remove the repeater, but call the hook one more time
-            //TODO: move to separate method
-            removeCallbacks(mRepeater);
-            if (mStartTime != 0) {
-                doRepeat(true);
-                mStartTime = 0;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-    
     private Runnable mRepeater = new Runnable() {
         public void run() {
             doRepeat(false);
@@ -123,10 +90,10 @@ public class RepeatingImageButton extends ImageButton {
          * is pressed.
          * @param v The button as a View.
          * @param duration The number of milliseconds the button has been pressed so far.
-         * @param repeatcount The number of previous calls in this sequence.
+         * @param repeatCount The number of previous calls in this sequence.
          * If this is going to be the last call in this sequence (i.e. the user
          * just stopped pressing the button), the value will be -1.  
          */
-        void onRepeat(View v, long duration, int repeatcount);
+        void onRepeat(View v, long duration, int repeatCount);
     }
 }

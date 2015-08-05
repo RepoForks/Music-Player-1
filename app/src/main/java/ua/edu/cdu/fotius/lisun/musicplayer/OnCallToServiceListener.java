@@ -9,11 +9,24 @@ import android.os.RemoteException;
 public interface OnCallToServiceListener {
 
     public void bindToService();
+
+    public boolean isBoundToService();
+
     public void unbindFromService();
+
     public void playAll(Cursor cursor, int position);
-    public long position() throws RemoteException;
-    public void prev() throws RemoteException;
-    public void seek(long position) throws RemoteException;
-    public void next() throws RemoteException;
-    public void play() throws RemoteException;
+
+    public void prev();
+
+    public void seek(long position);
+
+    public void next();
+
+    public void play();
+
+    public String getTrackName();
+    public String getArtistName();
+    //TODO: seek -> playing
+    public long getPlayingPosition();
+    public long getTrackDuration();
 }

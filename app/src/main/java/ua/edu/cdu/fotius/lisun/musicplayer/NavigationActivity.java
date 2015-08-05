@@ -169,6 +169,11 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean isBoundToService() {
+        return mServiceWrapper.isBoundToService();
+    }
+
+    @Override
     public void unbindFromService() {
         mServiceWrapper.unbindService(this);
     }
@@ -181,29 +186,45 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public long position() throws RemoteException {
-         return mServiceWrapper.position();
+    public long getPlayingPosition() {
+         return mServiceWrapper.getPlayingPosition();
     }
 
     @Override
-    public void prev() throws RemoteException {
+    public void prev() {
         mServiceWrapper.prev();
     }
 
     @Override
-    public void seek(long position) throws RemoteException {
+    public void seek(long position) {
         mServiceWrapper.seek(position);
     }
 
     @Override
-    public void next() throws RemoteException {
+    public void next() {
         mServiceWrapper.next();
     }
 
     @Override
-    public void play() throws RemoteException {
+    public void play() {
         mServiceWrapper.play();
     }
+
+    @Override
+    public String getTrackName() {
+        return mServiceWrapper.getTrackTitle();
+    }
+
+    @Override
+    public String getArtistName() {
+        return mServiceWrapper.getArtistName();
+    }
+
+    @Override
+    public long getTrackDuration() {
+        return mServiceWrapper.getTrackDuration();
+    }
+
 
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
