@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,13 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.OnCallToServiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MediaPlaybackFragment extends Fragment {
+public class PlaybackFragment extends Fragment implements ServiceConnectionObserver{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -38,15 +40,13 @@ public class MediaPlaybackFragment extends Fragment {
 
     private long mStartSeekPos = 0;
 
-    private View mMainLayout;
     private TextView mTrackName;
     private TextView mArtistName;
     private SeekBar mSeekBar;
     private TextView mCurrentTime;
     private TextView mTotalTime;
 
-    public MediaPlaybackFragment() {
-    }
+    public PlaybackFragment() {}
 
     @Override
     public void onAttach(Activity activity) {
@@ -59,16 +59,43 @@ public class MediaPlaybackFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mServiceCallbacks.bindToService();
+        Log.d(TAG, "PlaybackFragment#OnCreate()");
 
-        mMainLayout = getActivity().getLayoutInflater().inflate(R.layout.fragment_media_playback, null, false);
-        initializeControlButtons();
-        initializeTrackInfoViews();
+        mServiceCallbacks.bindToService(this);
     }
 
-    private void initializeControlButtons() {
-        View layout = mMainLayout;
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter actionFilter = new IntentFilter();
+        actionFilter.addAction(MediaPlaybackService.META_CHANGED);
+        getActivity().registerReceiver(mStatusListener, actionFilter);
+        long nextRefreshDelay = refreshSeekBarAndCurrentTime();
+        queueNextRefresh(nextRefreshDelay);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mStatusListener);
+        mHandler.removeMessages(REFRESH);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mServiceCallbacks.unbindFromService(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
+        initializeControlButtons(v);
+        initializeTrackInfoViews(v);
+        return v;
+    }
+
+    private void initializeControlButtons(View layout) {
         RepeatingImageButton prevButtonCollapseable =
                 (RepeatingImageButton) layout.findViewById(R.id.prev_collapseable);
         prevButtonCollapseable.setOnClickListener(mPrevListener);
@@ -90,9 +117,7 @@ public class MediaPlaybackFragment extends Fragment {
         //nextButton.setRepeatListener(mForwardListener);
     }
 
-    private void initializeTrackInfoViews() {
-        View layout = mMainLayout;
-
+    private void initializeTrackInfoViews(View layout) {
         mTrackName = (TextView) layout.findViewById(R.id.track_title);
         mArtistName = (TextView) layout.findViewById(R.id.artist_name);
 
@@ -103,37 +128,8 @@ public class MediaPlaybackFragment extends Fragment {
         mTotalTime = (TextView) layout.findViewById(R.id.total_time);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        IntentFilter actionFilter = new IntentFilter();
-        actionFilter.addAction(MediaPlaybackService.META_CHANGED);
-        getActivity().registerReceiver(mStatusListener, actionFilter);
-        queueNextRefresh(1);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().unregisterReceiver(mStatusListener);
-        mHandler.removeMessages(REFRESH);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mServiceCallbacks.unbindFromService();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return mMainLayout;
-    }
-
     private View.OnClickListener mPrevListener = new View.OnClickListener() {
         public void onClick(View v) {
-
             long changeTrackThresholdInMillis = 2000;
             if (mServiceCallbacks.getPlayingPosition() < changeTrackThresholdInMillis) {
                 mServiceCallbacks.prev();
@@ -141,15 +137,12 @@ public class MediaPlaybackFragment extends Fragment {
                 mServiceCallbacks.seek(0);
                 mServiceCallbacks.play();
             }
-
         }
     };
 
     private View.OnClickListener mNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-
             mServiceCallbacks.next();
-
         }
     };
 
@@ -241,9 +234,6 @@ public class MediaPlaybackFragment extends Fragment {
 //    }
 
     private void refreshTrackInfoAndTotalTime() {
-        if (!mServiceCallbacks.isBoundToService()) {
-            return;
-        }
         String trackName = mServiceCallbacks.getTrackName();
         String artistName = mServiceCallbacks.getArtistName();
         long duration = mServiceCallbacks.getTrackDuration();
@@ -268,9 +258,6 @@ public class MediaPlaybackFragment extends Fragment {
     }
 
     private long refreshSeekBarAndCurrentTime() {
-        if (!mServiceCallbacks.isBoundToService()) {
-            return DEFAULT_REFRESH_DELAY_IN_MILLIS;
-        }
         long position = mServiceCallbacks.getPlayingPosition();
         long duration = mServiceCallbacks.getTrackDuration();
         if (position >= 0 && duration > 0) {
@@ -299,7 +286,6 @@ public class MediaPlaybackFragment extends Fragment {
         if (smoothRefreshTime < 20) return 20;
         return smoothRefreshTime;
     }
-
 
     private void queueNextRefresh(long refreshDelay) {
         Message handlerMessage = mHandler.obtainMessage(REFRESH);
@@ -331,4 +317,14 @@ public class MediaPlaybackFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void ServiceConnected() {
+        refreshTrackInfoAndTotalTime();
+    }
+
+    @Override
+    public void ServiceDisconnected() {
+        //TODO:
+    }
 }

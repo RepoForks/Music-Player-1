@@ -3,7 +3,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -164,18 +163,13 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public void bindToService() {
-        mServiceWrapper.bindService(this);
+    public void bindToService(ServiceConnectionObserver connectionObserver) {
+        mServiceWrapper.bindService(this, connectionObserver);
     }
 
     @Override
-    public boolean isBoundToService() {
-        return mServiceWrapper.isBoundToService();
-    }
-
-    @Override
-    public void unbindFromService() {
-        mServiceWrapper.unbindService(this);
+    public void unbindFromService(ServiceConnectionObserver connectionObserver) {
+        mServiceWrapper.unbindService(this, connectionObserver);
     }
 
     //TODO: if service unbind for this context finish app and
@@ -212,7 +206,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public String getTrackName() {
-        return mServiceWrapper.getTrackTitle();
+        return mServiceWrapper.getTrackName();
     }
 
     @Override
@@ -224,8 +218,6 @@ public class NavigationActivity extends AppCompatActivity
     public long getTrackDuration() {
         return mServiceWrapper.getTrackDuration();
     }
-
-
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
         @Override

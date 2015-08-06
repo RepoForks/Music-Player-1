@@ -38,8 +38,15 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
 
     private OnFragmentReplaceListener mCallback;
     private BaseSimpleCursorAdapter mCursorAdapter = null;
-    private View mFragmentLayout;
+    //private View mFragmentLayout;
     private long mArtistId = -1;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallback = (OnFragmentReplaceListener) activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,24 +69,6 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
 
         getLoaderManager().initLoader(ALBUMS_LOADER_ID, null, this);
         mCursorAdapter = getAdapter();
-
-        /*Move this here to aim some similarity
-        of creating fragments. Also don't need
-        inflate in onCreateView() when configuration
-        changed
-        TODO: But maybe it's not good idea to pass null
-        */
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        mFragmentLayout = inflater.inflate(R.layout.fragment_albums_browser, null, false);
-        GridView gridView = (GridView)mFragmentLayout.findViewById(R.id.grid_container);
-        gridView.setAdapter(mCursorAdapter);
-        gridView.setOnItemClickListener(mGridItemClickListener);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mCallback = (OnFragmentReplaceListener) activity;
     }
 
     private BaseSimpleCursorAdapter getAdapter() {
@@ -94,9 +83,11 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d(TAG, "onCreateView");
-        // Inflate the layout for this fragment
-        return mFragmentLayout;
+        View v = inflater.inflate(R.layout.fragment_albums_browser, container, false);
+        GridView gridView = (GridView) v.findViewById(R.id.grid_container);
+        gridView.setAdapter(mCursorAdapter);
+        gridView.setOnItemClickListener(mGridItemClickListener);
+        return v;
     }
 
     @Override

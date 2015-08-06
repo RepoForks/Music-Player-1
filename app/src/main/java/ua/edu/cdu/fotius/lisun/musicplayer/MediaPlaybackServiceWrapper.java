@@ -11,6 +11,8 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 //TODO: all public methods should check if mBoundToService == true
@@ -22,13 +24,25 @@ import java.util.Objects;
  * This class implemented as Singleton.
  * Also some class methods are written to perform one operation - handle exception.
  */
-public class MediaPlaybackServiceWrapper implements ServiceConnection {
+// TODO: проблема может быть в следующем:
+// При config changes этот класс может быть уничтожен
+// и перевоссоздан, таким образом потеряем данные об обзёрверах
+// Чтобы предотвратить это нужно либо реализовать паттерн Singleton, либо
+// обьявить класс как public static где-нибудь во фрагменте и пользоваться им в Activity
+// НО ОБЕСПЕЧИВАЮТ ЛИ static ссылки в этих 2-х случаях стойкость обьекта к config changes?
+// Запасным и не очень желательным вариантом есть инициализация данного объекта в ApplicationContext.
+// Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
+public class MediaPlaybackServiceWrapper
+        implements ServiceConnection{
 
     private final String TAG = getClass().getSimpleName();
 
     private static MediaPlaybackServiceWrapper instance = null;
 
-    private boolean mIsBoundToService = false;
+    private List<ServiceConnectionObserver> mConnectionObservers =
+            new ArrayList<ServiceConnectionObserver>();
+
+    private ServiceConnectionObserver mFirstBoundedConnectionObserver;
 
     /**
      * @return instance of
@@ -53,15 +67,20 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
      *
      * @param context which binds to service
      */
-    public void bindService(Context context) {
-        Log.d(TAG, "Entered bindService method");
-        //better to use application context, because
-        //after recreating activity on configuration changes
-        //context which was bind to service doesn't exists
-        context = context.getApplicationContext();
-        Intent service = new Intent(context, MediaPlaybackService.class);
-        //if service already bounded, nothing is going to happen
-        context.bindService(service, this, ContextWrapper.BIND_AUTO_CREATE);
+    public void bindService(Context context, ServiceConnectionObserver connectionObserver) {
+        Log.e(TAG, "Entered bindService method");
+        Log.d(TAG, "mConnectionObservers.size(): " + mConnectionObservers.size());
+        //if this is first candidate for binding
+        if(mConnectionObservers.size() == 0) {
+            mFirstBoundedConnectionObserver = connectionObserver;
+            //better to use application context, because
+            //after recreating activity on configuration changes
+            //context which was bind to service doesn't exists
+            context = context.getApplicationContext();
+            Intent service = new Intent(context, MediaPlaybackService.class);
+            context.bindService(service, this, ContextWrapper.BIND_AUTO_CREATE);
+        }
+        mConnectionObservers.add(connectionObserver);
     }
 
     /**
@@ -70,30 +89,36 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
      *
      * @param context which unbinds from service
      */
-    public void unbindService(Context context) {
-        if (mIsBoundToService) {
-            Log.e(TAG, "Entered unbindService if statement");
+    public void unbindService(Context context, ServiceConnectionObserver connectionObserver) {
+
+        Log.e(TAG, "Entered unbindService method");
+        Log.d(TAG, "mConnectionObservers.size(): " + mConnectionObservers.size());
+        Log.d(TAG, "mConnectionObservers include observer: " + mConnectionObservers.contains(connectionObserver));
+
+        ServiceConnectionObserver candidateForUnbinding = connectionObserver;
+        mConnectionObservers.remove(candidateForUnbinding);
+        //if all observers was unbounded
+        if (mConnectionObservers.size() == 0) {
             context = context.getApplicationContext();
             context.unbindService(this);
-            mIsBoundToService = false;
+            mService = null;
         }
     }
 
     /**
-     * Play specified tracks from specified postion
+     * Play specified tracks from specified position
      *
      * @param cursor   - tracks to play
      * @param position - first track to play
      */
     public void playAll(Cursor cursor, int position) {
-        if (mIsBoundToService) {
+        if (mService != null) {
             long[] playlist = getPlaylistFromCursor(cursor);
             playAll(playlist, position);
         }
     }
 
     private void playAll(long[] playlist, int position) {
-        Log.d(TAG, "playAll: position " + position);
         try {
             mService.open(playlist, position);
             mService.play();
@@ -124,88 +149,103 @@ public class MediaPlaybackServiceWrapper implements ServiceConnection {
     }
 
     public void prev() {
-        try {
-            mService.prev();
-        } catch(RemoteException e){
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                mService.prev();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
     }
 
     public void seek(long position) {
-        try {
-            mService.seek(position);
-        } catch(RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                mService.seek(position);
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
     }
 
     public void next() {
-        try{
-            mService.next();
-        } catch(RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                mService.next();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
     }
 
     public void play() {
-        try {
-            mService.play();
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                mService.play();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
     }
 
     public long getTrackDuration() {
-        try {
-            return mService.duration();
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                return mService.duration();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
         return -1;
     }
 
     public long getPlayingPosition() {
-        try {
-            return mService.position();
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                return mService.position();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
         return -1;
     }
 
     public String getArtistName() {
-        try {
-            return mService.getArtistName();
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
+        if (mService != null) {
+            try {
+                return mService.getArtistName();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
         return null;
     }
 
-    public String getTrackTitle() {
-        try {
-            return mService.getTrackName();
-        } catch (RemoteException e) {
-            Log.d(TAG, e.getMessage());
+    public String getTrackName() {
+        if (mService != null) {
+            try {
+                return mService.getTrackName();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
         return null;
-    }
-
-    public boolean isBoundToService() {
-        return mIsBoundToService;
     }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(TAG, "onServiceConnected");
         mService = IMediaPlaybackService.Stub.asInterface(service);
-        mIsBoundToService = true;
+        mFirstBoundedConnectionObserver.ServiceConnected();
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
         Log.d(TAG, "onServiceDisconnected");
+        //notify all observers
+        for(ServiceConnectionObserver observer : mConnectionObservers) {
+            observer.ServiceDisconnected();
+        }
         mService = null;
-        mIsBoundToService = false;
     }
 }

@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.app.Activity;
 import android.content.ContextWrapper;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.OnCallToServiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.TrackSimpleCursorAdapter;
 
@@ -26,7 +28,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.TrackSimpleCursorA
  * A simple {@link ListFragment} subclass.
  *
  */
-public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver{
 
     public static final String TAG = "track_browser_fragment";
     public static final String ARTIST_TITLE_COLUMN = MediaStore.Audio.Media.ARTIST;
@@ -61,6 +63,8 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         * adapter and call onLoadFinished()
         * everytime on config changes*/
         setRetainInstance(true);
+
+        mServiceCallbacks.bindToService(this);
 
         /*if called with album id
         * then need to list tracks for
@@ -99,6 +103,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mServiceCallbacks.unbindFromService(this);
     }
 
     @Override
@@ -127,5 +132,15 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onLoaderReset(Loader loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void ServiceConnected() {
+        //TODO
+    }
+
+    @Override
+    public void ServiceDisconnected() {
+        //TODO
     }
 }

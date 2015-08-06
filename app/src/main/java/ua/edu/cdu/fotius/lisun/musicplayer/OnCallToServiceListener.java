@@ -8,11 +8,11 @@ import android.os.RemoteException;
  */
 public interface OnCallToServiceListener {
 
-    public void bindToService();
+    public void bindToService(ServiceConnectionObserver connectionObserver);
 
-    public boolean isBoundToService();
+    //public boolean isBoundToService();
 
-    public void unbindFromService();
+    public void unbindFromService(ServiceConnectionObserver connectionObserver);
 
     public void playAll(Cursor cursor, int position);
 
