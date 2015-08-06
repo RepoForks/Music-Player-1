@@ -14,6 +14,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 
 //TODO: all public methods should check if mBoundToService == true
 
@@ -30,6 +31,7 @@ import java.util.Objects;
 // Чтобы предотвратить это нужно либо реализовать паттерн Singleton, либо
 // обьявить класс как public static где-нибудь во фрагменте и пользоваться им в Activity
 // НО ОБЕСПЕЧИВАЮТ ЛИ static ссылки в этих 2-х случаях стойкость обьекта к config changes?
+// Или class loader может в какой момент быть рассматриваться как "мусор"?
 // Запасным и не очень желательным вариантом есть инициализация данного объекта в ApplicationContext.
 // Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
 public class MediaPlaybackServiceWrapper
@@ -38,12 +40,6 @@ public class MediaPlaybackServiceWrapper
     private final String TAG = getClass().getSimpleName();
 
     private static MediaPlaybackServiceWrapper instance = null;
-
-    private List<ServiceConnectionObserver> mConnectionObservers =
-            new ArrayList<ServiceConnectionObserver>();
-
-    private ServiceConnectionObserver mFirstBoundedConnectionObserver;
-
     /**
      * @return instance of
      * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper}
@@ -55,32 +51,34 @@ public class MediaPlaybackServiceWrapper
         return instance;
     }
 
+    // Need to use thread-safe collection.
+    // Async danger: bindService(...) writes to collection
+    // and onServiceConnection(...) reads collection elements
+    private Vector<ServiceConnectionObserver> mConnectionObservers =
+            new Vector<ServiceConnectionObserver>();
+
     private IMediaPlaybackService mService = null;
 
-    private MediaPlaybackServiceWrapper() {
-        Log.d(TAG, "MediaPlaybackServiceWrapper() called");
-    }
+    private MediaPlaybackServiceWrapper(){}
 
     /**
      * Binds specified Context to
      * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}
-     *
      * @param context which binds to service
      */
     public void bindService(Context context, ServiceConnectionObserver connectionObserver) {
-        Log.e(TAG, "Entered bindService method");
-        Log.d(TAG, "mConnectionObservers.size(): " + mConnectionObservers.size());
-        //if this is first candidate for binding
-        if(mConnectionObservers.size() == 0) {
-            mFirstBoundedConnectionObserver = connectionObserver;
+        // mConnectionObservers.add(connectionObserver) should be the first function to call
+        mConnectionObservers.add(connectionObserver);
+
+        //if service hasn't been connected yet
+        if(mService == null) {
             //better to use application context, because
             //after recreating activity on configuration changes
-            //context which was bind to service doesn't exists
+            //activity context which was bind to service doesn't exists
             context = context.getApplicationContext();
             Intent service = new Intent(context, MediaPlaybackService.class);
             context.bindService(service, this, ContextWrapper.BIND_AUTO_CREATE);
         }
-        mConnectionObservers.add(connectionObserver);
     }
 
     /**
@@ -90,11 +88,6 @@ public class MediaPlaybackServiceWrapper
      * @param context which unbinds from service
      */
     public void unbindService(Context context, ServiceConnectionObserver connectionObserver) {
-
-        Log.e(TAG, "Entered unbindService method");
-        Log.d(TAG, "mConnectionObservers.size(): " + mConnectionObservers.size());
-        Log.d(TAG, "mConnectionObservers include observer: " + mConnectionObservers.contains(connectionObserver));
-
         ServiceConnectionObserver candidateForUnbinding = connectionObserver;
         mConnectionObservers.remove(candidateForUnbinding);
         //if all observers was unbounded
@@ -236,7 +229,14 @@ public class MediaPlaybackServiceWrapper
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(TAG, "onServiceConnected");
         mService = IMediaPlaybackService.Stub.asInterface(service);
-        mFirstBoundedConnectionObserver.ServiceConnected();
+        /* Notify all observers.
+         * In most cases here will be notified
+         * one observer, which is added to collection first.
+         * But sometimes binding can delays and in this case
+         * more than one observer can be notified */
+        for(ServiceConnectionObserver observer : mConnectionObservers) {
+            observer.ServiceConnected();
+        }
     }
 
     @Override
