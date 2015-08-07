@@ -16,15 +16,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-//TODO: all public methods should check if mBoundToService == true
-
-/**
- * Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
+/**Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * Class is mediator between this specific application and more general
  * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * This class implemented as Singleton.
- * Also some class methods are written to perform one operation - handle exception.
- */
+ * Also some class methods are written to perform one operation - handle exception.*/
 // TODO: проблема может быть в следующем:
 // При config changes этот класс может быть уничтожен
 // и перевоссоздан, таким образом потеряем данные об обзёрверах
@@ -40,10 +36,7 @@ public class MediaPlaybackServiceWrapper
     private final String TAG = getClass().getSimpleName();
 
     private static MediaPlaybackServiceWrapper instance = null;
-    /**
-     * @return instance of
-     * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper}
-     */
+
     public static MediaPlaybackServiceWrapper getInstance() {
         if (instance == null) {
             instance = new MediaPlaybackServiceWrapper();
@@ -51,9 +44,9 @@ public class MediaPlaybackServiceWrapper
         return instance;
     }
 
-    // Need to use thread-safe collection.
-    // Async danger: bindService(...) writes to collection
-    // and onServiceConnection(...) reads collection elements
+    /*Need to use thread-safe collection.
+    * Async danger: bindService(...) writes to collection
+    * and onServiceConnection(...) reads collection elements*/
     private Vector<ServiceConnectionObserver> mConnectionObservers =
             new Vector<ServiceConnectionObserver>();
 
@@ -61,36 +54,25 @@ public class MediaPlaybackServiceWrapper
 
     private MediaPlaybackServiceWrapper(){}
 
-    /**
-     * Binds specified Context to
-     * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}
-     * @param context which binds to service
-     */
     public void bindService(Context context, ServiceConnectionObserver connectionObserver) {
-        // mConnectionObservers.add(connectionObserver) should be the first function to call
+        /*Adding observer should be the first operation in this function*/
         mConnectionObservers.add(connectionObserver);
 
-        //if service hasn't been connected yet
+        //service hasn't been connected yet
         if(mService == null) {
-            //better to use application context, because
-            //after recreating activity on configuration changes
-            //activity context which was bind to service doesn't exists
+            /*Better to use application context, because
+            * after recreating activity on configuration changes
+            * activity context which was bind to service doesn't exists*/
             context = context.getApplicationContext();
             Intent service = new Intent(context, MediaPlaybackService.class);
             context.bindService(service, this, ContextWrapper.BIND_AUTO_CREATE);
         }
     }
 
-    /**
-     * Unbind specified Context from
-     * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}
-     *
-     * @param context which unbinds from service
-     */
     public void unbindService(Context context, ServiceConnectionObserver connectionObserver) {
         ServiceConnectionObserver candidateForUnbinding = connectionObserver;
         mConnectionObservers.remove(candidateForUnbinding);
-        //if all observers was unbounded
+
         if (mConnectionObservers.size() == 0) {
             context = context.getApplicationContext();
             context.unbindService(this);
@@ -98,12 +80,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    /**
-     * Play specified tracks from specified position
-     *
-     * @param cursor   - tracks to play
-     * @param position - first track to play
-     */
     public void playAll(Cursor cursor, int position) {
         if (mService != null) {
             long[] playlist = getPlaylistFromCursor(cursor);
@@ -121,23 +97,16 @@ public class MediaPlaybackServiceWrapper
     }
 
     private long[] getPlaylistFromCursor(Cursor cursor) {
-        //get cursor lines quantity
-        int tracksQty = cursor.getCount();
-        //create list for playlist id's
-        long[] playlist = new long[tracksQty];
-        //move to first track in cursor
+        int cursorLinesQuantity = cursor.getCount();
+        long[] playlist = new long[cursorLinesQuantity];
         cursor.moveToFirst();
-        //get song id column index
+
         int idColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
-        //go through cursor
-        for (int i = 0; i < tracksQty; i++) {
-            //retreive track id
-            //put id to list
+
+        for (int i = 0; i < cursorLinesQuantity; i++) {
             playlist[i] = cursor.getLong(idColumnIndex);
-            //cursor to next item
             cursor.moveToNext();
         }
-        //return result
         return playlist;
     }
 
@@ -227,7 +196,6 @@ public class MediaPlaybackServiceWrapper
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        Log.d(TAG, "onServiceConnected");
         mService = IMediaPlaybackService.Stub.asInterface(service);
         /* Notify all observers.
          * In most cases here will be notified
@@ -241,8 +209,6 @@ public class MediaPlaybackServiceWrapper
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.d(TAG, "onServiceDisconnected");
-        //notify all observers
         for(ServiceConnectionObserver observer : mConnectionObservers) {
             observer.ServiceDisconnected();
         }

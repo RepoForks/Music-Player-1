@@ -22,7 +22,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class NavigationActivity extends AppCompatActivity
-        implements OnFragmentReplaceListener, OnCallToServiceListener{
+        implements OnFragmentReplaceListener, ServiceCallsFromFragmentsListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -62,11 +62,6 @@ public class NavigationActivity extends AppCompatActivity
                 .add(R.id.fragment_container, mCurrentFragment, TrackBrowserFragment.TAG)
                 .commit();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

@@ -1108,14 +1108,11 @@ public class MediaPlaybackService extends Service {
                     return;
                 }
                 int pos = mHistory.remove(histsize - 1);
-                //mPlayPos = pos.intValue();
                 mPlaylist.setPlayPosition(pos);
             } else {
                 if (mPlaylist.getPlayPosition() > 0) {
-                    //mPlayPos--;
                     mPlaylist.setPlayPosition(mPlaylist.getPlayPosition() - 1);
                 } else {
-                    //mPlayPos = mPlaylist.size() - 1;
                     mPlaylist.setPlayPosition(mPlaylist.size() - 1);
                 }
             }

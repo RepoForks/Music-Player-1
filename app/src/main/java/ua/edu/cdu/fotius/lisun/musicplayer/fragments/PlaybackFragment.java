@@ -19,7 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
-import ua.edu.cdu.fotius.lisun.musicplayer.OnCallToServiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceCallsFromFragmentsListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
@@ -36,7 +36,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
-    private OnCallToServiceListener mServiceCallbacks;
+    private ServiceCallsFromFragmentsListener mFragmentServiceMediator;
 
     private long mStartSeekPos = 0;
 
@@ -51,7 +51,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mServiceCallbacks = (OnCallToServiceListener) activity;
+        mFragmentServiceMediator = (ServiceCallsFromFragmentsListener) activity;
     }
 
     @Override
@@ -59,9 +59,15 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        Log.d(TAG, "PlaybackFragment#OnCreate()");
+        mFragmentServiceMediator.bindToService(this);
+    }
 
-        mServiceCallbacks.bindToService(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
+        initializeControlButtons(v);
+        initializeTrackInfoViews(v);
+        return v;
     }
 
     @Override
@@ -84,37 +90,30 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mServiceCallbacks.unbindFromService(this);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
-        initializeControlButtons(v);
-        initializeTrackInfoViews(v);
-        return v;
+        mFragmentServiceMediator.unbindFromService(this);
+        mHandler.removeCallbacksAndMessages(null); //absolutely necessary to avoid leaks
     }
 
     private void initializeControlButtons(View layout) {
         RepeatingImageButton prevButtonCollapseable =
                 (RepeatingImageButton) layout.findViewById(R.id.prev_collapseable);
         prevButtonCollapseable.setOnClickListener(mPrevListener);
-        //prevButtonCollapseable.setRepeatListener(mRewindListener);
+        prevButtonCollapseable.setRepeatListener(mRewindListener);
 
         RepeatingImageButton nextButtonCollapseable =
                 (RepeatingImageButton) layout.findViewById(R.id.next_collapseable);
         nextButtonCollapseable.setOnClickListener(mNextListener);
-        //nextButtonCollapseable.setRepeatListener(mForwardListener);
+        nextButtonCollapseable.setRepeatListener(mForwardListener);
 
         RepeatingImageButton prevButton =
                 (RepeatingImageButton) layout.findViewById(R.id.prev);
         prevButton.setOnClickListener(mPrevListener);
-        //prevButton.setRepeatListener(mRewindListener);
+        prevButton.setRepeatListener(mRewindListener);
 
         RepeatingImageButton nextButton =
                 (RepeatingImageButton) layout.findViewById(R.id.next);
         nextButton.setOnClickListener(mNextListener);
-        //nextButton.setRepeatListener(mForwardListener);
+        nextButton.setRepeatListener(mForwardListener);
     }
 
     private void initializeTrackInfoViews(View layout) {
@@ -131,112 +130,104 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private View.OnClickListener mPrevListener = new View.OnClickListener() {
         public void onClick(View v) {
             long changeTrackThresholdInMillis = 2000;
-            if (mServiceCallbacks.getPlayingPosition() < changeTrackThresholdInMillis) {
-                mServiceCallbacks.prev();
+            if (mFragmentServiceMediator.getPlayingPosition() < changeTrackThresholdInMillis) {
+                mFragmentServiceMediator.prev();
             } else {
-                mServiceCallbacks.seek(0);
-                mServiceCallbacks.play();
+                mFragmentServiceMediator.seek(0);
+                mFragmentServiceMediator.play();
             }
         }
     };
 
     private View.OnClickListener mNextListener = new View.OnClickListener() {
         public void onClick(View v) {
-            mServiceCallbacks.next();
+            mFragmentServiceMediator.next();
         }
     };
 
-//    private RepeatingImageButton.RepeatListener mRewindListener =
-//            new RepeatingImageButton.RepeatListener() {
-//                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
-//                    scanBackward(repeatCount, howLongWasPressed);
-//                }
-//            };
-//
-//    private RepeatingImageButton.RepeatListener mForwardListener =
-//            new RepeatingImageButton.RepeatListener() {
-//                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
-//                    scanForward(repeatCount, howLongWasPressed);
-//                }
-//            };
-//
-//    //TODO:
-//    private void scanBackward(int repeatCount, long howLongWasPressed) {
-//
-//        try {
-//            if(repeatCount == 0) {
-//                mStartSeekPos = mServiceCallbacks.getPlayingPosition();
-//                //mLastSeekEventTime = 0;
-//            } else {
-//                long seekLeapTime = getSeekLeapTime(howLongWasPressed);
-//                long newPosition = mStartSeekPos - seekLeapTime;
-//                //if scan backward up to start
-//                //then go to previous song
-//                if (newPosition < 0) {
-//                    // move to previous track
-//                    mServiceCallbacks.prev();
-//                    long duration = mServiceCallbacks.getTrackDuration();
-//                    mStartSeekPos += duration;
-//                    newPosition += duration;
-//                }
-//                mServiceCallbacks.seek(newPosition);
-////                if (repeatCount >= 0) {
-////                    mPosOverride = newpos;
-////                } else {
-////                    mPosOverride = -1;
-////                }
-//                //refreshNow();
-//            }
-//        } catch (RemoteException ex) {
-//        }
-//    }
-//
-//    private long getSeekLeapTime(long howLongWasPressed) {
-//        if (howLongWasPressed < 5000) {
-//            // seek at 10x speed for the first 5 seconds
-//            return (howLongWasPressed * 10);
-//        } else {
-//            // seek at 40x after that
-//            //return (50000 + (howLongWasPressed - 5000) * 40);
-//            return ((howLongWasPressed - 5000) * 40);
-//        }
-//    }
-//
-//    //TODO:
-//    private void scanForward(int repeatCount, long howLongWasPressed) {
-//
-//        try {
-//            if(repeatCount == 0) {
-//                mStartSeekPos = mServiceCallbacks.getPlayingPosition();
-//                //mLastSeekEventTime = 0;
-//            } else {
-//                long seekLeapTime = getSeekLeapTime(howLongWasPressed);
-//                long newPosition = mStartSeekPos + seekLeapTime;
-//                long duration = mServiceCallbacks.getTrackDuration();
-//                if (newPosition >= duration) {
-//                    // move to next track
-//                    mServiceCallbacks.next();
-//                    mStartSeekPos -= duration; // is OK to go negative
-//                    newPosition -= duration;
-//                }
-//
-//                mServiceCallbacks.seek(newPosition);
-//
-////                if (repeatCount >= 0) {
-////                    mPosOverride = newpos;
-////                } else {
-////                    mPosOverride = -1;
-////                }
-////                refreshNow();
-//            }
-//        } catch (RemoteException ex) {
-//        }
-//    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private RepeatingImageButton.RepeatListener mRewindListener =
+            new RepeatingImageButton.RepeatListener() {
+                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
+                    scanBackward(repeatCount, howLongWasPressed);
+                }
+            };
 
+    private RepeatingImageButton.RepeatListener mForwardListener =
+            new RepeatingImageButton.RepeatListener() {
+                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
+                    scanForward(repeatCount, howLongWasPressed);
+                }
+            };
+//
+    //TODO:
+    private void scanBackward(int repeatCount, long howLongWasPressed) {
+        if (repeatCount == 0) {
+            mStartSeekPos = mFragmentServiceMediator.getPlayingPosition();
+        } else {
+            long seekLeapTime = getSeekLeapTime(howLongWasPressed);
+            long newPosition = mStartSeekPos - seekLeapTime;
+
+            if (newPosition <= 0) {
+                // move to previous track
+                mFragmentServiceMediator.prev();
+                newPosition = 0;
+            }
+            mFragmentServiceMediator.seek(newPosition);
+            refreshSeekBarAndCurrentTime();
+        }
+    }
+
+    private long getSeekLeapTime(long howLongWasPressed) {
+        if (howLongWasPressed < 5000) {
+            // seek at 10x speed for the first 5 seconds
+            return (howLongWasPressed * 10);
+        } else {
+            // seek at 40x after that
+            //return 50000 + (howLongWasPressed - 5000) * 40;
+            return (50000 + (howLongWasPressed - 5000) * 40);
+        }
+    }
+
+    private void scanForward(int repeatCount, long howLongWasPressed) {
+
+        Log.d(TAG, "SCAN_FORWARD");
+        Log.d(TAG, "repeatCount: " + repeatCount);
+        Log.d(TAG, "howlongWasPressed " + TimeUtils.makeTimeString(getActivity(), howLongWasPressed / 1000));
+        Log.d(TAG, "mStartSeekPos " + TimeUtils.makeTimeString(getActivity(), mStartSeekPos / 1000));
+
+        if (repeatCount == 0) {
+            mStartSeekPos = mFragmentServiceMediator.getPlayingPosition();
+        } else {
+            long seekLeapTime = getSeekLeapTime(howLongWasPressed);
+
+            Log.d(TAG, "seekLeapTime: " + TimeUtils.makeTimeString(getActivity(), seekLeapTime / 1000));
+
+            long newPosition = mStartSeekPos + seekLeapTime;
+
+            Log.d(TAG, "newPostion: " + TimeUtils.makeTimeString(getActivity(), newPosition / 1000));
+
+            long duration = mFragmentServiceMediator.getTrackDuration();
+
+            Log.d(TAG, "duration: " + TimeUtils.makeTimeString(getActivity(), duration / 1000));
+
+            if (newPosition >= duration) {
+                Log.e(TAG, "------------------------------------------");
+                // move to next track
+                mFragmentServiceMediator.next();
+                newPosition -= duration;
+                mStartSeekPos -= duration; // is OK to go negative
+            }
+
+            mFragmentServiceMediator.seek(newPosition);
+            refreshSeekBarAndCurrentTime();
+        }
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////
     private void refreshTrackInfoAndTotalTime() {
-        String trackName = mServiceCallbacks.getTrackName();
-        String artistName = mServiceCallbacks.getArtistName();
-        long duration = mServiceCallbacks.getTrackDuration();
+        String trackName = mFragmentServiceMediator.getTrackName();
+        String artistName = mFragmentServiceMediator.getArtistName();
+        long duration = mFragmentServiceMediator.getTrackDuration();
 
         if ((trackName != null) && (artistName != null) && (duration > 0)) {
             mTrackName.setText(trackName);
@@ -244,11 +235,11 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
             mTotalTime.setText(TimeUtils.makeTimeString(getActivity(),
                     duration / SEEK_BAR_MAX));
         } else {
-            handleRefreshingError();
+            refreshViewsOnError();
         }
     }
 
-    private void handleRefreshingError() {
+    private void refreshViewsOnError() {
         mTrackName.setText("");
         mArtistName.setText("");
         mTotalTime.setText("--:--");
@@ -258,17 +249,16 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     }
 
     private long refreshSeekBarAndCurrentTime() {
-        long position = mServiceCallbacks.getPlayingPosition();
-        long duration = mServiceCallbacks.getTrackDuration();
+        long position = mFragmentServiceMediator.getPlayingPosition();
+        long duration = mFragmentServiceMediator.getTrackDuration();
         if (position >= 0 && duration > 0) {
             int progress = (int) (SEEK_BAR_MAX * position / duration);
             mSeekBar.setProgress(progress);
-            mSeekBar.refreshDrawableState();
             mCurrentTime.setText(TimeUtils.makeTimeString(getActivity(),
                     position / SEEK_BAR_MAX));
             return getSmoothRefreshTime(position, duration);
         } else {
-            handleRefreshingError();
+            refreshViewsOnError();
         }
         return DEFAULT_REFRESH_DELAY_IN_MILLIS;
     }
@@ -311,7 +301,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
             String action = intent.getAction();
             if (action.equals(MediaPlaybackService.META_CHANGED)) {
                 refreshTrackInfoAndTotalTime();
-                queueNextRefresh(1);
             } else if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
 //                setPauseButtonImage();
             }
@@ -325,6 +314,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
     @Override
     public void ServiceDisconnected() {
-        //TODO:
+        refreshViewsOnError();
     }
 }

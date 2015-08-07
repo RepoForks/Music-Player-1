@@ -2,8 +2,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.app.Activity;
-import android.content.ContextWrapper;
-import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,23 +9,17 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
-import ua.edu.cdu.fotius.lisun.musicplayer.OnCallToServiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceCallsFromFragmentsListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.TrackSimpleCursorAdapter;
 
-/**
- * A simple {@link ListFragment} subclass.
- *
- */
 public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver{
 
     public static final String TAG = "track_browser_fragment";
@@ -37,7 +29,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     private final int TRACK_LOADER_ID = 1;
 
     private BaseSimpleCursorAdapter mCursorAdapter;
-    private OnCallToServiceListener mServiceCallbacks;
+    private ServiceCallsFromFragmentsListener mServiceCallbacks;
 
     private long mAlbumId = -1;
 
@@ -47,7 +39,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mServiceCallbacks = (OnCallToServiceListener) activity;
+        mServiceCallbacks = (ServiceCallsFromFragmentsListener) activity;
     }
 
     /*Don't bind/unbind in TrackBrowserFragment, because

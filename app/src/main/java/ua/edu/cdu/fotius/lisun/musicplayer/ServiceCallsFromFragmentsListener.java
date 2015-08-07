@@ -6,7 +6,7 @@ import android.os.RemoteException;
 /**
  * Created by andrei on 29.07.2015.
  */
-public interface OnCallToServiceListener {
+public interface ServiceCallsFromFragmentsListener {
 
     public void bindToService(ServiceConnectionObserver connectionObserver);
 
