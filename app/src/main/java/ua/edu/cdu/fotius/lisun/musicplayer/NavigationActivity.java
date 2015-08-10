@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -8,10 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
@@ -22,12 +23,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class NavigationActivity extends AppCompatActivity
-        implements OnFragmentReplaceListener, ServiceCallsFromFragmentsListener {
+        implements OnFragmentReplaceListener, ServiceInterface {
 
     private final String TAG = getClass().getSimpleName();
 
     private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
-    private Fragment mCurrentFragment;
+    private Fragment mCurrentBrowserFragment;
 
     private DrawerLayout mDrawerLayout;
     private SlidingUpPanelLayout mSlidingPanel;
@@ -50,23 +51,23 @@ public class NavigationActivity extends AppCompatActivity
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
         if(savedInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager()
+            mCurrentBrowserFragment = getSupportFragmentManager()
                     .findFragmentByTag(savedInstanceState.getString(CURRENT_FRAGMENT_TAG_KEY));
         }
 
         //if activity runs for the first time set Songs fragment as
         //initial fragment
-        if(mCurrentFragment == null) {
-            mCurrentFragment = new TrackBrowserFragment();
+        if(mCurrentBrowserFragment == null) {
+            mCurrentBrowserFragment = new TrackBrowserFragment();
             getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mCurrentFragment, TrackBrowserFragment.TAG)
+                .add(R.id.fragment_container, mCurrentBrowserFragment, TrackBrowserFragment.TAG)
                 .commit();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(CURRENT_FRAGMENT_TAG_KEY, mCurrentFragment.getTag());
+        outState.putString(CURRENT_FRAGMENT_TAG_KEY, mCurrentBrowserFragment.getTag());
         super.onSaveInstanceState(outState);
     }
 
@@ -154,17 +155,17 @@ public class NavigationActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragmentTag)
                 .commit();
-        mCurrentFragment = fragment;
+        mCurrentBrowserFragment = fragment;
     }
 
     @Override
-    public void bindToService(ServiceConnectionObserver connectionObserver) {
-        mServiceWrapper.bindService(this, connectionObserver);
+    public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {
+        mServiceWrapper.bindToService(context, connectionObserver);
     }
 
     @Override
-    public void unbindFromService(ServiceConnectionObserver connectionObserver) {
-        mServiceWrapper.unbindService(this, connectionObserver);
+    public void unbindFromService(Context context, ServiceConnectionObserver connectionObserver) {
+        mServiceWrapper.unbindFromService(context, connectionObserver);
     }
 
     //TODO: if service unbind for this context finish app and
@@ -200,6 +201,16 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
+    public void pause() {
+        mServiceWrapper.pause();
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mServiceWrapper.isPlaying();
+    }
+
+    @Override
     public String getTrackName() {
         return mServiceWrapper.getTrackName();
     }
@@ -214,12 +225,36 @@ public class NavigationActivity extends AppCompatActivity
         return mServiceWrapper.getTrackDuration();
     }
 
+    @Override
+    public void setRepeatMode(int repeatMode) {
+        mServiceWrapper.setRepeatMode(repeatMode);
+    }
+
+    @Override
+    public int getRepeatMode() {
+        return mServiceWrapper.getRepeatMode();
+    }
+
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
+
+        private LinearLayout mAdditionalControlPanel;
+        private boolean mIsAdditionalControlsVisible;
+
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
-            Log.d(TAG, "slideOffset: " + slideOffset);
-            if(slideOffset == 0.6) {
-                //TODO: disable upper control buttons
+            if ((slideOffset > 0.6) && mIsAdditionalControlsVisible) {
+                mAdditionalControlPanel =
+                        (LinearLayout) panel.findViewById(R.id.additional_control_panel);
+                mAdditionalControlPanel.setVisibility(View.GONE);
+                mIsAdditionalControlsVisible = false;
+            }
+
+            if ((slideOffset < 0.6) && !mIsAdditionalControlsVisible) {
+                mAdditionalControlPanel =
+                        (LinearLayout) panel.findViewById(R.id.additional_control_panel);
+
+                mAdditionalControlPanel.setVisibility(View.VISIBLE);
+                mIsAdditionalControlsVisible = true;
             }
         }
 

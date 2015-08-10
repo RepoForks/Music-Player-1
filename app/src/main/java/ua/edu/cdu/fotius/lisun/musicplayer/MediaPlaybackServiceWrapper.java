@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
+
 /**Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * Class is mediator between this specific application and more general
  * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
@@ -31,7 +33,7 @@ import java.util.Vector;
 // Запасным и не очень желательным вариантом есть инициализация данного объекта в ApplicationContext.
 // Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
 public class MediaPlaybackServiceWrapper
-        implements ServiceConnection{
+        implements ServiceConnection, ServiceInterface{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -45,16 +47,18 @@ public class MediaPlaybackServiceWrapper
     }
 
     /*Need to use thread-safe collection.
-    * Async danger: bindService(...) writes to collection
+    * Async danger: bindToService(...) writes to collection
     * and onServiceConnection(...) reads collection elements*/
     private Vector<ServiceConnectionObserver> mConnectionObservers =
             new Vector<ServiceConnectionObserver>();
 
     private IMediaPlaybackService mService = null;
 
-    private MediaPlaybackServiceWrapper(){}
+    private MediaPlaybackServiceWrapper(){
+        Log.d(TAG, "MediaPlaybackServiceWrapper called");
+    }
 
-    public void bindService(Context context, ServiceConnectionObserver connectionObserver) {
+    public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {
         /*Adding observer should be the first operation in this function*/
         mConnectionObservers.add(connectionObserver);
 
@@ -69,7 +73,7 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    public void unbindService(Context context, ServiceConnectionObserver connectionObserver) {
+    public void unbindFromService(Context context, ServiceConnectionObserver connectionObserver) {
         ServiceConnectionObserver candidateForUnbinding = connectionObserver;
         mConnectionObservers.remove(candidateForUnbinding);
 
@@ -141,6 +145,7 @@ public class MediaPlaybackServiceWrapper
     }
 
     public void play() {
+        Log.d(TAG, "--> play()");
         if (mService != null) {
             try {
                 mService.play();
@@ -148,6 +153,30 @@ public class MediaPlaybackServiceWrapper
                 Log.d(TAG, e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void pause() {
+        Log.d(TAG, "--> pause()");
+        if(mService != null) {
+            try {
+                mService.pause();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public boolean isPlaying() {
+        if(mService != null) {
+            try {
+                return mService.isPlaying();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+        return false;
     }
 
     public long getTrackDuration() {
@@ -193,6 +222,30 @@ public class MediaPlaybackServiceWrapper
         }
         return null;
     }
+
+    @Override
+    public void setRepeatMode(int repeatMode) {
+        if(mService != null) {
+            try {
+                mService.setRepeatMode(repeatMode);
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public int getRepeatMode() {
+        if(mService != null) {
+            try {
+                return mService.getRepeatMode();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+        return -1;
+    }
+
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {

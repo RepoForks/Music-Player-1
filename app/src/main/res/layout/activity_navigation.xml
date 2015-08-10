@@ -35,7 +35,7 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <!--COLLAPSABLE VIEW-->
+        <!--SLIDING VIEW-->
         <fragment
             android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackFragment"
             android:id="@+id/playback_fragment"

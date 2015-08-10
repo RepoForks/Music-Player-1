@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceCallsFromFragmentsListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceInterface;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
@@ -29,7 +29,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     private final int TRACK_LOADER_ID = 1;
 
     private BaseSimpleCursorAdapter mCursorAdapter;
-    private ServiceCallsFromFragmentsListener mServiceCallbacks;
+    private ServiceInterface mServiceCallbacks;
 
     private long mAlbumId = -1;
 
@@ -39,7 +39,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mServiceCallbacks = (ServiceCallsFromFragmentsListener) activity;
+        mServiceCallbacks = (ServiceInterface) activity;
     }
 
     /*Don't bind/unbind in TrackBrowserFragment, because
@@ -56,7 +56,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         * everytime on config changes*/
         setRetainInstance(true);
 
-        mServiceCallbacks.bindToService(this);
+        mServiceCallbacks.bindToService(getActivity(), this);
 
         /*if called with album id
         * then need to list tracks for
@@ -95,7 +95,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mServiceCallbacks.unbindFromService(this);
+        mServiceCallbacks.unbindFromService(getActivity(), this);
     }
 
     @Override

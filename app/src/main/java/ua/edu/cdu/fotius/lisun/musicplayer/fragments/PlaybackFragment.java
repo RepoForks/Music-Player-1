@@ -15,20 +15,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceCallsFromFragmentsListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceInterface;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlaybackFragment extends Fragment implements ServiceConnectionObserver{
+public class PlaybackFragment extends Fragment implements ServiceConnectionObserver {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -36,7 +40,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
-    private ServiceCallsFromFragmentsListener mFragmentServiceMediator;
+    private ServiceInterface mFragmentServiceMediator;
 
     private long mStartSeekPos = 0;
 
@@ -45,13 +49,17 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private SeekBar mSeekBar;
     private TextView mCurrentTime;
     private TextView mTotalTime;
+    private ImageButton mPlayPauseButton;
+    private ImageButton mPlayPauseAdditionalButton;
+    //TODO: collapseable --> minimal
+    private ImageButton mRepeatButton;
 
     public PlaybackFragment() {}
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mFragmentServiceMediator = (ServiceCallsFromFragmentsListener) activity;
+        mFragmentServiceMediator = (ServiceInterface) activity;
     }
 
     @Override
@@ -59,52 +67,34 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mFragmentServiceMediator.bindToService(this);
+        mFragmentServiceMediator.bindToService(getActivity(), this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
-        initializeControlButtons(v);
+        initializeAdditionalControlPanel(v);
+        initializeMainControlPanel(v);
         initializeTrackInfoViews(v);
         return v;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        IntentFilter actionFilter = new IntentFilter();
-        actionFilter.addAction(MediaPlaybackService.META_CHANGED);
-        getActivity().registerReceiver(mStatusListener, actionFilter);
-        long nextRefreshDelay = refreshSeekBarAndCurrentTime();
-        queueNextRefresh(nextRefreshDelay);
+    private void initializeAdditionalControlPanel(View layout) {
+        RepeatingImageButton prevAdditionalButton =
+                (RepeatingImageButton) layout.findViewById(R.id.prev_additional);
+        prevAdditionalButton.setOnClickListener(mPrevListener);
+        prevAdditionalButton.setRepeatListener(mRewindListener);
+
+        RepeatingImageButton nextAdditionalButton =
+                (RepeatingImageButton) layout.findViewById(R.id.next_additional);
+        nextAdditionalButton.setOnClickListener(mNextListener);
+        nextAdditionalButton.setRepeatListener(mForwardListener);
+
+        mPlayPauseAdditionalButton = (ImageButton) layout.findViewById(R.id.pause_additional);
+        mPlayPauseAdditionalButton.setOnClickListener(mPlayPauseListener);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().unregisterReceiver(mStatusListener);
-        mHandler.removeMessages(REFRESH);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mFragmentServiceMediator.unbindFromService(this);
-        mHandler.removeCallbacksAndMessages(null); //absolutely necessary to avoid leaks
-    }
-
-    private void initializeControlButtons(View layout) {
-        RepeatingImageButton prevButtonCollapseable =
-                (RepeatingImageButton) layout.findViewById(R.id.prev_collapseable);
-        prevButtonCollapseable.setOnClickListener(mPrevListener);
-        prevButtonCollapseable.setRepeatListener(mRewindListener);
-
-        RepeatingImageButton nextButtonCollapseable =
-                (RepeatingImageButton) layout.findViewById(R.id.next_collapseable);
-        nextButtonCollapseable.setOnClickListener(mNextListener);
-        nextButtonCollapseable.setRepeatListener(mForwardListener);
-
+    private void initializeMainControlPanel(View layout) {
         RepeatingImageButton prevButton =
                 (RepeatingImageButton) layout.findViewById(R.id.prev);
         prevButton.setOnClickListener(mPrevListener);
@@ -114,6 +104,12 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
                 (RepeatingImageButton) layout.findViewById(R.id.next);
         nextButton.setOnClickListener(mNextListener);
         nextButton.setRepeatListener(mForwardListener);
+
+        mPlayPauseButton = (ImageButton) layout.findViewById(R.id.pause);
+        mPlayPauseButton.setOnClickListener(mPlayPauseListener);
+
+        mRepeatButton = (ImageButton) layout.findViewById(R.id.repeat);
+        mRepeatButton.setOnClickListener(mRepeatListener);
     }
 
     private void initializeTrackInfoViews(View layout) {
@@ -122,6 +118,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
         mSeekBar = (SeekBar) layout.findViewById(R.id.seek_bar);
         mSeekBar.setMax(SEEK_BAR_MAX);
+        mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
         mCurrentTime = (TextView) layout.findViewById(R.id.current_time);
         mTotalTime = (TextView) layout.findViewById(R.id.total_time);
@@ -139,13 +136,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         }
     };
 
-    private View.OnClickListener mNextListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            mFragmentServiceMediator.next();
-        }
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     private RepeatingImageButton.RepeatListener mRewindListener =
             new RepeatingImageButton.RepeatListener() {
                 public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
@@ -153,21 +143,12 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
                 }
             };
 
-    private RepeatingImageButton.RepeatListener mForwardListener =
-            new RepeatingImageButton.RepeatListener() {
-                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
-                    scanForward(repeatCount, howLongWasPressed);
-                }
-            };
-//
-    //TODO:
     private void scanBackward(int repeatCount, long howLongWasPressed) {
         if (repeatCount == 0) {
             mStartSeekPos = mFragmentServiceMediator.getPlayingPosition();
         } else {
-            long seekLeapTime = getSeekLeapTime(howLongWasPressed);
+            long seekLeapTime = getSeekLeapDelta(howLongWasPressed);
             long newPosition = mStartSeekPos - seekLeapTime;
-
             if (newPosition <= 0) {
                 // move to previous track
                 mFragmentServiceMediator.prev();
@@ -178,52 +159,109 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         }
     }
 
-    private long getSeekLeapTime(long howLongWasPressed) {
+    private long getSeekLeapDelta(long howLongWasPressed) {
         if (howLongWasPressed < 5000) {
             // seek at 10x speed for the first 5 seconds
             return (howLongWasPressed * 10);
         } else {
             // seek at 40x after that
-            //return 50000 + (howLongWasPressed - 5000) * 40;
-            return (50000 + (howLongWasPressed - 5000) * 40);
+            return (50000 /*5000 millis in 10x speed*/
+                    + (howLongWasPressed - 5000) * 40);
         }
     }
 
+    private View.OnClickListener mNextListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            mFragmentServiceMediator.next();
+        }
+    };
+
+    private RepeatingImageButton.RepeatListener mForwardListener =
+            new RepeatingImageButton.RepeatListener() {
+                public void onRepeat(View v, long howLongWasPressed, int repeatCount) {
+                    scanForward(repeatCount, howLongWasPressed);
+                }
+            };
+
     private void scanForward(int repeatCount, long howLongWasPressed) {
-
-        Log.d(TAG, "SCAN_FORWARD");
-        Log.d(TAG, "repeatCount: " + repeatCount);
-        Log.d(TAG, "howlongWasPressed " + TimeUtils.makeTimeString(getActivity(), howLongWasPressed / 1000));
-        Log.d(TAG, "mStartSeekPos " + TimeUtils.makeTimeString(getActivity(), mStartSeekPos / 1000));
-
         if (repeatCount == 0) {
             mStartSeekPos = mFragmentServiceMediator.getPlayingPosition();
         } else {
-            long seekLeapTime = getSeekLeapTime(howLongWasPressed);
-
-            Log.d(TAG, "seekLeapTime: " + TimeUtils.makeTimeString(getActivity(), seekLeapTime / 1000));
-
+            long seekLeapTime = getSeekLeapDelta(howLongWasPressed);
             long newPosition = mStartSeekPos + seekLeapTime;
-
-            Log.d(TAG, "newPostion: " + TimeUtils.makeTimeString(getActivity(), newPosition / 1000));
-
             long duration = mFragmentServiceMediator.getTrackDuration();
-
-            Log.d(TAG, "duration: " + TimeUtils.makeTimeString(getActivity(), duration / 1000));
-
             if (newPosition >= duration) {
-                Log.e(TAG, "------------------------------------------");
                 // move to next track
                 mFragmentServiceMediator.next();
                 newPosition -= duration;
                 mStartSeekPos -= duration; // is OK to go negative
             }
-
             mFragmentServiceMediator.seek(newPosition);
             refreshSeekBarAndCurrentTime();
         }
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private View.OnClickListener mPlayPauseListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            playPause();
+            setPlayPaseButtonsImage();
+        }
+    };
+
+    private void playPause() {
+        if(mFragmentServiceMediator.isPlaying()) {
+            mFragmentServiceMediator.pause();
+        } else {
+            mFragmentServiceMediator.play();
+        }
+    }
+
+    private void setPlayPaseButtonsImage() {
+        if(mFragmentServiceMediator.isPlaying()) {
+            mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+            View mAdditionalControlPanel = (View) mPlayPauseAdditionalButton.getParent();
+            //if(mAdditionalControlPanel.getVisibility() != View.GONE) {
+                mPlayPauseAdditionalButton.setImageResource(android.R.drawable.ic_media_pause);
+            //}
+        } else {
+            mPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+            View mAdditionalControlPanel = (View) mPlayPauseAdditionalButton.getParent();
+            //if(mAdditionalControlPanel.getVisibility() != View.GONE) {
+                mPlayPauseAdditionalButton.setImageResource(android.R.drawable.ic_media_play);
+            //}
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter actionFilter = new IntentFilter();
+        actionFilter.addAction(MediaPlaybackService.META_CHANGED);
+        actionFilter.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
+        getActivity().registerReceiver(mStatusListener, actionFilter);
+        long nextRefreshDelay = refreshSeekBarAndCurrentTime();
+        queueNextRefresh(nextRefreshDelay);
+        setPlayPaseButtonsImage();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mStatusListener);
+        mHandler.removeMessages(REFRESH);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "-->OnDestroy()");
+
+        mFragmentServiceMediator.unbindFromService(getActivity(), this);
+        mHandler.removeCallbacksAndMessages(null); //absolutely necessary to avoid leaks
+    }
+
     private void refreshTrackInfoAndTotalTime() {
         String trackName = mFragmentServiceMediator.getTrackName();
         String artistName = mFragmentServiceMediator.getArtistName();
@@ -283,6 +321,68 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         mHandler.sendMessageDelayed(handlerMessage, refreshDelay);
     }
 
+    @Override
+    public void ServiceConnected() {
+        refreshTrackInfoAndTotalTime();
+        setPlayPaseButtonsImage();
+    }
+
+    @Override
+    public void ServiceDisconnected() {
+        refreshViewsOnError();
+        setPlayPaseButtonsImage();
+    }
+
+    private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener
+            = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if(fromUser) {
+                long duration = mFragmentServiceMediator.getTrackDuration();
+                if(duration > 0) {
+                    long newSeekPostion = duration * progress / SEEK_BAR_MAX;
+                    mFragmentServiceMediator.seek(newSeekPostion);
+                    refreshSeekBarAndCurrentTime();
+                } else {
+                    //TODO: I think better will be finish app and let user restart it
+                }
+            }
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    };
+
+    private View.OnClickListener mRepeatListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            setRepeatMode();
+        }
+    };
+
+    private void setRepeatMode() {
+        int mode = mFragmentServiceMediator.getRepeatMode();
+        //if(mode != -1)
+        if (mode == Playlist.REPEAT_NONE) {
+            mFragmentServiceMediator.setRepeatMode(Playlist.REPEAT_ALL);
+            Toast.makeText(getActivity(), R.string.repeat_all_notification, Toast.LENGTH_SHORT).show();
+        } else if (mode == Playlist.REPEAT_ALL) {
+            mFragmentServiceMediator.setRepeatMode(Playlist.REPEAT_CURRENT);
+//            if (mService.getShuffleMode() != Playlist.SHUFFLE_NONE) {
+//                mService.setShuffleMode(Playlist.SHUFFLE_NONE);
+//                setShuffleButtonImage();
+//            }
+            Toast.makeText(getActivity(), R.string.repeat_current_notification, Toast.LENGTH_SHORT).show();
+        } else {
+            mFragmentServiceMediator.setRepeatMode(Playlist.REPEAT_NONE);
+            Toast.makeText(getActivity(), R.string.repeat_off_notification, Toast.LENGTH_SHORT).show();
+        }
+        setRepeatButtonImage();
+    }
+
+    private void setRepeatButtonImage(){}
+
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -302,18 +402,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
             if (action.equals(MediaPlaybackService.META_CHANGED)) {
                 refreshTrackInfoAndTotalTime();
             } else if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
-//                setPauseButtonImage();
+                setPlayPaseButtonsImage();
             }
         }
     };
-
-    @Override
-    public void ServiceConnected() {
-        refreshTrackInfoAndTotalTime();
-    }
-
-    @Override
-    public void ServiceDisconnected() {
-        refreshViewsOnError();
-    }
 }

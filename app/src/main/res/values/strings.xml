@@ -34,4 +34,12 @@
     <string name="unknown_album">Unknown album</string>
     <string name="unknown_artist">Unknown artist</string>
     <string name="undefined_unknown">Unknown</string>
+
+    <!--PlaybackFragment-->
+    <!-- Toast when turning repeat off -->
+    <string name="repeat_off_notification">Repeat is off</string>
+    <!-- Toast when turning single repeat on -->
+    <string name="repeat_current_notification">Repeating current song</string>
+    <!-- Toast when turning repeat all on -->
+    <string name="repeat_all_notification">Repeating all songs</string>
 </resources>
