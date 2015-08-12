@@ -35,6 +35,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 public class MediaPlaybackServiceWrapper
         implements ServiceConnection, ServiceInterface{
 
+    public static int ERROR_RETURN_VALUE = -1;
+
     private final String TAG = getClass().getSimpleName();
 
     private static MediaPlaybackServiceWrapper instance = null;
@@ -187,7 +189,7 @@ public class MediaPlaybackServiceWrapper
                 Log.d(TAG, e.getMessage());
             }
         }
-        return -1;
+        return ERROR_RETURN_VALUE;
     }
 
     public long getPlayingPosition() {
@@ -198,7 +200,7 @@ public class MediaPlaybackServiceWrapper
                 Log.d(TAG, e.getMessage());
             }
         }
-        return -1;
+        return ERROR_RETURN_VALUE;
     }
 
     public String getArtistName() {
@@ -243,9 +245,31 @@ public class MediaPlaybackServiceWrapper
                 Log.d(TAG, e.getMessage());
             }
         }
-        return -1;
+        return ERROR_RETURN_VALUE;
     }
 
+    @Override
+    public void setShuffleMode(int shuffleMode) {
+        if(mService != null) {
+            try {
+                mService.setShuffleMode(shuffleMode);
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public int getShuffleMode() {
+        if(mService != null) {
+            try {
+                return mService.getShuffleMode();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+        return ERROR_RETURN_VALUE;
+    }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {

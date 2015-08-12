@@ -23,7 +23,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class NavigationActivity extends AppCompatActivity
-        implements OnFragmentReplaceListener, ServiceInterface {
+        implements OnFragmentReplaceListener
+        //ServiceInterface
+    {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -156,83 +158,6 @@ public class NavigationActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, fragment, fragmentTag)
                 .commit();
         mCurrentBrowserFragment = fragment;
-    }
-
-    @Override
-    public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {
-        mServiceWrapper.bindToService(context, connectionObserver);
-    }
-
-    @Override
-    public void unbindFromService(Context context, ServiceConnectionObserver connectionObserver) {
-        mServiceWrapper.unbindFromService(context, connectionObserver);
-    }
-
-    //TODO: if service unbind for this context finish app and
-    //let the user restart it
-    @Override
-    public void playAll(Cursor cursor, int position) {
-        mServiceWrapper.playAll(cursor, position);
-    }
-
-    @Override
-    public long getPlayingPosition() {
-         return mServiceWrapper.getPlayingPosition();
-    }
-
-    @Override
-    public void prev() {
-        mServiceWrapper.prev();
-    }
-
-    @Override
-    public void seek(long position) {
-        mServiceWrapper.seek(position);
-    }
-
-    @Override
-    public void next() {
-        mServiceWrapper.next();
-    }
-
-    @Override
-    public void play() {
-        mServiceWrapper.play();
-    }
-
-    @Override
-    public void pause() {
-        mServiceWrapper.pause();
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return mServiceWrapper.isPlaying();
-    }
-
-    @Override
-    public String getTrackName() {
-        return mServiceWrapper.getTrackName();
-    }
-
-    @Override
-    public String getArtistName() {
-        return mServiceWrapper.getArtistName();
-    }
-
-    @Override
-    public long getTrackDuration() {
-        return mServiceWrapper.getTrackDuration();
-    }
-
-    @Override
-    public void setRepeatMode(int repeatMode) {
-        mServiceWrapper.setRepeatMode(repeatMode);
-    }
-
-    @Override
-    public int getRepeatMode() {
-        return mServiceWrapper.getRepeatMode();
     }
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {

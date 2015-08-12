@@ -31,4 +31,7 @@ public interface ServiceInterface {
 
     public void setRepeatMode(int repeatMode);
     public int getRepeatMode();
+
+    public void setShuffleMode(int shuffleMode);
+    public int getShuffleMode();
 }

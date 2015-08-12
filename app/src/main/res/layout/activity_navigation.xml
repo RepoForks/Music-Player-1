@@ -37,7 +37,7 @@
 
         <!--SLIDING VIEW-->
         <fragment
-            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackFragment"
+            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment"
             android:id="@+id/playback_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
