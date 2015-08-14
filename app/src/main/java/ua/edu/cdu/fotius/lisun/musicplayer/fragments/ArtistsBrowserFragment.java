@@ -15,29 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.ArtistSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ArtistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ArtistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "artists_browser_fragment";
-
-    //TODO: Maybe move this to another class
-    public static final String ARTIST_COLUMN_NAME = MediaStore.Audio.Artists.ARTIST;
-    public static final String NUMBER_OF_ALBUMS_COLUMN_NAME = MediaStore.Audio.Artists.NUMBER_OF_ALBUMS;
-    public static final String NUMBER_OF_TRACKS_COLUMN_NAME = MediaStore.Audio.Artists.NUMBER_OF_TRACKS;
-    private static final String ARTIST_ID_COLUMN_NAME = MediaStore.Audio.Artists._ID;
-    public static final String ARTIST_ID_KEY = "artist_id";
-    private final String CURSOR_SORT_ORDER = ARTIST_COLUMN_NAME + " ASC";
-
+    public static final String ARTIST_ID_KEY = "artist_id_key";
     private final int ARTISTS_LOADER = 1;
 
-    private OnFragmentReplaceListener mCallback;
+    private OnFragmentReplaceListener mFragmentReplaceCallback;
     private BaseSimpleCursorAdapter mCursorAdapter;
 
     public ArtistsBrowserFragment() {
@@ -57,15 +45,16 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallback = (OnFragmentReplaceListener) activity;
+        mFragmentReplaceCallback = (OnFragmentReplaceListener) activity;
     }
 
     private BaseSimpleCursorAdapter getAdapter() {
-        String[] from = new String[] { ARTIST_COLUMN_NAME, NUMBER_OF_ALBUMS_COLUMN_NAME,
-                NUMBER_OF_TRACKS_COLUMN_NAME };
-        int[] to = new int[] { R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity };
 
-        return new ArtistSimpleCursorAdapter(getActivity(),
+        String[] from = new String[]{AudioStorage.ArtistBrowser.ARTIST, AudioStorage.ArtistBrowser.ALBUMS_QUANTITY,
+                AudioStorage.ArtistBrowser.TRACKS_QUANTITY};
+        int[] to = new int[]{R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity};
+
+        return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.row_artist_list, from, to);
     }
 
@@ -77,18 +66,15 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        String[] projection = new String[] {
-            ARTIST_ID_COLUMN_NAME,
-            ARTIST_COLUMN_NAME,
-            NUMBER_OF_ALBUMS_COLUMN_NAME,
-            NUMBER_OF_TRACKS_COLUMN_NAME
+        String[] projection = new String[]{
+                AudioStorage.ArtistBrowser.ARTIST_ID,
+                AudioStorage.ArtistBrowser.ARTIST,
+                AudioStorage.ArtistBrowser.ALBUMS_QUANTITY,
+                AudioStorage.ArtistBrowser.TRACKS_QUANTITY
         };
 
-        //Log.d(TAG, "Content Uri: " + MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI);
-
         return new CursorLoader(getActivity(), MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                projection, null, null, CURSOR_SORT_ORDER);
+                projection, null, null, AudioStorage.ArtistBrowser.SORT_ORDER);
     }
 
     @Override
@@ -106,14 +92,15 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Cursor cursor = mCursorAdapter.getCursor();
-        if((cursor != null) && (cursor.moveToPosition(position))) {
-            int idColumnIndex = cursor.getColumnIndexOrThrow(ARTIST_ID_COLUMN_NAME);
+        if ((cursor != null) && (cursor.moveToPosition(position))) {
+            int idColumnIndex =
+                    cursor.getColumnIndexOrThrow(AudioStorage.ArtistBrowser.ARTIST_ID);
             long artistId = cursor.getLong(idColumnIndex);
             Bundle bundle = new Bundle();
             bundle.putLong(ARTIST_ID_KEY, artistId);
             Fragment fragment = new AlbumsBrowserFragment();
             fragment.setArguments(bundle);
-            mCallback.replaceFragment(fragment, AlbumsBrowserFragment.TAG);
+            mFragmentReplaceCallback.replaceFragment(fragment, AlbumsBrowserFragment.TAG);
         }
     }
 }

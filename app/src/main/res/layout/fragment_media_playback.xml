@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center" />
 
-            <TextView
+            <ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView
                 android:id="@+id/artist_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

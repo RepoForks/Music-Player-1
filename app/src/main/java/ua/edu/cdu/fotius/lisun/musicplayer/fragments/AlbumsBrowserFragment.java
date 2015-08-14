@@ -15,37 +15,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.AlbumSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AlbumsBrowserFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final String TAG = "albums_browser_fragment";
 
-    public static final  String ALBUM_ID_KEY = "album_id";
-    public static final String ALBUM_TITLE_COLUMN = MediaStore.Audio.Albums.ALBUM;
-    public static final String ARTIST_NAME_COLUMN = MediaStore.Audio.Albums.ARTIST;
-    private static final String ALBUM_ID_COLUMN = MediaStore.Audio.Albums._ID;
-
+    public static final  String ALBUM_ID_KEY = "album_id_key";
     private final int ALBUMS_LOADER_ID = 1;
 
-    private final String CURSOR_SORT_ORDER = ALBUM_TITLE_COLUMN + " ASC";
-
-    private OnFragmentReplaceListener mCallback;
+    private OnFragmentReplaceListener mReplaceFragmentCallback;
     private BaseSimpleCursorAdapter mCursorAdapter = null;
-    //private View mFragmentLayout;
     private long mArtistId = -1;
 
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallback = (OnFragmentReplaceListener) activity;
+        mReplaceFragmentCallback = (OnFragmentReplaceListener) activity;
     }
 
     @Override
@@ -72,10 +61,10 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     }
 
     private BaseSimpleCursorAdapter getAdapter() {
-        String[] from = new String[] { ALBUM_TITLE_COLUMN, ARTIST_NAME_COLUMN };
+        String[] from = new String[] {AudioStorage.AlbumBrowser.ALBUM, AudioStorage.AlbumBrowser.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
-        return new AlbumSimpleCursorAdapter(getActivity(),
+        return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.grid_item_albums, from, to);
     }
 
@@ -94,9 +83,9 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = new String[] {
-                ALBUM_ID_COLUMN,
-                ALBUM_TITLE_COLUMN,
-                ARTIST_NAME_COLUMN
+                AudioStorage.AlbumBrowser.ALBUM_ID,
+                AudioStorage.AlbumBrowser.ALBUM,
+                AudioStorage.AlbumBrowser.ARTIST
         };
 
         Log.d(TAG, "mArtistId: " + mArtistId);
@@ -109,7 +98,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         return new CursorLoader(getActivity(), MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 projection,
                 (mArtistId == -1) ? null : MediaStore.Audio.Media.ARTIST_ID + " = ?",
-                (mArtistId == -1) ? null : new String[] {Long.toString(mArtistId)}, CURSOR_SORT_ORDER);
+                (mArtistId == -1) ? null : new String[] {Long.toString(mArtistId)}, AudioStorage.AlbumBrowser.SORT_ORDER);
     }
 
     @Override
@@ -129,13 +118,13 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Cursor cursor = mCursorAdapter.getCursor();
             if((cursor != null) && (cursor.moveToPosition(position))) {
-                int idColumnIndex = cursor.getColumnIndexOrThrow(ALBUM_ID_COLUMN);
+                int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.AlbumBrowser.ALBUM_ID);
                 long albumId = cursor.getLong(idColumnIndex);
                 TrackBrowserFragment fragment = new TrackBrowserFragment();
                 Bundle bundle = new Bundle();
                 bundle.putLong(ALBUM_ID_KEY, albumId);
                 fragment.setArguments(bundle);
-                mCallback.replaceFragment(fragment, TrackBrowserFragment.TAG);
+                mReplaceFragmentCallback.replaceFragment(fragment, TrackBrowserFragment.TAG);
             }
         }
     };

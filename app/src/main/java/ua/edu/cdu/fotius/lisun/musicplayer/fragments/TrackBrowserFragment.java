@@ -1,7 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,22 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.TrackSimpleCursorAdapter;
 
 public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver{
 
     public static final String TAG = "track_browser_fragment";
-    public static final String ARTIST_TITLE_COLUMN = MediaStore.Audio.Media.ARTIST;
-    private final String TRACK_TITLE_COLUMN = MediaStore.Audio.Media.TITLE;
-    private final String TRACKS_CURSOR_SORT_ORDER = TRACK_TITLE_COLUMN + " ASC";
     private final int TRACK_LOADER_ID = 1;
 
     private BaseSimpleCursorAdapter mCursorAdapter;
-    //private ServiceInterface mServiceCallbacks;
     private MediaPlaybackServiceWrapper mServiceWrapper;
 
     private long mAlbumId = -1;
@@ -37,16 +31,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     public TrackBrowserFragment() {
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        //mServiceCallbacks = (ServiceInterface) activity;
-    }
-
-    /*Don't bind/unbind in TrackBrowserFragment, because
-        * this fragment restarts every time user choose
-        * another fragment in menu, so music playback will
-        * stopped*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +60,11 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     }
 
     private BaseSimpleCursorAdapter getCursorAdapter() {
-        String[] from = new String[] { TRACK_TITLE_COLUMN, ARTIST_TITLE_COLUMN };
+        String[] from = new String[] { AudioStorage.TrackBrowser.TRACK,
+                AudioStorage.TrackBrowser.ARTIST };
         int[] to = new int[] { R.id.track_title, R.id.artist_name};
 
-        return new TrackSimpleCursorAdapter(getActivity(),
+        return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.row_tracks_list, from, to);
     }
 
@@ -103,15 +88,15 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
         String[] projection = new String[] {
-                MediaStore.Audio.Media._ID,
-                TRACK_TITLE_COLUMN,
-                ARTIST_TITLE_COLUMN
+                AudioStorage.TrackBrowser.TRACK_ID,
+                AudioStorage.TrackBrowser.TRACK,
+                AudioStorage.TrackBrowser.ARTIST
         };
         return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 (mAlbumId == -1) ? null : MediaStore.Audio.Media.ALBUM_ID + " = ?",
                 (mAlbumId == -1) ? null : new String[]{Long.toString(mAlbumId)},
-                TRACKS_CURSOR_SORT_ORDER);
+                AudioStorage.TrackBrowser.SORT_ORDER);
     }
 
     @Override

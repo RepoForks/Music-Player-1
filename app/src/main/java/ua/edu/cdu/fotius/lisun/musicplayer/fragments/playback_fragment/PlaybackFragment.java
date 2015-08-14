@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -31,7 +32,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private final int REFRESH = 1;
 
     private TextView mTrackName;
-    private TextView mArtistName;
+    private BaseNameTextView mArtistName;
     private SeekBar mSeekBar;
     private TextView mCurrentTime;
     private TextView mTotalTime;
@@ -116,7 +117,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
         if ((trackName != null) && (artistName != null) && (duration > 0)) {
             mTrackName.setText(trackName);
-            mArtistName.setText(artistName);
+            mArtistName.setName(artistName);
             mTotalTime.setText(TimeUtils.makeTimeString(getActivity(),
                     duration / ViewsFactory.SEEK_BAR_MAX));
         } else {
@@ -126,7 +127,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
     private void refreshViewsOnError() {
         mTrackName.setText("");
-        mArtistName.setText("");
+        mArtistName.setName("");
         mTotalTime.setText("--:--");
         mSeekBar.setProgress(0);
         mCurrentTime.setText("--:--");

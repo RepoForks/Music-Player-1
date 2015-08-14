@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 /**
@@ -22,7 +24,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
  * string({@link ua.edu.cdu.fotius.lisun.musicplayer.fragments
  * .BaseSimpleCursorAdapter#getUnknownText(android.content.Context, android.database.Cursor, int)})
  */
-public abstract class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
+public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
 
     public BaseSimpleCursorAdapter(Context context, int layout, String[] from, int[] to) {
         super(context, layout, /*cursor*/null, from, to, /*don't register content observer*/0);
@@ -43,8 +45,6 @@ public abstract class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
             String text = cursor.getString(from[i]);
             if (text == null) {
                 text = "";
-            } else if(text.equals(MediaStore.UNKNOWN_STRING)) {
-                text = getUnknownText(context, cursor, from[i]);
             }
 
             if (v instanceof TextView) {
@@ -58,6 +58,12 @@ public abstract class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
         }
     }
 
-    public abstract String getUnknownText(final Context context,
-                                          final Cursor cursor, final int columnIndex);
+    @Override
+    public void setViewText(TextView v, String text) {
+        if(v instanceof BaseNameTextView) {
+            ((BaseNameTextView)v).setName(text);
+        } else {
+            v.setText(text);
+        }
+    }
 }

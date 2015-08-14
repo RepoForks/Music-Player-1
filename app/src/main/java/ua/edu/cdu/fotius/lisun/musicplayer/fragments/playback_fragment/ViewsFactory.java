@@ -5,6 +5,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class ViewsFactory {
@@ -100,8 +102,8 @@ public class ViewsFactory {
         return trackName;
     }
 
-    public TextView initializeArtistNameView() {
-        TextView artistName = (TextView) mLayout.findViewById(R.id.artist_name);
+    public BaseNameTextView initializeArtistNameView() {
+        BaseNameTextView artistName = (ArtistNameTextView) mLayout.findViewById(R.id.artist_name);
         return artistName;
     }
 
