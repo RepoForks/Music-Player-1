@@ -6,23 +6,17 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.ViewDragHelper;
 
 public class OnPlayPauseClickedListener implements View.OnClickListener{
 
-    public interface Callbacks {
-        public void play();
-        public void pause();
-        public boolean isPlaying();
-        public void setPlayPaseButtonsImage();
-    }
 
-    private Callbacks mCallbacks;
+    private ListenerCallbacks mCallbacks;
 
-    public OnPlayPauseClickedListener(Callbacks callbacks) {
+    public OnPlayPauseClickedListener(ListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
 
     @Override
     public void onClick(View v) {
         playPause();
-        mCallbacks.setPlayPaseButtonsImage();
+        mCallbacks.setPlayPauseButtonsImageCallback();
     }
 
     private void playPause() {

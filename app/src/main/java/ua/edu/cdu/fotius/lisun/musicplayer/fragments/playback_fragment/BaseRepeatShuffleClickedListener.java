@@ -9,20 +9,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 public abstract class BaseRepeatShuffleClickedListener implements View.OnClickListener{
 
-    public interface Callbacks {
-        public void setRepeatMode(int repeatMode);
-        public int getRepeatMode();
+    protected ListenerCallbacks mCallbacks;
 
-        public void setShuffleMode(int shuffleMode);
-        public int getShuffleMode();
-
-        public void setRepeatButtonImage();
-        public void setShuffleButtonImage();
-    }
-
-    protected Callbacks mCallbacks;
-
-    public BaseRepeatShuffleClickedListener(Callbacks callbacks) {
+    public BaseRepeatShuffleClickedListener(ListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
 

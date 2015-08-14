@@ -2,23 +2,12 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.RepeatingImageButton;
+public abstract class BaseRewindFastForwardListener implements RepeatingButton.RepeatListener{
 
-public abstract class BaseRewindFastForwardListener implements RepeatingImageButton.RepeatListener{
+    protected long mStartSeekPos = 0;
+    protected ListenerCallbacks mCallbacks;
 
-    interface RewindForwardListenerCallbacks {
-        public long getPlayingPosition();
-        public long getTrackDuration();
-        public void goToNextTrack();
-        public void goToPreviousTrack();
-        public void seek(long position);
-        public long refreshSeekBarAndCurrentTime();
-    }
-
-    private long mStartSeekPos = 0;
-    private RewindForwardListenerCallbacks mCallbacks;
-
-    public BaseRewindFastForwardListener(RewindForwardListenerCallbacks callbacks) {
+    public BaseRewindFastForwardListener(ListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
 
@@ -28,38 +17,6 @@ public abstract class BaseRewindFastForwardListener implements RepeatingImageBut
     }
 
     public abstract void scan(long howLongWasPressed, int repeatCount);
-
-    public void setStartSeekPos() {
-        this.mStartSeekPos = mCallbacks.getPlayingPosition();
-    }
-
-    public void setStartSeekPos(long mStartSeekPos) {
-        this.mStartSeekPos = mStartSeekPos;
-    }
-
-    protected long getTrackDuration() {
-        return mCallbacks.getTrackDuration();
-    }
-
-    public long getStartSeekPos() {
-        return mStartSeekPos;
-    }
-
-    public void goToNextTrack() {
-        mCallbacks.goToNextTrack();
-    }
-
-    protected void goToPreviousTrack() {
-        mCallbacks.goToPreviousTrack();
-    }
-
-    protected void seek(long position) {
-        mCallbacks.seek(position);
-    }
-
-    protected void refreshDependentViews() {
-        mCallbacks.refreshSeekBarAndCurrentTime();
-    }
 
     protected long getSeekLeapDelta(long howLongWasPressed) {
         if (howLongWasPressed < 5000) {

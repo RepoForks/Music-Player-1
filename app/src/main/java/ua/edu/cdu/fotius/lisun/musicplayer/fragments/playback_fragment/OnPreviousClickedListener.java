@@ -4,23 +4,16 @@ import android.view.View;
 
 public class OnPreviousClickedListener implements View.OnClickListener{
 
-    interface OnPreviousClickedListenerCallbacks {
-        public void goToPreviousTrack();
-        public long getPlayingPosition();
-        public void seek(long position);
-        public void play();
-    }
+    private ListenerCallbacks mCallbacks;
 
-    OnPreviousClickedListenerCallbacks mCallbacks;
-
-    public OnPreviousClickedListener(OnPreviousClickedListenerCallbacks callbacks) {
+    public OnPreviousClickedListener(ListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
 
     @Override
     public void onClick(View v) {
-        long changeTrackThresholdInMillis = 2000;
-        if (mCallbacks.getPlayingPosition() < changeTrackThresholdInMillis) {
+        long GO_TO_PREV_TRACK_THRESHOLD_IN_MILLIS = 2000;
+        if (mCallbacks.getPlayingPosition() < GO_TO_PREV_TRACK_THRESHOLD_IN_MILLIS) {
             mCallbacks.goToPreviousTrack();
         } else {
             mCallbacks.seek(0);

@@ -33,7 +33,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 // Запасным и не очень желательным вариантом есть инициализация данного объекта в ApplicationContext.
 // Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
 public class MediaPlaybackServiceWrapper
-        implements ServiceConnection, ServiceInterface{
+        implements ServiceConnection {
 
     public static int ERROR_RETURN_VALUE = -1;
 
@@ -157,7 +157,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    @Override
     public void pause() {
         Log.d(TAG, "--> pause()");
         if(mService != null) {
@@ -169,7 +168,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    @Override
     public boolean isPlaying() {
         if(mService != null) {
             try {
@@ -225,7 +223,6 @@ public class MediaPlaybackServiceWrapper
         return null;
     }
 
-    @Override
     public void setRepeatMode(int repeatMode) {
         if(mService != null) {
             try {
@@ -236,7 +233,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    @Override
     public int getRepeatMode() {
         if(mService != null) {
             try {
@@ -248,7 +244,6 @@ public class MediaPlaybackServiceWrapper
         return ERROR_RETURN_VALUE;
     }
 
-    @Override
     public void setShuffleMode(int shuffleMode) {
         if(mService != null) {
             try {
@@ -259,7 +254,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    @Override
     public int getShuffleMode() {
         if(mService != null) {
             try {
@@ -271,7 +265,6 @@ public class MediaPlaybackServiceWrapper
         return ERROR_RETURN_VALUE;
     }
 
-    @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         mService = IMediaPlaybackService.Stub.asInterface(service);
         /* Notify all observers.
@@ -284,7 +277,6 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    @Override
     public void onServiceDisconnected(ComponentName name) {
         for(ServiceConnectionObserver observer : mConnectionObservers) {
             observer.ServiceDisconnected();

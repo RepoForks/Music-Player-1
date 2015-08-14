@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceInterface;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.adapters.BaseSimpleCursorAdapter;
@@ -86,7 +85,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //mServiceCallbacks.playAll(mCursorAdapter.getCursor(), position);
         mServiceWrapper.playAll(mCursorAdapter.getCursor(), position);
     }
 
@@ -99,7 +97,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mServiceCallbacks.unbindFromService(getActivity(), this);
         mServiceWrapper.unbindFromService(getActivity(), this);
     }
 

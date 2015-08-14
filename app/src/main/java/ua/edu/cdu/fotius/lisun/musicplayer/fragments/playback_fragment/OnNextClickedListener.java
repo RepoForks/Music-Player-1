@@ -4,13 +4,9 @@ import android.view.View;
 
 public class OnNextClickedListener implements View.OnClickListener {
 
-    interface OnNextClickedListenerCallbacks {
-        public void goToNextTrack();
-    }
+    private ListenerCallbacks mCallbacks;
 
-    OnNextClickedListenerCallbacks mCallbacks;
-
-    public OnNextClickedListener(OnNextClickedListenerCallbacks callbacks) {
+    public OnNextClickedListener(ListenerCallbacks callbacks) {
         mCallbacks = callbacks;
     }
 

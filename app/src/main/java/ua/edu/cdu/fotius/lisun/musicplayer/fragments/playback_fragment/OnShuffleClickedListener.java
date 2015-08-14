@@ -10,16 +10,16 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 public class OnShuffleClickedListener extends BaseRepeatShuffleClickedListener {
 
-    public OnShuffleClickedListener(Callbacks callbacks) {
+    public OnShuffleClickedListener(ListenerCallbacks callbacks) {
         super(callbacks);
     }
 
     @Override
     public void setMode(View clickedView) {
-        setShuffleMode();
+        setShuffleMode(clickedView);
     }
 
-    private void setShuffleMode() {
+    private void setShuffleMode(View clickedView) {
         int shuffle = mCallbacks.getShuffleMode();
         if (shuffle != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             /*As we entered this method we clicked shuffle button for specific album
@@ -29,13 +29,13 @@ public class OnShuffleClickedListener extends BaseRepeatShuffleClickedListener {
                 mCallbacks.setShuffleMode(Playlist.SHUFFLE_NORMAL);
                 if (mCallbacks.getRepeatMode() == Playlist.REPEAT_CURRENT) {
                     mCallbacks.setRepeatMode(Playlist.REPEAT_ALL);
-                    mCallbacks.setRepeatButtonImage();
+                    mCallbacks.setRepeatButtonImageCallback();
                 }
             } else if (shuffle == Playlist.SHUFFLE_NORMAL ||
                     shuffle == Playlist.SHUFFLE_AUTO) {
                 mCallbacks.setShuffleMode(Playlist.SHUFFLE_NONE);
             }
-            mCallbacks.setShuffleButtonImage();
+            ((ShuffleButton)clickedView).setImage(mCallbacks.getShuffleMode());
         }
     }
 }

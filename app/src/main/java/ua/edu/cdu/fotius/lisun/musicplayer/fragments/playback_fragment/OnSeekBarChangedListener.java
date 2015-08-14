@@ -4,16 +4,10 @@ import android.widget.SeekBar;
 
 public class OnSeekBarChangedListener implements SeekBar.OnSeekBarChangeListener{
 
-    public interface OnSeekBarChangedCallbacks {
-        public long getTrackDuration();
-        public void seek(long position);
-        public long refreshSeekBarAndCurrentTime();
-    }
-
-    private OnSeekBarChangedCallbacks mCallbacks;
+    private ListenerCallbacks mCallbacks;
     private int mSeekBarMaxValue = 1000;
 
-    public OnSeekBarChangedListener(OnSeekBarChangedCallbacks callbacks, int seekBarMaxValue) {
+    public OnSeekBarChangedListener(ListenerCallbacks callbacks, int seekBarMaxValue) {
         mCallbacks = callbacks;
         mSeekBarMaxValue = seekBarMaxValue;
     }
@@ -25,7 +19,7 @@ public class OnSeekBarChangedListener implements SeekBar.OnSeekBarChangeListener
             if(duration > 0) {
                 long newSeekPostion = duration * progress / mSeekBarMaxValue;
                 mCallbacks.seek(newSeekPostion);
-                mCallbacks.refreshSeekBarAndCurrentTime();
+                mCallbacks.refreshSeekBarAndCurrentTimeCallback();
             } else {
                 //TODO: I think better will be finish app and let user restart it
             }

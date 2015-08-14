@@ -10,16 +10,16 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 public class OnRepeatClickedListener extends BaseRepeatShuffleClickedListener{
 
-    public OnRepeatClickedListener(Callbacks callbacks) {
+    public OnRepeatClickedListener(ListenerCallbacks callbacks) {
         super(callbacks);
     }
 
     @Override
     public void setMode(View clickedView) {
-        setRepeatMode();
+        setRepeatMode(clickedView);
     }
 
-    private void setRepeatMode() {
+    private void setRepeatMode(View clickedView) {
         int mode = mCallbacks.getRepeatMode();
         if (mode != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             if (mode == Playlist.REPEAT_NONE) {
@@ -28,12 +28,12 @@ public class OnRepeatClickedListener extends BaseRepeatShuffleClickedListener{
                 mCallbacks.setRepeatMode(Playlist.REPEAT_CURRENT);
                 if (mCallbacks.getShuffleMode() != Playlist.SHUFFLE_NONE) {
                     mCallbacks.setShuffleMode(Playlist.SHUFFLE_NONE);
-                    mCallbacks.setShuffleButtonImage();
+                    mCallbacks.setShuffleButtonImageCallback();
                 }
             } else {
                 mCallbacks.setRepeatMode(Playlist.REPEAT_NONE);
             }
-            mCallbacks.setRepeatButtonImage();
+            ((RepeatButton)clickedView).setImage(mCallbacks.getRepeatMode());
         }
     }
 }
