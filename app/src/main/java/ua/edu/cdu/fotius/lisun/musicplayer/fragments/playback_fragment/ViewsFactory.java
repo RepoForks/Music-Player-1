@@ -5,9 +5,13 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.BaseNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 
 public class ViewsFactory {
 
@@ -34,8 +38,8 @@ public class ViewsFactory {
     }
 
     public ImageButton initializePrevButton() {
-        RepeatingButton prevButton =
-                (RepeatingButton) mLayout.findViewById(R.id.prev);
+        LoopingImageButton prevButton =
+                (LoopingImageButton) mLayout.findViewById(R.id.prev);
         prevButton.setOnClickListener(mPrevListener);
         prevButton.setRepeatListener(mRewindListener);
 
@@ -43,8 +47,8 @@ public class ViewsFactory {
     }
 
     public ImageButton initializePrevAdditionalButton() {
-        RepeatingButton prevAdditionalButton =
-                (RepeatingButton) mLayout.findViewById(R.id.prev_additional);
+        LoopingImageButton prevAdditionalButton =
+                (LoopingImageButton) mLayout.findViewById(R.id.prev_additional);
         prevAdditionalButton.setOnClickListener(mPrevListener);
         prevAdditionalButton.setRepeatListener(mRewindListener);
 
@@ -52,8 +56,8 @@ public class ViewsFactory {
     }
 
     public ImageButton initializeNextButton() {
-        RepeatingButton nextButton =
-                (RepeatingButton) mLayout.findViewById(R.id.next);
+        LoopingImageButton nextButton =
+                (LoopingImageButton) mLayout.findViewById(R.id.next);
         nextButton.setOnClickListener(mNextListener);
         nextButton.setRepeatListener(mForwardListener);
 
@@ -61,8 +65,8 @@ public class ViewsFactory {
     }
 
     public ImageButton initializeNextAdditionalButton() {
-        RepeatingButton nextAdditionalButton =
-                (RepeatingButton) mLayout.findViewById(R.id.next_additional);
+        LoopingImageButton nextAdditionalButton =
+                (LoopingImageButton) mLayout.findViewById(R.id.next_additional);
         nextAdditionalButton.setOnClickListener(mNextListener);
         nextAdditionalButton.setRepeatListener(mForwardListener);
 

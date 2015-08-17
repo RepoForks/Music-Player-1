@@ -1,11 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 public class OnRepeatClickedListener extends BaseRepeatShuffleClickedListener{

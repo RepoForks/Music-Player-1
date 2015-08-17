@@ -21,7 +21,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
 public class ArtistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String TAG = "artists_browser_fragment";
+    public static final String TAG = "artists";
     public static final String ARTIST_ID_KEY = "artist_id_key";
     private final int ARTISTS_LOADER = 1;
 

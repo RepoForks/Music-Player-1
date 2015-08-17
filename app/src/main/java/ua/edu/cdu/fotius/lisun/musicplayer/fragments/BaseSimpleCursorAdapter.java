@@ -2,21 +2,12 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.nfc.Tag;
-import android.provider.MediaStore;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.internal.widget.ActivityChooserView;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.BaseNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 
 /**
  *An easy adapter to map columns from a cursor to TextViews or ImageViews defined in an XML file.

@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.content.Context;
 import android.util.AttributeSet;

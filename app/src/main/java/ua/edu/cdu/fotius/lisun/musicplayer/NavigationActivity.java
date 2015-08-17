@@ -1,7 +1,5 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,7 +15,7 @@ import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.MyPlaylistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
@@ -97,8 +95,8 @@ public class NavigationActivity extends AppCompatActivity
                                         TrackBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_my_playlists:
-                                replaceFragment(new MyPlaylistsBrowserFragment(),
-                                        MyPlaylistsBrowserFragment.TAG);
+                                replaceFragment(new UsersPlaylistsBrowserFragment(),
+                                        UsersPlaylistsBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_settings:
                                 //TODO: initialize selectedFragment

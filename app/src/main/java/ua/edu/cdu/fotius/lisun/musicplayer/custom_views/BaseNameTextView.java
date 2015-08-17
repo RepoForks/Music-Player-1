@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.content.Context;
 import android.provider.MediaStore;

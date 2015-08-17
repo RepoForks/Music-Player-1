@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center" />
 
-            <ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView
+            <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
                 android:id="@+id/artist_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,15 +35,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.RepeatingButton
+            <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
                 android:id="@+id/prev_additional"
                 style="@android:style/MediaButton.Previous" />
 
-            <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlayButton
+            <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton
                 android:id="@+id/play_additional"
                 style="@android:style/MediaButton.Play" />
 
-            <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.RepeatingButton
+            <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
                 android:id="@+id/next_additional"
                 style="@android:style/MediaButton.Next" />
         </LinearLayout>

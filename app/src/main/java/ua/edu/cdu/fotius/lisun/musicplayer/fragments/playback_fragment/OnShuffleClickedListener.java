@@ -1,11 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
-import android.os.RemoteException;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 public class OnShuffleClickedListener extends BaseRepeatShuffleClickedListener {

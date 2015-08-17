@@ -40,25 +40,25 @@
         android:orientation="horizontal"
         android:gravity="center" >
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.ShuffleButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton
             android:id="@+id/shuffle"
             android:layout_width="71dp"
             android:layout_height="52dp"
             android:layout_gravity="center_vertical" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.RepeatingButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
             android:id="@+id/prev"
             style="@android:style/MediaButton.Previous" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlayButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton
             android:id="@+id/play"
             style="@android:style/MediaButton.Play" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.RepeatingButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
             android:id="@+id/next"
             style="@android:style/MediaButton.Next" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.RepeatButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton
             android:id="@+id/repeat"
             android:layout_width="71dp"
             android:layout_height="52dp"

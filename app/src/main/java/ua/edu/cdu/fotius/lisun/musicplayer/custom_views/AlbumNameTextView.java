@@ -1,9 +1,7 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.content.Context;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 

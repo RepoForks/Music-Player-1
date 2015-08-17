@@ -16,12 +16,14 @@
     <string name="playlists_label">My playlists</string>
     <string name="settings_label">Settings</string>
 
-
     <!--TrackBrowserFragment-->
     <string name="no_tracks_label">There is no tracks to play</string>
 
     <!--ArtistsBrowserFragment-->
     <string name="no_artists_label">There is no artists</string>
+
+    <!--UserPlaylistsBrowserFragment-->
+    <string name="no_users_playlists_label">There is no playlists</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -30,16 +32,7 @@
     <!--MediaPlaybackService-->
     <string name="playback_failed">The player doesn\'t support this type of audio file.</string>
 
-    <!---->
     <string name="unknown_album">Unknown album</string>
     <string name="unknown_artist">Unknown artist</string>
-    <string name="undefined_unknown">Unknown</string>
 
-    <!--PlaybackFragment-->
-    <!-- Toast when turning repeat off -->
-    <string name="repeat_off_notification">Repeat is off</string>
-    <!-- Toast when turning single repeat on -->
-    <string name="repeat_current_notification">Repeating current song</string>
-    <!-- Toast when turning repeat all on -->
-    <string name="repeat_all_notification">Repeating all songs</string>
 </resources>

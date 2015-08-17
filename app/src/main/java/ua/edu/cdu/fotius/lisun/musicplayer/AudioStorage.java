@@ -24,6 +24,21 @@ public class AudioStorage {
         public static final String TRACK_ID = MediaStore.Audio.Media._ID;
         public static final String TRACK = MediaStore.Audio.Media.TITLE;
         public static final String ARTIST = MediaStore.Audio.Media.ARTIST;
+        public static final String ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
+        public static final String SORT_ORDER = TRACK + " ASC";
+    }
+
+    public interface UserPlaylistsBrowser {
+        public static final String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
+        public static final String PLAYLIST = MediaStore.Audio.Playlists.NAME;
+        public static final String SORT_ORDER = PLAYLIST + " ASC";
+    }
+
+    public interface PlaylistMembers {
+        public static final String TRACK_ID_WITHIN_PLAYLIST = MediaStore.Audio.Playlists.Members._ID;
+        public static final String TRACK_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
+        public static final String TRACK = MediaStore.Audio.Playlists.Members.TITLE;
+        public static final String ARTIST = MediaStore.Audio.Playlists.Members.ARTIST;
         public static final String SORT_ORDER = TRACK + " ASC";
     }
 }

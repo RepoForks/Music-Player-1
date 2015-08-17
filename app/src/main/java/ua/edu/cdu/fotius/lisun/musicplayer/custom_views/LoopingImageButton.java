@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.content.Context;
 import android.os.SystemClock;
@@ -11,22 +11,22 @@ import android.widget.ImageButton;
  * A button that will repeatedly call a 'listener' method
  * as long as the button is pressed.
  */
-public class RepeatingButton extends ImageButton {
+public class LoopingImageButton extends ImageButton {
 
     private long mStartTime;
     private int mRepeatCount;
     private RepeatListener mListener;
     private long mInterval = 260;
     
-    public RepeatingButton(Context context) {
+    public LoopingImageButton(Context context) {
         this(context, null);
     }
 
-    public RepeatingButton(Context context, AttributeSet attrs) {
+    public LoopingImageButton(Context context, AttributeSet attrs) {
         this(context, attrs, android.R.attr.imageButtonStyle);
     }
 
-    public RepeatingButton(Context context, AttributeSet attrs, int defStyle) {
+    public LoopingImageButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setFocusable(true);
         setLongClickable(true);

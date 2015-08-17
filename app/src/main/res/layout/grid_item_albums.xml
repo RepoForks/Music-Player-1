@@ -17,12 +17,12 @@
         android:layout_width="match_parent"
         android:layout_alignBottom="@+id/album_cover" >
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.AlbumNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.AlbumNameTextView
             android:id="@+id/album_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.ArtistNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
             android:id="@+id/artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

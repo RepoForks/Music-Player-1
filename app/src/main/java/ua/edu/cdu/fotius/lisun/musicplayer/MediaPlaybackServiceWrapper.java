@@ -86,11 +86,25 @@ public class MediaPlaybackServiceWrapper
         }
     }
 
-    public void playAll(Cursor cursor, int position) {
+    public void playAll(Cursor cursor, int position, String trackIdColumnName) {
         if (mService != null) {
-            long[] playlist = getPlaylistFromCursor(cursor);
+            long[] playlist = getPlaylistFromCursor(cursor, trackIdColumnName);
             playAll(playlist, position);
         }
+    }
+
+    private long[] getPlaylistFromCursor(Cursor cursor, String trackIdColumnName) {
+        int cursorLinesQuantity = cursor.getCount();
+        long[] playlist = new long[cursorLinesQuantity];
+        cursor.moveToFirst();
+
+        int idColumnIndex = cursor.getColumnIndexOrThrow(trackIdColumnName);
+
+        for (int i = 0; i < cursorLinesQuantity; i++) {
+            playlist[i] = cursor.getLong(idColumnIndex);
+            cursor.moveToNext();
+        }
+        return playlist;
     }
 
     private void playAll(long[] playlist, int position) {
@@ -100,20 +114,6 @@ public class MediaPlaybackServiceWrapper
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }
-
-    private long[] getPlaylistFromCursor(Cursor cursor) {
-        int cursorLinesQuantity = cursor.getCount();
-        long[] playlist = new long[cursorLinesQuantity];
-        cursor.moveToFirst();
-
-        int idColumnIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
-
-        for (int i = 0; i < cursorLinesQuantity; i++) {
-            playlist[i] = cursor.getLong(idColumnIndex);
-            cursor.moveToNext();
-        }
-        return playlist;
     }
 
     public void prev() {

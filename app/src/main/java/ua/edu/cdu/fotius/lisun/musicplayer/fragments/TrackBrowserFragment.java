@@ -1,13 +1,16 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.app.AlertDialog;
+import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +20,20 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackCursorLoaderFactory;
 
-public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver{
+public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver {
 
-    public static final String TAG = "track_browser_fragment";
+    public static final String TAG = "tracks";
+    public static final int ID_NOT_SET = -1;
     private final int TRACK_LOADER_ID = 1;
 
     private BaseSimpleCursorAdapter mCursorAdapter;
     private MediaPlaybackServiceWrapper mServiceWrapper;
 
-    private long mAlbumId = -1;
+    //    private long mAlbumId = ID_NOT_SET;
+//    private long mPlaylistId = ID_NOT_SET;
+    private TrackCursorLoaderFactory mCursorLoaderBuilder;
 
     public TrackBrowserFragment() {
     }
@@ -44,25 +51,35 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
 
+
         /*if called with album id
         * then need to list tracks for
         * concrete album*/
-         Bundle args = getArguments();
-         if(args != null) {
-            mAlbumId =
-                    args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY);
-         }
+        Bundle args = getArguments();
+        long albumId, playlistId;
+        albumId = playlistId = ID_NOT_SET;
+        if (args != null) {
+            albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET);
+            playlistId = args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET);
+        }
+        mCursorLoaderBuilder = new TrackCursorLoaderFactory(getActivity());
+        mCursorLoaderBuilder.setAlbumId(albumId);
+        mCursorLoaderBuilder.setPlaylistId(playlistId);
 
         mCursorAdapter = getCursorAdapter();
         setListAdapter(mCursorAdapter);
+
 
         getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
     }
 
     private BaseSimpleCursorAdapter getCursorAdapter() {
-        String[] from = new String[] { AudioStorage.TrackBrowser.TRACK,
-                AudioStorage.TrackBrowser.ARTIST };
-        int[] to = new int[] { R.id.track_title, R.id.artist_name};
+
+        Log.d(TAG, "" + mCursorLoaderBuilder.getTrackColumnName() + "    " + mCursorLoaderBuilder.getArtistColumnName());
+
+        String[] from = new String[]{mCursorLoaderBuilder.getTrackColumnName(),
+                mCursorLoaderBuilder.getArtistColumnName()};
+        int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.row_tracks_list, from, to);
@@ -70,7 +87,9 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        mServiceWrapper.playAll(mCursorAdapter.getCursor(), position);
+
+        mServiceWrapper.playAll(mCursorAdapter.getCursor(), position,
+                mCursorLoaderBuilder.getTrackIdColumnName());
     }
 
     @Override
@@ -87,21 +106,22 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[] {
-                AudioStorage.TrackBrowser.TRACK_ID,
-                AudioStorage.TrackBrowser.TRACK,
-                AudioStorage.TrackBrowser.ARTIST
-        };
-        return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                (mAlbumId == -1) ? null : MediaStore.Audio.Media.ALBUM_ID + " = ?",
-                (mAlbumId == -1) ? null : new String[]{Long.toString(mAlbumId)},
-                AudioStorage.TrackBrowser.SORT_ORDER);
+//        String[] projection = new String[] {
+//                AudioStorage.TrackBrowser.TRACK_ID,
+//                AudioStorage.TrackBrowser.TRACK,
+//                AudioStorage.TrackBrowser.ARTIST
+//        };
+//        return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                projection,
+//                (mAlbumId == ID_NOT_SET) ? null : MediaStore.Audio.Media.ALBUM_ID + " = ?",
+//                (mAlbumId == ID_NOT_SET) ? null : new String[]{Long.toString(mAlbumId)},
+//                AudioStorage.TrackBrowser.SORT_ORDER);
+         return mCursorLoaderBuilder.build();
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()){
+        switch (loader.getId()) {
             case TRACK_LOADER_ID:
                 mCursorAdapter.swapCursor(data);
                 break;

@@ -2,7 +2,9 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-public abstract class BaseRewindFastForwardListener implements RepeatingButton.RepeatListener{
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
+
+public abstract class BaseRewindFastForwardListener implements LoopingImageButton.RepeatListener{
 
     protected long mStartSeekPos = 0;
     protected ListenerCallbacks mCallbacks;
