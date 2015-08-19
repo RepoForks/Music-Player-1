@@ -5,9 +5,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;

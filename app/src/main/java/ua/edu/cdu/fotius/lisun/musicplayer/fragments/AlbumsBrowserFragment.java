@@ -1,6 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,7 +17,7 @@ import android.widget.GridView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.TrackDetalizationActivity;
 
 public class AlbumsBrowserFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -26,21 +26,14 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     public static final  String ALBUM_ID_KEY = "album_id_key";
     private final int ALBUMS_LOADER_ID = 1;
 
-    private OnFragmentReplaceListener mReplaceFragmentCallback;
     private BaseSimpleCursorAdapter mCursorAdapter = null;
     private long mArtistId = -1;
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mReplaceFragmentCallback = (OnFragmentReplaceListener) activity;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
+
+        Log.d(TAG, "--> onCreate()");
 
         //do we actually need this if we use Loader?
         //definitely, because don't need to create
@@ -61,7 +54,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     }
 
     private BaseSimpleCursorAdapter getAdapter() {
-        String[] from = new String[] {AudioStorage.AlbumBrowser.ALBUM, AudioStorage.AlbumBrowser.ARTIST};
+        String[] from = new String[] {AudioStorage.Album.ALBUM, AudioStorage.Album.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
         return new BaseSimpleCursorAdapter(getActivity(),
@@ -83,9 +76,9 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = new String[] {
-                AudioStorage.AlbumBrowser.ALBUM_ID,
-                AudioStorage.AlbumBrowser.ALBUM,
-                AudioStorage.AlbumBrowser.ARTIST
+                AudioStorage.Album.ALBUM_ID,
+                AudioStorage.Album.ALBUM,
+                AudioStorage.Album.ARTIST
         };
 
         Log.d(TAG, "mArtistId: " + mArtistId);
@@ -98,7 +91,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         return new CursorLoader(getActivity(), MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 projection,
                 (mArtistId == -1) ? null : MediaStore.Audio.Media.ARTIST_ID + " = ?",
-                (mArtistId == -1) ? null : new String[] {Long.toString(mArtistId)}, AudioStorage.AlbumBrowser.SORT_ORDER);
+                (mArtistId == -1) ? null : new String[] {Long.toString(mArtistId)}, AudioStorage.Album.SORT_ORDER);
     }
 
     @Override
@@ -118,13 +111,13 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Cursor cursor = mCursorAdapter.getCursor();
             if((cursor != null) && (cursor.moveToPosition(position))) {
-                int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.AlbumBrowser.ALBUM_ID);
+                int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Album.ALBUM_ID);
                 long albumId = cursor.getLong(idColumnIndex);
-                TrackBrowserFragment fragment = new TrackBrowserFragment();
-                Bundle bundle = new Bundle();
-                bundle.putLong(ALBUM_ID_KEY, albumId);
-                fragment.setArguments(bundle);
-                mReplaceFragmentCallback.replaceFragment(fragment, TrackBrowserFragment.TAG);
+                Bundle extras = new Bundle();
+                extras.putLong(ALBUM_ID_KEY, albumId);
+                Intent intent = new Intent(getActivity(), TrackDetalizationActivity.class);
+                intent.putExtras(extras);
+                startActivity(intent);
             }
         }
     };

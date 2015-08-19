@@ -1,26 +1,24 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 
 
-import android.app.AlertDialog;
-import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackCursorLoaderFactory;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
 
 public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver {
 
@@ -31,9 +29,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     private BaseSimpleCursorAdapter mCursorAdapter;
     private MediaPlaybackServiceWrapper mServiceWrapper;
 
-    //    private long mAlbumId = ID_NOT_SET;
-//    private long mPlaylistId = ID_NOT_SET;
-    private TrackCursorLoaderFactory mCursorLoaderBuilder;
+    private BaseTrackCursorLoaderFactory mCursorLoaderFactory;
 
     public TrackBrowserFragment() {
     }
@@ -41,6 +37,8 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "-->onCreate()");
 
         /*do we actually need this if we use Loader?
         * definitely, because don't need to create
@@ -51,7 +49,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
 
-
         /*if called with album id
         * then need to list tracks for
         * concrete album*/
@@ -61,24 +58,31 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         if (args != null) {
             albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET);
             playlistId = args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET);
+            Log.d(TAG, "albumId: " + args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET));
+            Log.d(TAG, "playlistId: " + args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET));
         }
-        mCursorLoaderBuilder = new TrackCursorLoaderFactory(getActivity());
-        mCursorLoaderBuilder.setAlbumId(albumId);
-        mCursorLoaderBuilder.setPlaylistId(playlistId);
+
+        mCursorLoaderFactory = getCursorLoaderFactory(albumId, playlistId);
 
         mCursorAdapter = getCursorAdapter();
         setListAdapter(mCursorAdapter);
 
-
         getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
     }
 
+    private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {
+        if(albumId != ID_NOT_SET) {
+            return new AlbumTracksCursorLoaderFactory(getActivity(), albumId);
+        } else if(playlistId != ID_NOT_SET) {
+            return new PlaylistTracksCursorLoaderFactory(getActivity(), playlistId);
+        } else {
+            return new AllTracksCursorLoaderFactory(getActivity());
+        }
+    }
+
     private BaseSimpleCursorAdapter getCursorAdapter() {
-
-        Log.d(TAG, "" + mCursorLoaderBuilder.getTrackColumnName() + "    " + mCursorLoaderBuilder.getArtistColumnName());
-
-        String[] from = new String[]{mCursorLoaderBuilder.getTrackColumnName(),
-                mCursorLoaderBuilder.getArtistColumnName()};
+        String[] from = new String[]{mCursorLoaderFactory.getTrackColumnName(),
+                mCursorLoaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(),
@@ -87,9 +91,8 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-
         mServiceWrapper.playAll(mCursorAdapter.getCursor(), position,
-                mCursorLoaderBuilder.getTrackIdColumnName());
+                mCursorLoaderFactory.getTrackIdColumnName());
     }
 
     @Override
@@ -106,17 +109,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-//        String[] projection = new String[] {
-//                AudioStorage.TrackBrowser.TRACK_ID,
-//                AudioStorage.TrackBrowser.TRACK,
-//                AudioStorage.TrackBrowser.ARTIST
-//        };
-//        return new CursorLoader(getActivity(), MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-//                projection,
-//                (mAlbumId == ID_NOT_SET) ? null : MediaStore.Audio.Media.ALBUM_ID + " = ?",
-//                (mAlbumId == ID_NOT_SET) ? null : new String[]{Long.toString(mAlbumId)},
-//                AudioStorage.TrackBrowser.SORT_ORDER);
-         return mCursorLoaderBuilder.build();
+         return mCursorLoaderFactory.getCursorLoader();
     }
 
     @Override

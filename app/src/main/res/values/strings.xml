@@ -34,5 +34,8 @@
 
     <string name="unknown_album">Unknown album</string>
     <string name="unknown_artist">Unknown artist</string>
+    <string name="title_activity_track_browser">TrackBrowserActivity</string>
+    <string name="title_activity_detalization">DetalizationActivity</string>
+    <string name="title_activity_track_detalization">TrackDetalizationActivity</string>
 
 </resources>

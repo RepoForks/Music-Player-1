@@ -16,24 +16,19 @@ import android.widget.Toast;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends AppCompatActivity
-        implements OnFragmentReplaceListener
-        //ServiceInterface
-    {
+public class NavigationActivity extends AppCompatActivity {
 
     private final String TAG = getClass().getSimpleName();
 
-    private final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag";
+    private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
     private Fragment mCurrentBrowserFragment;
 
     private DrawerLayout mDrawerLayout;
     private SlidingUpPanelLayout mSlidingPanel;
-    private MediaPlaybackServiceWrapper mServiceWrapper
-            = MediaPlaybackServiceWrapper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +46,25 @@ public class NavigationActivity extends AppCompatActivity
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
         if(savedInstanceState != null) {
+            String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
             mCurrentBrowserFragment = getSupportFragmentManager()
-                    .findFragmentByTag(savedInstanceState.getString(CURRENT_FRAGMENT_TAG_KEY));
+                    .findFragmentByTag(savedFragmentTag);
         }
 
         //if activity runs for the first time set Songs fragment as
         //initial fragment
         if(mCurrentBrowserFragment == null) {
-            mCurrentBrowserFragment = new TrackBrowserFragment();
+            Fragment fragment = new TrackBrowserFragment();
             getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mCurrentBrowserFragment, TrackBrowserFragment.TAG)
+                .add(R.id.fragment_container, fragment, TrackBrowserFragment.TAG)
                 .commit();
+            mCurrentBrowserFragment = fragment;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(CURRENT_FRAGMENT_TAG_KEY, mCurrentBrowserFragment.getTag());
+        outState.putString(EXTRA_FRAGMENT_TAG, mCurrentBrowserFragment.getTag());
         super.onSaveInstanceState(outState);
     }
 
@@ -115,13 +112,18 @@ public class NavigationActivity extends AppCompatActivity
         return navigationView;
     }
 
+    public void replaceFragment(Fragment fragment, String fragmentTag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragmentTag)
+                .commit();
+        mCurrentBrowserFragment = fragment;
+    }
+
     private Toolbar setUpToolbar(final DrawerLayout drawer, final NavigationView navigationView) {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             toolbar.setNavigationIcon(R.mipmap.ic_launcher);
-
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -142,20 +144,6 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Replacing fragments here, because need to track
-     * which fragment in foreground and active now
-     * @param fragment - fragment which will replace current
-     * @param fragmentTag - tag of new fragment
-     */
-    @Override
-    public void replaceFragment(Fragment fragment, String fragmentTag) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, fragmentTag)
-                .commit();
-        mCurrentBrowserFragment = fragment;
     }
 
     private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {

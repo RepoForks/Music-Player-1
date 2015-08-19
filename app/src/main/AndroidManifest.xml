@@ -23,8 +23,16 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MediaPlaybackService"/>
+        <service android:name=".MediaPlaybackService" />
 
+        <activity
+            android:name=".AlbumsDetalizationActivity"
+            android:label="@string/title_activity_detalization" >
+        </activity>
+        <activity
+            android:name=".TrackDetalizationActivity"
+            android:label="@string/title_activity_track_detalization" >
+        </activity>
     </application>
 
 </manifest>

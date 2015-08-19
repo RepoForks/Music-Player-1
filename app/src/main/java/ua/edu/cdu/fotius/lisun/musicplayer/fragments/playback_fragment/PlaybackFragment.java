@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;

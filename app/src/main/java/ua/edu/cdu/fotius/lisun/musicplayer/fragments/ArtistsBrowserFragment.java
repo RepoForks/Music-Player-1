@@ -1,11 +1,10 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AlbumsDetalizationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.OnFragmentReplaceListener;
 
 public class ArtistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -25,7 +24,6 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
     public static final String ARTIST_ID_KEY = "artist_id_key";
     private final int ARTISTS_LOADER = 1;
 
-    private OnFragmentReplaceListener mFragmentReplaceCallback;
     private BaseSimpleCursorAdapter mCursorAdapter;
 
     public ArtistsBrowserFragment() {
@@ -42,16 +40,10 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
         getLoaderManager().initLoader(ARTISTS_LOADER, null, this);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mFragmentReplaceCallback = (OnFragmentReplaceListener) activity;
-    }
-
     private BaseSimpleCursorAdapter getAdapter() {
 
-        String[] from = new String[]{AudioStorage.ArtistBrowser.ARTIST, AudioStorage.ArtistBrowser.ALBUMS_QUANTITY,
-                AudioStorage.ArtistBrowser.TRACKS_QUANTITY};
+        String[] from = new String[]{AudioStorage.Artist.ARTIST, AudioStorage.Artist.ALBUMS_QUANTITY,
+                AudioStorage.Artist.TRACKS_QUANTITY};
         int[] to = new int[]{R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity};
 
         return new BaseSimpleCursorAdapter(getActivity(),
@@ -67,14 +59,14 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = new String[]{
-                AudioStorage.ArtistBrowser.ARTIST_ID,
-                AudioStorage.ArtistBrowser.ARTIST,
-                AudioStorage.ArtistBrowser.ALBUMS_QUANTITY,
-                AudioStorage.ArtistBrowser.TRACKS_QUANTITY
+                AudioStorage.Artist.ARTIST_ID,
+                AudioStorage.Artist.ARTIST,
+                AudioStorage.Artist.ALBUMS_QUANTITY,
+                AudioStorage.Artist.TRACKS_QUANTITY
         };
 
         return new CursorLoader(getActivity(), MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                projection, null, null, AudioStorage.ArtistBrowser.SORT_ORDER);
+                projection, null, null, AudioStorage.Artist.SORT_ORDER);
     }
 
     @Override
@@ -94,13 +86,13 @@ public class ArtistsBrowserFragment extends ListFragment implements LoaderManage
         Cursor cursor = mCursorAdapter.getCursor();
         if ((cursor != null) && (cursor.moveToPosition(position))) {
             int idColumnIndex =
-                    cursor.getColumnIndexOrThrow(AudioStorage.ArtistBrowser.ARTIST_ID);
+                    cursor.getColumnIndexOrThrow(AudioStorage.Artist.ARTIST_ID);
             long artistId = cursor.getLong(idColumnIndex);
-            Bundle bundle = new Bundle();
-            bundle.putLong(ARTIST_ID_KEY, artistId);
-            Fragment fragment = new AlbumsBrowserFragment();
-            fragment.setArguments(bundle);
-            mFragmentReplaceCallback.replaceFragment(fragment, AlbumsBrowserFragment.TAG);
+            Bundle extras = new Bundle();
+            extras.putLong(ARTIST_ID_KEY, artistId);
+            Intent intent = new Intent(getActivity(), AlbumsDetalizationActivity.class);
+            intent.putExtras(extras);
+            startActivity(intent);
         }
     }
 }
