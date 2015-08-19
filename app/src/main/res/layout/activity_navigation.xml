@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/abc_action_bar_default_height_material"
                 android:minHeight="?attr/actionBarSize"
+                android:navigationIcon="@mipmap/ic_launcher"
                 app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
             <FrameLayout
