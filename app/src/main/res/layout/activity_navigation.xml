@@ -6,44 +6,7 @@
     android:id="@+id/drawer"
     android:fitsSystemWindows="true">
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout
-        xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_up_panel_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="68dp">
-
-        <!--MAIN VIEW-->
-        <LinearLayout
-            android:id="@+id/main_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/abc_action_bar_default_height_material"
-                android:minHeight="?attr/actionBarSize"
-                android:navigationIcon="@mipmap/ic_launcher"
-                app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-
-            <FrameLayout
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <!--SLIDING VIEW-->
-        <fragment
-            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment"
-            android:id="@+id/playback_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout>
+    <include layout="@layout/activity_skeleton" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

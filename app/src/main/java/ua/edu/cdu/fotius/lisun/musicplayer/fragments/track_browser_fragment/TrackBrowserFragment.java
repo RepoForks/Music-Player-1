@@ -7,6 +7,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
@@ -68,6 +71,16 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         setListAdapter(mCursorAdapter);
 
         getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ListView listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        TrackMenu trackMenu = new TrackMenu();
+        Toolbar toolbar = new Toolbar(getActivity());
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(toolbar, listView, trackMenu));
     }
 
     private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {

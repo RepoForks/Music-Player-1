@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 
@@ -18,7 +20,9 @@ public class TrackDetalizationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_detalization);
+        setContentView(R.layout.activity_skeleton);
+
+        setUpToolbar();
 
         if(savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
@@ -32,6 +36,21 @@ public class TrackDetalizationActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, fragment, TrackBrowserFragment.TAG).commit();
             mCurrentFragment = fragment;
         }
+    }
+
+    private Toolbar setUpToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+        return toolbar;
     }
 
     @Override

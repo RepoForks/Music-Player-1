@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="SlidingUpPanelLayout">
         <attr name="umanoPanelHeight" format="dimension" />
         <attr name="umanoShadowHeight" format="dimension" />
@@ -19,5 +18,4 @@
             <enum name="hidden" value="3" />
         </attr>
     </declare-styleable>
-
 </resources>

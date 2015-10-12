@@ -3,8 +3,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 
@@ -19,7 +21,9 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_albums_detalization);
+        setContentView(R.layout.activity_skeleton);
+
+        setUpToolbar();
 
         if(savedInstanceState != null) {
             String currentFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
@@ -34,6 +38,21 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, fragment, AlbumsBrowserFragment.TAG).commit();
             mCurrentFragment = fragment;
         }
+    }
+
+    private Toolbar setUpToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+        return toolbar;
     }
 
     @Override
