@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
@@ -31,10 +33,16 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     private BaseSimpleCursorAdapter mCursorAdapter;
     private MediaPlaybackServiceWrapper mServiceWrapper;
-
     private BaseTrackCursorLoaderFactory mCursorLoaderFactory;
+    private ToolbarStateListener mToolbarStateListener;
 
     public TrackBrowserFragment() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mToolbarStateListener = (ToolbarStateListener) activity;
     }
 
     @Override
@@ -61,8 +69,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         if (args != null) {
             albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET);
             playlistId = args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET);
-            Log.d(TAG, "albumId: " + args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET));
-            Log.d(TAG, "playlistId: " + args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET));
         }
 
         mCursorLoaderFactory = getCursorLoaderFactory(albumId, playlistId);
@@ -80,7 +86,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         TrackMenu trackMenu = new TrackMenu();
         Toolbar toolbar = new Toolbar(getActivity());
-        listView.setMultiChoiceModeListener(new MultiChoiceListener(toolbar, listView, trackMenu));
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(mToolbarStateListener, listView, trackMenu));
     }
 
     private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {

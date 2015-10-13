@@ -10,19 +10,24 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class TrackDetalizationActivity extends AppCompatActivity {
+public class TrackDetalizationActivity extends AppCompatActivity implements ToolbarStateListener {
 
     private final String EXTRA_FRAGMENT_TAG = "current_fragment_tag";
     private Fragment mCurrentFragment;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skeleton);
 
-        setUpToolbar();
+        mToolbar = setUpToolbar();
+
+        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        slidingPanel.setPanelSlideListener(new SlidingPanelListener(null));
 
         if(savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
@@ -79,5 +84,15 @@ public class TrackDetalizationActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showToolbar() {
+        mToolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
     }
 }

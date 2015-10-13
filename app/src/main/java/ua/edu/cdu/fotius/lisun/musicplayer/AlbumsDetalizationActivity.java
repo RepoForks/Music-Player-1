@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 /**This activity created for supporting
  * Up/Back navigation*/
@@ -24,6 +25,9 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_skeleton);
 
         setUpToolbar();
+
+        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        slidingPanel.setPanelSlideListener(new SlidingPanelListener(null));
 
         if(savedInstanceState != null) {
             String currentFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);

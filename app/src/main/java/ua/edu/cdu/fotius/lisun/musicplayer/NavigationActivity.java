@@ -20,7 +20,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.Trac
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements ToolbarStateListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -28,7 +28,7 @@ public class NavigationActivity extends AppCompatActivity {
     private Fragment mCurrentBrowserFragment;
 
     private DrawerLayout mDrawerLayout;
-    private SlidingUpPanelLayout mSlidingPanel;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +36,13 @@ public class NavigationActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
 
-        mSlidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
-        mSlidingPanel.setPanelSlideListener(mSlidingPanelListener);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        slidingPanel.setPanelSlideListener(new SlidingPanelListener(mDrawerLayout));
+
         NavigationView navigationView = setUpNavigationView(mDrawerLayout);
-        setUpToolbar(mDrawerLayout, navigationView);
+        mToolbar = setUpToolbar(mDrawerLayout, navigationView);
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -146,44 +147,13 @@ public class NavigationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private SlidingUpPanelLayout.PanelSlideListener mSlidingPanelListener = new SlidingUpPanelLayout.PanelSlideListener() {
+    @Override
+    public void showToolbar() {
+        mToolbar.setVisibility(View.VISIBLE);
+    }
 
-        private LinearLayout mAdditionalControlPanel;
-        private boolean mIsAdditionalControlsVisible;
-
-        @Override
-        public void onPanelSlide(View panel, float slideOffset) {
-            if ((slideOffset > 0.6) && mIsAdditionalControlsVisible) {
-                mAdditionalControlPanel =
-                        (LinearLayout) panel.findViewById(R.id.additional_control_panel);
-                mAdditionalControlPanel.setVisibility(View.GONE);
-                mIsAdditionalControlsVisible = false;
-            }
-
-            if ((slideOffset < 0.6) && !mIsAdditionalControlsVisible) {
-                mAdditionalControlPanel =
-                        (LinearLayout) panel.findViewById(R.id.additional_control_panel);
-
-                mAdditionalControlPanel.setVisibility(View.VISIBLE);
-                mIsAdditionalControlsVisible = true;
-            }
-        }
-
-        @Override
-        public void onPanelCollapsed(View panel) {
-            //enable ability of opening navigation menu
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
-
-        @Override
-        public void onPanelExpanded(View panel) {
-            //disable ability of opening navigation menu
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
-
-        @Override
-        public void onPanelAnchored(View panel) {}
-        @Override
-        public void onPanelHidden(View panel) {}
-    };
+    @Override
+    public void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
+    }
 }

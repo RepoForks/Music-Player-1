@@ -9,16 +9,18 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
+
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
 
     private final String TAG = getClass().getSimpleName();
-    private Toolbar mToolbar;
+    private ToolbarStateListener mToolbarStateListener;
     private ListView mListView;
     private BaseMenu mMenu;
 
-    public MultiChoiceListener(Toolbar toolbar, ListView listView, BaseMenu baseMenu){
-        mToolbar = toolbar;
+    public MultiChoiceListener(ToolbarStateListener toolbarStateListener, ListView listView, BaseMenu baseMenu){
+        mToolbarStateListener = toolbarStateListener;
         mListView = listView;
         mMenu = baseMenu;
     }
@@ -30,14 +32,14 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        mToolbar.setVisibility(View.VISIBLE);
+        mToolbarStateListener.showToolbar();
         mListView.clearChoices();
     }
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         initializeMenu(menu);
-        //mToolbar.setVisibility(View.GONE);
+        mToolbarStateListener.hideToolbar();
         return true;
     }
 
