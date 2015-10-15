@@ -53,11 +53,9 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         mMenu.execute(item.getItemId());
-        Log.d(TAG, "onActionItemClicked: " + mListView.getCheckedItemPositions().size());
         for(int i = 0; i < mListView.getCheckedItemPositions().size(); i++) {
             int key = mListView.getCheckedItemPositions().keyAt(i);
             boolean value = mListView.getCheckedItemPositions().get(key);
-            Log.d(TAG, "position: " + key + " value: " + value);
         }
         return false;
     }
@@ -67,6 +65,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
                                           long id, boolean needToCheck) {
         boolean isAdditionalMenuNeeded = (mListView.getCheckedItemCount() == 1) ? true : false;
         mode.getMenu().setGroupVisible(mMenu.getAdditionalGroup().getId(), isAdditionalMenuNeeded);
+        //TODO: to string.xml
         mode.setTitle(mListView.getCheckedItemCount() + " selected");
     }
 }
