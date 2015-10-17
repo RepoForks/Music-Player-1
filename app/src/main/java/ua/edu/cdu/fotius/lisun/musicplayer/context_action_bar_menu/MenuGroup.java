@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,12 +24,12 @@ public class MenuGroup {
         mIdToCABMenuItem.put(menuItemId, new MenuItem(title, iconResource, command, showAsAction));
     }
 
-    public boolean execute(int itemId) {
+    public boolean execute(int itemId, ArrayList<Long> idsOverWhichToExecute) {
         MenuItem menuItem = mIdToCABMenuItem.get(itemId);
         if(menuItem == null) {
             return false;
         }
-        menuItem.execute();
+        menuItem.execute(idsOverWhichToExecute);
         return true;
     }
 

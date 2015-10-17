@@ -1,5 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
+import java.util.ArrayList;
+
 public abstract class BaseMenu {
 
     private MenuGroup mMinimalGroup = null;
@@ -21,10 +23,10 @@ public abstract class BaseMenu {
         mAdditionalGroup = additionalGroup;
     }
 
-    public void execute(int itemId) {
-        boolean isExecuted = mMinimalGroup.execute(itemId);
+    public void execute(int itemId, ArrayList<Long> idsOverWhichToExecute) {
+        boolean isExecuted = mMinimalGroup.execute(itemId, idsOverWhichToExecute);
         if(!isExecuted) {
-            mAdditionalGroup.execute(itemId);
+            mAdditionalGroup.execute(itemId, idsOverWhichToExecute);
         }
     }
 

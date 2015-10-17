@@ -40,7 +40,7 @@
 
     <!--ConfirmationAndDeletionDialog-->
     <string name="delete_dialog_title">Delete</string>
-    <string name="delete_dialog_message">Permanently delete track%1$s from device</string>
+    <string name="delete_dialog_message">Permanently delete track %1$s from device</string>
     <string name="delete_dialog_positive_button">Delete</string>
     <string name="delete_dialog_negative_button">Cancel</string>
 

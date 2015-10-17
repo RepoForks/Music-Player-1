@@ -1,5 +1,16 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
+import java.util.ArrayList;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+
 public abstract class Command {
-    public abstract void execute();
+
+    protected MediaPlaybackServiceWrapper mServiceWrapper;
+
+    public Command(MediaPlaybackServiceWrapper serviceWrapper) {
+        mServiceWrapper = serviceWrapper;
+    }
+
+    public abstract void execute(ArrayList<Long> idsOverWhichToExecute);
 }

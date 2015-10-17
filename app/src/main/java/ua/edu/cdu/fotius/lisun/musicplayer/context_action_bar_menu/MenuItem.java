@@ -1,6 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
-public class MenuItem extends Command{
+import java.util.ArrayList;
+
+public class MenuItem {
     private String mTitle;
     private int mIconResource;
     private Command mCommand;
@@ -25,8 +27,7 @@ public class MenuItem extends Command{
         return mShowAsAction;
     }
 
-    @Override
-    public void execute() {
-        mCommand.execute();
+    public void execute(ArrayList<Long> idsOverWhichToExecute) {
+        mCommand.execute(idsOverWhichToExecute);
     }
 }

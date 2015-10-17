@@ -84,7 +84,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         super.onViewCreated(view, savedInstanceState);
         ListView listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        TrackMenu trackMenu = new TrackMenu(getActivity());
+        TrackMenu trackMenu = new TrackMenu(getActivity(), mServiceWrapper);
         Toolbar toolbar = new Toolbar(getActivity());
         listView.setMultiChoiceModeListener(new MultiChoiceListener(mToolbarStateListener, listView, trackMenu));
     }

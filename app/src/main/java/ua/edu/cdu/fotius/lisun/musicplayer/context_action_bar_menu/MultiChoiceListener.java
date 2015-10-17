@@ -1,5 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
@@ -9,7 +11,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
@@ -51,12 +57,29 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     }
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        mMenu.execute(item.getItemId());
+    public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
+        //TODO: Refactor
+        ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
         for(int i = 0; i < mListView.getCheckedItemPositions().size(); i++) {
-            int key = mListView.getCheckedItemPositions().keyAt(i);
-            boolean value = mListView.getCheckedItemPositions().get(key);
+            int position = mListView.getCheckedItemPositions().keyAt(i);
+            boolean value = mListView.getCheckedItemPositions().get(position);
+            if(value) {
+                checkedPositions.add(position);
+            }
         }
+
+        BaseSimpleCursorAdapter adapter = (BaseSimpleCursorAdapter)mListView.getAdapter();
+        Cursor cursor = adapter.getCursor();
+        ArrayList<Long> checkedTrackIds = new ArrayList<Long>();
+        //TODO: AudioStorage.Track.TRACK_ID is too precise. Need to be more flippy.
+        int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Track.TRACK_ID);
+        for(Integer checkedPosition : checkedPositions) {
+            if(cursor.moveToPosition(checkedPosition)) {
+                checkedTrackIds.add(cursor.getLong(idColumnIndex));
+            }
+        }
+
+        mMenu.execute(menuItem.getItemId(), checkedTrackIds);
         return false;
     }
 

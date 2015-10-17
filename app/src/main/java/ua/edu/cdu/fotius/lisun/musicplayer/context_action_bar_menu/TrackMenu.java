@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 import android.content.Context;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class TrackMenu extends BaseMenu {
@@ -12,9 +13,11 @@ public class TrackMenu extends BaseMenu {
     public static int AS_RINGTONE_ID = 3;
 
     private Context mContext;
+    private MediaPlaybackServiceWrapper mServiceWrapper;
 
-    public TrackMenu(Context context) {
+    public TrackMenu(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
         mContext = context;
+        mServiceWrapper = serviceWrapper;
     }
 
     @Override
@@ -23,9 +26,9 @@ public class TrackMenu extends BaseMenu {
         if(group == null) {
             group = new MenuGroup(MenuGroup.MINIMAL_GROUP_ID);
             //TODO: strings to string.xml
-            group.add(DELETE_ID, "Delete", R.mipmap.ic_launcher, new Delete(mContext),
+            group.add(DELETE_ID, "Delete", R.mipmap.ic_launcher, new Delete(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            group.add(PLAY_ID, "Play", R.mipmap.ic_launcher, new Play(),
+            group.add(PLAY_ID, "Play", R.mipmap.ic_launcher, new Play(mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             setMinimalGroup(group); //need to avoid creating next time
         }
@@ -38,7 +41,7 @@ public class TrackMenu extends BaseMenu {
         if(group == null) {
             group = new MenuGroup(MenuGroup.ADDITIONAL_GROUP_ID);
             //TODO: strings to string.xml
-            group.add(AS_RINGTONE_ID, "As ringtone", R.mipmap.ic_launcher, new AsRingtone(),
+            group.add(AS_RINGTONE_ID, "As ringtone", R.mipmap.ic_launcher, new AsRingtone(mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             setAdditionalGroup(group); //need to avoid creating next time
         }
