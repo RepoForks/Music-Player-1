@@ -107,7 +107,7 @@ public class MediaPlaybackServiceWrapper
         return playlist;
     }
 
-    private void playAll(long[] playlist, int position) {
+    public void playAll(long[] playlist, int position) {
         try {
             mService.open(playlist, position);
             mService.play();
@@ -162,6 +162,27 @@ public class MediaPlaybackServiceWrapper
         if(mService != null) {
             try {
                 mService.pause();
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+
+    public void removeTrack(long trackId){
+        if(mService != null) {
+            try {
+                mService.removeTrack(trackId);
+            } catch (RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+    public void addToTheEndOfPlayingQueue(long[] list) {
+        if(mService != null) {
+            try {
+                mService.enqueue(list, MediaPlaybackService.LAST);
             } catch (RemoteException e) {
                 Log.d(TAG, e.getMessage());
             }

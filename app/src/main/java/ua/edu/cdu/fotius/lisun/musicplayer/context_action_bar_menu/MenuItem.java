@@ -27,7 +27,7 @@ public class MenuItem {
         return mShowAsAction;
     }
 
-    public void execute(ArrayList<Long> idsOverWhichToExecute) {
+    public void execute(long[] idsOverWhichToExecute) {
         mCommand.execute(idsOverWhichToExecute);
     }
 }

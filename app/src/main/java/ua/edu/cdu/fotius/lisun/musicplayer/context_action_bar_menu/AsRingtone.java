@@ -15,7 +15,7 @@ public class AsRingtone extends Command{
     }
 
     @Override
-    public void execute(ArrayList<Long> idsOverWhichToExecute) {
+    public void execute(long[] idsOverWhichToExecute) {
         Log.d(TAG, "AsRingtone Command");
     }
 }

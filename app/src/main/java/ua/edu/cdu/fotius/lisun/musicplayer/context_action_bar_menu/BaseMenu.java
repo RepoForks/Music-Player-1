@@ -23,7 +23,7 @@ public abstract class BaseMenu {
         mAdditionalGroup = additionalGroup;
     }
 
-    public void execute(int itemId, ArrayList<Long> idsOverWhichToExecute) {
+    public void execute(int itemId, long[] idsOverWhichToExecute) {
         boolean isExecuted = mMinimalGroup.execute(itemId, idsOverWhichToExecute);
         if(!isExecuted) {
             mAdditionalGroup.execute(itemId, idsOverWhichToExecute);

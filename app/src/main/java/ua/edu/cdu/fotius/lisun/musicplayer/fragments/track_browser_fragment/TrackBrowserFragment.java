@@ -86,7 +86,7 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         TrackMenu trackMenu = new TrackMenu(getActivity(), mServiceWrapper);
         Toolbar toolbar = new Toolbar(getActivity());
-        listView.setMultiChoiceModeListener(new MultiChoiceListener(mToolbarStateListener, listView, trackMenu));
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), mToolbarStateListener, listView, trackMenu));
     }
 
     private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {

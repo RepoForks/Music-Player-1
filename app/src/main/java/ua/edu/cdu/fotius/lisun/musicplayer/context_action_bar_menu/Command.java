@@ -12,5 +12,5 @@ public abstract class Command {
         mServiceWrapper = serviceWrapper;
     }
 
-    public abstract void execute(ArrayList<Long> idsOverWhichToExecute);
+    public abstract void execute(long[] idsOverWhichToExecute);
 }

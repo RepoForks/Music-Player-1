@@ -24,7 +24,7 @@ public class MenuGroup {
         mIdToCABMenuItem.put(menuItemId, new MenuItem(title, iconResource, command, showAsAction));
     }
 
-    public boolean execute(int itemId, ArrayList<Long> idsOverWhichToExecute) {
+    public boolean execute(int itemId, long[] idsOverWhichToExecute) {
         MenuItem menuItem = mIdToCABMenuItem.get(itemId);
         if(menuItem == null) {
             return false;
