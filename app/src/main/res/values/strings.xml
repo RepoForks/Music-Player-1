@@ -47,4 +47,7 @@
     <!--MultiChoiceListener-->
     <string name="selected_text">selected</string>
 
+    <!--AsRingtone Command-->
+    <string name="ringtone_set">\"%1$s\" set as phone ringtone.</string>
+
 </resources>

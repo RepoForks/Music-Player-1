@@ -44,7 +44,7 @@ public class TrackMenu extends BaseMenu {
         if(group == null) {
             group = new MenuGroup(MenuGroup.ADDITIONAL_GROUP_ID);
             //TODO: strings to string.xml
-            group.add(AS_RINGTONE_ID, "As ringtone", R.mipmap.ic_launcher, new AsRingtone(mServiceWrapper),
+            group.add(AS_RINGTONE_ID, "As ringtone", R.mipmap.ic_launcher, new AsRingtone(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             setAdditionalGroup(group); //need to avoid creating next time
         }
