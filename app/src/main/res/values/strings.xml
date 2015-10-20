@@ -42,12 +42,16 @@
     <string name="delete_dialog_title">Delete</string>
     <string name="delete_dialog_message">Permanently delete track %1$s from device</string>
     <string name="delete_dialog_positive_button">Delete</string>
-    <string name="delete_dialog_negative_button">Cancel</string>
+
+    <string name="dialog_negative_button">Cancel</string>
 
     <!--MultiChoiceListener-->
     <string name="selected_text">selected</string>
 
     <!--AsRingtone Command-->
     <string name="ringtone_set">\"%1$s\" set as phone ringtone.</string>
+
+    <!--AddToPlaylist Command-->
+    <string name="tracks_added_to_playlist">%1$d track%2$s added to \"%3$s\" playlist.</string>
 
 </resources>

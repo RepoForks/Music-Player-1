@@ -41,7 +41,7 @@ public class Delete extends Command{
         alertBuilder.setTitle(resources.getString(R.string.delete_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.delete_dialog_positive_button, mPositiveButtonListener)
-                .setNegativeButton(R.string.delete_dialog_negative_button, mNegativeButtonListener);
+                .setNegativeButton(R.string.dialog_negative_button, mNegativeButtonListener);
         alertBuilder.create().show();
     }
 

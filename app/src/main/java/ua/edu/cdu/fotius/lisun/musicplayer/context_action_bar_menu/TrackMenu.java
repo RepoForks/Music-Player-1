@@ -12,6 +12,7 @@ public class TrackMenu extends BaseMenu {
     public static int PLAY_ID = 2;
     public static int AS_RINGTONE_ID = 3;
     public static int ADD_TO_PLAY_QUEUE_ID = 4;
+    public static int ADD_TO_PLAYLIST = 5;
 
     private Context mContext;
     private MediaPlaybackServiceWrapper mServiceWrapper;
@@ -32,6 +33,8 @@ public class TrackMenu extends BaseMenu {
             group.add(PLAY_ID, "Play", R.mipmap.ic_launcher, new Play(mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             group.add(ADD_TO_PLAY_QUEUE_ID, "Add To Play Queue", R.mipmap.ic_launcher, new AddToPlayQueue(mServiceWrapper),
+                    android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+            group.add(ADD_TO_PLAYLIST, "Add To Playlist", R.mipmap.ic_launcher, new AddToPlaylist(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             setMinimalGroup(group); //need to avoid creating next time
         }
