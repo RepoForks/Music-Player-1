@@ -21,12 +21,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class AsRingtone extends Command {
 
-    private final String TAG = getClass().getSimpleName();
-    private Context mContext;
-
     public AsRingtone(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
-        super(serviceWrapper);
-        mContext = context;
+        super(context, serviceWrapper);
     }
 
     @Override

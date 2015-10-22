@@ -30,14 +30,13 @@ public class AudioStorage {
         public static final String SORT_ORDER = TRACK + " ASC";
     }
 
-    public interface UserPlaylist {
+    public interface Playlist {
         public static final String PLAYLIST_ID = MediaStore.Audio.Playlists._ID;
         public static final String PLAYLIST = MediaStore.Audio.Playlists.NAME;
         public static final String SORT_ORDER = PLAYLIST + " ASC";
     }
 
     public interface PlaylistMember {
-//        public static final String TABLE_URI = MediaStore.Audio.Playlists.Members.getContentUri()
         public static final String TRACK_ID_WITHIN_PLAYLIST = MediaStore.Audio.Playlists.Members._ID;
         public static final String TRACK_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
         public static final String TRACK = MediaStore.Audio.Playlists.Members.TITLE;

@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ public class Play extends Command{
 
     private final String TAG = getClass().getSimpleName();
 
-    public Play(MediaPlaybackServiceWrapper serviceWrapper) {
-        super(serviceWrapper);
+    public Play(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
+        super(context, serviceWrapper);
     }
 
     @Override

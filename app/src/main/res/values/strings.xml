@@ -53,5 +53,11 @@
 
     <!--AddToPlaylist Command-->
     <string name="tracks_added_to_playlist">%1$d track%2$s added to \"%3$s\" playlist.</string>
+    <string name="create_new_playlist_text">New</string>
+
+    <!--Create New Playlist Dialog-->
+    <string name="create_new_playlist_positive_button">Create</string>
+    <string name="create_new_playlist_title">New playlist</string>
+    <string name="new_playlist_name_hint">Playlist name</string>
 
 </resources>

@@ -19,12 +19,10 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class Delete extends Command{
 
-    private final String TAG = getClass().getSimpleName();
-    private Context mContext;
     private long[] mTrackIdsOverWhichToExecute;
 
     public Delete(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
-        super(serviceWrapper);
+        super(context, serviceWrapper);
         mContext = context;
     }
 

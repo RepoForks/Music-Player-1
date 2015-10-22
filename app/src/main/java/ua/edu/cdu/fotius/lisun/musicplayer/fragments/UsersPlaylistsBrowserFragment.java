@@ -1,7 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.TrackDetalizationActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 
 public class UsersPlaylistsBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -44,7 +42,7 @@ public class UsersPlaylistsBrowserFragment extends ListFragment implements Loade
     }
 
     private BaseSimpleCursorAdapter getAdapter() {
-        String[] from = new String[] { AudioStorage.UserPlaylist.PLAYLIST };
+        String[] from = new String[] { AudioStorage.Playlist.PLAYLIST };
         int[] to = new int[] { R.id.playlist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(),
@@ -62,7 +60,7 @@ public class UsersPlaylistsBrowserFragment extends ListFragment implements Loade
         Cursor cursor = mAdapter.getCursor();
         if((cursor != null) && (cursor.moveToPosition(position))) {
             //TODO: to separate method with AlbumBrowserFragment's
-            int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.UserPlaylist.PLAYLIST_ID);
+            int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST_ID);
             long playlistId = cursor.getLong(idColumnIndex);
             Bundle bundle = new Bundle();
             bundle.putLong(PLAYLIST_ID_KEY, playlistId);
@@ -75,11 +73,11 @@ public class UsersPlaylistsBrowserFragment extends ListFragment implements Loade
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         String[] projection = new String[] {
-                AudioStorage.UserPlaylist.PLAYLIST_ID,
-                AudioStorage.UserPlaylist.PLAYLIST
+                AudioStorage.Playlist.PLAYLIST_ID,
+                AudioStorage.Playlist.PLAYLIST
         };
         return new CursorLoader(getActivity(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                projection, null, null, AudioStorage.UserPlaylist.SORT_ORDER);
+                projection, null, null, AudioStorage.Playlist.SORT_ORDER);
     }
 
     @Override
