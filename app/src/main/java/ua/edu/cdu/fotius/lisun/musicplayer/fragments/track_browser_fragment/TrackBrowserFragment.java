@@ -49,8 +49,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "-->onCreate()");
-
         /*do we actually need this if we use Loader?
         * definitely, because don't need to create
         * adapter and call onLoadFinished()
@@ -85,7 +83,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
         ListView listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         TrackMenu trackMenu = new TrackMenu(getActivity(), mServiceWrapper);
-        Toolbar toolbar = new Toolbar(getActivity());
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), mToolbarStateListener, listView, trackMenu));
     }
 

@@ -28,7 +28,7 @@ public class AllTracksCursorLoaderFactory extends BaseTrackCursorLoaderFactory{
 
     @Override
     public String getSelection() {
-        return null;
+        return AudioStorage.Track.TRACK + " != '' AND " + AudioStorage.Track.IS_MUSIC + " = 1";
     }
 
     @Override

@@ -9,17 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseDialog;
 
 public class CreateNewPlaylistDialog extends BaseDialog {
 
     private final String TAG = getClass().getSimpleName();
     private EditText mEditText;
 
-    public CreateNewPlaylistDialog(Context context, long[] trackIds, AddToPlaylistResultListener listener) {
-        super(context, trackIds, listener);
+    public CreateNewPlaylistDialog(Context context, long[] trackIds) {
+        super(context, trackIds);
     }
 
     public void show() {
@@ -55,7 +57,7 @@ public class CreateNewPlaylistDialog extends BaseDialog {
             String name = mEditText.getText().toString();
             long newlyCreatedId = DatabaseUtils.createPlaylist(mContext, name);
             int addedQuantity = DatabaseUtils.addToPlaylist(mContext, newlyCreatedId, mTrackIds);
-            mListener.addedToPlaylistUserNotification(addedQuantity, name);
+            notifyUser(addedQuantity, name);
         }
     };
 
@@ -65,4 +67,11 @@ public class CreateNewPlaylistDialog extends BaseDialog {
             dialog.dismiss();
         }
     };
+
+    //conscious duplicate in ChoosePlaylistDialog
+    private void notifyUser(int addedQuantity, String playlistName) {
+        String ending = ((addedQuantity == 1) ? "" : "s");
+        String message = mContext.getResources().getString(R.string.tracks_added_to_playlist, addedQuantity, ending, playlistName);
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
 }

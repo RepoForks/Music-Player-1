@@ -36,7 +36,7 @@ public class AlbumTracksCursorLoaderFactory extends BaseTrackCursorLoaderFactory
 
     @Override
     public String[] getSelectionArgs() {
-        return new String[]{ Long.toString(mAlbumId) };
+        return new String[]{ Long.toString(mAlbumId)};
     }
 
     @Override

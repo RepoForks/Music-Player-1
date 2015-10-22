@@ -26,6 +26,8 @@ public class AudioStorage {
         public static final String ARTIST = MediaStore.Audio.Media.ARTIST;
         public static final String ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
         public static final String FILE_PATH = MediaStore.Audio.Media.DATA;
+        public static final String IS_MUSIC = MediaStore.Audio.Media.IS_MUSIC;
+        public static final String IS_PODCAST = MediaStore.Audio.Media.IS_PODCAST;
         public static final String IS_RINGTONE = MediaStore.Audio.Media.IS_RINGTONE;
         public static final String SORT_ORDER = TRACK + " ASC";
     }

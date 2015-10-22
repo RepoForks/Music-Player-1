@@ -4,8 +4,11 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 
 public abstract class BaseTrackCursorLoaderFactory {
+
+    private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
 
@@ -14,6 +17,12 @@ public abstract class BaseTrackCursorLoaderFactory {
     }
 
     public CursorLoader getCursorLoader() {
+        Log.d(TAG, "Uri: " + getUri());
+        Log.d(TAG, "Projection: " + getProjection());
+        Log.d(TAG, "Selection: " + getSelection());
+        Log.d(TAG, "Selection Args: " + getSelectionArgs());
+        Log.d(TAG, "Sort Order: " + getSortOrder());
+
         return new CursorLoader(mContext, getUri(), getProjection(),
                 getSelection(), getSelectionArgs(), getSortOrder());
     }

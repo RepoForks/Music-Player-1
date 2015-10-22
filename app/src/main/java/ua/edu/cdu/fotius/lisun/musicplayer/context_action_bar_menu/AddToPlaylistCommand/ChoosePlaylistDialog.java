@@ -6,22 +6,24 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseDialog;
 
 public class ChoosePlaylistDialog extends BaseDialog {
-    private final String TAG = getClass().getSimpleName();
+
     private ArrayList<PlaylistNameIdTuple> mAvailablePlaylists;
 
-    public ChoosePlaylistDialog(Context context, long[] trackIds, AddToPlaylistResultListener listener) {
-        super(context, trackIds, listener);
+    public ChoosePlaylistDialog(Context context, long[] trackIds) {
+        super(context, trackIds);
     }
 
-    //TODO: maybe create base class
+    @Override
     public void show() {
         mAvailablePlaylists = getListItems();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
@@ -75,14 +77,19 @@ public class ChoosePlaylistDialog extends BaseDialog {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             if(which == 0) { //create new playlist item clicked
-                new CreateNewPlaylistDialog(mContext, mTrackIds, mListener).show();
+                new CreateNewPlaylistDialog(mContext, mTrackIds).show();
             } else {
                 long playlistId = mAvailablePlaylists.get(which).getId();
                 int addedQuantity = DatabaseUtils.addToPlaylist(mContext, playlistId, mTrackIds);
-                mListener.addedToPlaylistUserNotification(addedQuantity, mAvailablePlaylists.get(which).getName());
+                notifyUser(addedQuantity, mAvailablePlaylists.get(which).getName());
             }
         }
     };
 
-
+    //conscious duplicate in CreateNewPlaylistDialog
+    private void notifyUser(int addedQuantity, String playlistName) {
+        String ending = ((addedQuantity == 1) ? "" : "s");
+        String message = mContext.getResources().getString(R.string.tracks_added_to_playlist, addedQuantity, ending, playlistName);
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
 }
