@@ -8,6 +8,12 @@ public class AudioStorage {
     public interface Album {
         public static final String ALBUM_ID = MediaStore.Audio.Albums._ID;
         public static final String ALBUM = MediaStore.Audio.Albums.ALBUM;
+        /*There is no ARTIST_ID in MediaStore.Audio.Albums
+        * although in database "album_info" view this attribute is present
+        * Since MediaStore.Audio.Media.ARTIST_ID also named "artist_id"
+        * just use it here. Since "album_info" is a view from "audio" table(with selected "artist_id" from it)
+        * this can take place.*/
+        public static final String ARTIST_ID = MediaStore.Audio.Media.ARTIST_ID;
         public static final String ARTIST = MediaStore.Audio.Albums.ARTIST;
         public static final String SORT_ORDER = ALBUM + " ASC";
     }

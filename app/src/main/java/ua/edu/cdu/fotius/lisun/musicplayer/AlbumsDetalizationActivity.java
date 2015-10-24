@@ -4,11 +4,13 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 /**This activity created for supporting
@@ -37,6 +39,10 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
 
         if(mCurrentFragment == null) {
             Fragment fragment = new AlbumsBrowserFragment();
+            //------
+            Bundle bundle = getIntent().getExtras();
+            Log.d(TAG, "Artist Id passed to Activity: " + bundle.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY));
+            //------
             fragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, AlbumsBrowserFragment.TAG).commit();

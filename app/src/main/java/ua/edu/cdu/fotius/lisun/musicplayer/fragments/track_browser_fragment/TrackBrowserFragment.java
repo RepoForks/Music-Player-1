@@ -8,8 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,14 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 
-public class TrackBrowserFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver {
+public class TrackBrowserFragment extends BaseFragment implements ServiceConnectionObserver {
 
     public static final String TAG = "tracks";
-    public static final int ID_NOT_SET = -1;
-    private final int TRACK_LOADER_ID = 1;
 
-    private BaseSimpleCursorAdapter mCursorAdapter;
     private MediaPlaybackServiceWrapper mServiceWrapper;
     private BaseTrackCursorLoaderFactory mCursorLoaderFactory;
     private ToolbarStateListener mToolbarStateListener;
@@ -47,56 +44,26 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        /*do we actually need this if we use Loader?
-        * definitely, because don't need to create
-        * adapter and call onLoadFinished()
-        * everytime on config changes*/
-        setRetainInstance(true);
-
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindToService(getActivity(), this);
-
         /*if called with album id
         * then need to list tracks for
         * concrete album*/
         Bundle args = getArguments();
         long albumId, playlistId;
-        albumId = playlistId = ID_NOT_SET;
+        albumId = playlistId = PARENT_ID_IS_NOT_SET;
         if (args != null) {
-            albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, ID_NOT_SET);
-            playlistId = args.getLong(UsersPlaylistsBrowserFragment.PLAYLIST_ID_KEY, ID_NOT_SET);
+            albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, PARENT_ID_IS_NOT_SET);
+            playlistId = args.getLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, PARENT_ID_IS_NOT_SET);
         }
-
         mCursorLoaderFactory = getCursorLoaderFactory(albumId, playlistId);
 
-        mCursorAdapter = getCursorAdapter();
-        setListAdapter(mCursorAdapter);
+        super.onCreate(savedInstanceState);
 
-        getLoaderManager().initLoader(TRACK_LOADER_ID, null, this);
+        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper.bindToService(getActivity(), this);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ListView listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        TrackMenu trackMenu = new TrackMenu(getActivity(), mServiceWrapper);
-        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), mToolbarStateListener, listView, trackMenu));
-    }
-
-    private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {
-        if(albumId != ID_NOT_SET) {
-            return new AlbumTracksCursorLoaderFactory(getActivity(), albumId);
-        } else if(playlistId != ID_NOT_SET) {
-            return new PlaylistTracksCursorLoaderFactory(getActivity(), playlistId);
-        } else {
-            return new AllTracksCursorLoaderFactory(getActivity());
-        }
-    }
-
-    private BaseSimpleCursorAdapter getCursorAdapter() {
+    protected CursorAdapter initAdapter() {
         String[] from = new String[]{mCursorLoaderFactory.getTrackColumnName(),
                 mCursorLoaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
@@ -106,15 +73,27 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        mServiceWrapper.playAll(mCursorAdapter.getCursor(), position,
-                mCursorLoaderFactory.getTrackIdColumnName());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tracks_browser, container, false);
+        View v = inflater.inflate(R.layout.fragment_tracks_browser, container, false);
+        ListView listView = (ListView) v.findViewById(R.id.list);
+        listView.setAdapter(mCursorAdapter);
+        listView.setOnItemClickListener(new OnTrackClick(getActivity(), mCursorAdapter, mServiceWrapper,
+                mCursorLoaderFactory.getTrackIdColumnName()));
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        TrackMenu trackMenu = new TrackMenu(getActivity(), mServiceWrapper);
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), mToolbarStateListener, listView, trackMenu));
+        return v;
+    }
+
+    private BaseTrackCursorLoaderFactory getCursorLoaderFactory(long albumId, long playlistId) {
+        if(albumId != PARENT_ID_IS_NOT_SET) {
+            return new AlbumTracksCursorLoaderFactory(getActivity(), albumId);
+        } else if(playlistId != PARENT_ID_IS_NOT_SET) {
+            return new PlaylistTracksCursorLoaderFactory(getActivity(), playlistId);
+        } else {
+            return new AllTracksCursorLoaderFactory(getActivity());
+        }
     }
 
     @Override
@@ -126,20 +105,6 @@ public class TrackBrowserFragment extends ListFragment implements LoaderManager.
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
          return mCursorLoaderFactory.getCursorLoader();
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case TRACK_LOADER_ID:
-                mCursorAdapter.swapCursor(data);
-                break;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-        mCursorAdapter.swapCursor(null);
     }
 
     @Override

@@ -10,12 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UsersPlaylistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
@@ -93,8 +92,8 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
                                         TrackBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_my_playlists:
-                                replaceFragment(new UsersPlaylistsBrowserFragment(),
-                                        UsersPlaylistsBrowserFragment.TAG);
+                                replaceFragment(new PlaylistsBrowserFragment(),
+                                        PlaylistsBrowserFragment.TAG);
                                 break;
                             case R.id.navigation_item_settings:
                                 //TODO: initialize selectedFragment
