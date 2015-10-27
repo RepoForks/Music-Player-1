@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
-public abstract class BaseTrackCursorLoaderFactory {
+public abstract class AbstractCursorLoaderFactory {
 
     private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
 
-    protected BaseTrackCursorLoaderFactory(Context context) {
+    protected AbstractCursorLoaderFactory(Context context) {
         mContext = context;
     }
 

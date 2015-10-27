@@ -15,6 +15,8 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
      so don't need some specific loader ids.*/
     private final int ARBITRARY_LOADER_ID = 1;
     protected CursorAdapter mCursorAdapter;
+    private String tag;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,14 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
         setRetainInstance(true);
         mCursorAdapter = initAdapter();
         getLoaderManager().initLoader(ARBITRARY_LOADER_ID, null, this);
+    }
+
+    public String getFragmentTag() {
+        return tag;
+    }
+
+    public void setFragmentTag(String tag) {
+        this.tag = tag;
     }
 
     protected abstract CursorAdapter initAdapter();

@@ -1,12 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
@@ -14,6 +11,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class TrackDetalizationActivity extends AppCompatActivity implements ToolbarStateListener {
+
+
 
     private final String EXTRA_FRAGMENT_TAG = "current_fragment_tag";
     private Fragment mCurrentFragment;
@@ -38,7 +37,7 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
             Fragment fragment = new TrackBrowserFragment();
             fragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, TrackBrowserFragment.TAG).commit();
+                    .add(R.id.fragment_container, fragment, fragment.getTag()).commit();
             mCurrentFragment = fragment;
         }
     }
@@ -62,28 +61,6 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_track_detalization, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
