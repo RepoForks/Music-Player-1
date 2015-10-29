@@ -17,38 +17,82 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StableArrayAdapter extends ArrayAdapter<String> {
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
+
+public class StableArrayAdapter extends BaseSimpleCursorAdapter {
+
+    private final String TAG = getClass().getSimpleName();
 
     final int INVALID_ID = -1;
-
-    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
     private int mHandlerResourceID;
 
-    public StableArrayAdapter(Context context, int layout, int textViewResourceId, List<String> objects, int handlerResourceId) {
-        super(context, layout, textViewResourceId, objects);
+    private ArrayList<Integer> mPositionInPlaylist;
+    private ArrayList<Long> mTrackIds;
+    private ArrayList<ArrayList<String>> mEachLineData;
+//    in super class
+//    private String[] mFrom;
+//    private int[] mTo;
+
+    public StableArrayAdapter(Context context, int layout, String[] from, int[] to, int handlerResourceId) {
+        super(context, layout, from, to);
         mHandlerResourceID = handlerResourceId;
-        for (int i = 0; i < objects.size(); ++i) {
-            mIdMap.put(objects.get(i), i);
-        }
     }
 
     @Override
     public long getItemId(int position) {
-        if (position < 0 || position >= mIdMap.size()) {
+        if (position < 0 || position >= mTrackIds.size()) {
             return INVALID_ID;
         }
-        String item = getItem(position);
-        return mIdMap.get(item);
+        return mTrackIds.get(position);
     }
 
     @Override
     public boolean hasStableIds() {
         return android.os.Build.VERSION.SDK_INT < 20;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        int position = cursor.getPosition();
+        ArrayList<String> oneLineData = mEachLineData.get(position);
+        for(int i = 0; i < mTo.length; i++) {
+            View v = view.findViewById(mTo[i]);
+
+            if(v == null) continue;
+
+            if(v instanceof TextView) {
+                ((TextView) v).setText(oneLineData.get(i));
+            }
+        }
+    }
+
+    @Override
+    public Cursor swapCursor(Cursor c) {
+        if(c != null && c.moveToFirst()) {
+            mEachLineData = new ArrayList<>(c.getCount());
+            while(!c.isAfterLast()) {
+                ArrayList<String> oneLineData = new ArrayList<>();
+                for(int i = 0; i < mTo.length; i++) {
+                    oneLineData.add(c.getString(mFrom[i]));
+                }
+                mEachLineData.add(oneLineData);
+            }
+        }
+
+        return super.swapCursor(c);
     }
 
     public int getHandlerResourceID() {
