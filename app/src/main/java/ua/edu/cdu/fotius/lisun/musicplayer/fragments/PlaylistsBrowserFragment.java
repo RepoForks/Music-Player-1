@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
 public class PlaylistsBrowserFragment extends BaseFragment {
 
@@ -28,12 +29,18 @@ public class PlaylistsBrowserFragment extends BaseFragment {
     }
 
     @Override
-    protected CursorAdapter initAdapter() {
-        String[] from = new String[] { AudioStorage.Playlist.PLAYLIST };
+    protected CursorAdapter createAdapter() {
+        PlaylistCursorLoaderFactory loaderFactory = (PlaylistCursorLoaderFactory) mLoaderFactory;
+        String[] from = new String[] { loaderFactory.getPlaylistName()};
         int[] to = new int[] { R.id.playlist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.row_user_playlists_list, from, to);
+    }
+
+    @Override
+    protected AbstractCursorLoaderFactory createLoaderFactory() {
+        return new PlaylistCursorLoaderFactory(getActivity());
     }
 
     @Override
@@ -48,11 +55,6 @@ public class PlaylistsBrowserFragment extends BaseFragment {
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[] {
-                AudioStorage.Playlist.PLAYLIST_ID,
-                AudioStorage.Playlist.PLAYLIST
-        };
-        return new CursorLoader(getActivity(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                projection, null, null, AudioStorage.Playlist.SORT_ORDER);
+        return mLoaderFactory.getCursorLoader();
     }
 }

@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistAlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistTracksBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AlbumTracksBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
+//TODO: to superclass with TrackDetalizationActivity
 /**This activity created for supporting
  * Up/Back navigation*/
 public class AlbumsDetalizationActivity extends AppCompatActivity {
+
+    public static final String CALLED_FROM_KEY = "from_key";
+    public static final int CALLED_FROM_ARTISTS = 1;
 
     private final String TAG = getClass().getSimpleName();
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
@@ -38,16 +48,33 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
         }
 
         if(mCurrentFragment == null) {
-            Fragment fragment = new AlbumsBrowserFragment();
-            //------
-            Bundle bundle = getIntent().getExtras();
-            Log.d(TAG, "Artist Id passed to Activity: " + bundle.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY));
-            //------
+            Fragment fragment = getFragment(getIntent());
             fragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, AlbumsBrowserFragment.TAG).commit();
             mCurrentFragment = fragment;
         }
+    }
+
+    private BaseFragment getFragment(Intent intent) {
+        BaseFragment baseFragment = null;
+        Bundle extras = null;
+        if (intent != null) {
+            extras = intent.getExtras();
+            int from = extras.getInt(CALLED_FROM_KEY);
+            Log.d(TAG, "from where called: " + from);
+            switch (from) {
+                case CALLED_FROM_ARTISTS:
+                    baseFragment = new ArtistAlbumsBrowserFragment();
+                    break;
+                /*idelly won't be called at all, but needed for emergency*/
+                default:
+                    baseFragment = new AlbumTracksBrowserFragment();
+                    break;
+            }
+        }
+        baseFragment.setArguments(extras);
+        return baseFragment;
     }
 
     private Toolbar setUpToolbar() {
@@ -69,27 +96,5 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detalization, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

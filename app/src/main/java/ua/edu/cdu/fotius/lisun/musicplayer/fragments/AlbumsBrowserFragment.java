@@ -13,32 +13,30 @@ import android.widget.GridView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
 public class AlbumsBrowserFragment extends BaseFragment {
 
     public static final String TAG = "albums";
     public static final  String ALBUM_ID_KEY = "album_id_key";
-    private long mArtistId = PARENT_ID_IS_NOT_SET;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-         /*if called with artist id
-        * then need to list albums of
-        * this concrete artist*/
-        Bundle args = getArguments();
-        if(args != null) {
-            mArtistId = args.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, PARENT_ID_IS_NOT_SET);
-        }
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected BaseSimpleCursorAdapter initAdapter() {
+    protected BaseSimpleCursorAdapter createAdapter() {
         String[] from = new String[] {AudioStorage.Album.ALBUM, AudioStorage.Album.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
         return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.grid_item_albums, from, to);
+    }
+
+    @Override
+    protected AbstractCursorLoaderFactory createLoaderFactory() {
+        return new AlbumsCursorLoaderFactory(getActivity());
     }
 
     @Override
@@ -53,14 +51,6 @@ public class AlbumsBrowserFragment extends BaseFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[] {
-                AudioStorage.Album.ALBUM_ID,
-                AudioStorage.Album.ALBUM,
-                AudioStorage.Album.ARTIST
-        };
-        return new CursorLoader(getActivity(), MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                projection,
-                (mArtistId == -1) ? null : AudioStorage.Album.ARTIST_ID + " = ?",
-                (mArtistId == -1) ? null : new String[] {Long.toString(mArtistId)}, AudioStorage.Album.SORT_ORDER);
+        return mLoaderFactory.getCursorLoader();
     }
 }

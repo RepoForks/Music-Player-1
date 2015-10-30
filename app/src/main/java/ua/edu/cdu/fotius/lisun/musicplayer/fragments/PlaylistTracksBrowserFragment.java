@@ -24,8 +24,8 @@ public class PlaylistTracksBrowserFragment extends TrackBrowserFragment{
     }
 
     @Override
-    protected CursorAdapter initAdapter() {
-        return super.initAdapter();
+    protected CursorAdapter createAdapter() {
+        return super.createAdapter();
     }
 
     @Override

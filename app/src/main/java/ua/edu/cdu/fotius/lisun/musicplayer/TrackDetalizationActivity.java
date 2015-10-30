@@ -63,6 +63,7 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
                 case CALLED_FROM_PLAYLIST:
                     baseFragment = new PlaylistTracksBrowserFragment();
                     break;
+                /*idelly won't be called at all, but needed for emergency*/
                 default:
                     baseFragment = new TrackBrowserFragment();
                     break;

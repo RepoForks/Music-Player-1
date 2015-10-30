@@ -32,7 +32,4 @@ public abstract class AbstractCursorLoaderFactory {
     public abstract String getSelection();
     public abstract String[] getSelectionArgs();
     public abstract String getSortOrder();
-    public abstract String getTrackIdColumnName();
-    public abstract String getTrackColumnName();
-    public abstract String getArtistColumnName();
 }

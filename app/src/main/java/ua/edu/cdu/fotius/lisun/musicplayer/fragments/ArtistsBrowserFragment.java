@@ -19,6 +19,7 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AlbumsDetalizationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
 public class ArtistsBrowserFragment extends BaseFragment {
 
@@ -34,13 +35,20 @@ public class ArtistsBrowserFragment extends BaseFragment {
     }
 
     @Override
-    protected CursorAdapter initAdapter() {
-        String[] from = new String[]{AudioStorage.Artist.ARTIST, AudioStorage.Artist.ALBUMS_QUANTITY,
-                AudioStorage.Artist.TRACKS_QUANTITY};
+    protected CursorAdapter createAdapter() {
+        ArtistCursorLoaderFactory loaderFactory = (ArtistCursorLoaderFactory) mLoaderFactory;
+        String[] from = new String[]{loaderFactory.getArtistColumnName(),
+                loaderFactory.getAlbumsQuantityColumnName(),
+                loaderFactory.getTracksQuantityColumnName()};
         int[] to = new int[]{R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity};
 
         return new BaseSimpleCursorAdapter(getActivity(),
                 R.layout.row_artist_list, from, to);
+    }
+
+    @Override
+    protected AbstractCursorLoaderFactory createLoaderFactory() {
+        return new ArtistCursorLoaderFactory(getActivity());
     }
 
     @Override
@@ -55,14 +63,6 @@ public class ArtistsBrowserFragment extends BaseFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{
-                AudioStorage.Artist.ARTIST_ID,
-                AudioStorage.Artist.ARTIST,
-                AudioStorage.Artist.ALBUMS_QUANTITY,
-                AudioStorage.Artist.TRACKS_QUANTITY
-        };
-
-        return new CursorLoader(getActivity(), MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                projection, null, null, AudioStorage.Artist.SORT_ORDER);
+        return mLoaderFactory.getCursorLoader();
     }
 }

@@ -6,7 +6,7 @@ import android.provider.MediaStore;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
-public class AlbumTracksCursorLoaderFactory extends AbstractCursorLoaderFactory {
+public class AlbumTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
 
     private long mAlbumId;
 

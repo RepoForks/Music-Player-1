@@ -28,7 +28,7 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
     private MediaPlaybackServiceWrapper mServiceWrapper;
     private ToolbarStateListener mToolbarStateListener;
 
-    private AbstractCursorLoaderFactory mLoaderFactory;
+
     private BaseMenu mContextMenuContent;
     private AdapterView.OnItemClickListener mOnItemClick;
 
@@ -43,18 +43,19 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mLoaderFactory = createLoaderFactory();
         super.onCreate(savedInstanceState);
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
 
+        //TODO:
         //need to be after mServiceWrapper init
     }
 
     @Override
-    protected CursorAdapter initAdapter() {
-        String[] from = new String[]{mLoaderFactory.getTrackColumnName(),
-                mLoaderFactory.getArtistColumnName()};
+    protected CursorAdapter createAdapter() {
+        TracksCursorLoaderFactory loaderFactory = (TracksCursorLoaderFactory) mLoaderFactory;
+        String[] from = new String[]{loaderFactory.getTrackColumnName(),
+                loaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(), getRowLayoutID(), from, to);
@@ -90,6 +91,7 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
         return ListView.CHOICE_MODE_MULTIPLE_MODAL;
     }
 
+    @Override
     protected AbstractCursorLoaderFactory createLoaderFactory() {
         return new AllTracksCursorLoaderFactory(getActivity());
     }
@@ -99,8 +101,10 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
     }
 
     protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        TracksCursorLoaderFactory loaderFactory =
+                (TracksCursorLoaderFactory) mLoaderFactory;
         return new OnTrackClick(getActivity(), mCursorAdapter,
-                mServiceWrapper, mLoaderFactory.getTrackIdColumnName());
+                mServiceWrapper, loaderFactory.getTrackIdColumnName());
     }
 
     //TODO: do i actually need this in subclasses?
