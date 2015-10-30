@@ -9,17 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 
 public class TrackBrowserFragment extends BaseFragment implements ServiceConnectionObserver {
     public static final String TAG = "tracks";
@@ -28,7 +29,8 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
     private ToolbarStateListener mToolbarStateListener;
 
     private AbstractCursorLoaderFactory mLoaderFactory;
-    private AbstractFragmentContentFactory mContentFactory;
+    private BaseMenu mContextMenuContent;
+    private AdapterView.OnItemClickListener mOnItemClick;
 
     public TrackBrowserFragment() {
     }
@@ -41,41 +43,12 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        long albumId, playlistId;
-        playlistId = albumId = PARENT_ID_IS_NOT_SET;
-        if (args != null) {
-            albumId = args.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, PARENT_ID_IS_NOT_SET);
-            playlistId = args.getLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, PARENT_ID_IS_NOT_SET);
-        }
-
-        Log.d(TAG, "AlbumID: " + albumId);
-        Log.d(TAG, "PlaylistID: " + playlistId);
-
-        initFactories(albumId, playlistId);
-
+        mLoaderFactory = createLoaderFactory();
         super.onCreate(savedInstanceState);
-
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
-    }
 
-    private void initFactories(long albumId, long playlistId) {
-        Log.d(TAG, "AlbumID: " + albumId);
-        if(albumId != PARENT_ID_IS_NOT_SET) {
-            mLoaderFactory = new AlbumTracksCursorLoaderFactory(getActivity(), albumId);
-            mContentFactory =
-                    new TracksFragmentContenFactory(getActivity(), mServiceWrapper,
-                            mCursorAdapter, mLoaderFactory.getTrackIdColumnName());
-        } else if(playlistId != PARENT_ID_IS_NOT_SET) {
-            mLoaderFactory = new PlaylistTracksCursorLoaderFactory(getActivity(), playlistId);
-            mContentFactory = new PlaylistTracksFragmentContentFactory(getActivity(),
-                    mServiceWrapper, mCursorAdapter);
-        } else {
-            mLoaderFactory = new AllTracksCursorLoaderFactory(getActivity());
-            mContentFactory = new TracksFragmentContenFactory(getActivity(), mServiceWrapper,
-                    mCursorAdapter, mLoaderFactory.getTrackIdColumnName());
-        }
+        //need to be after mServiceWrapper init
     }
 
     @Override
@@ -84,23 +57,53 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
                 mLoaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
-        return new BaseSimpleCursorAdapter(getActivity(),
-                R.layout.row_tracks_list, from, to);
+        return new BaseSimpleCursorAdapter(getActivity(), getRowLayoutID(), from, to);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(mContentFactory.getLayoutID(), container, false);
-        ListView listView = (ListView) v.findViewById(mContentFactory.getListViewResourceID());
+        Log.d(TAG, "OnCreateView");
+        View v = inflater.inflate(getLayoutID(), container, false);
+        ListView listView = (ListView) v.findViewById(getListViewResourceID());
         listView.setAdapter(mCursorAdapter);
-        listView.setOnItemClickListener(mContentFactory.getOnItemClickListener());
-        listView.setChoiceMode(mContentFactory.getChoiceMode());
+        listView.setOnItemClickListener(createOnItemClickListener());
+        listView.setChoiceMode(getChoiceMode());
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, mContentFactory.getActionBarMenuContent()));
+                mToolbarStateListener, listView, createActionBarMenuContent()));
         return v;
     }
 
+    protected int getLayoutID() {
+        return R.layout.fragment_tracks_browser;
+    }
+
+    protected int getListViewResourceID() {
+        return R.id.list;
+    }
+
+    protected int getRowLayoutID() {
+        return R.layout.row_tracks_list;
+    }
+
+    protected int getChoiceMode() {
+        return ListView.CHOICE_MODE_MULTIPLE_MODAL;
+    }
+
+    protected AbstractCursorLoaderFactory createLoaderFactory() {
+        return new AllTracksCursorLoaderFactory(getActivity());
+    }
+
+    protected BaseMenu createActionBarMenuContent() {
+        return new TrackMenu(getActivity(), mServiceWrapper);
+    }
+
+    protected AdapterView.OnItemClickListener createOnItemClickListener() {
+        return new OnTrackClick(getActivity(), mCursorAdapter,
+                mServiceWrapper, mLoaderFactory.getTrackIdColumnName());
+    }
+
+    //TODO: do i actually need this in subclasses?
     @Override
     public void onDestroy() {
         super.onDestroy();

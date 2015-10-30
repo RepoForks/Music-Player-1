@@ -1,21 +1,29 @@
 package ua.edu.cdu.fotius.lisun.musicplayer;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistTracksBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AlbumTracksBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class TrackDetalizationActivity extends AppCompatActivity implements ToolbarStateListener {
 
-
+    public static final String CALLED_FROM_KEY = "from_key";
+    public static final int CALLED_FROM_ALBUMS = 1;
+    public static final int CALLED_FROM_PLAYLIST = 2;
 
     private final String EXTRA_FRAGMENT_TAG = "current_fragment_tag";
+
     private Fragment mCurrentFragment;
+
     private Toolbar mToolbar;
 
     @Override
@@ -25,16 +33,16 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
 
         mToolbar = setUpToolbar();
 
-        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_up_panel_layout);
         slidingPanel.setPanelSlideListener(new SlidingPanelListener(null));
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
             mCurrentFragment = getSupportFragmentManager().findFragmentByTag(savedFragmentTag);
         }
 
-        if(mCurrentFragment == null) {
-            Fragment fragment = new TrackBrowserFragment();
+        if (mCurrentFragment == null) {
+            Fragment fragment = getFragment(getIntent());
             fragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, fragment.getTag()).commit();
@@ -42,9 +50,31 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
         }
     }
 
+    private BaseFragment getFragment(Intent intent) {
+        BaseFragment baseFragment = null;
+        Bundle extras = null;
+        if (intent != null) {
+            extras = intent.getExtras();
+            int from = extras.getInt(CALLED_FROM_KEY);
+            switch (from) {
+                case CALLED_FROM_ALBUMS:
+                    baseFragment = new AlbumTracksBrowserFragment();
+                    break;
+                case CALLED_FROM_PLAYLIST:
+                    baseFragment = new PlaylistTracksBrowserFragment();
+                    break;
+                default:
+                    baseFragment = new TrackBrowserFragment();
+                    break;
+            }
+        }
+        baseFragment.setArguments(extras);
+        return baseFragment;
+    }
+
     private Toolbar setUpToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
+        if (toolbar != null) {
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.mipmap.ic_launcher);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {

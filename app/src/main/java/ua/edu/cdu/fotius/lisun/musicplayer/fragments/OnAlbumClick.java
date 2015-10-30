@@ -25,6 +25,8 @@ public class OnAlbumClick extends BaseFragmentItemClickListener{
             int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Album.ALBUM_ID);
             long albumId = cursor.getLong(idColumnIndex);
             Bundle extras = new Bundle();
+            extras.putInt(TrackDetalizationActivity.CALLED_FROM_KEY,
+                    TrackDetalizationActivity.CALLED_FROM_ALBUMS);
             extras.putLong(AlbumsBrowserFragment.ALBUM_ID_KEY, albumId);
             Intent intent = new Intent(mContext, TrackDetalizationActivity.class);
             intent.putExtras(extras);
