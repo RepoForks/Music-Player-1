@@ -24,10 +24,11 @@ public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory
     @Override
     public String[] getProjection() {
         return new String[]{
-                AudioStorage.PlaylistMember.TRACK_ID_WITHIN_PLAYLIST,
+                AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST,
                 AudioStorage.PlaylistMember.TRACK_ID,
                 AudioStorage.PlaylistMember.TRACK,
-                AudioStorage.PlaylistMember.ARTIST
+                AudioStorage.PlaylistMember.ARTIST,
+                AudioStorage.PlaylistMember.PLAY_ORDER
         };
     }
 
@@ -59,5 +60,13 @@ public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory
     @Override
     public String getArtistColumnName() {
         return AudioStorage.PlaylistMember.ARTIST;
+    }
+
+    public String getId() {
+        return AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST;
+    }
+
+    public String getPlayOrder() {
+        return AudioStorage.PlaylistMember.PLAY_ORDER;
     }
 }

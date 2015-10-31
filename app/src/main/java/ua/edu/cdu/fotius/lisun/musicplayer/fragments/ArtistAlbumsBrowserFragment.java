@@ -7,6 +7,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.Abst
 
 public class ArtistAlbumsBrowserFragment extends AlbumsBrowserFragment{
 
+    public static final String TAG = "artist_albums";
     private long mAlbumId = PARENT_ID_IS_NOT_SET;
 
     @Override

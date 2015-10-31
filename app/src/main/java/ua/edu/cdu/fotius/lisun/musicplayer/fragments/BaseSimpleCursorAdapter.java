@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,8 +18,10 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
  */
 public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
 
-    public BaseSimpleCursorAdapter(Context context, int layout, String[] from, int[] to) {
-        super(context, layout, /*cursor*/null, from, to, /*don't register content observer*/0);
+    private final String TAG = getClass().getSimpleName();
+
+    public BaseSimpleCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
+        super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
     }
 
     @Override

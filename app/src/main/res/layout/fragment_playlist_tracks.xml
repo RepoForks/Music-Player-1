@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.DynamicListView
+    <ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.DragNDropListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

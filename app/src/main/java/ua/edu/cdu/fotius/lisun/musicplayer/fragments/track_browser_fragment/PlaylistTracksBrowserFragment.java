@@ -1,16 +1,15 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.PlaylistTracksCursorLoaderFactory;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 
-public class PlaylistTracksBrowserFragment extends TrackBrowserFragment{
+public class PlaylistTracksBrowserFragment extends TracksDragNDropBrowserFragment{
 
+    public static final String TAG = "playlist_tracks";
     private long mPlaylistID = PARENT_ID_IS_NOT_SET;
 
     @Override
@@ -25,7 +24,13 @@ public class PlaylistTracksBrowserFragment extends TrackBrowserFragment{
 
     @Override
     protected CursorAdapter createAdapter() {
-        return super.createAdapter();
+        PlaylistTracksCursorLoaderFactory loaderFactory = (PlaylistTracksCursorLoaderFactory) mLoaderFactory;
+        String[] from = new String[]{loaderFactory.getTrackColumnName(),
+                loaderFactory.getArtistColumnName()};
+        int[] to = new int[]{R.id.track_title, R.id.artist_name};
+
+        return new DragNDropCursorAdapter(getActivity(), getRowLayoutID(), from, to, R.id.handler,
+                loaderFactory.getId(), loaderFactory.getPlayOrder());
     }
 
     @Override

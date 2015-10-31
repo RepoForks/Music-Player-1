@@ -45,7 +45,7 @@ public class AudioStorage {
     }
 
     public interface PlaylistMember {
-        public static final String TRACK_ID_WITHIN_PLAYLIST = MediaStore.Audio.Playlists.Members._ID;
+        public static final String ID_WITHIN_PLAYLIST = MediaStore.Audio.Playlists.Members._ID;
         public static final String TRACK_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
         public static final String TRACK = MediaStore.Audio.Playlists.Members.TITLE;
         public static final String ARTIST = MediaStore.Audio.Playlists.Members.ARTIST;

@@ -2,10 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +12,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
-public class AlbumsBrowserFragment extends BaseFragment {
+public class AlbumsBrowserFragment extends BaseLoaderFragment {
 
     public static final String TAG = "albums";
     public static final  String ALBUM_ID_KEY = "album_id_key";

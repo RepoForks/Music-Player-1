@@ -6,17 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistAlbumsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistTracksBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AlbumTracksBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 //TODO: to superclass with TrackDetalizationActivity
@@ -48,17 +43,18 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
         }
 
         if(mCurrentFragment == null) {
-            Fragment fragment = getFragment(getIntent());
+            BaseLoaderFragment fragment = getFragment(getIntent());
             fragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, AlbumsBrowserFragment.TAG).commit();
+                    .add(R.id.fragment_container, fragment, fragment.getFragmentTag()).commit();
             mCurrentFragment = fragment;
         }
     }
 
-    private BaseFragment getFragment(Intent intent) {
-        BaseFragment baseFragment = null;
+    private BaseLoaderFragment getFragment(Intent intent) {
+        BaseLoaderFragment baseFragment = null;
         Bundle extras = null;
+        String tag = null;
         if (intent != null) {
             extras = intent.getExtras();
             int from = extras.getInt(CALLED_FROM_KEY);
@@ -66,13 +62,16 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
             switch (from) {
                 case CALLED_FROM_ARTISTS:
                     baseFragment = new ArtistAlbumsBrowserFragment();
+                    tag = ArtistAlbumsBrowserFragment.TAG;
                     break;
                 /*idelly won't be called at all, but needed for emergency*/
                 default:
                     baseFragment = new AlbumTracksBrowserFragment();
+                    tag = AlbumTracksBrowserFragment.TAG;
                     break;
             }
         }
+        baseFragment.setFragmentTag(tag);
         baseFragment.setArguments(extras);
         return baseFragment;
     }

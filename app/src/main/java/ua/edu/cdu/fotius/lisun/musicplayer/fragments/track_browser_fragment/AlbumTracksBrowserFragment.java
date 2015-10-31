@@ -7,6 +7,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 
 public class AlbumTracksBrowserFragment extends TrackBrowserFragment{
 
+    public static final String TAG = "album_tracks";
+
     private long mAlbumID = PARENT_ID_IS_NOT_SET;
 
     @Override

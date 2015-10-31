@@ -30,14 +30,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -60,7 +58,7 @@ import java.util.ArrayList;
  * When the hover cell is either above or below the bounds of the listview, this
  * listview also scrolls on its own so as to reveal additional content.
  */
-public class DynamicListView extends ListView {
+public class DragNDropListView extends ListView {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -106,17 +104,17 @@ public class DynamicListView extends ListView {
 
     private int mDragHandlerResourceID;
 
-    public DynamicListView(Context context) {
+    public DragNDropListView(Context context) {
         super(context);
         init(context);
     }
 
-    public DynamicListView(Context context, AttributeSet attrs, int defStyle) {
+    public DragNDropListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
 
-    public DynamicListView(Context context, AttributeSet attrs) {
+    public DragNDropListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -127,7 +125,7 @@ public class DynamicListView extends ListView {
         mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
     }
 
-    public void setDragNDropAdapter(StableArrayAdapter adapter) {
+    public void setDragNDropAdapter(DragNDropCursorAdapter adapter) {
         mDragHandlerResourceID = adapter.getHandlerResourceID();
         setAdapter(adapter);
     }
@@ -194,7 +192,7 @@ public class DynamicListView extends ListView {
      */
     private void updateNeighborViewsForID(long itemID) {
         int position = getPositionForID(itemID);
-        StableArrayAdapter adapter = ((StableArrayAdapter)getAdapter());
+        DragNDropCursorAdapter adapter = ((DragNDropCursorAdapter)getAdapter());
         mAboveItemId = adapter.getItemId(position - 1);
         mBelowItemId = adapter.getItemId(position + 1);
     }
@@ -202,7 +200,7 @@ public class DynamicListView extends ListView {
     /** Retrieves the view in the list corresponding to itemID */
     public View getViewForID (long itemID) {
         int firstVisiblePosition = getFirstVisiblePosition();
-        StableArrayAdapter adapter = ((StableArrayAdapter)getAdapter());
+        DragNDropCursorAdapter adapter = ((DragNDropCursorAdapter)getAdapter());
         for(int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
             int position = firstVisiblePosition + i;
@@ -238,8 +236,12 @@ public class DynamicListView extends ListView {
     }
 
     public boolean isDrag(MotionEvent ev) {
+        Log.d(TAG, "isDrag");
         if (mIsDragMode) return true;
+        Log.d(TAG, "isDrag handlerID: " + mDragHandlerResourceID);
         if (mDragHandlerResourceID == 0) return false;
+
+        //Log.d(TAG, "isDrag handlerID: " + mDragHandlerResourceID);
 
         int x = (int)ev.getX();
         int y = (int)ev.getY();
@@ -267,7 +269,11 @@ public class DynamicListView extends ListView {
 
         if((event.getAction() == MotionEvent.ACTION_DOWN) && isDrag(event)) mIsDragMode = true;
 
+        Log.d(TAG, "isDraging");
+
         if (!mIsDragMode) return super.onTouchEvent(event);
+
+        Log.d(TAG, "isDraging2");
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -371,10 +377,9 @@ public class DynamicListView extends ListView {
 
             int switchViewPosition = mDropPosition = getPositionForView(switchView);
 
-            //TODO:
-            //swapElements(mCheeseList, originalItem, switchViewPosition);
-
-            ((BaseAdapter) getAdapter()).notifyDataSetChanged();
+            DragNDropCursorAdapter adapter = (DragNDropCursorAdapter)getAdapter();
+            adapter.swapElements(originalItem, switchViewPosition);
+            adapter.notifyDataSetChanged();
 
             mDownY = mLastEventY;
 
@@ -409,13 +414,6 @@ public class DynamicListView extends ListView {
             });
         }
     }
-
-    private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) {
-        Object temp = arrayList.get(indexOne);
-        arrayList.set(indexOne, arrayList.get(indexTwo));
-        arrayList.set(indexTwo, temp);
-    }
-
 
     /**
      * Resets all the appropriate fields to a default state while also animating

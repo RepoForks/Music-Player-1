@@ -19,14 +19,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
-public class TrackBrowserFragment extends BaseFragment implements ServiceConnectionObserver {
+public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver {
+
     public static final String TAG = "tracks";
 
     private MediaPlaybackServiceWrapper mServiceWrapper;
-    private ToolbarStateListener mToolbarStateListener;
+    protected ToolbarStateListener mToolbarStateListener;
 
 
     private BaseMenu mContextMenuContent;
@@ -64,7 +65,9 @@ public class TrackBrowserFragment extends BaseFragment implements ServiceConnect
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "OnCreateView");
+
+        Log.d(TAG, "OnCreateView ---> TracksBrowserFragment");
+
         View v = inflater.inflate(getLayoutID(), container, false);
         ListView listView = (ListView) v.findViewById(getListViewResourceID());
         listView.setAdapter(mCursorAdapter);

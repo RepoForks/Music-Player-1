@@ -1,14 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -16,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AlbumsDetalizationActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
-public class ArtistsBrowserFragment extends BaseFragment {
+public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
     public static final String TAG = "artists";
     public static final String ARTIST_ID_KEY = "artist_id_key";

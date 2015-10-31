@@ -10,7 +10,7 @@ import android.support.v4.widget.CursorAdapter;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
-public abstract class BaseFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public abstract class BaseLoaderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final int PARENT_ID_IS_NOT_SET = -1;
     /*we have one and only one loader per fragment
