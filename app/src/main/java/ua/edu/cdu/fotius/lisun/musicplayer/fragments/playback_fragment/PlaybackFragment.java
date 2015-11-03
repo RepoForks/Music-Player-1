@@ -9,12 +9,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -23,6 +26,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 public class PlaybackFragment extends Fragment implements ServiceConnectionObserver,
@@ -33,6 +37,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
+    private ImageView mAlbumArt;
     private TextView mTrackName;
     private BaseNameTextView mArtistName;
     private SeekBar mSeekBar;
@@ -65,6 +70,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         viewsFactory.initializePrevAdditionalButton();
         viewsFactory.initializeNextButton();
         viewsFactory.initializeNextAdditionalButton();
+        mAlbumArt = viewsFactory.initializeAlbumArtImageView();
         mPlayButton = viewsFactory.initializePlayPauseButton();
         mPlayAdditionalButton = viewsFactory.initializePlayPauseAdditionalButton();
         mRepeatButton = viewsFactory.initializeRepeatButton();
@@ -124,6 +130,13 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
                     duration / ViewsFactory.SEEK_BAR_MAX));
         } else {
             refreshViewsOnError();
+        }
+
+        long albumID = mServiceWrapper.getAlbumID();
+        if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
+            String albumArtPath = DatabaseUtils.queryAlbumArtPath(getActivity(), albumID);
+            Log.d(TAG, "albumArtPath: " + albumArtPath);
+            new ImageLoader().load(albumArtPath).into(mAlbumArt);
         }
     }
 

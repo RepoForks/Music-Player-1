@@ -286,6 +286,17 @@ public class MediaPlaybackServiceWrapper
         return ERROR_RETURN_VALUE;
     }
 
+    public long getAlbumID() {
+        if(mService != null) {
+            try {
+                return mService.getAlbumId();
+            } catch(RemoteException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+        return ERROR_RETURN_VALUE;
+    }
+
     public void onServiceConnected(ComponentName name, IBinder service) {
         mService = IMediaPlaybackService.Stub.asInterface(service);
         /* Notify all observers.

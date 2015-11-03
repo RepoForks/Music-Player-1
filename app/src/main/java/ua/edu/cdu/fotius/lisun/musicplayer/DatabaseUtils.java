@@ -41,4 +41,35 @@ public class DatabaseUtils {
         }
         return resolver.bulkInsert(uri, contentValues);
     }
+
+    public static String queryAlbumArtPath(Context context, long albumID) {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[] {AudioStorage.Album.ALBUM_ART};
+        String selection = AudioStorage.Album.ALBUM_ID + "=?";
+        String[] selectionArgs = new String[] {Long.toString(albumID)};
+        Cursor c = contentResolver.query(uri, projection, selection, selectionArgs, null);
+        String path = null;
+        if((c != null) && (c.moveToFirst())) {
+            path = c.getString(c.getColumnIndexOrThrow(AudioStorage.Album.ALBUM_ART));
+        }
+        return path;
+    }
+
+    public static long queryAlbumID(Context context, long trackID) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[] {
+            AudioStorage.Track.ALBUM_ID
+        };
+        String selection = AudioStorage.Track.TRACK_ID + "=?";
+        String[] selectionArgs = new String[] {Long.toString(trackID)};
+        Cursor c = contentResolver.query(uri, projection, selection, selectionArgs, null);
+        long returnAlbumId = -1;
+        if((c != null) && (c.moveToFirst())) {
+            returnAlbumId = c.getLong(c.getColumnIndexOrThrow(AudioStorage.Track.ALBUM_ID));
+        }
+        return returnAlbumId;
+    }
 }

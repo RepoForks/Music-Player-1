@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -26,14 +27,14 @@ public class ViewsFactory {
     private OnPlayPauseClickedListener mPlayPauseListener;
 
 
-    public ViewsFactory(View layout, ListenerCallbacks callbacks){
+    public ViewsFactory(View layout, ListenerCallbacks callbacks) {
         mLayout = layout;
         mCallbacks = callbacks;
 
-         mRewindListener = new OnRewindListener(mCallbacks);
-         mPrevListener = new OnPreviousClickedListener(mCallbacks);
-         mForwardListener = new OnFastForwardListener(mCallbacks);
-         mNextListener = new OnNextClickedListener(mCallbacks);
+        mRewindListener = new OnRewindListener(mCallbacks);
+        mPrevListener = new OnPreviousClickedListener(mCallbacks);
+        mForwardListener = new OnFastForwardListener(mCallbacks);
+        mNextListener = new OnNextClickedListener(mCallbacks);
         mPlayPauseListener = new OnPlayPauseClickedListener(mCallbacks);
     }
 
@@ -71,6 +72,10 @@ public class ViewsFactory {
         nextAdditionalButton.setRepeatListener(mForwardListener);
 
         return nextAdditionalButton;
+    }
+
+    public ImageView initializeAlbumArtImageView() {
+        return (ImageView) mLayout.findViewById(R.id.album_art);
     }
 
     public PlayButton initializePlayPauseButton() {

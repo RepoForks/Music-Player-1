@@ -58,7 +58,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/album_cover"
+            android:id="@+id/album_art"
             android:layout_width="@dimen/album_cover_image_size"
             android:layout_height="@dimen/album_cover_image_size"
             android:cropToPadding="true"

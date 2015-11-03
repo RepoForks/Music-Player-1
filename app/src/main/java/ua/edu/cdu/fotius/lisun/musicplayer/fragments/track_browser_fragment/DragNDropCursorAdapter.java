@@ -63,11 +63,6 @@ public class DragNDropCursorAdapter extends BaseSimpleCursorAdapter implements D
     }
 
     @Override
-    public boolean hasStableIds() {
-        return android.os.Build.VERSION.SDK_INT < 20;
-    }
-
-    @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Log.d(TAG, "EachLineDAta in bindView: " + mEachLineData.size());
         int position = cursor.getPosition();
@@ -90,15 +85,21 @@ public class DragNDropCursorAdapter extends BaseSimpleCursorAdapter implements D
     }
 
     private void swapEachLineData(int from, int to) {
+        Log.d(TAG, "From: " + from + " to: " + to);
         ArrayList<String> tmp = mEachLineData.get(from);
         mEachLineData.set(from, mEachLineData.get(to));
         mEachLineData.set(to, tmp);
     }
 
     private void swapIds(int from, int to) {
+
+        Log.d(TAG, "id(from) : " + mIds.get(from) + " id(to) : " + mIds.get(to));
+
         long tmp = mIds.get(from);
         mIds.set(from, mIds.get(to));
         mIds.set(to, tmp);
+
+        Log.d(TAG, "id(from) : " + mIds.get(from) + " id(to) : " + mIds.get(to));
     }
 
     private void swapPlayOrder(int from, int to) {

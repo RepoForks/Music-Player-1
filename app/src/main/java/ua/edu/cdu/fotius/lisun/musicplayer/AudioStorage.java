@@ -15,6 +15,7 @@ public class AudioStorage {
         * this can take place.*/
         public static final String ARTIST_ID = MediaStore.Audio.Media.ARTIST_ID;
         public static final String ARTIST = MediaStore.Audio.Albums.ARTIST;
+        public static final String ALBUM_ART = MediaStore.Audio.Albums.ALBUM_ART;
         public static final String SORT_ORDER = ALBUM + " ASC";
     }
 

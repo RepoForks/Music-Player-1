@@ -140,13 +140,12 @@ public class DragNDropListView extends ListView {
      * single time an invalidate call is made.
      */
     private BitmapDrawable getAndAddHoverView(View v) {
-
         int w = v.getWidth();
         int h = v.getHeight();
         int top = v.getTop();
         int left = v.getLeft();
 
-        Bitmap b = getBitmapWithBorder(v);
+        Bitmap b = getBitmapFromView(v);
 
         BitmapDrawable drawable = new BitmapDrawable(getResources(), b);
 
@@ -156,24 +155,6 @@ public class DragNDropListView extends ListView {
         drawable.setBounds(mHoverCellCurrentBounds);
 
         return drawable;
-    }
-
-    /** Draws a black border over the screenshot of the view passed in. */
-    private Bitmap getBitmapWithBorder(View v) {
-        Bitmap bitmap = getBitmapFromView(v);
-        Canvas can = new Canvas(bitmap);
-
-        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(LINE_THICKNESS);
-        paint.setColor(Color.BLACK);
-
-        can.drawBitmap(bitmap, 0, 0, null);
-        can.drawRect(rect, paint);
-
-        return bitmap;
     }
 
     /** Returns a bitmap showing a screenshot of the view passed in. */
@@ -197,21 +178,6 @@ public class DragNDropListView extends ListView {
         mBelowItemId = adapter.getItemId(position + 1);
     }
 
-    /** Retrieves the view in the list corresponding to itemID */
-    public View getViewForID (long itemID) {
-        int firstVisiblePosition = getFirstVisiblePosition();
-        DragNDropCursorAdapter adapter = ((DragNDropCursorAdapter)getAdapter());
-        for(int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
-            int position = firstVisiblePosition + i;
-            long id = adapter.getItemId(position);
-            if (id == itemID) {
-                return v;
-            }
-        }
-        return null;
-    }
-
     /** Retrieves the position in the list corresponding to itemID */
     public int getPositionForID (long itemID) {
         View v = getViewForID(itemID);
@@ -220,6 +186,22 @@ public class DragNDropListView extends ListView {
         } else {
             return getPositionForView(v);
         }
+    }
+
+    /** Retrieves the view in the list corresponding to itemID */
+    public View getViewForID (long itemID) {
+        int firstVisiblePosition = getFirstVisiblePosition();
+        DragNDropCursorAdapter adapter = ((DragNDropCursorAdapter)getAdapter());
+        for(int i = 0; i < getChildCount(); i++) {
+            //TODO: changed
+            //View v = getChildAt(i);
+            int position = firstVisiblePosition + i;
+            long id = adapter.getItemId(position);
+            if (id == itemID) {
+                return getChildAt(i);
+            }
+        }
+        return null;
     }
 
     /**
@@ -236,9 +218,7 @@ public class DragNDropListView extends ListView {
     }
 
     public boolean isDrag(MotionEvent ev) {
-        Log.d(TAG, "isDrag");
         if (mIsDragMode) return true;
-        Log.d(TAG, "isDrag handlerID: " + mDragHandlerResourceID);
         if (mDragHandlerResourceID == 0) return false;
 
         //Log.d(TAG, "isDrag handlerID: " + mDragHandlerResourceID);
@@ -269,11 +249,7 @@ public class DragNDropListView extends ListView {
 
         if((event.getAction() == MotionEvent.ACTION_DOWN) && isDrag(event)) mIsDragMode = true;
 
-        Log.d(TAG, "isDraging");
-
         if (!mIsDragMode) return super.onTouchEvent(event);
-
-        Log.d(TAG, "isDraging2");
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -378,6 +354,9 @@ public class DragNDropListView extends ListView {
             int switchViewPosition = mDropPosition = getPositionForView(switchView);
 
             DragNDropCursorAdapter adapter = (DragNDropCursorAdapter)getAdapter();
+
+            Log.d(TAG, "originalItem: " + originalItem);
+            Log.d(TAG, "switchViewPosition: " + switchViewPosition);
             adapter.swapElements(originalItem, switchViewPosition);
             adapter.notifyDataSetChanged();
 
@@ -385,8 +364,15 @@ public class DragNDropListView extends ListView {
 
             final int switchViewStartTop = switchView.getTop();
 
-            mobileView.setVisibility(View.VISIBLE);
-            switchView.setVisibility(View.INVISIBLE);
+            if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.KITKAT){
+                mobileView.setVisibility(View.VISIBLE);
+                switchView.setVisibility(View.INVISIBLE);
+            }
+
+//            else{
+//                mobileView.setVisibility(View.INVISIBLE);
+//                switchView.setVisibility(View.VISIBLE);
+//            }
 
             updateNeighborViewsForID(mMobileItemId);
 

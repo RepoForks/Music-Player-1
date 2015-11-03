@@ -29,10 +29,6 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
     private MediaPlaybackServiceWrapper mServiceWrapper;
     protected ToolbarStateListener mToolbarStateListener;
 
-
-    private BaseMenu mContextMenuContent;
-    private AdapterView.OnItemClickListener mOnItemClick;
-
     public TrackBrowserFragment() {
     }
 
