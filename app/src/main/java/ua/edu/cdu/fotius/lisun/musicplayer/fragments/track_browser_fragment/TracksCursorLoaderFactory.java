@@ -3,7 +3,9 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
 
 import android.content.Context;
 
-public abstract class TracksCursorLoaderFactory extends AbstractCursorLoaderFactory{
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AbstractCursorLoaderFactory;
+
+public abstract class TracksCursorLoaderFactory extends AbstractCursorLoaderFactory {
 
     protected TracksCursorLoaderFactory(Context context) {
         super(context);

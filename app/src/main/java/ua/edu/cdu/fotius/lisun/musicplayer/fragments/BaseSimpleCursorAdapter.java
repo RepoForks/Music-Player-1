@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 
 /**
@@ -47,7 +48,7 @@ public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
                 setViewImage((ImageView) v, text);
             } else {
                 throw new IllegalStateException(v.getClass().getName() + " is not a " +
-                        " view that can be bounds by this SimpleCursorAdapter");
+                        " view that can be bounds by this BaseSimpleCursorAdapter");
             }
         }
     }

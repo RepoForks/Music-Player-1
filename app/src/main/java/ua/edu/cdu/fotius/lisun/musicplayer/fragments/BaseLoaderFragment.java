@@ -8,8 +8,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
-
 public abstract class BaseLoaderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final int PARENT_ID_IS_NOT_SET = -1;

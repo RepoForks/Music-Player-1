@@ -11,9 +11,11 @@ public class BitmapAsyncLoader extends AsyncTask<String, Void, Bitmap> {
 
     private WeakReference<ImageView> mImageViewWeakReference;
     private String mImagePath = null;
+    private ImageMemoryCache mImageMemoryCache = null;
 
-    public BitmapAsyncLoader(ImageView imageView) {
+    public BitmapAsyncLoader(ImageView imageView, ImageMemoryCache imageMemoryCache) {
         mImageViewWeakReference = new WeakReference<ImageView>(imageView);
+        mImageMemoryCache  = imageMemoryCache;
     }
 
     public String getImagePath() {
@@ -24,11 +26,13 @@ public class BitmapAsyncLoader extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... params) {
         mImagePath = params[0];
         ImageView imageView = mImageViewWeakReference.get();
+        Bitmap bitmap = null;
         if (imageView != null) {
-            return ImageUtils.decodeSampledBitmapFromPath(mImagePath,
+            bitmap = ImageUtils.decodeSampledBitmapFromPath(mImagePath,
                     imageView.getWidth(), imageView.getHeight());
+            mImageMemoryCache.addBitmap(mImagePath, bitmap);
         }
-        return null;
+        return bitmap;
     }
 
     @Override

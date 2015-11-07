@@ -10,7 +10,6 @@ import android.widget.GridView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
 
 public class AlbumsBrowserFragment extends BaseLoaderFragment {
 

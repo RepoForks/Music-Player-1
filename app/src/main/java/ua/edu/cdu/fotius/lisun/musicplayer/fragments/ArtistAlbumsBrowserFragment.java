@@ -2,9 +2,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.os.Bundle;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AbstractCursorLoaderFactory;
-
 public class ArtistAlbumsBrowserFragment extends AlbumsBrowserFragment{
 
     public static final String TAG = "artist_albums";

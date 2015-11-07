@@ -19,6 +19,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AbstractCursorLoaderFactory;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 

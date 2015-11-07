@@ -5,6 +5,7 @@ import android.support.v4.widget.CursorAdapter;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AbstractCursorLoaderFactory;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 
 public class PlaylistTracksBrowserFragment extends TracksDragNDropBrowserFragment{

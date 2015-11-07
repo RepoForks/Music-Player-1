@@ -1,11 +1,28 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.widget.ImageView;
 
 public class ImageLoader {
 
+    private static ImageLoader instance;
+
+    public static ImageLoader from(Context c) {
+        if(instance == null) {
+            instance = new ImageLoader(c);
+        }
+        return instance;
+    }
+
     private String mFilePath = null;
+    private ImageMemoryCache mImageMemoryCache;
+
+    private ImageLoader(Context c){
+        mImageMemoryCache = new ImageMemoryCache(c);
+    }
 
     public ImageLoader load(String filePath) {
         mFilePath = filePath;
@@ -18,10 +35,15 @@ public class ImageLoader {
 
     private void loadBitmap(String filePath, ImageView imageView) {
         if(cancelPotentialWork(filePath, imageView)) {
-            BitmapAsyncLoader bitmapAsyncLoader = new BitmapAsyncLoader(imageView);
-            AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(bitmapAsyncLoader);
-            imageView.setImageDrawable(asyncTempDrawable);
-            bitmapAsyncLoader.execute(filePath);
+            Bitmap bitmap = mImageMemoryCache.getBitmap(filePath);
+            if(bitmap != null) {
+                imageView.setImageBitmap(bitmap);
+            } else {
+                BitmapAsyncLoader bitmapAsyncLoader = new BitmapAsyncLoader(imageView, mImageMemoryCache);
+                AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(bitmapAsyncLoader);
+                imageView.setImageDrawable(asyncTempDrawable);
+                bitmapAsyncLoader.execute(filePath);
+            }
         }
     }
 

@@ -136,7 +136,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             String albumArtPath = DatabaseUtils.queryAlbumArtPath(getActivity(), albumID);
             Log.d(TAG, "albumArtPath: " + albumArtPath);
-            new ImageLoader().load(albumArtPath).into(mAlbumArt);
+            ImageLoader.from(getActivity()).load(albumArtPath).into(mAlbumArt);
         }
     }
 
