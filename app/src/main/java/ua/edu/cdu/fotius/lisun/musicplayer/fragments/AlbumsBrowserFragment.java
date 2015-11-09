@@ -26,8 +26,8 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         String[] from = new String[] {AudioStorage.Album.ALBUM, AudioStorage.Album.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
-        return new BaseSimpleCursorAdapter(getActivity(),
-                R.layout.grid_item_albums, from, to);
+        return new AlbumArtCursorAdapter(getActivity(),
+                R.layout.grid_item_albums, from, to, AudioStorage.Album.ALBUM_ID);
     }
 
     @Override

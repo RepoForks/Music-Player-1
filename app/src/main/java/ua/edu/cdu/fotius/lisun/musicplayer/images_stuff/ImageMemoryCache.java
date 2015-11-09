@@ -10,10 +10,8 @@ public class ImageMemoryCache {
     private final String TAG = getClass().getSimpleName();
 
     private BitmapLruCache mCache;
-    private Context mContext;
 
-    public ImageMemoryCache(Context context) {
-        mContext = context;
+    public ImageMemoryCache() {
         init();
     }
 
@@ -24,8 +22,9 @@ public class ImageMemoryCache {
     }
 
     public void addBitmap(String key, Bitmap bitmap) {
-
-        Log.d(TAG, "key: " + key + " bitmap: " + bitmap);
+        if((key == null) || (bitmap == null)) {
+            return;
+        }
 
         if(getBitmap(key) == null) {
             mCache.put(key, bitmap);
@@ -33,9 +32,9 @@ public class ImageMemoryCache {
     }
 
     public Bitmap getBitmap(String key) {
-
-        Log.d(TAG, "key: " + key + " bitmap: " + mCache.get(key));
-
+        if(key == null) {
+            return null;
+        }
         return mCache.get(key);
     }
 }

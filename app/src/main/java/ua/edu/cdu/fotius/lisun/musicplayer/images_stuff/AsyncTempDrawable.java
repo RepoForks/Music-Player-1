@@ -1,20 +1,19 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
-import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 
 import java.lang.ref.WeakReference;
 
 public class AsyncTempDrawable extends BitmapDrawable {
 
-    private WeakReference<BitmapAsyncLoader> mBitmapAsyncLoaderWeakReference;
+    private WeakReference<BaseBitmapAsyncLoader> mBitmapAsyncLoaderWeakReference;
 
-    public AsyncTempDrawable(BitmapAsyncLoader bitmapAsyncLoader) {
+    public AsyncTempDrawable(BaseBitmapAsyncLoader bitmapAsyncFileLoader) {
         mBitmapAsyncLoaderWeakReference =
-                new WeakReference<BitmapAsyncLoader>(bitmapAsyncLoader);
+                new WeakReference<BaseBitmapAsyncLoader>(bitmapAsyncFileLoader);
     }
 
-    public BitmapAsyncLoader getBitmapAsyncLoader() {
+    public BaseBitmapAsyncLoader getBitmapAsyncLoader() {
         return mBitmapAsyncLoaderWeakReference.get();
     }
 }

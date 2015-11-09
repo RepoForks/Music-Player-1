@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 
 /**
@@ -26,13 +27,13 @@ public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View rowLayout, Context context, Cursor cursor) {
         final int count = mTo.length;
         final int[] from = mFrom;
         final int[] to = mTo;
 
         for (int i = 0; i < count; i++) {
-            final View v = view.findViewById(to[i]);
+            final View v = rowLayout.findViewById(to[i]);
             if (v == null) {
                 continue;
             }

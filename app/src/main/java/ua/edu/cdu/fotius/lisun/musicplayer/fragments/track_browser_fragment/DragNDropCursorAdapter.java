@@ -63,12 +63,12 @@ public class DragNDropCursorAdapter extends BaseSimpleCursorAdapter implements D
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View rowLayout, Context context, Cursor cursor) {
         Log.d(TAG, "EachLineDAta in bindView: " + mEachLineData.size());
         int position = cursor.getPosition();
         ArrayList<String> oneLineData = mEachLineData.get(position);
         for(int i = 0; i < mTo.length; i++) {
-            View v = view.findViewById(mTo[i]);
+            View v = rowLayout.findViewById(mTo[i]);
 
             if(v == null) continue;
 

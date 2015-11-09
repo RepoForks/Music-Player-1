@@ -4,13 +4,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 
 public class ImageUtils {
 
-    public static BitmapAsyncLoader getAsyncLoader(ImageView imageView) {
+    public static BaseBitmapAsyncLoader getAsyncLoader(ImageView imageView) {
         Drawable drawable = imageView.getDrawable();
         if(drawable instanceof AsyncTempDrawable) {
             AsyncTempDrawable asyncDrawable = (AsyncTempDrawable) drawable;
@@ -19,17 +20,35 @@ public class ImageUtils {
         return null;
     }
 
-    public static Bitmap decodeSampledBitmapFromPath(String pathName, int reqWidth, int reqHeight) {
+    //TODO
+    private static final String TAG = "ImageUtils";
+
+    public static Bitmap decodeSampledBitmapFromPath(String pathName, int reqWidth, int reqHeight){
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = calculateInSampleSize(pathName, reqWidth, reqHeight);
+        options.inSampleSize = calculateFileInSampleSize(pathName, reqWidth, reqHeight);
+        Log.d(TAG, "InSampleSize: " + options.inSampleSize);
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(pathName, options);
     }
 
-    private static int calculateInSampleSize(String pathName, int reqWidth, int reqHeight) {
+    public static Bitmap decodeSampledBitmapFromResource(Resources resources, int resId, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = calculateResourceInSampleSize(resources, resId, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(resources, resId, options);
+    }
+
+    private static int calculateFileInSampleSize(String pathName, int reqWidth, int reqHeight) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(pathName, options);
+        return calculateInSampleSize(options, reqWidth, reqHeight);
+    }
+
+    private static int calculateResourceInSampleSize(Resources resources, int resId, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(resources, resId, options);
         return calculateInSampleSize(options, reqWidth, reqHeight);
     }
 
@@ -39,6 +58,9 @@ public class ImageUtils {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
+
+        Log.d(TAG, "reqWidth: " + reqWidth + " reqHeight: " + reqHeight);
+        Log.d(TAG, "Width: " + width + " Height: " + height);
 
         if (height > reqHeight || width > reqWidth) {
             final int halfHeight = height;
