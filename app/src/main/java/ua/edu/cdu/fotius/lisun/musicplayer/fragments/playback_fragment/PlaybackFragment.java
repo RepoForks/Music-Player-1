@@ -49,6 +49,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private RepeatButton mRepeatButton;
     private ShuffleButton mShuffleButton;
     private MediaPlaybackServiceWrapper mServiceWrapper;
+    private ImageLoader mImageLoader;
 
     public PlaybackFragment() {}
 
@@ -59,6 +60,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
+
+        mImageLoader = new ImageLoader(getActivity());
     }
 
     @Override
@@ -135,7 +138,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         long albumID = mServiceWrapper.getAlbumID();
         if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             String albumArtPath = DatabaseUtils.queryAlbumArtPath(getActivity(), albumID);
-            ImageLoader.from(getActivity()).load(albumArtPath).into(mAlbumArt);
+            mImageLoader.load(albumArtPath).withDefault(R.mipmap.ic_launcher).into(mAlbumArt);
         }
     }
 

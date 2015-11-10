@@ -20,8 +20,8 @@ public class BitmapAsyncResLoader extends BaseBitmapAsyncLoader{
     }
 
     @Override
-    protected void addToMemoryCache(Object bitmapSource, Bitmap bitmap) {
-        String resId = String.valueOf(bitmapSource);
-        mImageMemoryCache.addBitmap(resId, bitmap);
+    protected void addToMemoryCache(Object bitmapSource, Bitmap bitmap, int imageViewWidth, int imageViewHeight) {
+        //String resId = String.valueOf(bitmapSource);
+        mImageMemoryCache.addBitmap(ImageMemoryCache.formKey(bitmapSource, imageViewWidth, imageViewHeight), bitmap);
     }
 }

@@ -9,9 +9,27 @@ public class ImageMemoryCache {
 
     private final String TAG = getClass().getSimpleName();
 
+    public static ImageMemoryCache mInstance = null;
+
+    public static ImageMemoryCache getImageMemoryCache() {
+        if(mInstance == null) {
+            mInstance = new ImageMemoryCache();
+        }
+        return mInstance;
+    }
+
+    public static String formKey(Object imageSource, int imageWidth, int imageHeight) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(String.valueOf(imageSource));
+        stringBuffer.append(imageWidth);
+        stringBuffer.append(imageHeight);
+        Log.d("formKey", stringBuffer.toString());
+        return stringBuffer.toString();
+    }
+
     private BitmapLruCache mCache;
 
-    public ImageMemoryCache() {
+    private ImageMemoryCache() {
         init();
     }
 
@@ -22,19 +40,14 @@ public class ImageMemoryCache {
     }
 
     public void addBitmap(String key, Bitmap bitmap) {
-        if((key == null) || (bitmap == null)) {
-            return;
-        }
-
         if(getBitmap(key) == null) {
+            Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
             mCache.put(key, bitmap);
         }
     }
 
     public Bitmap getBitmap(String key) {
-        if(key == null) {
-            return null;
-        }
+        Log.d(TAG, "MemCache.Get. key: " + key + " value: " + ((key != null) ? mCache.get(key) : ""));
         return mCache.get(key);
     }
 }

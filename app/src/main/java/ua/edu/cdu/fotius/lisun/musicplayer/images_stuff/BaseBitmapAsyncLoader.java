@@ -3,11 +3,14 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
 public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitmap>{
+
+    private final String TAG = getClass().getSimpleName();
 
     private WeakReference<ImageView> mImageViewWeakReference;
     protected ImageMemoryCache mImageMemoryCache = null;
@@ -25,7 +28,8 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
         Bitmap bitmap = null;
         if (imageView != null) {
             bitmap = decodeBitmap(bitmapSource, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
-            addToMemoryCache(bitmapSource, bitmap);
+            Log.d(TAG, "doInBackground");
+            addToMemoryCache(bitmapSource, bitmap, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
         }
         return bitmap;
     }
@@ -50,5 +54,5 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
     }
 
     protected abstract Bitmap decodeBitmap(Object bitmapSource, int width, int height);
-    protected abstract void addToMemoryCache(Object bitmapSource, Bitmap bitmap);
+    protected abstract void addToMemoryCache(Object bitmapSource, Bitmap bitmap, int imageWidth, int imageHeight);
 }
