@@ -27,7 +27,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
         return new AlbumArtCursorAdapter(getActivity(),
-                R.layout.grid_item_albums, from, to, AudioStorage.Album.ALBUM_ID);
+                R.layout.grid_item_albums, from, to, R.id.album_art, AudioStorage.Album.ALBUM_ID);
     }
 
     @Override

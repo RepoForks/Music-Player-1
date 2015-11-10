@@ -3,14 +3,11 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
 public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitmap>{
-
-    private final String TAG = getClass().getSimpleName();
 
     private WeakReference<ImageView> mImageViewWeakReference;
     protected ImageMemoryCache mImageMemoryCache = null;
@@ -29,9 +26,6 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
         if (imageView != null) {
             bitmap = decodeBitmap(bitmapSource, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
             addToMemoryCache(bitmapSource, bitmap);
-
-            Log.d(TAG, "After decoding. Bitmap. Width: " + ((bitmap != null) ? bitmap.getWidth() : "---") + " Height: " + ((bitmap != null) ? bitmap.getHeight() : "---"));
-            Log.d(TAG, "After decoding. ImageView. Width: " + imageView.getWidth() + " Height: " + imageView.getHeight());
         }
         return bitmap;
     }
@@ -44,7 +38,7 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
 
         ImageView imageView = mImageViewWeakReference.get();
         if(imageView != null) {
-            BaseBitmapAsyncLoader bitmapAsyncFileLoader = ImageUtils.getAsyncLoader(imageView);
+            BaseBitmapAsyncLoader bitmapAsyncFileLoader = ImageUtils.retreiveAsyncLoader(imageView);
             if((this == bitmapAsyncFileLoader) && (bitmap != null)) {
                 imageView.setImageBitmap(bitmap);
             }

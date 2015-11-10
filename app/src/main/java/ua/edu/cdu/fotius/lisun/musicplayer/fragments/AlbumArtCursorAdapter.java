@@ -13,26 +13,23 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
 public class AlbumArtCursorAdapter extends BaseSimpleCursorAdapter{
 
-    private final String TAG = getClass().getSimpleName();
-
     private String mAlbumIDColumnName;
+    private int mAlbumArtViewResourceId;
 
-    public AlbumArtCursorAdapter(Context context, int rowLayout, String[] from, int[] to, String albumIDColumnName) {
+    public AlbumArtCursorAdapter(Context context, int rowLayout, String[] from, int[] to, int albumArtViewResId, String albumIDColumnName) {
         super(context, rowLayout, from, to);
         mAlbumIDColumnName = albumIDColumnName;
+        mAlbumArtViewResourceId = albumArtViewResId;
     }
 
     @Override
     public void bindView(View rowLayout, Context context, Cursor cursor) {
-        View v = rowLayout.findViewById(R.id.album_art);
+        View v = rowLayout.findViewById(mAlbumArtViewResourceId);
         if(v != null) {
             int albumIdIdx = cursor.getColumnIndexOrThrow(mAlbumIDColumnName);
             long albumId = cursor.getLong(albumIdIdx);
             String filePath = DatabaseUtils.queryAlbumArtPath(mContext, albumId);
-
-//            Log.d(TAG, "bindView. Measure width: " + v.getMeasuredWidth() + " " + v.getMeasuredHeight());
-
-            ImageLoader.from(mContext).load(filePath).into((ImageView) v);
+            ImageLoader.from(mContext).load(filePath).withDefault(R.mipmap.ic_launcher).into((ImageView) v);
         }
         super.bindView(rowLayout, context, cursor);
     }

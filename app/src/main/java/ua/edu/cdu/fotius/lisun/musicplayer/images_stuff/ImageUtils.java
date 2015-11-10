@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 
 public class ImageUtils {
 
-    public static BaseBitmapAsyncLoader getAsyncLoader(ImageView imageView) {
+    public static BaseBitmapAsyncLoader retreiveAsyncLoader(ImageView imageView) {
         Drawable drawable = imageView.getDrawable();
         if(drawable instanceof AsyncTempDrawable) {
             AsyncTempDrawable asyncDrawable = (AsyncTempDrawable) drawable;
@@ -20,13 +20,9 @@ public class ImageUtils {
         return null;
     }
 
-    //TODO
-    private static final String TAG = "ImageUtils";
-
     public static Bitmap decodeSampledBitmapFromPath(String pathName, int reqWidth, int reqHeight){
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = calculateFileInSampleSize(pathName, reqWidth, reqHeight);
-        Log.d(TAG, "InSampleSize: " + options.inSampleSize);
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(pathName, options);
     }
@@ -58,9 +54,6 @@ public class ImageUtils {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-
-        Log.d(TAG, "reqWidth: " + reqWidth + " reqHeight: " + reqHeight);
-        Log.d(TAG, "Width: " + width + " Height: " + height);
 
         if (height > reqHeight || width > reqWidth) {
             final int halfHeight = height;
