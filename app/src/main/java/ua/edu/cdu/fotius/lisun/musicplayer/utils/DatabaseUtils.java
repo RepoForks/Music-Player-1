@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.utils;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
 public class DatabaseUtils {
 
@@ -56,20 +58,4 @@ public class DatabaseUtils {
         }
         return path;
     }
-
-//    public static long queryAlbumID(Context context, long trackID) {
-//        ContentResolver contentResolver = context.getContentResolver();
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//        String[] projection = new String[] {
-//            AudioStorage.Track.ALBUM_ID
-//        };
-//        String selection = AudioStorage.Track.TRACK_ID + "=?";
-//        String[] selectionArgs = new String[] {Long.toString(trackID)};
-//        Cursor c = contentResolver.query(uri, projection, selection, selectionArgs, null);
-//        long returnAlbumId = -1;
-//        if((c != null) && (c.moveToFirst())) {
-//            returnAlbumId = c.getLong(c.getColumnIndexOrThrow(AudioStorage.Track.ALBUM_ID));
-//        }
-//        return returnAlbumId;
-//    }
 }

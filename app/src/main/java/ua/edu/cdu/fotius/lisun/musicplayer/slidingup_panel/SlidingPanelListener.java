@@ -1,9 +1,10 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel;
 
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 /**

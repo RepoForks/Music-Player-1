@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageButton;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
+import ua.edu.cdu.fotius.lisun.musicplayer.Playlist;
 
 public class ShuffleButton extends ImageButton{
 

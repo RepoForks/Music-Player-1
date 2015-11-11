@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.service_stuff;
+package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.io.IOException;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 
 /**
  * Provides a unified interface for dealing with midi files and

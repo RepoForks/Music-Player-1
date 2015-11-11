@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.AddToPlaylistCommand;
+package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 
 import android.content.Context;
@@ -11,9 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseDialog;
 
 public class CreateNewPlaylistDialog extends BaseDialog {
 

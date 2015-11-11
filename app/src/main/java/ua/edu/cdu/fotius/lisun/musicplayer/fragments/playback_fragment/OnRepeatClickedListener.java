@@ -4,7 +4,7 @@ import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
+import ua.edu.cdu.fotius.lisun.musicplayer.Playlist;
 
 public class OnRepeatClickedListener extends BaseRepeatShuffleClickedListener{
 

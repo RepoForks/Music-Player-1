@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -8,7 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistAlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.AlbumTracksBrowserFragment;

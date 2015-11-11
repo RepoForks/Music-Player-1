@@ -1,10 +1,8 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.service_stuff;
+package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 
 /**
  * TODO: Maybe delete this

@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.service_stuff;
+package ua.edu.cdu.fotius.lisun.musicplayer;
 
 /**
  * Created by andrei on 17.07.2015.

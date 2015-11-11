@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.AddToPlaylistCommand;
+package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 public class PlaylistNameIdTuple {
     private String mName;

@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/MusicPlayerTheme" >
         <activity
-            android:name=".NavigationActivity"
+            android:name=".activities.NavigationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +27,11 @@
         <service android:name=".MediaPlaybackService" />
 
         <activity
-            android:name=".AlbumsDetalizationActivity"
+            android:name=".activities.AlbumsDetalizationActivity"
             android:label="@string/title_activity_detalization" >
         </activity>
         <activity
-            android:name=".TrackDetalizationActivity"
+            android:name=".activities.TrackDetalizationActivity"
             android:label="@string/title_activity_track_detalization" >
         </activity>
     </application>

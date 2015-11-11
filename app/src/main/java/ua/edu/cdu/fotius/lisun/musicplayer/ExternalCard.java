@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.service_stuff;
+package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.content.ContentResolver;
 import android.content.Context;

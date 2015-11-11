@@ -1,12 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.widget.ImageView;
-
-import java.lang.ref.WeakReference;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
 
 public class BitmapAsyncFileLoader extends BaseBitmapAsyncLoader {
 

@@ -2,12 +2,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.DatabaseUtils;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 

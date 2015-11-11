@@ -8,15 +8,9 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.MediaStore;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Vector;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.service_stuff.Playlist;
 
 /**Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * Class is mediator between this specific application and more general

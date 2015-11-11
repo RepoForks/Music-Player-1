@@ -7,10 +7,9 @@ import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.TrackDetalizationActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
 public class OnAlbumClick extends BaseFragmentItemClickListener{
 
