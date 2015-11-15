@@ -81,7 +81,7 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+            toolbar.setNavigationIcon(R.mipmap.ic_arrow_back_black_24dp);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -60,4 +60,6 @@
     <string name="create_new_playlist_title">New playlist</string>
     <string name="new_playlist_name_hint">Playlist name</string>
 
+    <!--MediaButtons-->
+    <string name="rewind_content_description">Rewind button</string>
 </resources>

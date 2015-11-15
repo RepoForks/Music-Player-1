@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
+
 public class PlayButton extends ImageButton{
 
     public PlayButton(Context context) {
@@ -20,9 +22,9 @@ public class PlayButton extends ImageButton{
 
     public void setImage(boolean isPlaying) {
         if (isPlaying) {
-            setImageResource(android.R.drawable.ic_media_pause);
+            setImageResource(R.drawable.media_button_pause_selector);
         } else {
-            setImageResource(android.R.drawable.ic_media_play);
+            setImageResource(R.drawable.media_button_play_selector);
         }
     }
 }

@@ -24,16 +24,16 @@ public class ShuffleButton extends ImageButton{
     public void setImage(int shuffleMode) {
         switch (shuffleMode) {
             case Playlist.SHUFFLE_NONE:
-                setImageResource(R.mipmap.ic_shuffle_off_btn);
+                setImageResource(R.mipmap.ic_shuffle_off_18dp);
                 break;
             case Playlist.SHUFFLE_AUTO:
                 setImageResource(R.mipmap.ic_partyshuffle_on_btn);
                 break;
             case Playlist.SHUFFLE_NORMAL:
-                setImageResource(R.mipmap.ic_shuffle_on_btn);
+                setImageResource(R.mipmap.ic_shuffle_on_18dp);
                 break;
             default:
-                setImageResource(R.mipmap.ic_shuffle_off_btn);
+                setImageResource(R.mipmap.ic_shuffle_off_18dp);
                 break;
         }
     }
