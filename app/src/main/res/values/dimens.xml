@@ -5,4 +5,9 @@
 
     <!--PlaybackActivity-->
     <dimen name="album_cover_image_size">300dp</dimen>
+
+    <!--PlaybackFragment-->
+    <dimen name="playback_fragment_layout_padding">10dp</dimen>
+    <dimen name="playback_fragment_layout_padding_bottom">30dp</dimen>
+    <dimen name="seek_bar_layout_padding">10dp</dimen>
 </resources>

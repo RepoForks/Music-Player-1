@@ -1,4 +1,4 @@
-<resources>
+<resources >
 
     <!-- Base application theme. -->
     <style name="MusicPlayerTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
@@ -16,13 +16,10 @@
         <item name="android:contentDescription">@string/rewind_content_description</item>
     </style>
 
-    <style name="MediaButton.Play" parent="MediaButton">
+    <style name="MediaButton.PlayPause" parent="MediaButton">
         <item name="android:src">@drawable/media_button_play_selector</item>
-        <item name="android:contentDescription">@string/rewind_content_description</item>
-    </style>
-
-    <style name="MediaButton.Pause" parent="MediaButton">
-        <item name="android:src">@drawable/media_button_pause_selector</item>
+        <item name="play_src">@drawable/media_button_play_selector</item>
+        <item name="pause_src">@drawable/media_button_pause_selector</item>
         <item name="android:contentDescription">@string/rewind_content_description</item>
     </style>
 
@@ -34,11 +31,19 @@
     <style name="MediaButton.Shuffle" parent="MediaButton">
         <item name="android:src">@mipmap/ic_shuffle_off_18dp</item>
         <item name="android:contentDescription">@string/rewind_content_description</item>
+        <item name="android:gravity">left</item>
     </style>
 
     <style name="MediaButton.Repeat" parent="MediaButton">
         <item name="android:src">@mipmap/ic_repeat_off_18dp</item>
         <item name="android:contentDescription">@string/rewind_content_description</item>
+        <item name="android:gravity">right</item>
     </style>
+
+    <!--<style name="MediaButton.Small.Play" parent="MediaButton">-->
+        <!--<item name="android:src">@drawable/media_button_play_select</item>-->
+        <!--<item name="android:contentDescription">@string/rewind_content_description</item>-->
+        <!--<item name="android:gravity">right</item>-->
+    <!--</style>-->
 
 </resources>

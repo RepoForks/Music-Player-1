@@ -18,4 +18,9 @@
             <enum name="hidden" value="3" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="PlayPauseButton">
+        <attr name="play_src" format="reference" />
+        <attr name="pause_src" format="reference" />
+    </declare-styleable>
 </resources>

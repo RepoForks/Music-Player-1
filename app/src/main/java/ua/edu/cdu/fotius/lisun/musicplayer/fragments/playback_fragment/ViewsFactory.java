@@ -10,7 +10,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 
@@ -78,15 +78,15 @@ public class ViewsFactory {
         return (ImageView) mLayout.findViewById(R.id.album_art);
     }
 
-    public PlayButton initializePlayPauseButton() {
-        PlayButton playButton = (PlayButton) mLayout.findViewById(R.id.play);
+    public PlayPauseButton initializePlayPauseButton() {
+        PlayPauseButton playButton = (PlayPauseButton) mLayout.findViewById(R.id.play);
         playButton.setOnClickListener(new OnPlayPauseClickedListener(mCallbacks));
 
         return playButton;
     }
 
-    public PlayButton initializePlayPauseAdditionalButton() {
-        PlayButton playPauseAdditionalButton = (PlayButton) mLayout.findViewById(R.id.play_additional);
+    public PlayPauseButton initializePlayPauseAdditionalButton() {
+        PlayPauseButton playPauseAdditionalButton = (PlayPauseButton) mLayout.findViewById(R.id.play_additional);
         playPauseAdditionalButton.setOnClickListener(mPlayPauseListener);
 
         return playPauseAdditionalButton;

@@ -22,7 +22,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayButton;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
@@ -42,8 +42,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private SeekBar mSeekBar;
     private TextView mCurrentTime;
     private TextView mTotalTime;
-    private PlayButton mPlayButton;
-    private PlayButton mPlayAdditionalButton;
+    private PlayPauseButton mPlayButton;
+    private PlayPauseButton mPlayAdditionalButton;
     //TODO: collapseable --> minimal
     private RepeatButton mRepeatButton;
     private ShuffleButton mShuffleButton;

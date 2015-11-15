@@ -1,23 +1,28 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
-public class PlayButton extends ImageButton{
+public class PlayPauseButton extends ImageButton{
 
-    public PlayButton(Context context) {
+    public PlayPauseButton(Context context) {
         super(context);
     }
 
-    public PlayButton(Context context, AttributeSet attrs) {
+    public PlayPauseButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PlayButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PlayPauseButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs) {
+        TypedArray
     }
 
     public void setImage(boolean isPlaying) {
