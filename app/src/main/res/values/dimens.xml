@@ -10,4 +10,7 @@
     <dimen name="playback_fragment_layout_padding">10dp</dimen>
     <dimen name="playback_fragment_layout_padding_bottom">30dp</dimen>
     <dimen name="seek_bar_layout_padding">10dp</dimen>
+    <dimen name="small_media_buttons_margin">7dp</dimen>
+    <dimen name="minimal_panel_song_text_size">12sp</dimen>
+    <dimen name="minimal_panel_artist_text_size">12sp</dimen>
 </resources>

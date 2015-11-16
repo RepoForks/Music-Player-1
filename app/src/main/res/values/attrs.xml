@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources >
     <declare-styleable name="SlidingUpPanelLayout">
         <attr name="umanoPanelHeight" format="dimension" />
         <attr name="umanoShadowHeight" format="dimension" />
@@ -20,7 +20,7 @@
     </declare-styleable>
 
     <declare-styleable name="PlayPauseButton">
-        <attr name="play_src" format="reference" />
-        <attr name="pause_src" format="reference" />
+        <attr name="play_src" format="integer" />
+        <attr name="pause_src" format="integer" />
     </declare-styleable>
 </resources>

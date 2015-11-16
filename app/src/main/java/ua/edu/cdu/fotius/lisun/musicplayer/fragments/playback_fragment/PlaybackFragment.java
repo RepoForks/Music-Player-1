@@ -102,8 +102,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
     private void setPlayPauseButtonsImage() {
         boolean isPlaying = mServiceWrapper.isPlaying();
-        mPlayButton.setImage(isPlaying);
-        mPlayAdditionalButton.setImage(isPlaying);
+        mPlayButton.changeStateImage(isPlaying);
+        mPlayAdditionalButton.changeStateImage(isPlaying);
     }
 
     @Override

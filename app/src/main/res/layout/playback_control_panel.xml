@@ -55,7 +55,7 @@
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
             android:id="@+id/next"
-            style="@style/MediaButton.FasrForward" />
+            style="@style/MediaButton.FastForward" />
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton
             android:id="@+id/repeat"

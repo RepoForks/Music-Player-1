@@ -62,4 +62,8 @@
 
     <!--MediaButtons-->
     <string name="rewind_content_description">Rewind button</string>
+    <string name="fast_forward_content_description">Fast Forward button</string>
+    <string name="play_pause_content_description">Play/Pause button</string>
+    <string name="shuffle_content_description">Shuffle button</string>
+    <string name="repeat_content_description">Repeat button</string>
 </resources>
