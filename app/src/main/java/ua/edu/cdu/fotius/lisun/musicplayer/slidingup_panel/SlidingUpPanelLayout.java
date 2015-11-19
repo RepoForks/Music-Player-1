@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1315,8 +1316,10 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
 
+        Log.e(TAG, "Layout.onSaveInstanceState()");
+
+        Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
         if (mSlideState != PanelState.DRAGGING) {
             ss.mSlideState = mSlideState;
@@ -1328,6 +1331,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
+
+        Log.e(TAG, "Layout.onRestoreInstanceState()");
+
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         mSlideState = ss.mSlideState != null ? ss.mSlideState : DEFAULT_SLIDE_STATE;

@@ -43,8 +43,8 @@
                 android:gravity="center" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/additional_control_panel"
+        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableMediaButtonsLayout
+            android:id="@+id/concealable_control_panel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
@@ -61,7 +61,7 @@
             <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
                 android:id="@+id/next_additional"
                 style="@style/MediaButton.Small.FastForward" />
-        </LinearLayout>
+        </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableMediaButtonsLayout>
 
     </LinearLayout>
 

@@ -1,12 +1,16 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,19 +33,25 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
     private Fragment mCurrentBrowserFragment;
 
+    //TODO: maybe move to superclass
+    private SlidingUpPanelLayout mSlidingPanel;
+
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.e(TAG, "onCreate()");
+
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
-        slidingPanel.setPanelSlideListener(new SlidingPanelListener(mDrawerLayout));
+        mSlidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
+        mSlidingPanel.setPanelSlideListener(new SlidingPanelListener(mDrawerLayout));
 
         NavigationView navigationView = setUpNavigationView(mDrawerLayout);
         mToolbar = setUpToolbar(mDrawerLayout, navigationView);
@@ -65,10 +75,21 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
         }
     }
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.e(TAG, "onSaveInstanceState()");
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentBrowserFragment.getTag());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.e(TAG, "Activity.OnRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+        //TODO: get slidingUpPanelState
+        Log.d(TAG, "Sliding Panel State: " + mSlidingPanel.getPanelState().toString());
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {

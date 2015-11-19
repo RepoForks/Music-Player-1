@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
@@ -45,9 +44,9 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private LinearLayout getAdditionalControlPanel(View panel) {
-        return (LinearLayout) panel.findViewById(R.id.additional_control_panel);
+        return (LinearLayout) panel.findViewById(R.id.concealable_control_panel);
     }
-    
+
     @Override
     public void onPanelCollapsed(View panel) {
         //enable ability of opening navigation menu
