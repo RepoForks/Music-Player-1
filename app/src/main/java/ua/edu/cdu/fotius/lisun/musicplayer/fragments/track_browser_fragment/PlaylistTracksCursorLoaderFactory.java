@@ -62,6 +62,11 @@ public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory
         return AudioStorage.PlaylistMember.ARTIST;
     }
 
+    @Override
+    public String getAlbumIdColumnName() {
+        return AudioStorage.PlaylistMember.ALBUM_ID;
+    }
+
     public String getId() {
         return AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST;
     }

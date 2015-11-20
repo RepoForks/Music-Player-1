@@ -1,17 +1,18 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel;
 
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableMediaButtonsLayout;
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
     private final String TAG = getClass().getSimpleName();
 
-    private boolean mIsAdditionalControlsVisible;
+    private boolean mIsConcealableViewsVisible;
 
     private DrawerLayout mDrawerLayout = null;
 
@@ -22,29 +23,37 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
 
     @Override
     public void onPanelSlide(View panel, float slideOffset) {
-        if ((slideOffset > 0.6) && mIsAdditionalControlsVisible) {
-           hideAdditionalControlPanel(panel);
+        if ((slideOffset > 0.6) && mIsConcealableViewsVisible) {
+           hideConcealableViews(panel);
         }
 
-        if ((slideOffset < 0.6) && !mIsAdditionalControlsVisible) {
-            showAdditionalControlPanel(panel);
+        if ((slideOffset < 0.6) && !mIsConcealableViewsVisible) {
+            showConcealableViews(panel);
         }
     }
 
-    private void showAdditionalControlPanel(View panel) {
-        LinearLayout additionalControl = getAdditionalControlPanel(panel);
-        additionalControl.setVisibility(View.VISIBLE);
-        mIsAdditionalControlsVisible = true;
+    private void showConcealableViews(View panel) {
+        ConcealableMediaButtonsLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
+        concealableMediaButtons.show();
+        ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
+        concealableAlbumArt.show();
+        mIsConcealableViewsVisible = true;
     }
 
-    private void hideAdditionalControlPanel(View panel) {
-        LinearLayout additionalControl = getAdditionalControlPanel(panel);
-        additionalControl.setVisibility(View.GONE);
-        mIsAdditionalControlsVisible = false;
+    private void hideConcealableViews(View panel) {
+        ConcealableMediaButtonsLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
+        concealableMediaButtons.hide();
+        ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
+        concealableAlbumArt.hide();
+        mIsConcealableViewsVisible = false;
     }
 
-    private LinearLayout getAdditionalControlPanel(View panel) {
-        return (LinearLayout) panel.findViewById(R.id.concealable_control_panel);
+    private ConcealableMediaButtonsLayout getConcealableMediaButtonsLayout(View panel) {
+        return (ConcealableMediaButtonsLayout) panel.findViewById(R.id.concealable_control_panel);
+    }
+
+    private ConcealableImageView getConcealableAlbumArt(View panel) {
+        return (ConcealableImageView) panel.findViewById(R.id.concealable_album_art);
     }
 
     @Override
@@ -53,7 +62,6 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
         if(mDrawerLayout != null) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
-        Log.d(TAG, "OnPanelCollapsed");
     }
 
     @Override
@@ -62,16 +70,13 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
         if(mDrawerLayout != null) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
-        Log.d(TAG, "OnPanelExpanded");
     }
 
     @Override
     public void onPanelAnchored(View panel) {
-        Log.d(TAG, "OnPanelAnchored");
     }
 
     @Override
     public void onPanelHidden(View panel) {
-        Log.d(TAG, "OnPanelHidden");
     }
 }

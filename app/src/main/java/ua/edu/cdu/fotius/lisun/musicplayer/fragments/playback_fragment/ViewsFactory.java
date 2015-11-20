@@ -9,6 +9,7 @@ import android.widget.TextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
@@ -72,6 +73,10 @@ public class ViewsFactory {
         nextAdditionalButton.setRepeatListener(mForwardListener);
 
         return nextAdditionalButton;
+    }
+
+    public ConcealableImageView initializeConcealableAlbumArtImageView() {
+        return (ConcealableImageView) mLayout.findViewById(R.id.concealable_album_art);
     }
 
     public ImageView initializeAlbumArtImageView() {

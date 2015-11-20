@@ -22,7 +22,8 @@ public class AllTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
         return new String[]{
                 AudioStorage.Track.TRACK_ID,
                 AudioStorage.Track.TRACK,
-                AudioStorage.Track.ARTIST
+                AudioStorage.Track.ARTIST,
+                AudioStorage.Track.ALBUM_ID
         };
     }
 
@@ -54,5 +55,10 @@ public class AllTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
     @Override
     public String getArtistColumnName() {
         return AudioStorage.Track.ARTIST;
+    }
+
+    @Override
+    public String getAlbumIdColumnName() {
+        return AudioStorage.Track.ALBUM_ID;
     }
 }

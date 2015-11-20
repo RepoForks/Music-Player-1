@@ -13,4 +13,8 @@
     <dimen name="small_media_buttons_margin">7dp</dimen>
     <dimen name="minimal_panel_song_text_size">12sp</dimen>
     <dimen name="minimal_panel_artist_text_size">12sp</dimen>
+
+    <!--TracksBrowserFragment row-->
+    <dimen name="row_height">50dp</dimen>
+    <dimen name="row_album_art_size">50dp</dimen>
 </resources>

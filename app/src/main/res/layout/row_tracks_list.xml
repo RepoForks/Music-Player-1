@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/row_height"
     android:background="@drawable/list_item_selector" >
 
-
-    <!--TODO: song title shoud be with regular text color, but artists should be with grey color and
-    smaller font size-->
+    <ImageView
+        android:id="@+id/album_art"
+        android:layout_width="@dimen/row_album_art_size"
+        android:layout_height="@dimen/row_album_art_size" />
 
     <LinearLayout
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" >
 
         <TextView
             android:id="@+id/track_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:singleLine="true"
+            android:gravity="center_vertical" />
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
             android:id="@+id/artist_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:singleLine="true"
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 
     <!--TODO:add ImageView indicating now playing track-->
 
-</RelativeLayout>
+</LinearLayout>

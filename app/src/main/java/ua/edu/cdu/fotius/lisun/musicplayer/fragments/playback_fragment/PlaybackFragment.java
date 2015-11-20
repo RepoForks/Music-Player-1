@@ -8,9 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
@@ -34,12 +32,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 public class PlaybackFragment extends Fragment implements ServiceConnectionObserver,
         ListenerCallbacks {
 
-    private final String TAG = getClass().getSimpleName();
-
     private final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
     private ImageView mAlbumArt;
+    private ConcealableImageView mConcealableImageView;
     private TextView mTrackName;
     private BaseNameTextView mArtistName;
     private SeekBar mSeekBar;
@@ -76,6 +73,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         viewsFactory.initializeNextButton();
         viewsFactory.initializeNextAdditionalButton();
         mAlbumArt = viewsFactory.initializeAlbumArtImageView();
+        mConcealableImageView = viewsFactory.initializeConcealableAlbumArtImageView();
         mPlayButton = viewsFactory.initializePlayPauseButton();
         mPlayAdditionalButton = viewsFactory.initializePlayPauseAdditionalButton();
         mRepeatButton = viewsFactory.initializeRepeatButton();
@@ -140,7 +138,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         long albumID = mServiceWrapper.getAlbumID();
         if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             String albumArtPath = DatabaseUtils.queryAlbumArtPath(getActivity(), albumID);
-            mImageLoader.load(albumArtPath).withDefault(R.mipmap.ic_launcher).into(mAlbumArt);
+            mImageLoader.load(albumArtPath).withDefault(R.mipmap.default_album_art_512dp).into(mAlbumArt);
+            mConcealableImageView.setAlbumArt(albumArtPath);
         }
     }
 

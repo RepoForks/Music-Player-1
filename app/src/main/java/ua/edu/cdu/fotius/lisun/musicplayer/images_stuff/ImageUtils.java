@@ -56,8 +56,8 @@ public class ImageUtils {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height;
-            final int halfWidth = width;
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
             while ((halfHeight / inSampleSize) > reqHeight
                     && (halfWidth / inSampleSize) > reqWidth) {
                 inSampleSize *= 2;

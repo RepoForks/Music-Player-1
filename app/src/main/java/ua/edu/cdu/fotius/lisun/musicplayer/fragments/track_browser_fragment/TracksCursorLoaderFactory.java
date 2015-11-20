@@ -14,4 +14,5 @@ public abstract class TracksCursorLoaderFactory extends AbstractCursorLoaderFact
     public abstract String getTrackIdColumnName();
     public abstract String getTrackColumnName();
     public abstract String getArtistColumnName();
+    public abstract String getAlbumIdColumnName();
 }

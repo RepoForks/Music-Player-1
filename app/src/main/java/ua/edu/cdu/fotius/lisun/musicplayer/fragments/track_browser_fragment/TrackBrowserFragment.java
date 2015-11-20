@@ -20,6 +20,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AbstractCursorLoaderFactory;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumArtCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
@@ -56,14 +57,12 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
                 loaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
-        return new BaseSimpleCursorAdapter(getActivity(), getRowLayoutID(), from, to);
+        return new AlbumArtCursorAdapter(getActivity(), getRowLayoutID(), from, to, R.id.album_art,loaderFactory.getAlbumIdColumnName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Log.d(TAG, "OnCreateView ---> TracksBrowserFragment");
 
         View v = inflater.inflate(getLayoutID(), container, false);
         ListView listView = (ListView) v.findViewById(getListViewResourceID());
