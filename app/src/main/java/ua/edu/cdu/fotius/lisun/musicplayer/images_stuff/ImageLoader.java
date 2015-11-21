@@ -25,6 +25,9 @@ public class ImageLoader {
     }
 
     public ImageLoader load(String filePath) {
+
+        Log.d(TAG, "LOAD. filePath: " + filePath);
+
         mFilePath = filePath;
         mResId = 0;
         return this;
@@ -72,7 +75,6 @@ public class ImageLoader {
             imageView.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "Load bitmap");
                     Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(imageSource,
                             imageView.getMeasuredWidth(), imageView.getMeasuredHeight()));
                     if (bitmap != null) {

@@ -13,6 +13,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
 public class DatabaseUtils {
 
+    private static final String TAG = "DatabaseUtils";
+
     /**
      * @return newly created list id
      */
@@ -45,17 +47,54 @@ public class DatabaseUtils {
     }
 
     public static String queryAlbumArtPath(Context context, long albumID) {
+
+        //Log.d(TAG, "QUERY_ALBUM_PATH");
+
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-        String[] projection = new String[] {AudioStorage.Album.ALBUM_ART};
+        String[] projection = new String[]{AudioStorage.Album.ALBUM_ART};
         String selection = AudioStorage.Album.ALBUM_ID + "=?";
-        String[] selectionArgs = new String[] {Long.toString(albumID)};
+        String[] selectionArgs = new String[]{Long.toString(albumID)};
+
+        queryParamsInLog(uri, projection, selection, selectionArgs);
+
         Cursor c = contentResolver.query(uri, projection, selection, selectionArgs, null);
+
+        Log.d(TAG, "QUERY_ALBUM_PATH. c == null: " + (c == null));
+
         String path = null;
-        if((c != null) && (c.moveToFirst())) {
-            path = c.getString(c.getColumnIndexOrThrow(AudioStorage.Album.ALBUM_ART));
+        if (c != null) {
+            if (c.moveToFirst()) {
+                path = c.getString(c.getColumnIndexOrThrow(AudioStorage.Album.ALBUM_ART));
+            }
+            c.close();
         }
         return path;
+    }
+
+    //TODO: only for debug
+    public static void queryParamsInLog(Uri uri, String[] projection, String selection, String[] selectionArgs) {
+        if (uri != null) {
+            Log.d(TAG, "Uri: " + uri.toString());
+        }
+
+        if (projection != null) {
+            Log.d(TAG, "Projection: ");
+            for (int i = 0; i < projection.length; i++) {
+                Log.d(TAG, projection[i]);
+            }
+        }
+
+        if (selection != null) {
+            Log.d(TAG, "Selection: " + selection);
+        }
+
+        if (selectionArgs != null) {
+            Log.d(TAG, "SelectionArgs: ");
+            for (int i = 0; i < selectionArgs.length; i++) {
+                Log.d(TAG, selectionArgs[i]);
+            }
+        }
     }
 }

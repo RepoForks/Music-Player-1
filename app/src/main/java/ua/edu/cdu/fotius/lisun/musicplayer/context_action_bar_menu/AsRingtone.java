@@ -56,12 +56,15 @@ public class AsRingtone extends Command {
         Cursor cursor = mContext.getContentResolver().
                 query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cols, whereClause, null, null);
 
-        if((cursor != null) && (cursor.getCount() == 1)) {
-            cursor.moveToFirst();
-            int columnIdxTrackName = cursor.getColumnIndexOrThrow(AudioStorage.Track.TRACK);
-            String message = mContext.getResources()
-                    .getString(R.string.ringtone_set, cursor.getString(columnIdxTrackName));
-            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        if(cursor != null) {
+            if(cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                int columnIdxTrackName = cursor.getColumnIndexOrThrow(AudioStorage.Track.TRACK);
+                String message = mContext.getResources()
+                        .getString(R.string.ringtone_set, cursor.getString(columnIdxTrackName));
+                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+            }
+            cursor.close();
         }
     }
 }

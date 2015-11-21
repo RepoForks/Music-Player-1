@@ -271,7 +271,6 @@ public class MediaPlaybackService extends Service {
         reloadQueue();
         //Calls saveQueue(true)
         notifyChange(QUEUE_CHANGED);
-        Log.d(TAG, "Service#OnCreate()");
         notifyChange(META_CHANGED);
 
 //        IntentFilter commandFilter = new IntentFilter();
@@ -294,9 +293,6 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public void onDestroy() {
-
-        Log.d(TAG, "onDestroy()");
-
         // Check that we're not being destroyed while something is still playing.
         if (isPlaying()) {
             Log.e(LOGTAG, "Service being destroyed while still playing.");
@@ -445,10 +441,6 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
-        //@debug_only
-        Log.d(TAG, "onBind()");
-
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mServiceInUse = true;
         return mBinder;
@@ -727,8 +719,6 @@ public class MediaPlaybackService extends Service {
 
             saveBookmarkIfNeeded();
 
-            Log.d(TAG, "open() play position: " + position);
-
             openCurrentAndNext();
             if (oldId != getAudioId()) {
                 notifyChange(META_CHANGED);
@@ -810,11 +800,8 @@ public class MediaPlaybackService extends Service {
             }
             stop(false);
 
-            Log.d(TAG, "openCurrentAndNext() position: " + mPlaylist.getPlayPosition());
-
             //retreive song information from database by song _ID
             mCursor = getCursorForId(mPlaylist.getCurrentTrack());
-            Log.d(TAG, "openCurrentAndNext() mCursor.getCount: " + mCursor.getCount());
 
             //trying to open song
             //if can't try next, if can't try next and so on 10 times or

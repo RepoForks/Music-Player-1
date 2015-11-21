@@ -44,13 +44,15 @@ public class ChoosePlaylistDialog extends BaseDialog {
         playlists.add(new PlaylistNameIdTuple(-1, createNewText));
 
         Cursor cursor = resolver.query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, cols, null, null, null);
-        if((cursor != null) && (cursor.moveToFirst())) {
-            int idIdx = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST_ID);
-            int nameIdx = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST);
-            while(!cursor.isAfterLast()) {
-                playlists.add(new PlaylistNameIdTuple(cursor.getLong(idIdx),
-                        cursor.getString(nameIdx)));
-                cursor.moveToNext();
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                int idIdx = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST_ID);
+                int nameIdx = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST);
+                while (!cursor.isAfterLast()) {
+                    playlists.add(new PlaylistNameIdTuple(cursor.getLong(idIdx),
+                            cursor.getString(nameIdx)));
+                    cursor.moveToNext();
+                }
             }
             cursor.close();
         }

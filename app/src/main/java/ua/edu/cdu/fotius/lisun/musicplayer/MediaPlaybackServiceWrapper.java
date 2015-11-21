@@ -51,7 +51,6 @@ public class MediaPlaybackServiceWrapper
     private IMediaPlaybackService mService = null;
 
     private MediaPlaybackServiceWrapper(){
-        Log.d(TAG, "MediaPlaybackServiceWrapper called");
     }
 
     public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {
@@ -115,7 +114,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.prev();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -125,7 +123,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.seek(position);
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -135,29 +132,24 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.next();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
 
     public void play() {
-        Log.d(TAG, "--> play()");
         if (mService != null) {
             try {
                 mService.play();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
 
     public void pause() {
-        Log.d(TAG, "--> pause()");
         if(mService != null) {
             try {
                 mService.pause();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -168,7 +160,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.removeTrack(trackId);
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -178,7 +169,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.enqueue(list, MediaPlaybackService.LAST);
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -188,7 +178,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.isPlaying();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return false;
@@ -199,7 +188,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.duration();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return ERROR_RETURN_VALUE;
@@ -210,7 +198,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.position();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return ERROR_RETURN_VALUE;
@@ -221,7 +208,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.getArtistName();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return null;
@@ -232,7 +218,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.getTrackName();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return null;
@@ -243,7 +228,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.setRepeatMode(repeatMode);
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -253,7 +237,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.getRepeatMode();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return ERROR_RETURN_VALUE;
@@ -264,7 +247,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 mService.setShuffleMode(shuffleMode);
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
     }
@@ -274,7 +256,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.getShuffleMode();
             } catch (RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return ERROR_RETURN_VALUE;
@@ -285,7 +266,6 @@ public class MediaPlaybackServiceWrapper
             try {
                 return mService.getAlbumId();
             } catch(RemoteException e) {
-                Log.d(TAG, e.getMessage());
             }
         }
         return ERROR_RETURN_VALUE;

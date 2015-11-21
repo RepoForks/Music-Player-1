@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
+
 public abstract class AbstractCursorLoaderFactory {
 
     private final String TAG = getClass().getSimpleName();
@@ -17,11 +19,7 @@ public abstract class AbstractCursorLoaderFactory {
     }
 
     public CursorLoader getCursorLoader() {
-        Log.d(TAG, "Uri: " + getUri());
-        Log.d(TAG, "Projection: " + getProjection());
-        Log.d(TAG, "Selection: " + getSelection());
-        Log.d(TAG, "Selection Args: " + getSelectionArgs());
-        Log.d(TAG, "Sort Order: " + getSortOrder());
+        DatabaseUtils.queryParamsInLog(getUri(), getProjection(), getSelection(), getSelectionArgs());
 
         return new CursorLoader(mContext, getUri(), getProjection(),
                 getSelection(), getSelectionArgs(), getSortOrder());
