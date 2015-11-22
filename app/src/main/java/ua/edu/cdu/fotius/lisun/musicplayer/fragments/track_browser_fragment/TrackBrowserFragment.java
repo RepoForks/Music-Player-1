@@ -21,6 +21,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceLi
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AbstractCursorLoaderFactory;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumArtCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
@@ -30,6 +32,8 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     private MediaPlaybackServiceWrapper mServiceWrapper;
     protected ToolbarStateListener mToolbarStateListener;
+
+    private Bundle mExtras;
 
     public TrackBrowserFragment() {
     }
@@ -42,12 +46,12 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mExtras = getArguments();
+
         super.onCreate(savedInstanceState);
+
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
-
-        //TODO:
-        //need to be after mServiceWrapper init
     }
 
     @Override
@@ -57,46 +61,40 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
                 loaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
-        return new AlbumArtCursorAdapter(getActivity(), getRowLayoutID(), from, to, R.id.album_art,loaderFactory.getAlbumIdColumnName());
+        return new AlbumArtCursorAdapter(getActivity(), R.layout.row_tracks_list, from, to, R.id.album_art, loaderFactory.getAlbumIdColumnName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(getLayoutID(), container, false);
-        ListView listView = (ListView) v.findViewById(getListViewResourceID());
+        View v = inflater.inflate(R.layout.fragment_tracks_browser, container, false);
+        ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());
-        listView.setChoiceMode(getChoiceMode());
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, createActionBarMenuContent()));
+                mToolbarStateListener, listView, new TrackMenu(getActivity(), mServiceWrapper)));
         return v;
-    }
-
-    protected int getLayoutID() {
-        return R.layout.fragment_tracks_browser;
-    }
-
-    protected int getListViewResourceID() {
-        return R.id.list;
-    }
-
-    protected int getRowLayoutID() {
-        return R.layout.row_tracks_list;
-    }
-
-    protected int getChoiceMode() {
-        return ListView.CHOICE_MODE_MULTIPLE_MODAL;
     }
 
     @Override
     protected AbstractCursorLoaderFactory createLoaderFactory() {
-        return new AllTracksCursorLoaderFactory(getActivity());
-    }
+        Bundle extras = mExtras;
+        if (extras == null) {
+            return new AllTracksCursorLoaderFactory(getActivity());
+        }
+        long artistId = extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, PARENT_ID_IS_NOT_SET);
+        long albumId = extras.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, PARENT_ID_IS_NOT_SET);
+        if ((artistId != PARENT_ID_IS_NOT_SET) && (albumId != PARENT_ID_IS_NOT_SET)) {
+            return new ArtistAlbumTracksCursorLoaderFactory(getActivity(), artistId, albumId);
+        } else if (albumId != PARENT_ID_IS_NOT_SET) {
+            return new AlbumTracksCursorLoaderFactory(getActivity(), albumId);
+        } else {
+            /*this won't be executed, but keep this as "default value"*/
+            return new AllTracksCursorLoaderFactory(getActivity());
+        }
 
-    protected BaseMenu createActionBarMenuContent() {
-        return new TrackMenu(getActivity(), mServiceWrapper);
     }
 
     protected AdapterView.OnItemClickListener createOnItemClickListener() {
@@ -106,7 +104,6 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
                 mServiceWrapper, loaderFactory.getTrackIdColumnName());
     }
 
-    //TODO: do i actually need this in subclasses?
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -115,7 +112,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-         return mLoaderFactory.getCursorLoader();
+        return mLoaderFactory.getCursorLoader();
     }
 
     @Override

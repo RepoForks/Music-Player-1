@@ -25,8 +25,6 @@ public class OnPlaylistClick extends BaseFragmentItemClickListener{
             int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST_ID);
             long playlistId = cursor.getLong(idColumnIndex);
             Bundle bundle = new Bundle();
-            bundle.putInt(TrackDetalizationActivity.CALLED_FROM_KEY,
-                    TrackDetalizationActivity.CALLED_FROM_PLAYLIST);
             bundle.putLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, playlistId);
             Intent intent = new Intent(mContext, TrackDetalizationActivity.class);
             intent.putExtras(bundle);

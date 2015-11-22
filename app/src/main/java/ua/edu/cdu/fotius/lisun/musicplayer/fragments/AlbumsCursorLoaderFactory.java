@@ -6,7 +6,7 @@ import android.provider.MediaStore;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
-public class AlbumsCursorLoaderFactory extends AbstractCursorLoaderFactory{
+public class AlbumsCursorLoaderFactory extends AbstractAlbumCursorLoaderFactory{
 
     public AlbumsCursorLoaderFactory(Context context) {
         super(context);
@@ -40,4 +40,10 @@ public class AlbumsCursorLoaderFactory extends AbstractCursorLoaderFactory{
     public String getSortOrder() {
         return  AudioStorage.Album.SORT_ORDER;
     }
+
+    @Override
+    public String getAlbumIdColumnName() {
+        return AudioStorage.Album.ALBUM_ID;
+    }
+
 }
