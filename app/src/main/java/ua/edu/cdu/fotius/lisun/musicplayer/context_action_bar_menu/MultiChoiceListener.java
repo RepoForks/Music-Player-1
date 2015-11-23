@@ -3,13 +3,9 @@ package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -17,7 +13,7 @@ import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
 

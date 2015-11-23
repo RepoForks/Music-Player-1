@@ -1,15 +1,12 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
-import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,11 +15,10 @@ import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 

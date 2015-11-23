@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.app.Activity;
@@ -14,14 +14,10 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
-import ua.edu.cdu.fotius.lisun.musicplayer.ToolbarStateListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumArtCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AllTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumTracksCursorLoaderCreator;

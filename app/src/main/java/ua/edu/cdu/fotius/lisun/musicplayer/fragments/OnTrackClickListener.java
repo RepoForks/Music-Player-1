@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.support.v4.widget.CursorAdapter;

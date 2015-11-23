@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
 public interface ToolbarStateListener {
     public void showToolbar();
