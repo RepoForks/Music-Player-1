@@ -5,22 +5,21 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
-public class OnAlbumClick extends BaseFragmentItemClickListener{
+public class OnAlbumClickListener extends BaseFragmentItemClickListener{
 
     private final String TAG = getClass().getSimpleName();
 
-    private Bundle mPreviousActivityExtras;
+    private Bundle mArgumentsPassedToFragment;
     private String mAlbumIdColumnName;
 
-    public OnAlbumClick(Context context, CursorAdapter cursorAdapter, Bundle previousActivityExtras, String albumIdColumnName) {
+    public OnAlbumClickListener(Context context, CursorAdapter cursorAdapter, Bundle previousActivityExtras, String albumIdColumnName) {
         super(context, cursorAdapter);
-        mPreviousActivityExtras = previousActivityExtras;
+        mArgumentsPassedToFragment = previousActivityExtras;
         mAlbumIdColumnName = albumIdColumnName;
     }
 
@@ -32,17 +31,8 @@ public class OnAlbumClick extends BaseFragmentItemClickListener{
             long albumId = cursor.getLong(idColumnIndex);
 
             //if AlbumsBrowserFragment was called from ArtistBrowserFragment
-            Bundle extras = mPreviousActivityExtras;
+            Bundle extras = mArgumentsPassedToFragment;
 
-            //TODO: debug
-            Log.d(TAG, "OnAlbumClick. Extras: " + extras);
-            if(extras != null) {
-                Log.d(TAG, "OnAlbumClick.ArtistId: " + extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, -1));
-            }
-
-            Log.d(TAG, "OnAlbumClick.AlbumId: " + albumId);
-
-            //--end debug
             if(extras == null) {
                 extras = new Bundle();
             }

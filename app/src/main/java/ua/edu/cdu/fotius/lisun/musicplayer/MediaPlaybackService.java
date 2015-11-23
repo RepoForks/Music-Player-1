@@ -1477,7 +1477,7 @@ public class MediaPlaybackService extends Service {
                     notifyChange(META_CHANGED);
                     return;
                 } else {
-                    // failed to getCursorLoader a list of files to shuffle
+                    // failed to createCursorLoader a list of files to shuffle
                     //mShuffleMode = Playlist.SHUFFLE_NONE;
                     mPlaylist.setShuffleMode(Playlist.SHUFFLE_NONE);
                 }

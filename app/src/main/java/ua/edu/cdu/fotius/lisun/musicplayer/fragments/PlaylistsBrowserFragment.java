@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
 
 public class PlaylistsBrowserFragment extends BaseLoaderFragment {
 
@@ -25,9 +27,9 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
-        PlaylistCursorLoaderFactory loaderFactory = (PlaylistCursorLoaderFactory) mLoaderFactory;
-        String[] from = new String[] { loaderFactory.getPlaylistName()};
+    protected CursorAdapter createCursorAdapter() {
+        PlaylistCursorLoaderCreator loaderFactory = (PlaylistCursorLoaderCreator) mLoaderFactory;
+        String[] from = new String[] { loaderFactory.getPlaylistColumnName()};
         int[] to = new int[] { R.id.playlist_name};
 
         return new BaseSimpleCursorAdapter(getActivity(),
@@ -35,8 +37,8 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected AbstractCursorLoaderFactory createLoaderFactory() {
-        return new PlaylistCursorLoaderFactory(getActivity());
+    protected AbstractCursorLoaderCreator createCursorLoaderCreator() {
+        return new PlaylistCursorLoaderCreator(getActivity());
     }
 
     @Override
@@ -45,12 +47,12 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
         View v = inflater.inflate(R.layout.fragment_my_playlists_browser, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
-        listView.setOnItemClickListener(new OnPlaylistClick(getActivity(), mCursorAdapter));
+        listView.setOnItemClickListener(new OnPlaylistClickListener(getActivity(), mCursorAdapter));
         return v;
     }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.getCursorLoader();
+        return mLoaderFactory.createCursorLoader();
     }
 }

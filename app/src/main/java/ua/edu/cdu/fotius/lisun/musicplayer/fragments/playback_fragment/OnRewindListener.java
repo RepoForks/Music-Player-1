@@ -1,25 +1,27 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+
 public class OnRewindListener extends BaseRewindFastForwardListener {
 
-    public OnRewindListener(ListenerCallbacks callbacks) {
-        super(callbacks);
+    public OnRewindListener(MediaPlaybackServiceWrapper serviceWrapper, PlaybackViewsStateListener playbackViewsStateListener) {
+        super(serviceWrapper, playbackViewsStateListener);
     }
 
     @Override
     public void scan(long howLongWasPressed, int repeatCount) {
         if (repeatCount == 0) {
-            mStartSeekPos = mCallbacks.getPlayingPosition();
+            mStartSeekPos = mServiceWrapper.getPlayingPosition();
         } else {
             long seekLeapTime = getSeekLeapDelta(howLongWasPressed);
             long newPosition = mStartSeekPos - seekLeapTime;
             if (newPosition <= 0) {
                 // move to previous track
-                mCallbacks.goToPreviousTrack();
+                mServiceWrapper.prev();
                 newPosition = 0;
             }
-            mCallbacks.seek(newPosition);
-            mCallbacks.refreshSeekBarAndCurrentTimeCallback();
+            mServiceWrapper.seek(newPosition);
+            mPlaybackViewsStateListener.updateSeekBarAndCurrentTime();
         }
     }
 }

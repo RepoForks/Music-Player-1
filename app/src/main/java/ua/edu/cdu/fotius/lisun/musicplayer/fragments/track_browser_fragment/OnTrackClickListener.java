@@ -8,13 +8,13 @@ import android.widget.AdapterView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseFragmentItemClickListener;
 
-public class OnTrackClick extends BaseFragmentItemClickListener {
+public class OnTrackClickListener extends BaseFragmentItemClickListener {
 
     private MediaPlaybackServiceWrapper mServiceWrapper;
     private String mTrackIdColumnName;
 
-    public OnTrackClick(Context context, CursorAdapter cursorAdapter, MediaPlaybackServiceWrapper serviceWrapper,
-                        String trackIdColumnName) {
+    public OnTrackClickListener(Context context, CursorAdapter cursorAdapter, MediaPlaybackServiceWrapper serviceWrapper,
+                                String trackIdColumnName) {
         super(context, cursorAdapter);
         mServiceWrapper = serviceWrapper;
         mTrackIdColumnName = trackIdColumnName;

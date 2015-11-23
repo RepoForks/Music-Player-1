@@ -10,6 +10,10 @@ import android.widget.GridView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractAlbumCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumsCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumsCursorLoaderCreator;
 
 public class AlbumsBrowserFragment extends BaseLoaderFragment {
 
@@ -24,28 +28,28 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected BaseSimpleCursorAdapter createAdapter() {
+    protected BaseSimpleCursorAdapter createCursorAdapter() {
         String[] from = new String[] {AudioStorage.Album.ALBUM, AudioStorage.Album.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
-        AbstractAlbumCursorLoaderFactory loaderFactory = (AbstractAlbumCursorLoaderFactory) mLoaderFactory;
+        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderFactory;
         return new AlbumArtCursorAdapter(getActivity(),
                 R.layout.grid_item_albums, from, to, R.id.album_art, loaderFactory.getAlbumIdColumnName());
     }
 
     @Override
-    protected AbstractCursorLoaderFactory createLoaderFactory() {
+    protected AbstractCursorLoaderCreator createCursorLoaderCreator() {
         Bundle extras = mExtras;
         if(extras == null) {
-            return new AlbumsCursorLoaderFactory(getActivity());
+            return new AlbumsCursorLoaderCreator(getActivity());
         }
 
-        long artistId = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, PARENT_ID_IS_NOT_SET);
-        if(artistId != PARENT_ID_IS_NOT_SET) {
-            return new ArtistAlbumsCursorLoaderFactory(getActivity(), artistId);
+        long artistId = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, WRONG_ID);
+        if(artistId != WRONG_ID) {
+            return new ArtistAlbumsCursorLoaderCreator(getActivity(), artistId);
         } else {
             /*this won't be executed, but keep this as "default value"*/
-            return new AlbumsCursorLoaderFactory(getActivity());
+            return new AlbumsCursorLoaderCreator(getActivity());
         }
     }
 
@@ -55,13 +59,13 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         View v = inflater.inflate(R.layout.fragment_albums_browser, container, false);
         GridView gridView = (GridView) v.findViewById(R.id.grid_container);
         gridView.setAdapter(mCursorAdapter);
-        AbstractAlbumCursorLoaderFactory loaderFactory = (AbstractAlbumCursorLoaderFactory) mLoaderFactory;
-        gridView.setOnItemClickListener(new OnAlbumClick(getActivity(), mCursorAdapter, mExtras,loaderFactory.getAlbumIdColumnName()));
+        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderFactory;
+        gridView.setOnItemClickListener(new OnAlbumClickListener(getActivity(), mCursorAdapter, mExtras,loaderFactory.getAlbumIdColumnName()));
         return v;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.getCursorLoader();
+        return mLoaderFactory.createCursorLoader();
     }
 }

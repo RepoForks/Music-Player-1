@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators;
 
 
 import android.content.Context;
@@ -8,17 +8,17 @@ import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
-public abstract class AbstractCursorLoaderFactory {
+public abstract class AbstractCursorLoaderCreator {
 
     private final String TAG = getClass().getSimpleName();
 
     private Context mContext;
 
-    protected AbstractCursorLoaderFactory(Context context) {
+    protected AbstractCursorLoaderCreator(Context context) {
         mContext = context;
     }
 
-    public CursorLoader getCursorLoader() {
+    public CursorLoader createCursorLoader() {
         DatabaseUtils.queryParamsInLog(getUri(), getProjection(), getSelection(), getSelectionArgs());
 
         return new CursorLoader(mContext, getUri(), getProjection(),

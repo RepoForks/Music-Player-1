@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators;
 
 
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.provider.MediaStore;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
-public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
+public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoaderCreator {
 
     private long mPlaylistId;
 
-    public PlaylistTracksCursorLoaderFactory(Context context, long playlistId) {
+    public PlaylistTracksCursorLoaderCreator(Context context, long playlistId) {
         super(context);
         mPlaylistId = playlistId;
     }
@@ -24,11 +24,11 @@ public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory
     @Override
     public String[] getProjection() {
         return new String[]{
-                AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST,
-                AudioStorage.PlaylistMember.TRACK_ID,
-                AudioStorage.PlaylistMember.TRACK,
-                AudioStorage.PlaylistMember.ARTIST,
-                AudioStorage.PlaylistMember.PLAY_ORDER
+                getIdWithinPlaylistColumnName(),
+                getTrackIdColumnName(),
+                getTrackColumnName(),
+                getArtistColumnName(),
+                getPlayOrder()
         };
     }
 
@@ -67,7 +67,7 @@ public class PlaylistTracksCursorLoaderFactory extends TracksCursorLoaderFactory
         return AudioStorage.PlaylistMember.ALBUM_ID;
     }
 
-    public String getId() {
+    public String getIdWithinPlaylistColumnName() {
         return AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST;
     }
 

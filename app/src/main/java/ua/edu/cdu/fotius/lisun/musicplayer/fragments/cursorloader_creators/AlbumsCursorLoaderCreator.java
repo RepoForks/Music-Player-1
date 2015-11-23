@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,9 +6,9 @@ import android.provider.MediaStore;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
-public class AlbumsCursorLoaderFactory extends AbstractAlbumCursorLoaderFactory{
+public class AlbumsCursorLoaderCreator extends AbstractAlbumCursorLoaderCreator {
 
-    public AlbumsCursorLoaderFactory(Context context) {
+    public AlbumsCursorLoaderCreator(Context context) {
         super(context);
     }
 
@@ -20,9 +20,9 @@ public class AlbumsCursorLoaderFactory extends AbstractAlbumCursorLoaderFactory{
     @Override
     public String[] getProjection() {
         return new String[] {
-                AudioStorage.Album.ALBUM_ID,
-                AudioStorage.Album.ALBUM,
-                AudioStorage.Album.ARTIST
+                getAlbumIdColumnName(),
+                getAlbumColumnName(),
+                getArtistColumnName()
         };
     }
 
@@ -44,6 +44,16 @@ public class AlbumsCursorLoaderFactory extends AbstractAlbumCursorLoaderFactory{
     @Override
     public String getAlbumIdColumnName() {
         return AudioStorage.Album.ALBUM_ID;
+    }
+
+    @Override
+    public String getAlbumColumnName() {
+        return AudioStorage.Album.ALBUM;
+    }
+
+    @Override
+    public String getArtistColumnName() {
+        return AudioStorage.Album.ARTIST;
     }
 
 }

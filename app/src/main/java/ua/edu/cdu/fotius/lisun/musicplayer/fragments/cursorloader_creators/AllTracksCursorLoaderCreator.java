@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.fragments.track_browser_fragment;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,13 +6,10 @@ import android.provider.MediaStore;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
-public class AlbumTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
+public class AllTracksCursorLoaderCreator extends AbstractTracksCursorLoaderCreator {
 
-    protected long mAlbumId;
-
-    protected AlbumTracksCursorLoaderFactory(Context context, long albumId) {
+    public AllTracksCursorLoaderCreator(Context context) {
         super(context);
-        mAlbumId = albumId;
     }
 
     @Override
@@ -23,21 +20,21 @@ public class AlbumTracksCursorLoaderFactory extends TracksCursorLoaderFactory {
     @Override
     public String[] getProjection() {
         return new String[]{
-                AudioStorage.Track.TRACK_ID,
-                AudioStorage.Track.TRACK,
-                AudioStorage.Track.ARTIST,
-                AudioStorage.Track.ALBUM_ID
+                getTrackIdColumnName(),
+                getTrackColumnName(),
+                getArtistColumnName(),
+                getAlbumIdColumnName()
         };
     }
 
     @Override
     public String getSelection() {
-        return AudioStorage.Track.ALBUM_ID + " = ?";
+        return getTrackColumnName() + " != '' AND " + AudioStorage.Track.IS_MUSIC + " = 1";
     }
 
     @Override
     public String[] getSelectionArgs() {
-        return new String[]{ Long.toString(mAlbumId)};
+        return null;
     }
 
     @Override

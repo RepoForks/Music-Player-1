@@ -12,9 +12,9 @@ import android.widget.AdapterView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
-public class OnPlaylistClick extends BaseFragmentItemClickListener{
+public class OnPlaylistClickListener extends BaseFragmentItemClickListener{
 
-    public OnPlaylistClick(Context context, CursorAdapter cursorAdapter) {
+    public OnPlaylistClickListener(Context context, CursorAdapter cursorAdapter) {
         super(context, cursorAdapter);
     }
 

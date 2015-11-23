@@ -57,7 +57,7 @@ public class PlayPauseButton extends ImageButton{
         mPauseButtonResId = pauseButtonResId;
     }
 
-    public void changeStateImage(boolean isPlaying) {
+    public void updateStateImage(boolean isPlaying) {
         if(mPlayButtonResId == 0) {
             throw new IllegalStateException("Play button resource " +
                     "id must be set before calling this method");

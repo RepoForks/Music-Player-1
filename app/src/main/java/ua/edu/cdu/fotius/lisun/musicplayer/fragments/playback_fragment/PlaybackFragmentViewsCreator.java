@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
@@ -15,31 +16,34 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 
-public class ViewsFactory {
+public class PlaybackFragmentViewsCreator {
 
     public static final int SEEK_BAR_MAX = 1000;
 
     private View mLayout;
-    private ListenerCallbacks mCallbacks;
+    private MediaPlaybackServiceWrapper mPlaybackServiceWrapper;
+    private PlaybackViewsStateListener mPlaybackViewsStateListener;
     private OnRewindListener mRewindListener;
-    private OnPreviousClickedListener mPrevListener;
+    private OnPreviousClickListener mPrevListener;
     private OnFastForwardListener mForwardListener;
-    private OnNextClickedListener mNextListener;
-    private OnPlayPauseClickedListener mPlayPauseListener;
+    private OnNextClickListener mNextListener;
+    private OnPlayPauseClickListener mPlayPauseListener;
 
 
-    public ViewsFactory(View layout, ListenerCallbacks callbacks) {
+    public PlaybackFragmentViewsCreator(View layout, MediaPlaybackServiceWrapper serviceWrapper,
+                                        PlaybackViewsStateListener playbackViewsStateListener) {
         mLayout = layout;
-        mCallbacks = callbacks;
+        mPlaybackServiceWrapper = serviceWrapper;
+        mPlaybackViewsStateListener = playbackViewsStateListener;
 
-        mRewindListener = new OnRewindListener(mCallbacks);
-        mPrevListener = new OnPreviousClickedListener(mCallbacks);
-        mForwardListener = new OnFastForwardListener(mCallbacks);
-        mNextListener = new OnNextClickedListener(mCallbacks);
-        mPlayPauseListener = new OnPlayPauseClickedListener(mCallbacks);
+        mRewindListener = new OnRewindListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
+        mPrevListener = new OnPreviousClickListener(mPlaybackServiceWrapper);
+        mForwardListener = new OnFastForwardListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
+        mNextListener = new OnNextClickListener(mPlaybackServiceWrapper);
+        mPlayPauseListener = new OnPlayPauseClickListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
     }
 
-    public ImageButton initializePrevButton() {
+    public ImageButton createPrevButton() {
         LoopingImageButton prevButton =
                 (LoopingImageButton) mLayout.findViewById(R.id.prev);
         prevButton.setOnClickListener(mPrevListener);
@@ -48,7 +52,7 @@ public class ViewsFactory {
         return prevButton;
     }
 
-    public ImageButton initializePrevAdditionalButton() {
+    public ImageButton createPrevConcealableButton() {
         LoopingImageButton prevAdditionalButton =
                 (LoopingImageButton) mLayout.findViewById(R.id.prev_additional);
         prevAdditionalButton.setOnClickListener(mPrevListener);
@@ -57,7 +61,7 @@ public class ViewsFactory {
         return prevAdditionalButton;
     }
 
-    public ImageButton initializeNextButton() {
+    public ImageButton createNextButton() {
         LoopingImageButton nextButton =
                 (LoopingImageButton) mLayout.findViewById(R.id.next);
         nextButton.setOnClickListener(mNextListener);
@@ -66,7 +70,7 @@ public class ViewsFactory {
         return nextButton;
     }
 
-    public ImageButton initializeNextAdditionalButton() {
+    public ImageButton createNextConcealableButton() {
         LoopingImageButton nextAdditionalButton =
                 (LoopingImageButton) mLayout.findViewById(R.id.next_additional);
         nextAdditionalButton.setOnClickListener(mNextListener);
@@ -75,66 +79,64 @@ public class ViewsFactory {
         return nextAdditionalButton;
     }
 
-    public ConcealableImageView initializeConcealableAlbumArtImageView() {
+    public ConcealableImageView createConcealableAlbumArtImageView() {
         return (ConcealableImageView) mLayout.findViewById(R.id.concealable_album_art);
     }
 
-    public ImageView initializeAlbumArtImageView() {
+    public ImageView createAlbumArtImageView() {
         return (ImageView) mLayout.findViewById(R.id.album_art);
     }
 
-    public PlayPauseButton initializePlayPauseButton() {
+    public PlayPauseButton createPlayPauseButton() {
         PlayPauseButton playButton = (PlayPauseButton) mLayout.findViewById(R.id.play);
-        playButton.setOnClickListener(new OnPlayPauseClickedListener(mCallbacks));
-
+        playButton.setOnClickListener(mPlayPauseListener);
         return playButton;
     }
 
-    public PlayPauseButton initializePlayPauseAdditionalButton() {
+    public PlayPauseButton createPlayPauseConcealableButton() {
         PlayPauseButton playPauseAdditionalButton = (PlayPauseButton) mLayout.findViewById(R.id.play_additional);
         playPauseAdditionalButton.setOnClickListener(mPlayPauseListener);
-
         return playPauseAdditionalButton;
     }
 
-    public RepeatButton initializeRepeatButton() {
+    public RepeatButton createRepeatButton() {
         RepeatButton repeatButton = (RepeatButton) mLayout.findViewById(R.id.repeat);
-        repeatButton.setOnClickListener(new OnRepeatClickedListener(mCallbacks));
-
+        repeatButton.setOnClickListener(new OnRepeatClickListener(mPlaybackServiceWrapper,
+                mPlaybackViewsStateListener));
         return repeatButton;
     }
 
-    public ShuffleButton initializeShuffleButton() {
+    public ShuffleButton createShuffleButton() {
         ShuffleButton shuffleButton = (ShuffleButton) mLayout.findViewById(R.id.shuffle);
-        shuffleButton.setOnClickListener(new OnShuffleClickedListener(mCallbacks));
-
+        shuffleButton.setOnClickListener(new OnShuffleClickListener(mPlaybackServiceWrapper,
+                mPlaybackViewsStateListener));
         return shuffleButton;
     }
 
-    public TextView initializeTrackNameView() {
+    public TextView createTrackNameView() {
         TextView trackName = (TextView) mLayout.findViewById(R.id.track_title);
         return trackName;
     }
 
-    public BaseNameTextView initializeArtistNameView() {
+    public BaseNameTextView createArtistNameView() {
         BaseNameTextView artistName = (ArtistNameTextView) mLayout.findViewById(R.id.artist_name);
         return artistName;
     }
 
-    public SeekBar initializeSeekBar() {
+    public SeekBar createSeekBar() {
         SeekBar seekBar = (SeekBar) mLayout.findViewById(R.id.seek_bar);
         seekBar.setMax(SEEK_BAR_MAX);
-        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangedListener(mCallbacks, SEEK_BAR_MAX));
-
+        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(mPlaybackServiceWrapper,
+                mPlaybackViewsStateListener, SEEK_BAR_MAX));
         return seekBar;
     }
 
-    public TextView initializeCurrentTimeView() {
+    public TextView createCurrentTimeView() {
         TextView currentTime = (TextView) mLayout.findViewById(R.id.current_time);
         return currentTime;
     }
 
-    public TextView initializeTotalTimeView() {
+    public TextView createTotalTimeView() {
         TextView totalTime = (TextView) mLayout.findViewById(R.id.total_time);
         return totalTime;
     }

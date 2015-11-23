@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistCursorLoaderCreator;
 
 public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
@@ -26,8 +28,8 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected CursorAdapter createAdapter() {
-        ArtistCursorLoaderFactory loaderFactory = (ArtistCursorLoaderFactory) mLoaderFactory;
+    protected CursorAdapter createCursorAdapter() {
+        ArtistCursorLoaderCreator loaderFactory = (ArtistCursorLoaderCreator) mLoaderFactory;
         String[] from = new String[]{loaderFactory.getArtistColumnName(),
                 loaderFactory.getAlbumsQuantityColumnName(),
                 loaderFactory.getTracksQuantityColumnName()};
@@ -38,8 +40,8 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected AbstractCursorLoaderFactory createLoaderFactory() {
-        return new ArtistCursorLoaderFactory(getActivity());
+    protected AbstractCursorLoaderCreator createCursorLoaderCreator() {
+        return new ArtistCursorLoaderCreator(getActivity());
     }
 
     @Override
@@ -48,12 +50,12 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
         View v = inflater.inflate(R.layout.fragment_artists_browser, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
-        listView.setOnItemClickListener(new OnArtistClick(getActivity(), mCursorAdapter));
+        listView.setOnItemClickListener(new OnArtistClickListener(getActivity(), mCursorAdapter));
         return v;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.getCursorLoader();
+        return mLoaderFactory.createCursorLoader();
     }
 }
