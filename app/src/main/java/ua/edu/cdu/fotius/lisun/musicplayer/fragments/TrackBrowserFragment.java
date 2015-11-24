@@ -16,7 +16,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenu;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AllTracksCursorLoaderCreator;
@@ -70,7 +70,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
         listView.setOnItemClickListener(createOnItemClickListener());
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenu(getActivity(), mServiceWrapper)));
+                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper)));
         return v;
     }
 

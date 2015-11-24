@@ -22,13 +22,13 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     private final String TAG = getClass().getSimpleName();
     private ToolbarStateListener mToolbarStateListener;
     private ListView mListView;
-    private BaseMenu mMenu;
+    private BaseMenuCommandSet mBaseMenuCommandsSet;
     private Context mContext;
 
-    public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener, ListView listView, BaseMenu baseMenu){
+    public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener, ListView listView, BaseMenuCommandSet baseMenuCommandSet){
         mToolbarStateListener = toolbarStateListener;
         mListView = listView;
-        mMenu = baseMenu;
+        mBaseMenuCommandsSet = baseMenuCommandSet;
         mContext = context;
     }
 
@@ -51,17 +51,20 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     }
 
     private void initializeMenu(Menu menu) {
-        MenuGroup group = mMenu.initializeOrGetMinimalGroup();
-        group.fillMenuWithThisGroup(menu);
-        group = mMenu.initializeOrGetAdditionalGroup();
-        group.fillMenuWithThisGroup(menu);
+        MenuWrapper menuWrapper = new MenuWrapper(menu);
+
+        MenuCommandsContainer commandsContainer = mBaseMenuCommandsSet.initializeOrGetMinimalGroup();
+        menuWrapper.setContent(commandsContainer);
+
+        commandsContainer = mBaseMenuCommandsSet.initializeOrGetAdditionalGroup();
+        menuWrapper.setContent(commandsContainer);
     }
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
         ArrayList<Integer> checkedPositions = getCheckedPositions();
         long[] checkedTrackIds = getCheckedTrackIds(checkedPositions);
-        mMenu.execute(menuItem.getItemId(), checkedTrackIds);
+        mBaseMenuCommandsSet.execute(menuItem.getItemId(), checkedTrackIds);
         mode.finish();
         return true;
     }
@@ -96,7 +99,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     public void onItemCheckedStateChanged(ActionMode mode, int position,
                                           long id, boolean needToCheck) {
         boolean isAdditionalMenuNeeded = (mListView.getCheckedItemCount() == 1) ? true : false;
-        mode.getMenu().setGroupVisible(mMenu.getAdditionalGroup().getId(), isAdditionalMenuNeeded);
+        mode.getMenu().setGroupVisible(mBaseMenuCommandsSet.getAdditionalGroup().getId(), isAdditionalMenuNeeded);
         Resources resources = mContext.getResources();
         mode.setTitle(mListView.getCheckedItemCount() + " " + resources.getString(R.string.selected_text));
     }

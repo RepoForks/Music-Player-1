@@ -8,7 +8,7 @@
 
     <include layout="@layout/activity_skeleton" />
 
-    <android.support.design.widget.NavigationView
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
