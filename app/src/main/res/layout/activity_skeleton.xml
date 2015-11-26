@@ -1,11 +1,11 @@
-<ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_up_panel_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp">
+    sothree:umanoPanelHeight="68dp" >
 
     <!--MAIN VIEW-->
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            sothree:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
         <FrameLayout
             android:id="@+id/fragment_container"

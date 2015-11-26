@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
@@ -38,7 +39,7 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.e(TAG, "onCreate()");
+        Log.d(TAG, "ON_CREATE");
 
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -84,8 +85,6 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.e(TAG, "Activity.OnRestoreInstanceState");
         super.onRestoreInstanceState(savedInstanceState);
-        //TODO: get slidingUpPanelState
-        Log.d(TAG, "Sliding Panel State: " + mSlidingPanel.getPanelState().toString());
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {
@@ -174,5 +173,38 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     @Override
     public void hideToolbar() {
         mToolbar.setVisibility(View.GONE);
+    }
+
+
+    //TODO: DEBUG
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 }

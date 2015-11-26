@@ -48,8 +48,6 @@ public class DatabaseUtils {
 
     public static String queryAlbumArtPath(Context context, long albumID) {
 
-        //Log.d(TAG, "QUERY_ALBUM_PATH");
-
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
@@ -57,11 +55,7 @@ public class DatabaseUtils {
         String selection = AudioStorage.Album.ALBUM_ID + "=?";
         String[] selectionArgs = new String[]{Long.toString(albumID)};
 
-        queryParamsInLog(uri, projection, selection, selectionArgs);
-
         Cursor c = contentResolver.query(uri, projection, selection, selectionArgs, null);
-
-        Log.d(TAG, "QUERY_ALBUM_PATH. c == null: " + (c == null));
 
         String path = null;
         if (c != null) {

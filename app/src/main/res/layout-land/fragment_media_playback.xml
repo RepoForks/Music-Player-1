@@ -2,11 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingRight="@dimen/playback_fragment_layout_padding"
-    android:paddingLeft="@dimen/playback_fragment_layout_padding"
-    android:paddingTop="@dimen/playback_fragment_layout_padding"
     android:paddingBottom="@dimen/playback_fragment_layout_padding_bottom"
-    android:clickable="false" >
+    android:paddingLeft="@dimen/playback_fragment_layout_padding"
+    android:paddingRight="@dimen/playback_fragment_layout_padding"
+    android:paddingTop="@dimen/playback_fragment_layout_padding">
 
 
     <!--Minimal layout-->
@@ -15,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView
             android:id="@+id/concealable_album_art"
-            android:src="@mipmap/ic_launcher"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,15 +33,15 @@
                 android:id="@+id/track_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/minimal_panel_song_text_size"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="@dimen/minimal_panel_song_text_size" />
 
             <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
                 android:id="@+id/artist_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/minimal_panel_artist_text_size"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="@dimen/minimal_panel_artist_text_size" />
         </LinearLayout>
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableMediaButtonsLayout
@@ -50,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:gravity="center" >
+            android:gravity="center">
 
             <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
                 android:id="@+id/prev_additional"
@@ -67,23 +66,37 @@
 
     </LinearLayout>
 
-    <!--Need this wrapper layout to shift below layout to bottom-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        <!--Need this wrapper layout to shift below layout to bottom-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center" >
 
-        <ImageView
-            android:id="@+id/album_art"
-            android:layout_width="@dimen/album_cover_image_size"
-            android:layout_height="@dimen/album_cover_image_size"
-            android:cropToPadding="true"
-            android:src="@mipmap/default_album_art_512dp" />
+            <ImageView
+                android:id="@+id/album_art"
+                android:layout_width="@dimen/album_cover_image_size"
+                android:layout_height="@dimen/album_cover_image_size"
+                android:cropToPadding="true"
+                android:src="@mipmap/default_album_art_512dp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:gravity="center" >
+
+            <!--Playback control panel -->
+            <include layout="@layout/playback_control_panel" />
+        </LinearLayout>
     </LinearLayout>
-
-    <!--Playback control panel -->
-    <include layout="@layout/playback_control_panel" />
 
 </LinearLayout>

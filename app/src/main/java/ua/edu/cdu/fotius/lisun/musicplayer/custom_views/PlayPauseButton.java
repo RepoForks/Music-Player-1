@@ -30,18 +30,9 @@ public class PlayPauseButton extends ImageButton{
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
-
-        Log.d(TAG, "1) initAttributes");
-
         TypedArray a = context.getTheme()
                 .obtainStyledAttributes(attrs, R.styleable.PlayPauseButton, 0, 0);
-
-        Log.d(TAG, "2) initAttributes");
-
         try {
-
-            Log.d(TAG, "3) initAttributes");
-
             setPlayButtonResId(a.getResourceId(R.styleable.PlayPauseButton_play_src, 0));
             setPauseButtonResId(a.getResourceId(R.styleable.PlayPauseButton_pause_src, 0));
         } finally {

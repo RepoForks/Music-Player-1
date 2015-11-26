@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +9,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -47,6 +51,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private ShuffleButton mShuffleButton;
     private MediaPlaybackServiceWrapper mServiceWrapper;
     private ImageLoader mImageLoader;
+    private LinearLayout mDragView;
 
     public PlaybackFragment() {}
 
@@ -82,6 +87,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         mSeekBar = playbackFragmentViewsCreator.createSeekBar();
         mCurrentTime = playbackFragmentViewsCreator.createCurrentTimeView();
         mTotalTime = playbackFragmentViewsCreator.createTotalTimeView();
+        mDragView = (LinearLayout)v.findViewById(R.id.minimal_layout_container);
+
 
         return v;
     }

@@ -3,9 +3,13 @@ package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 
 public class SavedVisibilityState extends View.BaseSavedState{
+
+    private final String TAG = getClass().getSimpleName();
+
     int visibility;
 
     public SavedVisibilityState(Parcelable superState) {

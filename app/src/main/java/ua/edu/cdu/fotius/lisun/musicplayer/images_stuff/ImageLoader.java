@@ -26,7 +26,7 @@ public class ImageLoader {
 
     public ImageLoader load(String filePath) {
 
-        Log.d(TAG, "LOAD. filePath: " + filePath);
+        //Log.d(TAG, "LOAD. filePath: " + filePath);
 
         mFilePath = filePath;
         mResId = 0;

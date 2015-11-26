@@ -562,6 +562,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     public void setDragView(int dragViewResId) {
         mDragViewResId = dragViewResId;
+        Log.d(TAG, "findViewById(dragViewResId): " + findViewById(dragViewResId));
         setDragView(findViewById(dragViewResId));
     }
 
