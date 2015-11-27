@@ -39,7 +39,7 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG, "ON_CREATE");
+        Log.d(TAG, "onCreate()");
 
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -72,18 +72,14 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
         }
     }
 
-
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.e(TAG, "onSaveInstanceState()");
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentBrowserFragment.getTag());
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.e(TAG, "Activity.OnRestoreInstanceState");
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -94,7 +90,6 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-
                         //if tending to replace with the same fragment don't do this, because this will call
                         //Fragment#OnCreate() where database time consuming operations are performed
                         switch (menuItem.getItemId()){

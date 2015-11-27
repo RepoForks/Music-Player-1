@@ -29,7 +29,7 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     protected CursorAdapter createCursorAdapter() {
-        ArtistCursorLoaderCreator loaderFactory = (ArtistCursorLoaderCreator) mLoaderFactory;
+        ArtistCursorLoaderCreator loaderFactory = (ArtistCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getArtistColumnName(),
                 loaderFactory.getAlbumsQuantityColumnName(),
                 loaderFactory.getTracksQuantityColumnName()};
@@ -56,6 +56,6 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.createCursorLoader();
+        return mLoaderCreator.createCursorLoader();
     }
 }

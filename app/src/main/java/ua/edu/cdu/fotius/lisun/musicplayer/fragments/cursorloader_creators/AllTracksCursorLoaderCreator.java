@@ -13,6 +13,11 @@ public class AllTracksCursorLoaderCreator extends AbstractTracksCursorLoaderCrea
     }
 
     @Override
+    public int getLoaderId() {
+        return TRACKS_LOADER_ID;
+    }
+
+    @Override
     public Uri getUri() {
         return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     }

@@ -7,18 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 
 public abstract class BaseLoaderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private final String TAG = getClass().getSimpleName();
+
     public static final int WRONG_ID = -1;
-    /*we have one and only one loader per fragment
-     so don't need some specific loader ids.*/
-    private final int ARBITRARY_LOADER_ID = 1;
 
     protected CursorAdapter mCursorAdapter;
-    protected AbstractCursorLoaderCreator mLoaderFactory;
+    protected AbstractCursorLoaderCreator mLoaderCreator;
 
     private String tag;
 
@@ -26,9 +26,9 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mLoaderFactory = createCursorLoaderCreator();
+        mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
-        getLoaderManager().initLoader(ARBITRARY_LOADER_ID, null, this);
+        getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
     public String getFragmentTag() {

@@ -19,11 +19,16 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
  * Up/Back navigation*/
 public class AlbumsDetalizationActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
     private Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skeleton);
 
@@ -67,5 +72,35 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 }

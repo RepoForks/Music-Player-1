@@ -13,6 +13,11 @@ public class AlbumsCursorLoaderCreator extends AbstractAlbumCursorLoaderCreator 
     }
 
     @Override
+    public int getLoaderId() {
+        return ALBUMS_LOADER_ID;
+    }
+
+    @Override
     public Uri getUri() {
         return MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
     }

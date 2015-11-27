@@ -1,8 +1,10 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         mExtras = getArguments();
         super.onCreate(savedInstanceState);
     }
@@ -32,7 +35,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         String[] from = new String[] {AudioStorage.Album.ALBUM, AudioStorage.Album.ARTIST};
         int[] to = new int[] { R.id.album_title, R.id.artist_name };
 
-        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderFactory;
+        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderCreator;
         return new AlbumArtCursorAdapter(getActivity(),
                 R.layout.grid_item_albums, from, to, R.id.album_art, loaderFactory.getAlbumIdColumnName());
     }
@@ -56,16 +59,71 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         View v = inflater.inflate(R.layout.fragment_albums_browser, container, false);
         GridView gridView = (GridView) v.findViewById(R.id.grid_container);
         gridView.setAdapter(mCursorAdapter);
-        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderFactory;
+        AbstractAlbumCursorLoaderCreator loaderFactory = (AbstractAlbumCursorLoaderCreator) mLoaderCreator;
         gridView.setOnItemClickListener(new OnAlbumClickListener(getActivity(), mCursorAdapter, mExtras,loaderFactory.getAlbumIdColumnName()));
         return v;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.createCursorLoader();
+        return mLoaderCreator.createCursorLoader();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach");
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach");
     }
 }

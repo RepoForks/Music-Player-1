@@ -14,6 +14,11 @@ public class AlbumTracksCursorLoaderCreator extends AllTracksCursorLoaderCreator
     }
 
     @Override
+    public int getLoaderId() {
+        return ALBUM_TRACKS_LOADER_ID;
+    }
+
+    @Override
     public String getSelection() {
         return AudioStorage.Track.ALBUM_ID + " = ?";
     }

@@ -14,6 +14,11 @@ public class ArtistAlbumTracksCursorLoaderCreator extends AlbumTracksCursorLoade
     }
 
     @Override
+    public int getLoaderId() {
+        return ARTIST_ALBUM_TRACKS_LOADER_ID;
+    }
+
+    @Override
     public String[] getProjection() {
         return new String[]{
                 getTrackIdColumnName(),

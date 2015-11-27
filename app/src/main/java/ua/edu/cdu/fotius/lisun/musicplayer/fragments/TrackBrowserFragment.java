@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     @Override
     protected CursorAdapter createCursorAdapter() {
-        AbstractTracksCursorLoaderCreator loaderFactory = (AbstractTracksCursorLoaderCreator) mLoaderFactory;
+        AbstractTracksCursorLoaderCreator loaderFactory = (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getTrackColumnName(),
                 loaderFactory.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
@@ -95,7 +96,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     protected AdapterView.OnItemClickListener createOnItemClickListener() {
         AbstractTracksCursorLoaderCreator loaderFactory =
-                (AbstractTracksCursorLoaderCreator) mLoaderFactory;
+                (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         return new OnTrackClickListener(getActivity(), mCursorAdapter,
                 mServiceWrapper, loaderFactory.getTrackIdColumnName());
     }
@@ -108,7 +109,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.createCursorLoader();
+        return mLoaderCreator.createCursorLoader();
     }
 
     @Override

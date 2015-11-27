@@ -17,6 +17,11 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
     }
 
     @Override
+    public int getLoaderId() {
+        return PLAYLIST_TRACKS_LOADER_ID;
+    }
+
+    @Override
     public Uri getUri() {
         return MediaStore.Audio.Playlists.Members.getContentUri("external", mPlaylistId);
     }

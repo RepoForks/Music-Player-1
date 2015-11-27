@@ -28,7 +28,7 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     protected CursorAdapter createCursorAdapter() {
-        PlaylistCursorLoaderCreator loaderFactory = (PlaylistCursorLoaderCreator) mLoaderFactory;
+        PlaylistCursorLoaderCreator loaderFactory = (PlaylistCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[] { loaderFactory.getPlaylistColumnName()};
         int[] to = new int[] { R.id.playlist_name};
 
@@ -53,6 +53,6 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        return mLoaderFactory.createCursorLoader();
+        return mLoaderCreator.createCursorLoader();
     }
 }
