@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,8 +48,8 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
             return new AlbumsCursorLoaderCreator(getActivity());
         }
 
-        long artistId = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, WRONG_ID);
-        if(artistId != WRONG_ID) {
+        long artistId = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
+        if(artistId != AudioStorage.WRONG_ID) {
             return new ArtistAlbumsCursorLoaderCreator(getActivity(), artistId);
         } else {
             /*this won't be executed, but keep this as "default value"*/
@@ -73,12 +74,25 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         return mLoaderCreator.createCursorLoader();
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d(TAG, "onAttach");
     }
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -89,12 +103,6 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
     }
 
     @Override

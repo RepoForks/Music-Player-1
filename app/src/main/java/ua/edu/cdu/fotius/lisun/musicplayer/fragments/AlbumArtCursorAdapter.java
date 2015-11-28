@@ -32,8 +32,7 @@ public class AlbumArtCursorAdapter extends BaseSimpleCursorAdapter{
             //TODO : cursor == null
             int albumIdIdx = cursor.getColumnIndexOrThrow(mAlbumIDColumnName);
             long albumId = cursor.getLong(albumIdIdx);
-            String filePath = DatabaseUtils.queryAlbumArtPath(mContext, albumId);
-            mImageLoader.load(filePath).withDefault(R.mipmap.default_album_art_512dp).into((ImageView) v);
+            mImageLoader.load(albumId).withDefault(R.mipmap.default_album_art_512dp).into((ImageView) v);
         }
         super.bindView(rowLayout, context, cursor);
     }

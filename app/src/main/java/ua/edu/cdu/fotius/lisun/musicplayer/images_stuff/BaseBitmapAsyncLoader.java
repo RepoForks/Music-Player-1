@@ -28,10 +28,13 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
         Bitmap bitmap = null;
         if (imageView != null) {
             bitmap = decodeBitmap(bitmapSource, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
-           // Log.d(TAG, "doInBackground");
             addToMemoryCache(bitmapSource, bitmap, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
         }
         return bitmap;
+    }
+
+    protected void addToMemoryCache(Object bitmapSource, Bitmap bitmap, int imageViewWidth, int imageViewHeight) {
+        mImageMemoryCache.addBitmap(ImageMemoryCache.formKey(mData, imageViewWidth, imageViewHeight), bitmap);
     }
 
     @Override
@@ -54,5 +57,4 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
     }
 
     protected abstract Bitmap decodeBitmap(Object bitmapSource, int width, int height);
-    protected abstract void addToMemoryCache(Object bitmapSource, Bitmap bitmap, int imageWidth, int imageHeight);
 }

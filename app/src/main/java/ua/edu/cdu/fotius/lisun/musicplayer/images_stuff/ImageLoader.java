@@ -2,40 +2,28 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.widget.ImageView;
 
-import java.io.File;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
 public class ImageLoader {
 
     private final String TAG = getClass().getSimpleName();
 
-    private String mFilePath = null;
-    private int mResId = 0;
+    private long mAlbumId = AudioStorage.WRONG_ID;
     private ImageMemoryCache mImageMemoryCache;
     private Context mContext;
-    private int mDefaultImageId = 0;
+
+    private final int WRONG_RES_ID = 0;
+    private int mDefaultImageId = WRONG_RES_ID;
 
     public ImageLoader(Context c) {
         mContext = c;
         mImageMemoryCache = ImageMemoryCache.getImageMemoryCache();
     }
 
-    public ImageLoader load(String filePath) {
-
-        //Log.d(TAG, "LOAD. filePath: " + filePath);
-
-        mFilePath = filePath;
-        mResId = 0;
-        return this;
-    }
-
-    public ImageLoader load(int resId) {
-        mResId = resId;
-        mFilePath = null;
+    public ImageLoader load(long albumId) {
+        mAlbumId = albumId;
         return this;
     }
 
@@ -45,25 +33,28 @@ public class ImageLoader {
     }
 
     public void into(ImageView imageView) {
-        if ((mFilePath != null) && (new File(mFilePath).exists())) {
-            loadBitmap(mFilePath, imageView);
-        } else if (mResId != 0) {
-            loadBitmap(mResId, imageView);
-        } else if (mDefaultImageId != 0) {
+        if(mDefaultImageId == WRONG_RES_ID) {
+            throw new IllegalStateException("Default image must be set " +
+                    "with \"withDefault(int)\" method before calling  \"into()\" method()");
+        }
+
+        if (mAlbumId != AudioStorage.WRONG_ID) {
+            loadBitmap(mAlbumId, mDefaultImageId, imageView);
+        } else {
             loadBitmap(mDefaultImageId, imageView);
         }
     }
 
-    private void loadBitmap(final String filePath, final ImageView imageView) {
-        BitmapAsyncFileLoader bitmapAsyncFileLoader =
-                                new BitmapAsyncFileLoader(imageView, mImageMemoryCache);
-        loadBitmapGeneral(filePath, imageView, bitmapAsyncFileLoader);
+    private void loadBitmap(long albumId, int defaultImageId, ImageView imageView) {
+        BitmapAsyncAlbumArtLoader bitmapAsyncAlbumArtLoader =
+                new BitmapAsyncAlbumArtLoader(mContext, defaultImageId, imageView, mImageMemoryCache);
+        loadBitmapGeneral(albumId, imageView, bitmapAsyncAlbumArtLoader);
     }
 
     private void loadBitmap(final int resId, final ImageView imageView) {
         BitmapAsyncResLoader bitmapAsyncResLoader =
-                                new BitmapAsyncResLoader(mContext.getResources(),
-                                        imageView, mImageMemoryCache);
+                new BitmapAsyncResLoader(mContext.getResources(),
+                        imageView, mImageMemoryCache);
         loadBitmapGeneral(resId, imageView, bitmapAsyncResLoader);
     }
 
@@ -88,13 +79,6 @@ public class ImageLoader {
         }
     }
 
-    private void startAsyncBitmapLoad(final BaseBitmapAsyncLoader asyncLoader,
-                                      final ImageView imageView, final Object imageSource) {
-        AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(asyncLoader);
-        imageView.setImageDrawable(asyncTempDrawable);
-        asyncLoader.execute(imageSource);
-    }
-
     private boolean cancelPotentialWork(Object newData, ImageView imageView) {
         BaseBitmapAsyncLoader bitmapAsyncLoader = ImageUtils.retreiveAsyncLoader(imageView);
         if (bitmapAsyncLoader != null) {
@@ -107,5 +91,12 @@ public class ImageLoader {
             }
         }
         return true;
+    }
+
+    private void startAsyncBitmapLoad(final BaseBitmapAsyncLoader asyncLoader,
+                                      final ImageView imageView, final Object imageSource) {
+        AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(asyncLoader);
+        imageView.setImageDrawable(asyncTempDrawable);
+        asyncLoader.execute(imageSource);
     }
 }

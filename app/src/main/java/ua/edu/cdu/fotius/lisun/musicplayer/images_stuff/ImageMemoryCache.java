@@ -23,7 +23,7 @@ public class ImageMemoryCache {
         stringBuffer.append(String.valueOf(imageSource));
         stringBuffer.append(imageWidth);
         stringBuffer.append(imageHeight);
-        //Log.d("formKey", stringBuffer.toString());
+        Log.d("formKey", stringBuffer.toString());
         return stringBuffer.toString();
     }
 
@@ -41,13 +41,13 @@ public class ImageMemoryCache {
 
     public void addBitmap(String key, Bitmap bitmap) {
         if(getBitmap(key) == null) {
-            //Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
+            Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
             mCache.put(key, bitmap);
         }
     }
 
     public Bitmap getBitmap(String key) {
-        //Log.d(TAG, "MemCache.Get. key: " + key + " value: " + ((key != null) ? mCache.get(key) : ""));
+        Log.d(TAG, "MemCache.Get. key: " + key + " value: " + ((key != null) ? mCache.get(key) : ""));
         return mCache.get(key);
     }
 }

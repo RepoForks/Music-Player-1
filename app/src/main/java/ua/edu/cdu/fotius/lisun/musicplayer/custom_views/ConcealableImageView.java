@@ -6,13 +6,15 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
 public class ConcealableImageView extends ImageView implements ConcealableViewBehaviour{
 
     private ImageLoader mImageLoader;
-    private String mAlbumArtPath = null;
+    private long mAlbumId = AudioStorage.WRONG_ID;
 
     public ConcealableImageView(Context context) {
         super(context);
@@ -44,8 +46,8 @@ public class ConcealableImageView extends ImageView implements ConcealableViewBe
         setVisibility(ss.visibility);
     }
 
-    public void setAlbumArt(String albumArtPath) {
-        mAlbumArtPath = albumArtPath;
+    public void setAlbumArt(long albumId) {
+        mAlbumId = albumId;
         if(getVisibility() == View.VISIBLE) {
             loadImage();
         }
@@ -64,7 +66,7 @@ public class ConcealableImageView extends ImageView implements ConcealableViewBe
     }
 
     private void loadImage() {
-        mImageLoader.load(mAlbumArtPath)
+        mImageLoader.load(mAlbumId)
                 .withDefault(R.mipmap.default_album_art_512dp).into(this);
     }
 }

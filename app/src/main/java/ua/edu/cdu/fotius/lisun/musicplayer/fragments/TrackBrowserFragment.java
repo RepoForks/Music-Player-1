@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
@@ -81,11 +82,11 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
         if (extras == null) {
             return new AllTracksCursorLoaderCreator(getActivity());
         }
-        long artistId = extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, WRONG_ID);
-        long albumId = extras.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, WRONG_ID);
-        if ((artistId != WRONG_ID) && (albumId != WRONG_ID)) {
+        long artistId = extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
+        long albumId = extras.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, AudioStorage.WRONG_ID);
+        if ((artistId != AudioStorage.WRONG_ID) && (albumId != AudioStorage.WRONG_ID)) {
             return new ArtistAlbumTracksCursorLoaderCreator(getActivity(), artistId, albumId);
-        } else if (albumId != WRONG_ID) {
+        } else if (albumId != AudioStorage.WRONG_ID) {
             return new AlbumTracksCursorLoaderCreator(getActivity(), albumId);
         } else {
             /*this won't be executed, but keep this as "default value"*/

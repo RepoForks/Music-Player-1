@@ -15,8 +15,6 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
 
     private final String TAG = getClass().getSimpleName();
 
-    public static final int WRONG_ID = -1;
-
     protected CursorAdapter mCursorAdapter;
     protected AbstractCursorLoaderCreator mLoaderCreator;
 
@@ -28,6 +26,13 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
         setRetainInstance(true);
         mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
+        //getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume");
+        super.onPause();
         getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
@@ -47,11 +52,13 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG, "onLoadFinished");
         mCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(TAG, "onLoaderReset");
         mCursorAdapter.swapCursor(null);
     }
 }

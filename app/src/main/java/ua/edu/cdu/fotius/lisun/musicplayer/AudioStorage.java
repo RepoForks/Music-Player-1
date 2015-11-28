@@ -5,6 +5,8 @@ import android.provider.MediaStore;
 
 public class AudioStorage {
 
+    public static final long WRONG_ID = -1;
+
     public interface Album {
         public static final String ALBUM_ID = MediaStore.Audio.Albums._ID;
         public static final String ALBUM = MediaStore.Audio.Albums.ALBUM;

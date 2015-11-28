@@ -70,8 +70,15 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState");
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override

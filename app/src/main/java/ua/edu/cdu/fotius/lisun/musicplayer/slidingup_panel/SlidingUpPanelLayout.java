@@ -1317,9 +1317,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public Parcelable onSaveInstanceState() {
-
-        Log.e(TAG, "Layout.onSaveInstanceState()");
-
         Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
         if (mSlideState != PanelState.DRAGGING) {

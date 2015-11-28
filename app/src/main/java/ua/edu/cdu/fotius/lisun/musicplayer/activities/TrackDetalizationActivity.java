@@ -90,12 +90,6 @@ public class TrackDetalizationActivity extends AppCompatActivity implements Tool
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");

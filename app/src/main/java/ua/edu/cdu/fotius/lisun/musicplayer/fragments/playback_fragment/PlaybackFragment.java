@@ -143,9 +143,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
 
         long albumID = mServiceWrapper.getAlbumID();
         if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
-            String albumArtPath = DatabaseUtils.queryAlbumArtPath(getActivity(), albumID);
-            mImageLoader.load(albumArtPath).withDefault(R.mipmap.default_album_art_512dp).into(mAlbumArt);
-            mConcealableAlbumArtImageView.setAlbumArt(albumArtPath);
+            mImageLoader.load(albumID).withDefault(R.mipmap.default_album_art_512dp).into(mAlbumArt);
+            mConcealableAlbumArtImageView.setAlbumArt(albumID);
         }
     }
 
