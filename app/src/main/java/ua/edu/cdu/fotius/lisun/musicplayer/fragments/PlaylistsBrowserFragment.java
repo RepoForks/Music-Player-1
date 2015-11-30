@@ -47,7 +47,9 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
         View v = inflater.inflate(R.layout.fragment_my_playlists_browser, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
-        listView.setOnItemClickListener(new OnPlaylistClickListener(getActivity(), mCursorAdapter));
+        PlaylistCursorLoaderCreator loaderCreator = (PlaylistCursorLoaderCreator) mLoaderCreator;
+        listView.setOnItemClickListener(new OnPlaylistClickListener(getActivity(), mCursorAdapter,
+                loaderCreator.getPlaylistIdColumnName(), loaderCreator.getPlaylistColumnName()));
         return v;
     }
 

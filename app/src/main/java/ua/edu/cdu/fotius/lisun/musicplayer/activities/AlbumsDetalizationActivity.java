@@ -14,10 +14,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
-//TODO: to superclass with TrackDetalizationActivity
-/**This activity created for supporting
- * Up/Back navigation*/
-public class AlbumsDetalizationActivity extends AppCompatActivity {
+public class AlbumsDetalizationActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -27,15 +24,19 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG, "onCreate");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skeleton);
 
-        setUpToolbar();
 
-        SlidingUpPanelLayout slidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
-        slidingPanel.setPanelSlideListener(new SlidingPanelListener(null));
+        String toolbarTitle = getToolbarTitle(
+                        getIntent().getExtras(),
+                        getResources().getString(R.string.default_albums_detalization_activity_title));
+
+        setUpToolbar(R.id.toolbar,
+                toolbarTitle,
+                R.mipmap.ic_arrow_back_black_24dp,
+                new OnUpClickListener(this));
+        setUpSlidingPanel(R.id.sliding_up_panel_layout, null);
 
         if(savedInstanceState != null) {
             String currentFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
@@ -53,61 +54,9 @@ public class AlbumsDetalizationActivity extends AppCompatActivity {
         }
     }
 
-    private Toolbar setUpToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.mipmap.ic_arrow_back_black_24dp);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
-        return toolbar;
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState");
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.d(TAG, "onRestoreInstanceState");
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 }

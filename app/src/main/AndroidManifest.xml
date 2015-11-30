@@ -34,6 +34,10 @@
             android:name=".activities.TrackDetalizationActivity"
             android:label="@string/title_activity_track_detalization" >
         </activity>
+        <activity
+            android:name=".activities.EditInfoActivity"
+            android:label="@string/title_activity_edit_info" >
+        </activity>
     </application>
 
 </manifest>

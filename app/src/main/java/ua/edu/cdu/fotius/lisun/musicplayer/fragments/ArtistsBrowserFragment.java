@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumsCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistCursorLoaderCreator;
 
 public class ArtistsBrowserFragment extends BaseLoaderFragment {
@@ -50,7 +51,11 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
         View v = inflater.inflate(R.layout.fragment_artists_browser, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
-        listView.setOnItemClickListener(new OnArtistClickListener(getActivity(), mCursorAdapter));
+        ArtistCursorLoaderCreator loaderCreator =
+                (ArtistCursorLoaderCreator) mLoaderCreator;
+        listView.setOnItemClickListener(new OnArtistClickListener(getActivity(),
+                mCursorAdapter, loaderCreator.getArtistIdColumnName(),
+                loaderCreator.getArtistColumnName()));
         return v;
     }
 

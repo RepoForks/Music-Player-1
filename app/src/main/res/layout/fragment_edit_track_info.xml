@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:text="@string/title_label"
+        style="@style/EditInfoActivityView" />
+
+    <EditText
+        android:id="@+id/title_input"
+        style="@style/EditInfoActivityView" />
+
+    <TextView
+        android:text="@string/artist_label"
+        style="@style/EditInfoActivityView" />
+
+    <EditText
+        android:id="@+id/artist_input"
+        style="@style/EditInfoActivityView" />
+
+    <TextView
+        android:text="@string/album_label"
+        style="@style/EditInfoActivityView" />
+
+    <EditText
+        android:id="@+id/album_input"
+        style="@style/EditInfoActivityView" />
+
+    <TextView
+        android:text="@string/year_label"
+        style="@style/EditInfoActivityView" />
+
+    <EditText
+        android:id="@+id/year_input"
+        style="@style/EditInfoActivityView" />
+
+</LinearLayout>

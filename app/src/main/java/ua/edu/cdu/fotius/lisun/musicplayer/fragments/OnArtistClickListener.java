@@ -10,11 +10,18 @@ import android.widget.AdapterView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.AlbumsDetalizationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
 
-public class OnArtistClickListener extends BaseFragmentItemClickListener{
+public class OnArtistClickListener extends BaseFragmentItemClickListener {
 
-    public OnArtistClickListener(Context context, CursorAdapter cursorAdapter) {
-       super(context, cursorAdapter);
+    private String mArtistIdColumnName;
+    private String mArtistColumnName;
+
+    public OnArtistClickListener(Context context, CursorAdapter cursorAdapter,
+                                 String artistIdColumnName, String artistColumnName) {
+        super(context, cursorAdapter);
+        mArtistIdColumnName = artistIdColumnName;
+        mArtistColumnName = artistColumnName;
     }
 
     @Override
@@ -22,10 +29,16 @@ public class OnArtistClickListener extends BaseFragmentItemClickListener{
         Cursor cursor = mCursorAdapter.getCursor();
         if ((cursor != null) && (cursor.moveToPosition(position))) {
             int idColumnIndex =
-                    cursor.getColumnIndexOrThrow(AudioStorage.Artist.ARTIST_ID);
+                    cursor.getColumnIndexOrThrow(mArtistIdColumnName);
             long artistId = cursor.getLong(idColumnIndex);
+
+            int artistColumnIndex =
+                    cursor.getColumnIndexOrThrow(mArtistColumnName);
+            String artistName = cursor.getString(artistColumnIndex);
+
             Bundle extras = new Bundle();
             extras.putLong(ArtistsBrowserFragment.ARTIST_ID_KEY, artistId);
+            extras.putString(BaseActivity.TOOLBAR_TITLE_KEY, artistName);
             Intent intent = new Intent(mContext, AlbumsDetalizationActivity.class);
             intent.putExtras(extras);
             mContext.startActivity(intent);

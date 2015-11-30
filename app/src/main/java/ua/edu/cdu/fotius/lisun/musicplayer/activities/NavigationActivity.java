@@ -23,35 +23,29 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends AppCompatActivity implements ToolbarStateListener {
+public class NavigationActivity extends BaseActivity implements ToolbarStateListener {
 
     private final String TAG = getClass().getSimpleName();
 
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
     private Fragment mCurrentBrowserFragment;
 
-    //TODO: maybe move to superclass
-    private SlidingUpPanelLayout mSlidingPanel;
-
-    private DrawerLayout mDrawerLayout;
-    private Toolbar mToolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Log.d(TAG, "onCreate()");
-
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        NavigationView navigationView = setUpNavigationView(drawerLayout);
 
-        mSlidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
-        mSlidingPanel.setPanelSlideListener(new SlidingPanelListener(mDrawerLayout));
-
-        NavigationView navigationView = setUpNavigationView(mDrawerLayout);
-        mToolbar = setUpToolbar(mDrawerLayout, navigationView);
+        String toolbarTitle =
+                getToolbarTitle(null, getResources().getString(R.string.app_name));
+        setUpToolbar(R.id.toolbar,
+                toolbarTitle,
+                R.mipmap.ic_menu_black_24dp,
+                new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
+        setUpSlidingPanel(R.id.sliding_up_panel_layout, drawerLayout);
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -76,11 +70,6 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentBrowserFragment.getTag());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {
@@ -117,7 +106,6 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
 
                         drawer.closeDrawers();
 
-                        //TODO: when rotating selected checking is disappeared
                         menuItem.setChecked(true);
                         //true to display item as selected
                         return true;
@@ -131,21 +119,6 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
                 .replace(R.id.fragment_container, fragment, fragmentTag)
                 .commit();
         mCurrentBrowserFragment = fragment;
-    }
-
-    private Toolbar setUpToolbar(final DrawerLayout drawer, final NavigationView navigationView) {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.mipmap.ic_menu_black_24dp);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    drawer.openDrawer(navigationView);
-                }
-            });
-        }
-        return toolbar;
     }
 
     @Override
@@ -168,38 +141,5 @@ public class NavigationActivity extends AppCompatActivity implements ToolbarStat
     @Override
     public void hideToolbar() {
         mToolbar.setVisibility(View.GONE);
-    }
-
-
-    //TODO: DEBUG
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 }

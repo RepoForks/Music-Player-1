@@ -10,24 +10,37 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
 public class OnPlaylistClickListener extends BaseFragmentItemClickListener{
 
-    public OnPlaylistClickListener(Context context, CursorAdapter cursorAdapter) {
+    private String mPlaylistIdColumnName;
+    private String mPlaylistColumnName;
+
+    public OnPlaylistClickListener(Context context, CursorAdapter cursorAdapter,
+                                   String playlistIdColumnName, String playlistColumnName) {
         super(context, cursorAdapter);
+        mPlaylistIdColumnName = playlistIdColumnName;
+        mPlaylistColumnName = playlistColumnName;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Cursor cursor = mCursorAdapter.getCursor();
         if((cursor != null) && (cursor.moveToPosition(position))) {
-            int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Playlist.PLAYLIST_ID);
+
+            int idColumnIndex = cursor.getColumnIndexOrThrow(mPlaylistIdColumnName);
             long playlistId = cursor.getLong(idColumnIndex);
-            Bundle bundle = new Bundle();
-            bundle.putLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, playlistId);
+
+            int playlistColumnIndex = cursor.getColumnIndexOrThrow(mPlaylistColumnName);
+            String playlistName = cursor.getString(playlistColumnIndex);
+
+            Bundle extras = new Bundle();
+            extras.putLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, playlistId);
+            extras.putString(BaseActivity.TOOLBAR_TITLE_KEY, playlistName);
             Intent intent = new Intent(mContext, TrackDetalizationActivity.class);
-            intent.putExtras(bundle);
+            intent.putExtras(extras);
             mContext.startActivity(intent);
         }
     }

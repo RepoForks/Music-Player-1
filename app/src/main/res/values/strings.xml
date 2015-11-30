@@ -66,4 +66,18 @@
     <string name="play_pause_content_description">Play/Pause button</string>
     <string name="shuffle_content_description">Shuffle button</string>
     <string name="repeat_content_description">Repeat button</string>
+    <string name="title_activity_edit_info">EditInfoActivity</string>
+
+    <!--EditInfoActivity-->
+    <string name="title_label">Title</string>
+    <string name="artist_label">Artist</string>
+    <string name="album_label">Album</string>
+    <string name="year_label">Year</string>
+
+    <!--Activities-->
+    <string name="navigation_activity_title">@string/app_name</string>
+    <string name="default_albums_detalization_activity_title">@string/albums_label</string>
+    <string name="default_track_detalization_activity_title">@string/songs_label</string>
+    <string name="default_edit_info_activity">Edit Info</string>
+
 </resources>
