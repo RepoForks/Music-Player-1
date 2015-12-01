@@ -80,4 +80,8 @@
     <string name="default_track_detalization_activity_title">@string/songs_label</string>
     <string name="default_edit_info_activity">Edit Info</string>
 
+    <!--EditInfoActivity-->
+    <string name="edit_info_done">Done</string>
+    <string name="edit_info_cancel">Cancel</string>
+
 </resources>
