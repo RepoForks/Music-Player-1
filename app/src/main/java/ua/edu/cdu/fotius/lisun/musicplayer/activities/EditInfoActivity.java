@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.EditTrackInfoFragment;
 public class EditInfoActivity extends BaseActivity {
 
     private final String TAG = getClass().getSimpleName();
+
+    private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
+    private EditTrackInfoFragment mCurrentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +31,25 @@ public class EditInfoActivity extends BaseActivity {
                 new OnUpClickListener(this));
         setUpSlidingPanel(R.id.sliding_up_panel_layout, null);
 
-        if(savedInstanceState == null) {
-            EditTrackInfoFragment editTrackInfoFragment = new EditTrackInfoFragment();
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, editTrackInfoFragment).commit();
+        if(savedInstanceState != null) {
+            String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
+            mCurrentFragment = (EditTrackInfoFragment)getSupportFragmentManager()
+                    .findFragmentByTag(savedFragmentTag);
         }
+
+        if(mCurrentFragment == null) {
+            EditTrackInfoFragment editTrackInfoFragment = new EditTrackInfoFragment();
+            editTrackInfoFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
+                    editTrackInfoFragment, EditTrackInfoFragment.TAG).commit();
+            mCurrentFragment = editTrackInfoFragment;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

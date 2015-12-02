@@ -36,6 +36,7 @@ public class AudioStorage {
         public static final String ARTIST_ID = MediaStore.Audio.Media.ARTIST_ID;
         public static final String ALBUM = MediaStore.Audio.Media.ALBUM;
         public static final String ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
+        public static final String YEAR = MediaStore.Audio.Media.YEAR;
         public static final String FILE_PATH = MediaStore.Audio.Media.DATA;
         public static final String IS_MUSIC = MediaStore.Audio.Media.IS_MUSIC;
         public static final String IS_PODCAST = MediaStore.Audio.Media.IS_PODCAST;

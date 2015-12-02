@@ -26,7 +26,6 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
         setRetainInstance(true);
         mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
-        //getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
     @Override
