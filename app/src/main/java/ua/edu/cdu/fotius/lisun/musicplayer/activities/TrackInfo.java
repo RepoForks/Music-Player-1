@@ -6,10 +6,14 @@ public class TrackInfo {
     private String mTitle;
     private String mAlbum;
     private String mArtist;
-    private int mYear;
+    private String mYear;
 
-    public TrackInfo(long trackId) {
-        this.mTrackId = trackId;
+    public TrackInfo(long trackId, String title, String album, String artist, String year) {
+        mTrackId = trackId;
+        mTitle = title;
+        mAlbum = album;
+        mArtist = artist;
+        mYear = year;
     }
 
     public long getTrackId() {
@@ -20,31 +24,15 @@ public class TrackInfo {
         return mTitle;
     }
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
     public String getAlbum() {
         return mAlbum;
-    }
-
-    public void setAlbum(String mAlbum) {
-        this.mAlbum = mAlbum;
     }
 
     public String getArtist() {
         return mArtist;
     }
 
-    public void setArtist(String mArtist) {
-        this.mArtist = mArtist;
-    }
-
-    public int getYear() {
+    public String getYear() {
         return mYear;
-    }
-
-    public void setYear(int mYear) {
-        this.mYear = mYear;
     }
 }

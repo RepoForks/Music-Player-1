@@ -83,7 +83,7 @@
                 android:layout_width="@dimen/album_cover_image_size"
                 android:layout_height="@dimen/album_cover_image_size"
                 android:cropToPadding="true"
-                android:src="@mipmap/default_album_art_512dp" />
+                android:src="@drawable/default_album_art_512dp" />
 
         </LinearLayout>
 

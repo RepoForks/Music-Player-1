@@ -67,6 +67,6 @@ public class ConcealableImageView extends ImageView implements ConcealableViewBe
 
     private void loadImage() {
         mImageLoader.load(mAlbumId)
-                .withDefault(R.mipmap.default_album_art_512dp).into(this);
+                .withDefault(R.drawable.default_album_art_512dp).into(this);
     }
 }

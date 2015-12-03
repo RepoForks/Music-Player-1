@@ -24,16 +24,16 @@ public class RepeatButton extends ImageButton{
     public void setImage(int repeatMode) {
         switch (repeatMode) {
             case Playlist.REPEAT_ALL:
-                setImageResource(R.mipmap.ic_repeat_all_18dp);
+                setImageResource(R.drawable.ic_repeat_all_18dp);
                 break;
             case Playlist.REPEAT_CURRENT:
-                setImageResource(R.mipmap.ic_repeat_one_18dp);
+                setImageResource(R.drawable.ic_repeat_one_18dp);
                 break;
             case Playlist.REPEAT_NONE:
-                setImageResource(R.mipmap.ic_repeat_off_18dp);
+                setImageResource(R.drawable.ic_repeat_off_18dp);
                 break;
             default:
-                setImageResource(R.mipmap.ic_repeat_off_18dp);
+                setImageResource(R.drawable.ic_repeat_off_18dp);
                 break;
         }
     }

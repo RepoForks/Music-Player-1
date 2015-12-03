@@ -27,7 +27,7 @@ public class EditInfoActivity extends BaseActivity {
                 getResources().getString(R.string.default_edit_info_activity));
         setUpToolbar(R.id.toolbar,
                 toolbarTitle,
-                R.mipmap.ic_arrow_back_black_24dp,
+                R.drawable.ic_arrow_back_black_24dp,
                 new OnUpClickListener(this));
         setUpSlidingPanel(R.id.sliding_up_panel_layout, null);
 
@@ -63,10 +63,13 @@ public class EditInfoActivity extends BaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.done_editing) {
-            Log.d(TAG, "Done");
+            if(mCurrentFragment != null) {
+                mCurrentFragment.doneEditing();
+            }
             return true;
         } else if(id == R.id.cancel_editing) {
             Log.d(TAG, "Cancel");
+            finish();
             return true;
         }
 

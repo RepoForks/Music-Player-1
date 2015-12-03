@@ -84,4 +84,6 @@
     <string name="edit_info_done">Done</string>
     <string name="edit_info_cancel">Cancel</string>
 
+    <!--TrackInfoActivity/Fragment-->
+    <string name="invalid_input">Please, enter valid data to %1$s field</string>
 </resources>

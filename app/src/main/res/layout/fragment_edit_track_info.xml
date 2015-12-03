@@ -4,6 +4,7 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/title_label"
         android:text="@string/title_label"
         style="@style/EditInfoActivityView" />
 
@@ -12,6 +13,7 @@
         style="@style/EditInfoActivityView" />
 
     <TextView
+        android:id="@+id/artist_label"
         android:text="@string/artist_label"
         style="@style/EditInfoActivityView" />
 
@@ -20,6 +22,7 @@
         style="@style/EditInfoActivityView" />
 
     <TextView
+        android:id="@+id/album_label"
         android:text="@string/album_label"
         style="@style/EditInfoActivityView" />
 
@@ -28,6 +31,7 @@
         style="@style/EditInfoActivityView" />
 
     <TextView
+        android:id="@+id/year_label"
         android:text="@string/year_label"
         style="@style/EditInfoActivityView" />
 

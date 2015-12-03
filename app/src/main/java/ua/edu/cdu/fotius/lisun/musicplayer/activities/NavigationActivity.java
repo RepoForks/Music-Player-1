@@ -43,7 +43,7 @@ public class NavigationActivity extends BaseActivity implements ToolbarStateList
                 getToolbarTitle(null, getResources().getString(R.string.app_name));
         setUpToolbar(R.id.toolbar,
                 toolbarTitle,
-                R.mipmap.ic_menu_black_24dp,
+                R.drawable.ic_menu_black_24dp,
                 new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
         setUpSlidingPanel(R.id.sliding_up_panel_layout, drawerLayout);
 

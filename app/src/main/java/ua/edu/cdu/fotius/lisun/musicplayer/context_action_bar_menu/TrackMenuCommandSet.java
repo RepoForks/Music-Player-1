@@ -29,7 +29,7 @@ public class TrackMenuCommandSet extends BaseMenuCommandSet {
         if(group == null) {
             group = new MenuCommandsContainer(MenuCommandsContainer.MINIMAL_GROUP_ID);
             //TODO: strings to string.xml
-            group.add(DELETE_ID, "Delete", R.mipmap.ic_delete_black_24dp, new Delete(mContext, mServiceWrapper),
+            group.add(DELETE_ID, "Delete", R.drawable.ic_delete_black_24dp, new Delete(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM);
             group.add(PLAY_ID, "Play", R.mipmap.ic_launcher, new Play(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);

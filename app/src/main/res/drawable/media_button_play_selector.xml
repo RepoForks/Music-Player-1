@@ -3,10 +3,10 @@
 
     <item
         android:state_pressed="true"
-        android:drawable="@mipmap/ic_play_circle_filled_black_pressed_44dp" />
+        android:drawable="@drawable/ic_play_circle_filled_black_pressed_44dp" />
 
     <item
         android:state_pressed="false"
-        android:drawable="@mipmap/ic_play_circle_filled_black_44dp" />
+        android:drawable="@drawable/ic_play_circle_filled_black_44dp" />
 
 </selector>

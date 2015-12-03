@@ -34,7 +34,7 @@ public class AlbumsDetalizationActivity extends BaseActivity {
 
         setUpToolbar(R.id.toolbar,
                 toolbarTitle,
-                R.mipmap.ic_arrow_back_black_24dp,
+                R.drawable.ic_arrow_back_black_24dp,
                 new OnUpClickListener(this));
         setUpSlidingPanel(R.id.sliding_up_panel_layout, null);
 
