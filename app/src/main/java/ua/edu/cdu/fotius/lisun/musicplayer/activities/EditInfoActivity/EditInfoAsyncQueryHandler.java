@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.activities;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;

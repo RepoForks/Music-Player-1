@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.activities;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.OnUpClickListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.EditTrackInfoFragment;
 
 public class EditInfoActivity extends BaseActivity {

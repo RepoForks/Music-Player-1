@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.activities;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 import android.net.Uri;
 import android.provider.MediaStore;

@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.EditTrackInfoFragment;
 
 public class EditTrackInfoCommand extends Command{

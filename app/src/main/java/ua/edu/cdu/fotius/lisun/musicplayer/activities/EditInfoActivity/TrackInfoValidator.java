@@ -1,6 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.activities;
-
-import android.util.Log;
+package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 public class TrackInfoValidator {
 

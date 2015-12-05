@@ -15,11 +15,10 @@ import android.widget.Toast;
 import java.util.Map;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoAsyncQueryHandler;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoQueryCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackInfoValidator;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackInfo;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoAsyncQueryHandler;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoQueryCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TrackInfoValidator;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TrackInfo;
 
 
 //ToDO: maybe extends BaseFragment
