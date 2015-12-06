@@ -85,5 +85,7 @@
     <string name="edit_info_cancel">Cancel</string>
 
     <!--TrackInfoActivity/Fragment-->
-    <string name="invalid_input">Please, enter valid data to %1$s field</string>
+    <string name="invalid_input">Data is invalid at %1$s field. %2$s</string>
+    <string name="empty_string_invalidity_message">Field is empty.</string>
+    <string name="string_to_int_invalidity_message">Field include letters or other forbidden characters.</string>
 </resources>

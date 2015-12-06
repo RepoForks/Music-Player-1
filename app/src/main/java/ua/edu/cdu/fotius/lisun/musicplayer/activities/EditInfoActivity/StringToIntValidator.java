@@ -4,20 +4,22 @@ import android.content.Context;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
-public class EmptyStringValidator extends BaseValidator{
+public class StringToIntValidator extends BaseValidator{
 
-    protected EmptyStringValidator(Context context) {
+    protected StringToIntValidator(Context context) {
         super(context);
     }
 
     @Override
     public int getInvalidityMessageResourceId() {
-        return R.string.empty_string_invalidity_message;
+        return R.string.string_to_int_invalidity_message;
     }
 
     @Override
     public boolean validate(String forValidation) {
-        if((forValidation == null) || (forValidation.isEmpty())) {
+        try {
+            Integer.parseInt(forValidation);
+        } catch (NumberFormatException nfe){
             return false;
         }
         return true;

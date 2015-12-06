@@ -1,21 +1,20 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
-public abstract class BaseValidator {
+import android.content.Context;
 
-    class VelidationResult {
-        public boolean mIsValid;
-        public String mInvalidityMessage;
-    }
+public abstract class BaseValidator {
 
     private String mInvalidityMessage;
 
-    protected BaseValidator(String invalidityMessage) {
-        mInvalidityMessage = invalidityMessage;
+    protected BaseValidator(Context context) {
+        mInvalidityMessage = context.getResources()
+                .getString(getInvalidityMessageResourceId());
     }
 
     public String getInvalidityMessage() {
         return mInvalidityMessage;
     }
 
-    public abstract boolean validate(Object forValidation);
+    public abstract int getInvalidityMessageResourceId();
+    public abstract boolean validate(String forValidation);
 }

@@ -12,6 +12,7 @@ public class EditInfoAsyncQueryHandler extends AsyncQueryHandler {
     }
 
     private QueryCallbacks mQueryCallbacks;
+    //TODO: move to method
     private EditInfoQueryCreator mEditInfoQueryCreator;
 
     public EditInfoAsyncQueryHandler(ContentResolver cr, EditInfoQueryCreator editInfoQueryCreator, QueryCallbacks queryCallbacks) {
@@ -34,5 +35,15 @@ public class EditInfoAsyncQueryHandler extends AsyncQueryHandler {
     protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
         super.onQueryComplete(token, cookie, cursor);
         mQueryCallbacks.onQueryTrackInfoCompleted(cursor);
+    }
+
+    public void updateTrackInfo() {
+        //super.startUpdate();
+    }
+
+    //todo
+    @Override
+    protected void onUpdateComplete(int token, Object cookie, int result) {
+        super.onUpdateComplete(token, cookie, result);
     }
 }

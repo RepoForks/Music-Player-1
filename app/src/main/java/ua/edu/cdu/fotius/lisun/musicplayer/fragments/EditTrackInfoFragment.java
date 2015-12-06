@@ -12,14 +12,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Map;
-
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.AlbumValidatorsSetCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.ArtistValidatorSetCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.BaseTrackInfo;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoAsyncQueryHandler;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoQueryCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TrackInfoValidator;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TrackInfo;
-
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TitleValidatorsSetCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.TrackInfoHolder;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.YearValidatorSetCreator;
 
 //ToDO: maybe extends BaseFragment
 public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQueryHandler.QueryCallbacks{
@@ -32,12 +33,18 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
     private long mTrackId;
 
     private EditInfoQueryCreator mEditInfoQueryCreator;
-    private TrackInfo mPersistentTrackInfo;
 
     private TextView mTitleLabel;
     private TextView mAlbumLabel;
     private TextView mArtistLabel;
     private TextView mYearLabel;
+
+//    private BaseTrackInfo mTitleInfo;
+//    private BaseTrackInfo mAlbumInfo;
+//    private BaseTrackInfo mArtistInfo;
+//    private BaseTrackInfo mYearInfo;
+    private TrackInfoHolder mTrackInfoHolder;
+
     private EditText mTitleEditText;
     private EditText mAlbumEditText;
     private EditText mArtistEditText;
@@ -94,80 +101,86 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
 
         c.moveToFirst();
 
+        mTrackInfoHolder = new TrackInfoHolder();
+
         int idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getTitleColumnName());
         String title = c.getString(idx);
+        BaseTrackInfo info = new BaseTrackInfo(mTitleLabel.getText().toString(), title, mEditInfoQueryCreator.getTitleColumnName());
+        //TODO: set validators
+        info.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
+        mTrackInfoHolder.put(mEditInfoQueryCreator.getTitleColumnName(), info);
+        mTitleEditText.setText(title);
 
         idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getAlbumColumnName());
         String album = c.getString(idx);
+        info = new BaseTrackInfo(mAlbumLabel.getText().toString(), album, mEditInfoQueryCreator.getAlbumColumnName());
+        info.setValidators(new AlbumValidatorsSetCreator(getActivity()).create());
+        mTrackInfoHolder.put(mEditInfoQueryCreator.getAlbumColumnName(), info);
+        mAlbumEditText.setText(album);
 
         idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getArtistColumnName());
         String artist = c.getString(idx);
+        info = new BaseTrackInfo(mArtistLabel.getText().toString(), artist, mEditInfoQueryCreator.getArtistColumnName());
+        info.setValidators(new ArtistValidatorSetCreator(getActivity()).create());
+        mTrackInfoHolder.put(mEditInfoQueryCreator.getArtistColumnName(), info);
+        mArtistEditText.setText(artist);
 
         idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getYearColumnName());
         int year = c.getInt(idx);
+        info = new BaseTrackInfo(mYearLabel.getText().toString(), Integer.toString(year),
+                mEditInfoQueryCreator.getYearColumnName());
+        info.setValidators(new YearValidatorSetCreator(getActivity()).create());
+        mTrackInfoHolder.put(mEditInfoQueryCreator.getYearColumnName(), info);
+        mYearEditText.setText(Integer.toString(year));
 
-        mPersistentTrackInfo = new TrackInfo(mTrackId, title, album, artist, Integer.toString(year));
-
-        mTitleEditText.setText(mPersistentTrackInfo.getTitle());
-        mAlbumEditText.setText(mPersistentTrackInfo.getAlbum());
-        mArtistEditText.setText(mPersistentTrackInfo.getArtist());
-        mYearEditText.setText(mPersistentTrackInfo.getYear());
+        c.close();
     }
 
     public void doneEditing() {
         Log.d(TAG, "doneEditingFunction()");
         //retreive values
-        TrackInfo currentTrackInfo = getValuesFromEditTexts();
         //check for validity
-        if(isInputValid(currentTrackInfo)) {
-            //check for changes
-            String[]
+        boolean allValid = retreiveAndValidateValuesFromEditTexts();
+        if(allValid) {
             //save to DB
         }
     }
 
-    public Map getChangedFilds() {
-        Map<String, String>
-    }
-
-    private TrackInfo getValuesFromEditTexts() {
-        String title = mTitleEditText.getText().toString();
-        String album = mAlbumEditText.getText().toString();
-        String artist = mArtistEditText.getText().toString();
-        //TODO: But only latter in ValidityChacker parse and if not valid notify user
-        String year = mYearEditText.getText().toString();
-
-        return new TrackInfo(mTrackId, title, album, artist, year);
-    }
-
-    private boolean isInputValid(TrackInfo trackInfo) {
-        TrackInfoValidator validator = new TrackInfoValidator(trackInfo);
-        if(!validator.isTitleValid()) {
-            notifyUserAboutInvalidInput(mTitleLabel.getText().toString());
+    private boolean retreiveAndValidateValuesFromEditTexts() {
+        BaseTrackInfo titleInfo = mTrackInfoHolder.get(mEditInfoQueryCreator.getTitleColumnName());
+        boolean valid = titleInfo.setData(mTitleEditText.getText().toString());
+        if(!valid) {
+            notifyUserAboutInvalidInput(titleInfo.getInputFieldTitle(), titleInfo.getInvalidityMessage());
             return false;
         }
 
-        if(!validator.isAlbumValid()) {
-            notifyUserAboutInvalidInput(mAlbumLabel.getText().toString());
+        BaseTrackInfo albumInfo = mTrackInfoHolder.get(mEditInfoQueryCreator.getAlbumColumnName());
+        valid = albumInfo.setData(mAlbumEditText.getText().toString());
+        if(!valid) {
+            notifyUserAboutInvalidInput(albumInfo.getInputFieldTitle(), albumInfo.getInvalidityMessage());
             return false;
         }
 
-        if(!validator.isArtistValid()) {
-            notifyUserAboutInvalidInput(mArtistLabel.getText().toString());
+        BaseTrackInfo artistInfo = mTrackInfoHolder.get(mEditInfoQueryCreator.getArtistColumnName());
+        valid = artistInfo.setData(mArtistEditText.getText().toString());
+        if(!valid) {
+            notifyUserAboutInvalidInput(artistInfo.getInputFieldTitle(), artistInfo.getInvalidityMessage());
             return false;
         }
 
-        if(!validator.isYearValid()) {
-            notifyUserAboutInvalidInput(mYearLabel.getText().toString());
+        BaseTrackInfo yearInfo = mTrackInfoHolder.get(mEditInfoQueryCreator.getYearColumnName());
+        valid = yearInfo.setData(mYearEditText.getText().toString());
+        if(!valid) {
+            notifyUserAboutInvalidInput(yearInfo.getInputFieldTitle(), yearInfo.getInvalidityMessage());
             return false;
         }
 
         return true;
     }
 
-    private void notifyUserAboutInvalidInput(String invalidFieldName) {
+    private void notifyUserAboutInvalidInput(String invalidFieldName, String invalidityMessage) {
         Log.d(TAG, "notification");
-        String message = getActivity().getResources().getString(R.string.invalid_input, invalidFieldName);
+        String message = getActivity().getResources().getString(R.string.invalid_input, invalidFieldName, invalidityMessage);
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -8,30 +8,49 @@ public class BaseTrackInfo {
     private String mContentProviderColumnName;
     private boolean mIsChanged;
     private String mInvalidityMessage;
+    private String mInputFieldTitle;
 
-    public BaseTrackInfo(String data) {
+    public BaseTrackInfo(String title, String data, String contentProviderColumnName) {
+        mInputFieldTitle = title;
         mData = data;
+        mContentProviderColumnName = contentProviderColumnName;
     }
 
     public void setValidators(ArrayList<BaseValidator> validators) {
         mValidators = validators;
     }
 
+    /*returns false if data don't pass the validation*/
     public boolean setData(String newData) {
         if(!validate(newData)) {
-            //TODO: return false
+            return false;
         }
 
-        //TODO: if(has been changed) mIsChanged = true
-        //setValue
+        if(!newData.equals(mData)) {
+            mData = newData;
+            mIsChanged = true;
+        }
+        return true;
     }
 
     public String getData() {
         return mData;
     }
 
+    public String getContentProviderColumnName() {
+        return mContentProviderColumnName;
+    }
+
     public String getInvalidityMessage() {
         return mInvalidityMessage;
+    }
+
+    public String getInputFieldTitle() {
+        return mInputFieldTitle;
+    }
+
+    public boolean isChanged() {
+        return mIsChanged;
     }
 
     private boolean validate(String forValidation){
