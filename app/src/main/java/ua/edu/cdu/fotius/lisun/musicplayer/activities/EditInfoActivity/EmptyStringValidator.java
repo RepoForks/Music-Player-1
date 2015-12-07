@@ -16,10 +16,10 @@ public class EmptyStringValidator extends BaseValidator{
     }
 
     @Override
-    public boolean validate(String forValidation) {
+    public void validate(String forValidation, ValidationResult validationResult) {
         if((forValidation == null) || (forValidation.isEmpty())) {
-            return false;
+            validationResult.mIsSuccessful = false;
+            validationResult.mInvalidityMessage = mInvalidityMessage;
         }
-        return true;
     }
 }

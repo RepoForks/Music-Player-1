@@ -2,15 +2,15 @@ package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 import java.util.ArrayList;
 
-public class BaseTrackInfo {
+public class InfoElement {
+
     private String mData;
     private ArrayList<BaseValidator> mValidators;
     private String mContentProviderColumnName;
     private boolean mIsChanged;
-    private String mInvalidityMessage;
     private String mInputFieldTitle;
 
-    public BaseTrackInfo(String title, String data, String contentProviderColumnName) {
+    public InfoElement(String title, String data, String contentProviderColumnName) {
         mInputFieldTitle = title;
         mData = data;
         mContentProviderColumnName = contentProviderColumnName;
@@ -20,17 +20,17 @@ public class BaseTrackInfo {
         mValidators = validators;
     }
 
-    /*returns false if data don't pass the validation*/
-    public boolean setData(String newData) {
-        if(!validate(newData)) {
-            return false;
+    /*returns if data don't pass the validation*/
+    public void setData(String newData, BaseValidator.ValidationResult validationResult) {
+        validate(newData, validationResult);
+        if(!validationResult.mIsSuccessful) {
+            return;
         }
 
         if(!newData.equals(mData)) {
             mData = newData;
             mIsChanged = true;
         }
-        return true;
     }
 
     public String getData() {
@@ -41,10 +41,6 @@ public class BaseTrackInfo {
         return mContentProviderColumnName;
     }
 
-    public String getInvalidityMessage() {
-        return mInvalidityMessage;
-    }
-
     public String getInputFieldTitle() {
         return mInputFieldTitle;
     }
@@ -53,14 +49,11 @@ public class BaseTrackInfo {
         return mIsChanged;
     }
 
-    private boolean validate(String forValidation){
+    private void validate(String forValidation, BaseValidator.ValidationResult validationResult){
+        validationResult.mFieldTitle = mInputFieldTitle;
         for(BaseValidator validator : mValidators) {
-            boolean isValid = validator.validate(forValidation);
-            if(!isValid) {
-                mInvalidityMessage = validator.getInvalidityMessage();
-                return false;
-            }
+            validator.validate(forValidation, validationResult);
+            if(!validationResult.mIsSuccessful) return;
         }
-        return true;
     }
 }

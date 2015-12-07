@@ -4,17 +4,21 @@ import java.util.HashMap;
 
 public class TrackInfoHolder {
 
-    private HashMap<String, BaseTrackInfo> mMap;
+    private HashMap<String, InfoElement> mMap;
 
     public TrackInfoHolder() {
-        mMap = new HashMap<String, BaseTrackInfo>();
+        mMap = new HashMap<String, InfoElement>();
     }
 
-    public void put(String key, BaseTrackInfo value) {
+    public void put(String key, InfoElement value) {
         mMap.put(key, value);
     }
 
-    public BaseTrackInfo get(String key) {
+    public InfoElement get(String key) {
         return mMap.get(key);
+    }
+
+    public void setDataAt(String key, String data, BaseValidator.ValidationResult validationResult) {
+        mMap.get(key).setData(data, validationResult);
     }
 }

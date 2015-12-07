@@ -4,17 +4,25 @@ import android.content.Context;
 
 public abstract class BaseValidator {
 
-    private String mInvalidityMessage;
+    static class ValidationResult {
+        public boolean mIsSuccessful = true;
+        public String mInvalidityMessage = null;
+        public String mFieldTitle = null;
+
+        public void clear() {
+            mIsSuccessful = true;
+            mInvalidityMessage = null;
+            mFieldTitle = null;
+        }
+    }
+
+    protected String mInvalidityMessage;
 
     protected BaseValidator(Context context) {
         mInvalidityMessage = context.getResources()
                 .getString(getInvalidityMessageResourceId());
     }
 
-    public String getInvalidityMessage() {
-        return mInvalidityMessage;
-    }
-
     public abstract int getInvalidityMessageResourceId();
-    public abstract boolean validate(String forValidation);
+    public abstract void validate(String forValidation, ValidationResult validationResult);
 }

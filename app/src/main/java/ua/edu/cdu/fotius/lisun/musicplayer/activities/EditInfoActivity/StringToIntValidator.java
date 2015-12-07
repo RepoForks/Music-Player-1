@@ -16,12 +16,12 @@ public class StringToIntValidator extends BaseValidator{
     }
 
     @Override
-    public boolean validate(String forValidation) {
+    public void validate(String forValidation, ValidationResult validationResult) {
         try {
             Integer.parseInt(forValidation);
         } catch (NumberFormatException nfe){
-            return false;
+            validationResult.mIsSuccessful = false;
+            validationResult.mInvalidityMessage = mInvalidityMessage;
         }
-        return true;
     }
 }
