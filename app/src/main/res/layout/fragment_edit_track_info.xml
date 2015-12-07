@@ -8,8 +8,9 @@
         android:text="@string/title_label"
         style="@style/EditInfoActivityView" />
 
-    <EditText
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/title_input"
+        android:contentDescription="@string/title_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
@@ -17,8 +18,9 @@
         android:text="@string/artist_label"
         style="@style/EditInfoActivityView" />
 
-    <EditText
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/artist_input"
+        android:contentDescription="@string/artist_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
@@ -26,8 +28,9 @@
         android:text="@string/album_label"
         style="@style/EditInfoActivityView" />
 
-    <EditText
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/album_input"
+        android:contentDescription="@string/album_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
@@ -35,8 +38,9 @@
         android:text="@string/year_label"
         style="@style/EditInfoActivityView" />
 
-    <EditText
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/year_input"
+        android:contentDescription="@string/year_label"
         style="@style/EditInfoActivityView" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 
 public class EditInfoAsyncQueryHandler extends AsyncQueryHandler {
@@ -9,6 +10,8 @@ public class EditInfoAsyncQueryHandler extends AsyncQueryHandler {
     public interface QueryCallbacks{
         public void onQueryTrackInfoStarted();
         public void onQueryTrackInfoCompleted(Cursor c);
+        public void onUpdateTrackInfoStarted();
+        public void onUpdateTrackInfoCompleted();
     }
 
     private QueryCallbacks mQueryCallbacks;
@@ -37,13 +40,16 @@ public class EditInfoAsyncQueryHandler extends AsyncQueryHandler {
         mQueryCallbacks.onQueryTrackInfoCompleted(cursor);
     }
 
-    public void updateTrackInfo() {
-        //super.startUpdate();
+    public void updateTrackInfo(ContentValues contentValues) {
+        super.startUpdate(0, null, mEditInfoQueryCreator.getUri(),
+                contentValues, mEditInfoQueryCreator.getSelection(),
+                mEditInfoQueryCreator.getSelectionArgs());
+        mQueryCallbacks.onUpdateTrackInfoStarted();
     }
 
-    //todo
     @Override
     protected void onUpdateComplete(int token, Object cookie, int result) {
         super.onUpdateComplete(token, cookie, result);
+        mQueryCallbacks.onUpdateTrackInfoCompleted();
     }
 }

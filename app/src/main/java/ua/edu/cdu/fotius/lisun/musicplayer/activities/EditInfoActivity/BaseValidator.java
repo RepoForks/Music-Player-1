@@ -4,15 +4,13 @@ import android.content.Context;
 
 public abstract class BaseValidator {
 
-    static class ValidationResult {
+    public static class ValidationResult {
         public boolean mIsSuccessful = true;
         public String mInvalidityMessage = null;
-        public String mFieldTitle = null;
 
         public void clear() {
             mIsSuccessful = true;
             mInvalidityMessage = null;
-            mFieldTitle = null;
         }
     }
 

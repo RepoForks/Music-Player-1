@@ -9,9 +9,13 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 public class EditInfoQueryCreator {
 
     private long mTrackId = AudioStorage.WRONG_ID;
+    private String mSelection;
+    private String[] mSelectionArgs;
 
     public EditInfoQueryCreator(long trackId) {
         mTrackId = trackId;
+        mSelection = AudioStorage.Track.TRACK_ID + "=?";
+        mSelectionArgs = new String[] { Long.toString(mTrackId) };
     }
 
     public Uri getUri() {
@@ -29,13 +33,11 @@ public class EditInfoQueryCreator {
     }
 
     public String getSelection() {
-        return AudioStorage.Track.TRACK_ID + "=?";
+        return mSelection;
     }
 
     public String[] getSelectionArgs() {
-        return new String[] {
-            Long.toString(mTrackId)
-        };
+        return mSelectionArgs;
     }
 
     public String getSortOrder() {
