@@ -1,7 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,19 +8,19 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditTrackInfoFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
-import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -34,6 +33,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 public class PlaybackFragment extends Fragment implements ServiceConnectionObserver, PlaybackViewsStateListener {
+
+    private final String TAG = getClass().getSimpleName();
 
     private final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
@@ -51,7 +52,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private ShuffleButton mShuffleButton;
     private MediaPlaybackServiceWrapper mServiceWrapper;
     private ImageLoader mImageLoader;
-    private LinearLayout mDragView;
 
     public PlaybackFragment() {}
 
@@ -87,8 +87,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         mSeekBar = playbackFragmentViewsCreator.createSeekBar();
         mCurrentTime = playbackFragmentViewsCreator.createCurrentTimeView();
         mTotalTime = playbackFragmentViewsCreator.createTotalTimeView();
-        mDragView = (LinearLayout)v.findViewById(R.id.minimal_layout_container);
-
 
         return v;
     }
@@ -99,7 +97,12 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         IntentFilter actionFilter = new IntentFilter();
         actionFilter.addAction(MediaPlaybackService.META_CHANGED);
         actionFilter.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
-        getActivity().registerReceiver(mStatusListener, actionFilter);
+        getActivity().registerReceiver(mServiceStatusListener, actionFilter);
+
+        IntentFilter trackInfoChangedFilter = new IntentFilter();
+        trackInfoChangedFilter.addAction(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED);
+        getActivity().registerReceiver(mTrackInfoChangedListener, trackInfoChangedFilter);
+
         long nextRefreshDelay = updateSeekBarAndCurrentTime();
         queueNextRefresh(nextRefreshDelay);
         updPlayPauseButtonImage();
@@ -116,7 +119,16 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().unregisterReceiver(mStatusListener);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        Log.d(TAG, "Scaling factor: " + metrics.density);
+        Log.d(TAG, "Display dpi: " + metrics.density * 160f);
+        Log.d(TAG, "Play button height: " + mPlayButton.getHeight());
+
+        getActivity().unregisterReceiver(mServiceStatusListener);
+        getActivity().unregisterReceiver(mTrackInfoChangedListener);
+
         mHandler.removeMessages(REFRESH);
     }
 
@@ -238,7 +250,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         }
     };
 
-    private BroadcastReceiver mStatusListener = new BroadcastReceiver() {
+    private BroadcastReceiver mServiceStatusListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -247,6 +259,22 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
                 queueNextRefresh(1);
             } else if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
                 updPlayPauseButtonImage();
+            }
+        }
+    };
+
+    private BroadcastReceiver mTrackInfoChangedListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED)) {
+                long changedInfoTrackId = intent.getLongExtra(EditTrackInfoFragment.TRACK_ID_KEY,
+                        AudioStorage.WRONG_ID);
+                if((changedInfoTrackId != AudioStorage.WRONG_ID)
+                        && (changedInfoTrackId == mServiceWrapper.getTrackID())) {
+                    mServiceWrapper.updateCurrentTrackInfo();
+                    refreshTrackInfoAndTotalTime();
+                }
             }
         }
     };

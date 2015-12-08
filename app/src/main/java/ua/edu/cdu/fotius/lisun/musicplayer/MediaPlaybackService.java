@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class MediaPlaybackService extends Service {
     public static final int LAST = 3;
     public static final int PLAYBACKSERVICE_STATUS = 1;
 
+    //TODO:
     public static final String PLAYSTATE_CHANGED = "com.android.music.playstatechanged";
     public static final String META_CHANGED = "com.android.music.metachanged";
     public static final String QUEUE_CHANGED = "com.android.music.queuechanged";
@@ -1672,6 +1674,10 @@ public class MediaPlaybackService extends Service {
         }
     }
 
+    public void updateCurrentTrackInfo() {
+        mCursor = getCursorForId(mPlaylist.getCurrentTrack());
+    }
+
     /*
      * By making this a static class with a WeakReference to the Service, we
      * ensure that the Service can be GCd even when the system process still
@@ -1777,6 +1783,9 @@ public class MediaPlaybackService extends Service {
         }
         public int getAudioSessionId() {
             return mService.get().getAudioSessionId();
+        }
+        public void updateCurrentTrackInfo() {
+            mService.get().updateCurrentTrackInfo();
         }
     }
 

@@ -29,6 +29,7 @@ import java.util.Vector;
 public class MediaPlaybackServiceWrapper
         implements ServiceConnection {
 
+    //TODO: maybe its AudioStorage.WRONG_ID
     public static int ERROR_RETURN_VALUE = -1;
 
     private final String TAG = getClass().getSimpleName();
@@ -269,6 +270,23 @@ public class MediaPlaybackServiceWrapper
             }
         }
         return ERROR_RETURN_VALUE;
+    }
+
+    public long getTrackID() {
+        if(mService != null) {
+            try {
+                return mService.getAudioId();
+            } catch(RemoteException e) {
+            }
+        }
+        return ERROR_RETURN_VALUE;
+    }
+
+    public void updateCurrentTrackInfo() {
+        try {
+            mService.updateCurrentTrackInfo();
+        } catch (RemoteException e) {
+        }
     }
 
     public void onServiceConnected(ComponentName name, IBinder service) {

@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation;
 //ToDO: maybe extends BaseFragment
 public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQueryHandler.QueryCallbacks{
 
-    public static final String TAG = "edit_info";
+    public static final String ACTION_TRACK_INFO_CHANGED =
+            "ua.edu.cdu.fotius.lisun.musicplayer.track_info_changed";
 
-    //TODO: possibly move to TrackInfo class
+    public static final String TAG = "edit_info";
+    //TODO: possibly move to AudioStorage class
     public static final String TRACK_ID_KEY = "track_id";
 
     private long mTrackId;
@@ -106,6 +109,11 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
     @Override
     public void onUpdateTrackInfoCompleted() {
         Log.d(TAG, "Update completed");
+        Intent intent = new Intent();
+        intent.setAction(ACTION_TRACK_INFO_CHANGED);
+        intent.putExtra(TRACK_ID_KEY, mTrackId);
+        getActivity().sendBroadcast(intent);
+        getActivity().finish();
     }
 
     public void doneEditing() {
