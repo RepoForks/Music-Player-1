@@ -7,11 +7,9 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
@@ -19,17 +17,19 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
 
-    private final String TAG = getClass().getSimpleName();
     private ToolbarStateListener mToolbarStateListener;
-    private ListView mListView;
+    private AbsListView mAbsListView;
     private BaseMenuCommandSet mBaseMenuCommandsSet;
     private Context mContext;
+    private String mChoosingItemIdColumnName;
 
-    public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener, ListView listView, BaseMenuCommandSet baseMenuCommandSet){
+    public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener,
+                               AbsListView absListView, BaseMenuCommandSet baseMenuCommandSet, String choosingItemIdColumnName){
         mToolbarStateListener = toolbarStateListener;
-        mListView = listView;
+        mAbsListView = absListView;
         mBaseMenuCommandsSet = baseMenuCommandSet;
         mContext = context;
+        mChoosingItemIdColumnName = choosingItemIdColumnName;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         mToolbarStateListener.showToolbar();
-        mListView.clearChoices();
+        mAbsListView.clearChoices();
     }
 
     @Override
@@ -63,17 +63,17 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
         ArrayList<Integer> checkedPositions = getCheckedPositions();
-        long[] checkedTrackIds = getCheckedTrackIds(checkedPositions);
-        mBaseMenuCommandsSet.execute(menuItem.getItemId(), checkedTrackIds);
+        long[] checkedIds = getCheckedIds(checkedPositions);
+        mBaseMenuCommandsSet.execute(menuItem.getItemId(), checkedIds);
         mode.finish();
         return true;
     }
 
     private ArrayList<Integer> getCheckedPositions() {
         ArrayList<Integer> checkedPositions = new ArrayList<Integer>();
-        for(int i = 0; i < mListView.getCheckedItemPositions().size(); i++) {
-            int position = mListView.getCheckedItemPositions().keyAt(i);
-            boolean value = mListView.getCheckedItemPositions().get(position);
+        for(int i = 0; i < mAbsListView.getCheckedItemPositions().size(); i++) {
+            int position = mAbsListView.getCheckedItemPositions().keyAt(i);
+            boolean value = mAbsListView.getCheckedItemPositions().get(position);
             if(value) {
                 checkedPositions.add(position);
             }
@@ -81,26 +81,28 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
         return checkedPositions;
     }
 
-    private long[] getCheckedTrackIds(ArrayList<Integer> checkedPositions) {
-        BaseSimpleCursorAdapter adapter = (BaseSimpleCursorAdapter)mListView.getAdapter();
+    private long[] getCheckedIds(ArrayList<Integer> checkedPositions) {
+        BaseSimpleCursorAdapter adapter = (BaseSimpleCursorAdapter) mAbsListView.getAdapter();
         Cursor cursor = adapter.getCursor();
-        long[] checkedTrackIds = new long[checkedPositions.size()];
-        //TODO: AudioStorage.Track.TRACK_ID is too precise. Need to be more flippy.
-        int idColumnIndex = cursor.getColumnIndexOrThrow(AudioStorage.Track.TRACK_ID);
+        long[] checkedIds = new long[checkedPositions.size()];
+        int idColumnIndex = cursor.getColumnIndexOrThrow(mChoosingItemIdColumnName);
         for(int i = 0; i < checkedPositions.size(); i++) {
             if(cursor.moveToPosition(checkedPositions.get(i))) {
-                checkedTrackIds[i] = cursor.getLong(idColumnIndex);
+                checkedIds[i] = cursor.getLong(idColumnIndex);
             }
         }
-        return checkedTrackIds;
+        return checkedIds;
     }
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position,
                                           long id, boolean needToCheck) {
-        boolean isAdditionalMenuNeeded = (mListView.getCheckedItemCount() == 1) ? true : false;
-        mode.getMenu().setGroupVisible(mBaseMenuCommandsSet.getAdditionalGroup().getId(), isAdditionalMenuNeeded);
+        boolean isAdditionalMenuNeeded = (mAbsListView.getCheckedItemCount() == 1) ? true : false;
+        MenuCommandsContainer additionalCommands = mBaseMenuCommandsSet.getAdditionalGroup();
+        if(additionalCommands != null) {
+            mode.getMenu().setGroupVisible(additionalCommands.getId(), isAdditionalMenuNeeded);
+        }
         Resources resources = mContext.getResources();
-        mode.setTitle(mListView.getCheckedItemCount() + " " + resources.getString(R.string.selected_text));
+        mode.setTitle(mAbsListView.getCheckedItemCount() + " " + resources.getString(R.string.selected_text));
     }
 }

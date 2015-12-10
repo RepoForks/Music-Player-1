@@ -8,7 +8,7 @@ import android.os.Bundle;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditTrackInfoFragment;
 
-public class EditTrackInfoCommand extends Command{
+public class EditTrackInfoCommand extends Command {
 
     public EditTrackInfoCommand(Context context) {
         super(context, null);

@@ -16,5 +16,9 @@ public abstract class Command {
         mServiceWrapper = serviceWrapper;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public abstract void execute(long[] idsOverWhichToExecute);
 }

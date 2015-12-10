@@ -4,7 +4,7 @@ import android.content.Context;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 
-public class Delete extends Command{
+public class Delete extends Command {
 
     public Delete(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
         super(context, serviceWrapper);

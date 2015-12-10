@@ -1,12 +1,16 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 
 public class MenuCommandsContainer {
+
+    private final String TAG = getClass().getSimpleName();
 
     public static int MINIMAL_GROUP_ID = 1;
     public static int ADDITIONAL_GROUP_ID = 2;
@@ -28,6 +32,12 @@ public class MenuCommandsContainer {
 
     public boolean execute(int itemId, long[] idsOverWhichToExecute) {
         MenuItem menuItem = mIdToCABMenuItem.get(itemId);
+
+        //TODO: debug
+        for(int i = 0; i < idsOverWhichToExecute.length; i++) {
+            Log.e(TAG, "ID: " + idsOverWhichToExecute[i]);
+        }
+
         if(menuItem == null) {
             return false;
         }

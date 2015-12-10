@@ -10,25 +10,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.AlbumMenuCommandSet;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractAlbumCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumsCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumsCursorLoaderCreator;
 
-public class AlbumsBrowserFragment extends BaseLoaderFragment {
+public class AlbumsBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver{
 
     public static final String TAG = "albums";
     public static final String ALBUM_ID_KEY = "album_id_key";
     private Bundle mExtras;
+    private MediaPlaybackServiceWrapper mServiceWrapper;
+    protected ToolbarStateListener mToolbarStateListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mToolbarStateListener = (ToolbarStateListener) activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         mExtras = getArguments();
         super.onCreate(savedInstanceState);
+
+        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper.bindToService(getActivity(), this);
     }
 
     @Override
@@ -68,6 +86,9 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
         gridView.setOnItemClickListener(new OnAlbumClickListener(getActivity(),
                 mCursorAdapter, mExtras,
                 loaderCreator.getAlbumIdColumnName(), loaderCreator.getAlbumColumnName()));
+        gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        gridView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
+                mToolbarStateListener, gridView, new AlbumMenuCommandSet(getActivity(), mServiceWrapper),  loaderCreator.getAlbumIdColumnName()));
         return v;
     }
 
@@ -78,62 +99,12 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState");
-        super.onSaveInstanceState(outState);
+    public void ServiceConnected() {
+
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-    }
+    public void ServiceDisconnected() {
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d(TAG, "onAttach");
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach");
     }
 }

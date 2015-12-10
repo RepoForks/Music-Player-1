@@ -2,6 +2,13 @@ package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 public abstract class BaseMenuCommandSet {
 
+    public static int DELETE_ID = 1;
+    public static int PLAY_ID = 2;
+    public static int AS_RINGTONE_ID = 3;
+    public static int ADD_TO_PLAY_QUEUE_ID = 4;
+    public static int ADD_TO_PLAYLIST_ID = 5;
+    public static int EDIT_INFO_ID = 6;
+
     private MenuCommandsContainer mMinimalGroup = null;
     private MenuCommandsContainer mAdditionalGroup = null;
 
@@ -22,9 +29,15 @@ public abstract class BaseMenuCommandSet {
     }
 
     public void execute(int itemId, long[] idsOverWhichToExecute) {
+        if(mMinimalGroup == null) {
+            return;
+        }
+
         boolean isExecuted = mMinimalGroup.execute(itemId, idsOverWhichToExecute);
         if(!isExecuted) {
-            mAdditionalGroup.execute(itemId, idsOverWhichToExecute);
+            if(mAdditionalGroup != null) {
+                mAdditionalGroup.execute(itemId, idsOverWhichToExecute);
+            }
         }
     }
 

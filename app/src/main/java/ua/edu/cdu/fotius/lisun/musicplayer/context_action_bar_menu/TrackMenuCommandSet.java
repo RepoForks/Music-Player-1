@@ -8,13 +8,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class TrackMenuCommandSet extends BaseMenuCommandSet {
 
-    public static int DELETE_ID = 1;
-    public static int PLAY_ID = 2;
-    public static int AS_RINGTONE_ID = 3;
-    public static int ADD_TO_PLAY_QUEUE_ID = 4;
-    public static int ADD_TO_PLAYLIST_ID = 5;
-    public static int EDIT_INFO_ID = 6;
-
     private Context mContext;
     private MediaPlaybackServiceWrapper mServiceWrapper;
 

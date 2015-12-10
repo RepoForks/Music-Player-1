@@ -1,8 +1,11 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
-import java.util.ArrayList;
+import android.util.Log;
 
 public class MenuItem {
+
+    private final String TAG = getClass().getSimpleName();
+
     private String mTitle;
     private int mIconResource;
     private Command mCommand;
@@ -28,6 +31,13 @@ public class MenuItem {
     }
 
     public void execute(long[] idsOverWhichToExecute) {
+
+        //todo: debug
+        for(int i = 0; i < idsOverWhichToExecute.length; i++) {
+            Log.e(TAG, "ID: " + idsOverWhichToExecute[i]);
+        }
+
+
         mCommand.execute(idsOverWhichToExecute);
     }
 }

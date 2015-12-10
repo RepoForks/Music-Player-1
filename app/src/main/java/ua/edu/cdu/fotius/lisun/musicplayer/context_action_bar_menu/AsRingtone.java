@@ -1,6 +1,5 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,12 +7,7 @@ import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.File;
-import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;

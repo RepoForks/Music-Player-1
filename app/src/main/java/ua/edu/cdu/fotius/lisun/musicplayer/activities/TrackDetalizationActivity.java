@@ -30,6 +30,7 @@ public class TrackDetalizationActivity extends BaseActivity implements ToolbarSt
         String toolbarTitle = getToolbarTitle(
                 getIntent().getExtras(),
                 getResources().getString(R.string.default_track_detalization_activity_title));
+
         setUpToolbar(R.id.toolbar,
                 toolbarTitle,
                 R.drawable.ic_arrow_back_black_24dp,

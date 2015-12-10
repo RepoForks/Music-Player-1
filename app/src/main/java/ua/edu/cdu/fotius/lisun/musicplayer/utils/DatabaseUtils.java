@@ -5,11 +5,17 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumTracksCursorLoaderCreator;
 
 public class DatabaseUtils {
 
@@ -47,7 +53,6 @@ public class DatabaseUtils {
     }
 
     public static String queryAlbumArtPath(Context context, long albumID) {
-
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
@@ -65,6 +70,51 @@ public class DatabaseUtils {
             c.close();
         }
         return path;
+    }
+
+    public static long[] queryAlbumsTracks(Context context, long[] albumsID) {
+        ArrayList<Long> tracksID = new ArrayList<>();
+        for(int i = 0; i < albumsID.length; i++) {
+            tracksID.addAll(queryAlbumTracks(context, albumsID[i]));
+        }
+        Long[] trackIDsArray = tracksID.toArray(new Long[tracksID.size()]);
+        return toPrimitive(trackIDsArray);
+    }
+
+    private static long[] toPrimitive(Long[] objects) {
+        long[] array = new long[objects.length];
+        for(int i = 0; i < objects.length; i++) {
+            array[i] = objects[i];
+        }
+        return array;
+    }
+
+    private static ArrayList<Long> queryAlbumTracks(Context context, long albumID) {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[] {
+            AudioStorage.Track.TRACK_ID
+        };
+
+        String selection = AudioStorage.Track.ALBUM_ID + "=?";
+        String[] selectionArgs = new String[]{Long.toString(albumID)};
+
+        Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
+
+        ArrayList<Long> trackIds = new ArrayList<>();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int columnIdx = 0;
+                while (!cursor.isAfterLast()) {
+                    columnIdx = cursor.getColumnIndexOrThrow(AudioStorage.Track.TRACK_ID);
+                    trackIds.add(cursor.getLong(columnIdx));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+        }
+        return trackIds;
     }
 
     //TODO: only for debug

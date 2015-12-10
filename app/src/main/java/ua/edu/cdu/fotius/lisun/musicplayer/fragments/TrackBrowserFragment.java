@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -24,6 +25,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Album
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AllTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
 
 public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver {
 
@@ -71,8 +74,10 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        AbstractTracksCursorLoaderCreator loaderCreator = (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper)));
+                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper),
+                loaderCreator.getTrackIdColumnName()));
         return v;
     }
 
@@ -84,10 +89,14 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
         }
         long artistId = extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
         long albumId = extras.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, AudioStorage.WRONG_ID);
+        long playlistId = extras.getLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, AudioStorage.WRONG_ID);
+
         if ((artistId != AudioStorage.WRONG_ID) && (albumId != AudioStorage.WRONG_ID)) {
             return new ArtistAlbumTracksCursorLoaderCreator(getActivity(), artistId, albumId);
         } else if (albumId != AudioStorage.WRONG_ID) {
             return new AlbumTracksCursorLoaderCreator(getActivity(), albumId);
+        } else if(playlistId != AudioStorage.WRONG_ID) {
+            return new PlaylistTracksCursorLoaderCreator(getActivity(), playlistId);
         } else {
             /*this won't be executed, but keep this as "default value"*/
             return new AllTracksCursorLoaderCreator(getActivity());
