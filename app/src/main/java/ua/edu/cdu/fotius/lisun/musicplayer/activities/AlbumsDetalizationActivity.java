@@ -14,7 +14,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseLoaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
-public class AlbumsDetalizationActivity extends BaseActivity {
+public class AlbumsDetalizationActivity extends BaseActivity implements ToolbarStateListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -58,5 +58,15 @@ public class AlbumsDetalizationActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(EXTRA_FRAGMENT_TAG, mCurrentFragment.getTag());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void showToolbar() {
+        mToolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
     }
 }

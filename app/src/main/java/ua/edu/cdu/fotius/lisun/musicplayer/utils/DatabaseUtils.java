@@ -73,32 +73,32 @@ public class DatabaseUtils {
     }
 
     public static long[] queryAlbumsTracks(Context context, long[] albumsID) {
+       return queryAllTracks(context, AudioStorage.Track.ALBUM_ID, albumsID);
+    }
+
+    public static long[] queryArtistsTracks(Context context, long[] artistsID) {
+        return queryAllTracks(context, AudioStorage.Track.ARTIST_ID, artistsID);
+    }
+
+    private static long[] queryAllTracks(Context context, String selectionColumn, long[] selectionArgs) {
         ArrayList<Long> tracksID = new ArrayList<>();
-        for(int i = 0; i < albumsID.length; i++) {
-            tracksID.addAll(queryAlbumTracks(context, albumsID[i]));
+        for(int i = 0; i < selectionArgs.length; i++) {
+            tracksID.addAll(queryTracks(context, selectionColumn, selectionArgs[i]));
         }
         Long[] trackIDsArray = tracksID.toArray(new Long[tracksID.size()]);
         return toPrimitive(trackIDsArray);
     }
 
-    private static long[] toPrimitive(Long[] objects) {
-        long[] array = new long[objects.length];
-        for(int i = 0; i < objects.length; i++) {
-            array[i] = objects[i];
-        }
-        return array;
-    }
-
-    private static ArrayList<Long> queryAlbumTracks(Context context, long albumID) {
+    private static ArrayList<Long> queryTracks(Context context, String selectionColumn, long selectionArg) {
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[] {
-            AudioStorage.Track.TRACK_ID
+                AudioStorage.Track.TRACK_ID
         };
 
-        String selection = AudioStorage.Track.ALBUM_ID + "=?";
-        String[] selectionArgs = new String[]{Long.toString(albumID)};
+        String selection = selectionColumn + " = ?";
+        String[] selectionArgs = new String[]{Long.toString(selectionArg)};
 
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
 
@@ -115,6 +115,14 @@ public class DatabaseUtils {
             cursor.close();
         }
         return trackIds;
+    }
+
+    private static long[] toPrimitive(Long[] objects) {
+        long[] array = new long[objects.length];
+        for(int i = 0; i < objects.length; i++) {
+            array[i] = objects[i];
+        }
+        return array;
     }
 
     //TODO: only for debug

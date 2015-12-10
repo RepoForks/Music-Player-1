@@ -39,7 +39,7 @@ public class ArtistCursorLoaderCreator extends AbstractCursorLoaderCreator {
 
     @Override
     public String[] getSelectionArgs() {
-        return new String[0];
+        return null;
     }
 
     @Override

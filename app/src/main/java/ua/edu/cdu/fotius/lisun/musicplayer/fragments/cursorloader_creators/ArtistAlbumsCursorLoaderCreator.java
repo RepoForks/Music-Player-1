@@ -28,8 +28,8 @@ public class ArtistAlbumsCursorLoaderCreator extends AbstractAlbumCursorLoaderCr
     @Override
     public String[] getProjection() {
         return new String[] {
-                getTrackIdColumnName(),
                 getAlbumIdColumnName(),
+                getTrackIdColumnName(),
                 getAlbumColumnName(),
                 getArtistColumnName()
         };
@@ -37,7 +37,7 @@ public class ArtistAlbumsCursorLoaderCreator extends AbstractAlbumCursorLoaderCr
 
     @Override
     public String getSelection() {
-        return getArtistIdColumnName() + " = ?";
+        return getArtistIdColumnName() + " = ?) GROUP BY ( " + getAlbumIdColumnName();
     }
 
     @Override

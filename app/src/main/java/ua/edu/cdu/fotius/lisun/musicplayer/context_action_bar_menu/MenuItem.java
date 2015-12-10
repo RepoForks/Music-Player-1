@@ -31,13 +31,6 @@ public class MenuItem {
     }
 
     public void execute(long[] idsOverWhichToExecute) {
-
-        //todo: debug
-        for(int i = 0; i < idsOverWhichToExecute.length; i++) {
-            Log.e(TAG, "ID: " + idsOverWhichToExecute[i]);
-        }
-
-
         mCommand.execute(idsOverWhichToExecute);
     }
 }

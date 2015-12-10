@@ -88,4 +88,12 @@
     <string name="invalid_input">Data is invalid at %1$s field. %2$s</string>
     <string name="empty_string_invalidity_message">Field is empty.</string>
     <string name="string_to_int_invalidity_message">Field include letters or other forbidden characters.</string>
+
+    <!--CAB Menu-->
+    <string name="cab_menu_play">Play</string>
+    <string name="cab_menu_delete">Delete</string>
+    <string name="cab_menu_add_to_queue">Add to play queue</string>
+    <string name="cab_menu_add_to_playlist">Add to playlist</string>
+    <string name="cab_menu_as_ringtone">As ringtone</string>
+    <string name="cab_menu_edit_into">Edit info</string>
 </resources>
