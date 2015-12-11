@@ -33,6 +33,8 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment implements Service
     private MediaPlaybackServiceWrapper mServiceWrapper;
     protected ToolbarStateListener mToolbarStateListener;
 
+    private long mArtistID = AudioStorage.WRONG_ID;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -66,7 +68,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment implements Service
             return new AlbumsCursorLoaderCreator(getActivity());
         }
 
-        long artistId = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
+        long artistId = mArtistID = mExtras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
         if (artistId != AudioStorage.WRONG_ID) {
             return new ArtistAlbumsCursorLoaderCreator(getActivity(), artistId);
         } else {
@@ -88,7 +90,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment implements Service
                 loaderCreator.getAlbumIdColumnName(), loaderCreator.getAlbumColumnName()));
         gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         gridView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, gridView, new AlbumMenuCommandSet(getActivity(), mServiceWrapper),  loaderCreator.getAlbumIdColumnName()));
+                mToolbarStateListener, gridView, new AlbumMenuCommandSet(getActivity(), mServiceWrapper, mArtistID),  loaderCreator.getAlbumIdColumnName()));
         return v;
     }
 

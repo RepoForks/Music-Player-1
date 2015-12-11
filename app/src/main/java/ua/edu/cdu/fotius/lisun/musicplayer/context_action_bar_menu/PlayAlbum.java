@@ -6,14 +6,17 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 public class PlayAlbum extends Play implements BaseTracksQueryAsyncTask.Callbacks{
 
-    public PlayAlbum(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
+    private long mArtistID;
+
+    public PlayAlbum(Context context, MediaPlaybackServiceWrapper serviceWrapper, long artistID) {
         super(context, serviceWrapper);
+        mArtistID = artistID;
     }
 
     @Override
     public void execute(long[] albumsID) {
         BaseTracksQueryAsyncTask query =
-                new AlbumTracksQueryAsyncTask(getContext(), this);
+                new AlbumTracksQueryAsyncTask(getContext(), mArtistID, this);
         query.execute(albumsID);
     }
 

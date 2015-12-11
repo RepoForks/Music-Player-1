@@ -72,33 +72,40 @@ public class DatabaseUtils {
         return path;
     }
 
-    public static long[] queryAlbumsTracks(Context context, long[] albumsID) {
-       return queryAllTracks(context, AudioStorage.Track.ALBUM_ID, albumsID);
+    public static long[] queryAlbumsTracks(Context context, long artistID, long[] albumsID) {
+        ArrayList<Long> tracksID = new ArrayList<>();
+        StringBuffer selectionBuffer = new StringBuffer();
+        selectionBuffer.append(AudioStorage.Track.ALBUM_ID + " = ?");
+        if(artistID != AudioStorage.WRONG_ID) {
+            selectionBuffer.append(" AND " + AudioStorage.Track.ARTIST_ID + " = ?");
+        }
+
+        for(int i = 0; i < albumsID.length; i++) {
+            String[] selectionArgs = (artistID != AudioStorage.WRONG_ID)
+                    ? new String[]{Long.toString(albumsID[i]), Long.toString(artistID)}
+                    : new String[] {Long.toString(albumsID[i])};
+            tracksID.addAll(queryTracks(context, selectionBuffer.toString(), selectionArgs));
+        }
+        return toPrimitiveArray(tracksID);
     }
 
     public static long[] queryArtistsTracks(Context context, long[] artistsID) {
-        return queryAllTracks(context, AudioStorage.Track.ARTIST_ID, artistsID);
-    }
-
-    private static long[] queryAllTracks(Context context, String selectionColumn, long[] selectionArgs) {
         ArrayList<Long> tracksID = new ArrayList<>();
-        for(int i = 0; i < selectionArgs.length; i++) {
-            tracksID.addAll(queryTracks(context, selectionColumn, selectionArgs[i]));
+        String selection = AudioStorage.Track.ARTIST_ID + " = ?";
+        for(int i = 0; i < artistsID.length; i++) {
+            String[] selectionArgs = new String[]{Long.toString(artistsID[i])};
+            tracksID.addAll(queryTracks(context, selection, selectionArgs));
         }
-        Long[] trackIDsArray = tracksID.toArray(new Long[tracksID.size()]);
-        return toPrimitive(trackIDsArray);
+        return toPrimitiveArray(tracksID);
     }
 
-    private static ArrayList<Long> queryTracks(Context context, String selectionColumn, long selectionArg) {
+    private static ArrayList<Long> queryTracks(Context context, String selection, String[] selectionArgs) {
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[] {
                 AudioStorage.Track.TRACK_ID
         };
-
-        String selection = selectionColumn + " = ?";
-        String[] selectionArgs = new String[]{Long.toString(selectionArg)};
 
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
 
@@ -117,10 +124,11 @@ public class DatabaseUtils {
         return trackIds;
     }
 
-    private static long[] toPrimitive(Long[] objects) {
-        long[] array = new long[objects.length];
-        for(int i = 0; i < objects.length; i++) {
-            array[i] = objects[i];
+    private static long[] toPrimitiveArray(ArrayList<Long> list) {
+        Long[] objectsArray = list.toArray(new Long[list.size()]);
+        long[] array = new long[objectsArray.length];
+        for(int i = 0; i < objectsArray.length; i++) {
+            array[i] = objectsArray[i];
         }
         return array;
     }

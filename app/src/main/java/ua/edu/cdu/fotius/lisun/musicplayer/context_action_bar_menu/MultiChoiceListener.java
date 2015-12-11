@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     private BaseMenuCommandSet mBaseMenuCommandsSet;
     private Context mContext;
     private String mChoosingItemIdColumnName;
+    private TextView mActionModeTitleView;
 
     public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener,
                                AbsListView absListView, BaseMenuCommandSet baseMenuCommandSet, String choosingItemIdColumnName){
@@ -45,6 +48,11 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService
+//                (Context.LAYOUT_INFLATER_SERVICE);
+//        mActionModeTitleView = (TextView)inflater.inflate(R.layout.action_mode_title);
+//        mode.setCustomView(mAbsListView);
+
         initializeMenu(menu);
         mToolbarStateListener.hideToolbar();
         return true;
@@ -103,6 +111,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
             mode.getMenu().setGroupVisible(additionalCommands.getId(), isAdditionalMenuNeeded);
         }
         Resources resources = mContext.getResources();
-        mode.setTitle(mAbsListView.getCheckedItemCount() + " " + resources.getString(R.string.selected_text));
+        mode.setTitle(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
+//        ((TextView)mode.getCustomView()).setText(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
     }
 }

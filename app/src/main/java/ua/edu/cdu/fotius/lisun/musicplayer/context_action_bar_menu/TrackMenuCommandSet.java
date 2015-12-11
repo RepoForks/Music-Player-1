@@ -9,13 +9,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class TrackMenuCommandSet extends BaseMenuCommandSet {
 
-    //TODO: maybe move to superclass with other classes
-    private Context mContext;
-    private MediaPlaybackServiceWrapper mServiceWrapper;
-
     public TrackMenuCommandSet(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
-        mContext = context;
-        mServiceWrapper = serviceWrapper;
+        super(context, serviceWrapper);
     }
 
     @Override

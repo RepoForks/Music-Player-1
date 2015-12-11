@@ -1,5 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
+import android.content.Context;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+
 public abstract class BaseMenuCommandSet {
 
     public static int DELETE_ID = 1;
@@ -9,8 +13,16 @@ public abstract class BaseMenuCommandSet {
     public static int ADD_TO_PLAYLIST_ID = 5;
     public static int EDIT_INFO_ID = 6;
 
+    protected Context mContext;
+    protected MediaPlaybackServiceWrapper mServiceWrapper;
+
     private MenuCommandsContainer mMinimalGroup = null;
     private MenuCommandsContainer mAdditionalGroup = null;
+
+    protected BaseMenuCommandSet(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
+        this.mContext = context;
+        this.mServiceWrapper = serviceWrapper;
+    }
 
     protected MenuCommandsContainer getMinimalGroup() {
         return mMinimalGroup;

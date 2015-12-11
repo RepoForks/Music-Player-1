@@ -6,12 +6,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
 public class AlbumTracksQueryAsyncTask extends BaseTracksQueryAsyncTask{
 
-    public AlbumTracksQueryAsyncTask(Context context, Callbacks callbacks) {
+    private long mArtistID;
+
+    public AlbumTracksQueryAsyncTask(Context context, long artistID, Callbacks callbacks) {
         super(context, callbacks);
+        mArtistID = artistID;
     }
 
     @Override
     protected long[] queryProvider(Context context, long[] albumIDs) {
-        return DatabaseUtils.queryAlbumsTracks(context, albumIDs);
+        return DatabaseUtils.queryAlbumsTracks(context, mArtistID, albumIDs);
     }
 }
