@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 public abstract class BaseTracksQueryAsyncTask extends AsyncTask<long[], Void, long[]>{
     public interface Callbacks {
         public void onQueryStart();
-        public void onQueryCompleted(long[] trackIds);
+        public void onQueryCompleted(long[] tracksId);
     }
 
     private WeakReference<Context> mContextReference;

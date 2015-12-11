@@ -8,7 +8,7 @@ public class AlbumTracksQueryAsyncTask extends BaseTracksQueryAsyncTask{
 
     private long mArtistID;
 
-    public AlbumTracksQueryAsyncTask(Context context, long artistID, Callbacks callbacks) {
+    public AlbumTracksQueryAsyncTask(Context context, Callbacks callbacks, long artistID) {
         super(context, callbacks);
         mArtistID = artistID;
     }
