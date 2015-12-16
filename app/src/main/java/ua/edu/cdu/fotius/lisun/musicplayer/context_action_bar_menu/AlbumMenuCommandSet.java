@@ -22,7 +22,7 @@ public class AlbumMenuCommandSet extends BaseMenuCommandSet{
             group = new MenuCommandsContainer(MenuCommandsContainer.MINIMAL_GROUP_ID);
             Resources resources = mContext.getResources();
             group.add(PLAY_ID, resources.getString(R.string.cab_menu_play), R.mipmap.ic_launcher,
-                    new PlayAlbum(mContext, mServiceWrapper, mArtistID),
+                    new AlbumPlay(mContext, mServiceWrapper, mArtistID),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             group.add(ADD_TO_PLAYLIST_ID, resources.getString(R.string.cab_menu_add_to_playlist),
                     R.mipmap.ic_launcher, new AlbumAddToPlaylist(mContext, mServiceWrapper, mArtistID),

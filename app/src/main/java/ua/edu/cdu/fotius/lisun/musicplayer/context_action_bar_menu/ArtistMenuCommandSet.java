@@ -19,7 +19,7 @@ public class ArtistMenuCommandSet extends BaseMenuCommandSet{
             group = new MenuCommandsContainer(MenuCommandsContainer.MINIMAL_GROUP_ID);
             Resources resources = mContext.getResources();
             group.add(PLAY_ID, resources.getString(R.string.cab_menu_play), R.mipmap.ic_launcher,
-                    new PlayArtist(mContext, mServiceWrapper),
+                    new ArtistPlay(mContext, mServiceWrapper),
                     android.view.MenuItem.SHOW_AS_ACTION_NEVER);
             group.add(ADD_TO_PLAYLIST_ID, resources.getString(R.string.cab_menu_add_to_playlist),
                     R.mipmap.ic_launcher, new ArtistAddToPlaylist(mContext, mServiceWrapper),

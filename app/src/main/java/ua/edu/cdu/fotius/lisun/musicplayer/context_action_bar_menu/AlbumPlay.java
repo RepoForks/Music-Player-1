@@ -4,22 +4,24 @@ import android.content.Context;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
-public class PlayArtist extends Play implements BaseTracksQueryAsyncTask.Callbacks{
+public class AlbumPlay extends Play implements BaseTracksQueryAsyncTask.Callbacks{
 
-    public PlayArtist(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
+    private long mArtistID;
+
+    public AlbumPlay(Context context, MediaPlaybackServiceWrapper serviceWrapper, long artistID) {
         super(context, serviceWrapper);
+        mArtistID = artistID;
     }
 
     @Override
-    public void execute(long[] artistsID) {
+    public void execute(long[] albumsID) {
         BaseTracksQueryAsyncTask query =
-                new ArtistTracksQueryAsyncTask(getContext(), this);
-        query.execute(artistsID);
+                new AlbumTracksQueryAsyncTask(getContext(), this, mArtistID);
+        query.execute(albumsID);
     }
 
     @Override
     public void onQueryStart() {
-
     }
 
     @Override
@@ -28,4 +30,5 @@ public class PlayArtist extends Play implements BaseTracksQueryAsyncTask.Callbac
             super.execute(trackIds);
         }
     }
+
 }

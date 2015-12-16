@@ -38,6 +38,10 @@
             android:name=".activities.EditInfoActivity.EditInfoActivity"
             android:label="@string/title_activity_edit_info" >
         </activity>
+        <activity
+            android:name=".activities.NowPlayingActivity"
+            android:label="@string/title_activity_now_playing" >
+        </activity>
     </application>
 
 </manifest>
