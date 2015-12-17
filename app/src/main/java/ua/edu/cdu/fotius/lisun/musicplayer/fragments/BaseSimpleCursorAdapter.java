@@ -28,6 +28,9 @@ public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
 
     @Override
     public void bindView(View rowLayout, Context context, Cursor cursor) {
+
+        Log.d(TAG, "BaseSimpleCursorAdapter. BindView");
+
         final int count = mTo.length;
         final int[] from = mFrom;
         final int[] to = mTo;

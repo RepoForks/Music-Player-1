@@ -1,6 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
+import android.content.Context;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -29,18 +31,27 @@ public class PlaybackFragmentViewsCreator {
     private OnNextClickListener mNextListener;
     private OnPlayPauseClickListener mPlayPauseListener;
 
+    private Context mContext;
 
-    public PlaybackFragmentViewsCreator(View layout, MediaPlaybackServiceWrapper serviceWrapper,
+
+    public PlaybackFragmentViewsCreator(Context context, View layout, MediaPlaybackServiceWrapper serviceWrapper,
                                         PlaybackViewsStateListener playbackViewsStateListener) {
         mLayout = layout;
         mPlaybackServiceWrapper = serviceWrapper;
         mPlaybackViewsStateListener = playbackViewsStateListener;
+
+        mContext = context;
 
         mRewindListener = new OnRewindListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
         mPrevListener = new OnPreviousClickListener(mPlaybackServiceWrapper);
         mForwardListener = new OnFastForwardListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
         mNextListener = new OnNextClickListener(mPlaybackServiceWrapper);
         mPlayPauseListener = new OnPlayPauseClickListener(mPlaybackServiceWrapper, mPlaybackViewsStateListener);
+    }
+
+    public void createShowQueueBurtton() {
+        Button button = (Button)mLayout.findViewById(R.id.show_current_queue);
+        button.setOnClickListener(new OnShowQueueClickListener(mContext, mPlaybackServiceWrapper));
     }
 
     public ImageButton createPrevButton() {

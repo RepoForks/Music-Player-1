@@ -74,6 +74,12 @@
         android:layout_weight="1"
         android:gravity="center">
 
+        <Button
+            android:id="@+id/show_current_queue"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="Queue" />
+
         <ImageView
             android:id="@+id/album_art"
             android:layout_width="@dimen/album_cover_image_size"

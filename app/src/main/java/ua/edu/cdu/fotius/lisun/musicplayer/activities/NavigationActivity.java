@@ -23,7 +23,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
-public class NavigationActivity extends BaseActivity implements ToolbarStateListener {
+public class NavigationActivity extends SlidingPanelActivity implements ToolbarStateListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -31,21 +31,16 @@ public class NavigationActivity extends BaseActivity implements ToolbarStateList
     private Fragment mCurrentBrowserFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         NavigationView navigationView = setUpNavigationView(drawerLayout);
-
-        String toolbarTitle =
-                getToolbarTitle(null, getResources().getString(R.string.app_name));
-        setUpToolbar(R.id.toolbar,
-                toolbarTitle,
-                R.drawable.ic_menu_black_24dp,
+        super.setNavigationClickListener(
                 new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
-        setUpSlidingPanel(R.id.sliding_up_panel_layout, drawerLayout);
+        super.setPanelSlideListener(new SlidingPanelListener(drawerLayout));
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -64,6 +59,16 @@ public class NavigationActivity extends BaseActivity implements ToolbarStateList
                 .commit();
             mCurrentBrowserFragment = fragment;
         }
+    }
+
+    @Override
+    protected String getToolbarTitle() {
+        return getResources().getString(R.string.app_name);
+    }
+
+    @Override
+    protected int getNavigationIconResourceID() {
+        return  R.drawable.ic_menu_black_24dp;
     }
 
     @Override

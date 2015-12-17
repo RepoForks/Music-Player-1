@@ -32,7 +32,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
 
     public static final String TAG = "tracks";
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    protected MediaPlaybackServiceWrapper mServiceWrapper;
     protected ToolbarStateListener mToolbarStateListener;
 
     private Bundle mPassedArguments;

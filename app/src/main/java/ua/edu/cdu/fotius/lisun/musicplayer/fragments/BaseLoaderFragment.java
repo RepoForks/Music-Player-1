@@ -51,7 +51,7 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(TAG, "onLoadFinished");
+        Log.d(TAG, "onLoadFinished. Cursor count: " + data.getCount());
         mCursorAdapter.swapCursor(data);
     }
 

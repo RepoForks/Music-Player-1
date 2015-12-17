@@ -71,7 +71,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
 
         PlaybackFragmentViewsCreator playbackFragmentViewsCreator =
-                new PlaybackFragmentViewsCreator(v, mServiceWrapper, this);
+                new PlaybackFragmentViewsCreator(getActivity(), v, mServiceWrapper, this);
         playbackFragmentViewsCreator.createPrevButton();
         playbackFragmentViewsCreator.createPrevConcealableButton();
         playbackFragmentViewsCreator.createNextButton();
@@ -87,6 +87,8 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         mSeekBar = playbackFragmentViewsCreator.createSeekBar();
         mCurrentTime = playbackFragmentViewsCreator.createCurrentTimeView();
         mTotalTime = playbackFragmentViewsCreator.createTotalTimeView();
+
+        playbackFragmentViewsCreator.createShowQueueBurtton();
 
         return v;
     }

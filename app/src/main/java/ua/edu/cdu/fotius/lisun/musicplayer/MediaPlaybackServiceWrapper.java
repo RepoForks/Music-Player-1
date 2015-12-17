@@ -283,10 +283,22 @@ public class MediaPlaybackServiceWrapper
     }
 
     public void updateCurrentTrackInfo() {
-        try {
-            mService.updateCurrentTrackInfo();
-        } catch (RemoteException e) {
+        if (mService != null) {
+            try {
+                mService.updateCurrentTrackInfo();
+            } catch (RemoteException e) {
+            }
         }
+    }
+
+    public long[] getQueue() {
+        if(mService != null) {
+            try {
+                return mService.getQueue();
+            } catch (RemoteException e) {
+            }
+        }
+        return null;
     }
 
     public void onServiceConnected(ComponentName name, IBinder service) {

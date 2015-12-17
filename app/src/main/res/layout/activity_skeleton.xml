@@ -8,25 +8,7 @@
     sothree:umanoPanelHeight="68dp" >
 
     <!--MAIN VIEW-->
-    <LinearLayout
-        android:id="@+id/main_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:minHeight="?attr/actionBarSize"
-            sothree:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+    <include layout="@layout/activity_toolbar" />
 
     <!--SLIDING VIEW-->
     <fragment

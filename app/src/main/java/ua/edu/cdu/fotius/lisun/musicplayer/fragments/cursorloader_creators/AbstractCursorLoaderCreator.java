@@ -22,6 +22,7 @@ public abstract class AbstractCursorLoaderCreator {
     protected static final int ARTISTS_LOADER_ID = 6;
     protected static final int ALBUMS_LOADER_ID = 7;
     protected static final int ARTIST_ALBUMS_LOADER_ID = 8;
+    protected static final int NOW_PLAYING_LOADER_ID = 9;
 
     private Context mContext;
 
