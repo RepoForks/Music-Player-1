@@ -6,10 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.OnUpClickListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 
-public class EditInfoActivity extends BaseActivity {
+public class EditInfoActivity extends ToolbarActivity {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -19,16 +19,11 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_skeleton);
+        setContentView(R.layout.activity_toolbar);
 
-        String toolbarTitle = getToolbarTitle(
-                null,
-                getResources().getString(R.string.default_edit_info_activity));
-        setUpToolbar(R.id.toolbar,
-                toolbarTitle,
-                R.drawable.ic_arrow_back_black_24dp,
-                new OnUpClickListener(this));
-        setUpSlidingPanel(R.id.sliding_up_panel_layout, null);
+        setTitle(getResources().getString(R.string.default_edit_info_activity));
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationClickListener(new OnUpClickListener(this));
 
         if(savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);

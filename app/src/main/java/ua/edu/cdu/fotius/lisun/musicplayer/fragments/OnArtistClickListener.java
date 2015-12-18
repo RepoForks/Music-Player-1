@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.AlbumsDetalizationActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 
 public class OnArtistClickListener extends BaseFragmentItemClickListener {
 
@@ -38,7 +37,7 @@ public class OnArtistClickListener extends BaseFragmentItemClickListener {
 
             Bundle extras = new Bundle();
             extras.putLong(ArtistsBrowserFragment.ARTIST_ID_KEY, artistId);
-            extras.putString(BaseActivity.TOOLBAR_TITLE_KEY, artistName);
+            extras.putString(ToolbarActivity.TOOLBAR_TITLE_KEY, artistName);
             Intent intent = new Intent(mContext, AlbumsDetalizationActivity.class);
             intent.putExtras(extras);
             mContext.startActivity(intent);

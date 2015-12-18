@@ -8,7 +8,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.BaseActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
 public class OnAlbumClickListener extends BaseFragmentItemClickListener{
@@ -47,7 +47,7 @@ public class OnAlbumClickListener extends BaseFragmentItemClickListener{
             }
 
             extras.putLong(AlbumsBrowserFragment.ALBUM_ID_KEY, albumId);
-            extras.putString(BaseActivity.TOOLBAR_TITLE_KEY, albumTitle);
+            extras.putString(ToolbarActivity.TOOLBAR_TITLE_KEY, albumTitle);
             Intent intent = new Intent(mContext, TrackDetalizationActivity.class);
             intent.putExtras(extras);
             mContext.startActivity(intent);

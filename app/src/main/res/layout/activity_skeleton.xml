@@ -1,7 +1,7 @@
 <ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_up_panel_layout"
+    android:id="@+id/sliding_panel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"

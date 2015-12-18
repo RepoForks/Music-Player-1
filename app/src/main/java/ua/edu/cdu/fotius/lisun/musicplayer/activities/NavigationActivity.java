@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +17,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 
 public class NavigationActivity extends SlidingPanelActivity implements ToolbarStateListener {
@@ -38,9 +34,11 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         NavigationView navigationView = setUpNavigationView(drawerLayout);
-        super.setNavigationClickListener(
-                new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
-        super.setPanelSlideListener(new SlidingPanelListener(drawerLayout));
+
+        setTitle(getResources().getString(R.string.app_name));
+        setNavigationIconResourceID(R.drawable.ic_menu_black_24dp);
+        setNavigationClickListener(new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
+        setPanelSlideListener(new SlidingPanelListener(drawerLayout));
 
         //if activity recreating previous state get fragment
         //which was saved on destroing previous state
@@ -59,16 +57,6 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
                 .commit();
             mCurrentBrowserFragment = fragment;
         }
-    }
-
-    @Override
-    protected String getToolbarTitle() {
-        return getResources().getString(R.string.app_name);
-    }
-
-    @Override
-    protected int getNavigationIconResourceID() {
-        return  R.drawable.ic_menu_black_24dp;
     }
 
     @Override

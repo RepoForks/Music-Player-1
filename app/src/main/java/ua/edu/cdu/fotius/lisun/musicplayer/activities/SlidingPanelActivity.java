@@ -1,29 +1,29 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
-
-import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.View;
+import android.support.v7.widget.Toolbar;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 public abstract class SlidingPanelActivity extends ToolbarActivity{
 
-    private SlidingUpPanelLayout mSlidingPanel;
+    protected SlidingUpPanelLayout mSlidingPanel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setUpSlidingPanel();
+    public void onContentChanged() {
+        super.onContentChanged();
+         mSlidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_panel);
+
+        if(mSlidingPanel == null) {
+            throw new RuntimeException(
+                    "Your content must have a SlidingUpPanelLayout" +
+                            "whose id attribute is " +
+                            "'R.id.sliding_panel'");
+        }
     }
 
-    private void setUpSlidingPanel() {
-        mSlidingPanel = (SlidingUpPanelLayout)findViewById(R.id.sliding_up_panel_layout);
-    }
-
-    public void setPanelSlideListener(SlidingPanelListener listener) {
+    public void setPanelSlideListener(SlidingUpPanelLayout.PanelSlideListener listener) {
         mSlidingPanel.setPanelSlideListener(listener);
     }
 }

@@ -11,7 +11,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.NowPlayingFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 
-public class NowPlayingActivity extends AppCompatActivity implements ToolbarStateListener{
+public class NowPlayingActivity extends ToolbarActivity implements ToolbarStateListener{
 
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
 
@@ -20,7 +20,7 @@ public class NowPlayingActivity extends AppCompatActivity implements ToolbarStat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_now_playing);
+        setContentView(R.layout.activity_toolbar);
 
         if(savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);

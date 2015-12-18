@@ -7,9 +7,9 @@ import android.view.View;
 
 public class OnUpClickListener implements View.OnClickListener{
 
-    private BaseActivity mActivity;
+    private ToolbarActivity mActivity;
 
-    public OnUpClickListener(BaseActivity activity) {
+    public OnUpClickListener(ToolbarActivity activity) {
         mActivity = activity;
     }
 
