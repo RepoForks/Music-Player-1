@@ -3,7 +3,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
@@ -21,16 +19,16 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 
 public class NavigationActivity extends SlidingPanelActivity implements ToolbarStateListener {
 
-    private final String TAG = getClass().getSimpleName();
-
-    private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
-    private Fragment mCurrentBrowserFragment;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_navigation);
+
+        if(!isFragmentSet()) {
+            setDefaultFragment(new TrackBrowserFragment(),
+                    TrackBrowserFragment.TAG, getIntent().getExtras());
+        }
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         NavigationView navigationView = setUpNavigationView(drawerLayout);
@@ -39,30 +37,6 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
         setNavigationIconResourceID(R.drawable.ic_menu_black_24dp);
         setNavigationClickListener(new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
         setPanelSlideListener(new SlidingPanelListener(drawerLayout));
-
-        //if activity recreating previous state get fragment
-        //which was saved on destroing previous state
-        if(savedInstanceState != null) {
-            String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
-            mCurrentBrowserFragment = getSupportFragmentManager()
-                    .findFragmentByTag(savedFragmentTag);
-        }
-
-        //if activity runs for the first time set Songs fragment as
-        //initial fragment
-        if(mCurrentBrowserFragment == null) {
-            Fragment fragment = new TrackBrowserFragment();
-            getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, fragment, TrackBrowserFragment.TAG)
-                .commit();
-            mCurrentBrowserFragment = fragment;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString(EXTRA_FRAGMENT_TAG, mCurrentBrowserFragment.getTag());
-        super.onSaveInstanceState(outState);
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {
@@ -105,13 +79,6 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
                     }
                 });
         return navigationView;
-    }
-
-    public void replaceFragment(Fragment fragment, String fragmentTag) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, fragmentTag)
-                .commit();
-        mCurrentBrowserFragment = fragment;
     }
 
     @Override
