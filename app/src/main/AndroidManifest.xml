@@ -42,6 +42,11 @@
             android:name=".activities.NowPlayingActivity"
             android:label="@string/title_activity_now_playing" >
         </activity>
+
+        <activity
+            android:name=".activities.PlaylistTracklistActivity"
+            android:label="@string/playlist_tracklist_default_toolbar_title" >
+        </activity>
     </application>
 
 </manifest>

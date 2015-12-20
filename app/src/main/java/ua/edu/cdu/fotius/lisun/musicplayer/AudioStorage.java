@@ -52,11 +52,12 @@ public class AudioStorage {
 
     public interface PlaylistMember {
         public static final String ID_WITHIN_PLAYLIST = MediaStore.Audio.Playlists.Members._ID;
+        public static final String PLAYLIST_ID = MediaStore.Audio.Playlists.Members.PLAYLIST_ID;
         public static final String TRACK_ID = MediaStore.Audio.Playlists.Members.AUDIO_ID;
         public static final String TRACK = MediaStore.Audio.Playlists.Members.TITLE;
         public static final String ARTIST = MediaStore.Audio.Playlists.Members.ARTIST;
         public static final String ALBUM_ID = MediaStore.Audio.Playlists.Members.ALBUM_ID;
         public static final String PLAY_ORDER = MediaStore.Audio.Playlists.Members.PLAY_ORDER;
-        public static final String SORT_ORDER = TRACK + " ASC";
+        public static final String SORT_ORDER = PLAY_ORDER + " ASC";
     }
 }

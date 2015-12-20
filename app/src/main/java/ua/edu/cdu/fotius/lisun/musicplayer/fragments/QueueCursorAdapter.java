@@ -1,4 +1,4 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.custom_views;
+package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
 public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
@@ -20,15 +21,16 @@ public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
     private final int INVALID_POSITION = -1;
     private HashMap<Long, Integer> mCursorTracksID;
     private long[] mCurrentTracksID;
+    private String mTrackIdColumnName;
 
-    public QueueCursorAdapter(Context context, int layout, String[] from, int[] to) {
+    public QueueCursorAdapter(Context context, int layout, String[] from, int[] to, String trackIdColumnName) {
         super(context, layout, from, to);
+        mTrackIdColumnName = trackIdColumnName;
     }
 
     @Override
     public Cursor swapCursor(Cursor c) {
         initIDs(c);
-        Log.d(TAG, "Queue array length: " + mCurrentTracksID.length);
         return super.swapCursor(c);
     }
 
@@ -39,7 +41,7 @@ public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
                 mCurrentTracksID = new long[c.getCount()];
                 mCursorTracksID = new HashMap<>();
                 while (!c.isAfterLast()) {
-                    int columnIdx = c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
+                    int columnIdx = c.getColumnIndexOrThrow(mTrackIdColumnName);
                     long trackID = c.getLong(columnIdx);
                     mCurrentTracksID[idx] = trackID;
                     mCursorTracksID.put(trackID, idx);
@@ -76,5 +78,9 @@ public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
 
     public long[] getCurrentQueue() {
         return mCurrentTracksID;
+    }
+
+    public HashMap<Long, Integer> getInitialIdToPositionMap() {
+        return mCursorTracksID;
     }
 }

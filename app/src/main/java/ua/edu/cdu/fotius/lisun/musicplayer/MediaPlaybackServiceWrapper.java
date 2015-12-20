@@ -301,6 +301,15 @@ public class MediaPlaybackServiceWrapper
         return null;
     }
 
+    public void moveQueueItem(int from, int to) {
+        if(mService != null) {
+            try {
+                mService.moveQueueItem(from, to);
+            } catch (RemoteException e) {
+            }
+        }
+    }
+
     public void onServiceConnected(ComponentName name, IBinder service) {
         mService = IMediaPlaybackService.Stub.asInterface(service);
         /* Notify all observers.

@@ -30,6 +30,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Playl
 
 public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver {
 
+    //TODO: refactor this to tracklist
     public static final String TAG = "tracks";
 
     protected MediaPlaybackServiceWrapper mServiceWrapper;

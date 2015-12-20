@@ -35,6 +35,10 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import java.util.HashMap;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.QueueCursorAdapter;
+
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
  * and swapping.
@@ -61,7 +65,7 @@ public class DragNDropListView extends ListView {
     private final String TAG = getClass().getSimpleName();
 
     public interface DropListener {
-        public void onDrop(long[] newQueue, int from, int to);
+        public void onDrop(HashMap<Long, Integer> initialIdToPositionMap, long[] newQueue, int from, int to);
     }
 
     private final int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 15;
@@ -468,7 +472,9 @@ public class DragNDropListView extends ListView {
             touchEventsCancelled();
         }
 
-        mDropListener.onDrop(((QueueCursorAdapter) getAdapter()).getCurrentQueue(), mStartDragPosition, mNextDragPoisition);
+        QueueCursorAdapter adapter = (QueueCursorAdapter) getAdapter();
+        mDropListener.onDrop(adapter.getInitialIdToPositionMap(),
+                adapter.getCurrentQueue(), mStartDragPosition, mNextDragPoisition);
     }
 
     /**

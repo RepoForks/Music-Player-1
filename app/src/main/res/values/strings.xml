@@ -97,4 +97,10 @@
     <string name="cab_menu_as_ringtone">As ringtone</string>
     <string name="cab_menu_edit_into">Edit info</string>
     <string name="title_activity_now_playing">NowPlayingActivity</string>
+
+    <!--NowPlayingActivity-->
+    <string name="now_playing_activity_title">NowPlayingActivity</string>
+
+    <!--PlaylistTracklistActivity-->
+    <string name="playlist_tracklist_default_toolbar_title">Playlist\'s tracks</string>
 </resources>

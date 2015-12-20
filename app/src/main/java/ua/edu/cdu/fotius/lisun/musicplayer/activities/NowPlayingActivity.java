@@ -15,6 +15,10 @@ public class NowPlayingActivity extends ToolbarActivity implements ToolbarStateL
             setDefaultFragment(new NowPlayingFragment(),
                     NowPlayingFragment.TAG, getIntent().getExtras());
         }
+
+        setTitle(getResources().getString(R.string.now_playing_activity_title));
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationClickListener(new OnUpClickListener(this));
     }
 
     @Override

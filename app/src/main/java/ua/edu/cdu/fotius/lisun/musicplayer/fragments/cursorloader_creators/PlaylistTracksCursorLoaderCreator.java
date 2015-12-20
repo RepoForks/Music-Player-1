@@ -26,6 +26,7 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
         return MediaStore.Audio.Playlists.Members.getContentUri("external", mPlaylistId);
     }
 
+    //TODO: do i need all this stuff
     @Override
     public String[] getProjection() {
         return new String[]{
@@ -39,12 +40,12 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
 
     @Override
     public String getSelection() {
-        return null;
+        return AudioStorage.PlaylistMember.PLAYLIST_ID + "=?";
     }
 
     @Override
     public String[] getSelectionArgs() {
-        return null;
+        return new String[] {Long.toString(mPlaylistId)};
     }
 
     @Override
