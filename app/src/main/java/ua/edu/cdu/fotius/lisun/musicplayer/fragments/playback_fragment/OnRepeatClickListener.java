@@ -8,8 +8,16 @@ import ua.edu.cdu.fotius.lisun.musicplayer.Playlist;
 
 public class OnRepeatClickListener extends BaseRepeatShuffleClickListener {
 
-    public OnRepeatClickListener(MediaPlaybackServiceWrapper serviceWrapper, PlaybackViewsStateListener playbackViewsStateListener) {
-        super(serviceWrapper, playbackViewsStateListener);
+    public interface RepeatClickedListener {
+        public void onRepeatClicked();
+    }
+
+    private RepeatClickedListener mClickedListener;
+
+    public OnRepeatClickListener(MediaPlaybackServiceWrapper serviceWrapper,
+                                 RepeatClickedListener clickedListener) {
+        super(serviceWrapper);
+        mClickedListener = clickedListener;
     }
 
     @Override
@@ -26,7 +34,7 @@ public class OnRepeatClickListener extends BaseRepeatShuffleClickListener {
                 mServiceWrapper.setRepeatMode(Playlist.REPEAT_CURRENT);
                 if (mServiceWrapper.getShuffleMode() != Playlist.SHUFFLE_NONE) {
                     mServiceWrapper.setShuffleMode(Playlist.SHUFFLE_NONE);
-                    mPlaybackViewsStateListener.updateShuffleButtonImage();
+                    mClickedListener.onRepeatClicked();
                 }
             } else {
                 mServiceWrapper.setRepeatMode(Playlist.REPEAT_NONE);

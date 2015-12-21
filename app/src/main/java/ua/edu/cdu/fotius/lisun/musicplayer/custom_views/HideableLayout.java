@@ -7,17 +7,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-public class ConcealableMediaButtonsLayout extends LinearLayout implements ConcealableViewBehaviour{
+public class HideableLayout extends LinearLayout implements ConcealableViewBehaviour{
 
-    public ConcealableMediaButtonsLayout(Context context) {
+    public HideableLayout(Context context) {
         super(context);
     }
 
-    public ConcealableMediaButtonsLayout(Context context, AttributeSet attrs) {
+    public HideableLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ConcealableMediaButtonsLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HideableLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

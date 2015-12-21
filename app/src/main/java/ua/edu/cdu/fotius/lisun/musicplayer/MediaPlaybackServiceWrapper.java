@@ -111,6 +111,7 @@ public class MediaPlaybackServiceWrapper
     }
 
     public void prev() {
+        Log.d(TAG, "ServiceWrapper.prev()");
         if (mService != null) {
             try {
                 mService.prev();

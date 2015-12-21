@@ -7,12 +7,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 public abstract class BaseRepeatShuffleClickListener implements View.OnClickListener{
 
     protected MediaPlaybackServiceWrapper mServiceWrapper;
-    protected PlaybackViewsStateListener mPlaybackViewsStateListener;
 
-    public BaseRepeatShuffleClickListener(MediaPlaybackServiceWrapper serviceWrapper,
-                                          PlaybackViewsStateListener playbackViewsStateListener) {
+    public BaseRepeatShuffleClickListener(MediaPlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
-        mPlaybackViewsStateListener = playbackViewsStateListener;
     }
 
     @Override

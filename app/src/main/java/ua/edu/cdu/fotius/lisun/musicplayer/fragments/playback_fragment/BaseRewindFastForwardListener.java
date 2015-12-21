@@ -9,11 +9,9 @@ public abstract class BaseRewindFastForwardListener implements LoopingImageButto
 
     protected long mStartSeekPos = 0;
     protected MediaPlaybackServiceWrapper mServiceWrapper;
-    protected PlaybackViewsStateListener mPlaybackViewsStateListener;
 
-    public BaseRewindFastForwardListener(MediaPlaybackServiceWrapper serviceWrapper, PlaybackViewsStateListener playbackViewsStateListener) {
+    public BaseRewindFastForwardListener(MediaPlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
-        mPlaybackViewsStateListener = playbackViewsStateListener;
     }
 
     @Override

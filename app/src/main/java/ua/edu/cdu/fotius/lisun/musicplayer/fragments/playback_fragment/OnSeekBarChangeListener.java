@@ -6,15 +6,20 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 public class OnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
 
+    public static final int SEEK_BAR_MAX = 1000;
+
+    public interface SeekBarProgressChangedListener {
+        public void onProgressChanged();
+    }
+
+
     private MediaPlaybackServiceWrapper mServiceWrapper;
-    private PlaybackViewsStateListener mPlaybackViewsStateListener;
-    private int mSeekBarMaxValue = 1000;
+    private SeekBarProgressChangedListener mChangerListener;
 
     public OnSeekBarChangeListener(MediaPlaybackServiceWrapper serviceWrapper,
-                                   PlaybackViewsStateListener playbackViewsStateListener, int seekBarMaxValue) {
+                                   SeekBarProgressChangedListener progressChangedListener) {
         mServiceWrapper = serviceWrapper;
-        mSeekBarMaxValue = seekBarMaxValue;
-        mPlaybackViewsStateListener = playbackViewsStateListener;
+        mChangerListener = progressChangedListener;
     }
 
     @Override
@@ -22,9 +27,9 @@ public class OnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
         if(fromUser) {
             long duration = mServiceWrapper.getTrackDuration();
             if(duration > 0) {
-                long newSeekPostion = duration * progress / mSeekBarMaxValue;
+                long newSeekPostion = duration * progress / SEEK_BAR_MAX;
                 mServiceWrapper.seek(newSeekPostion);
-                mPlaybackViewsStateListener.updateSeekBarAndCurrentTime();
+                mChangerListener.onProgressChanged();
             } else {
                 //TODO: I think better will be finish app and let user restart it
             }

@@ -26,4 +26,8 @@ public abstract class SlidingPanelActivity extends ToolbarActivity{
     public void setPanelSlideListener(SlidingUpPanelLayout.PanelSlideListener listener) {
         mSlidingPanel.setPanelSlideListener(listener);
     }
+
+    public void setDragView(int dragViewResourceID) {
+        mSlidingPanel.setDragView(dragViewResourceID);
+    }
 }

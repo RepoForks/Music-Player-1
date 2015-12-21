@@ -2,11 +2,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel;
 
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableMediaButtonsLayout;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout;
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
@@ -33,7 +32,7 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private void showConcealableViews(View panel) {
-        ConcealableMediaButtonsLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
+        HideableLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
         concealableMediaButtons.show();
         ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
         concealableAlbumArt.show();
@@ -41,19 +40,19 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private void hideConcealableViews(View panel) {
-        ConcealableMediaButtonsLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
+        HideableLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
         concealableMediaButtons.hide();
         ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
         concealableAlbumArt.hide();
         mIsConcealableViewsVisible = false;
     }
 
-    private ConcealableMediaButtonsLayout getConcealableMediaButtonsLayout(View panel) {
-        return (ConcealableMediaButtonsLayout) panel.findViewById(R.id.concealable_control_panel);
+    private HideableLayout getConcealableMediaButtonsLayout(View panel) {
+        return (HideableLayout) panel.findViewById(R.id.concealable_control_panel);
     }
 
     private ConcealableImageView getConcealableAlbumArt(View panel) {
-        return (ConcealableImageView) panel.findViewById(R.id.concealable_album_art);
+        return (ConcealableImageView) panel.findViewById(R.id.album_art);
     }
 
     @Override

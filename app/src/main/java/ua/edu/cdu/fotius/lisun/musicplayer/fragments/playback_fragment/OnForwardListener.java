@@ -2,11 +2,18 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
-public class OnFastForwardListener extends BaseRewindFastForwardListener {
+public class OnForwardListener extends BaseRewindFastForwardListener {
+
+    public interface ForwardClickedListener {
+        public void onForwardClicked();
+    }
+
+    private ForwardClickedListener mClickedListener;
 
 
-    public OnFastForwardListener(MediaPlaybackServiceWrapper serviceWrapper, PlaybackViewsStateListener playbackViewsStateListener) {
-        super(serviceWrapper, playbackViewsStateListener);
+    public OnForwardListener(MediaPlaybackServiceWrapper serviceWrapper, ForwardClickedListener clickedListener) {
+        super(serviceWrapper);
+        mClickedListener = clickedListener;
     }
 
     @Override
@@ -25,7 +32,7 @@ public class OnFastForwardListener extends BaseRewindFastForwardListener {
                 mStartSeekPos -= duration; // is OK to go negative
             }
             mServiceWrapper.seek(newPosition);
-            mPlaybackViewsStateListener.updateSeekBarAndCurrentTime();
+            mClickedListener.onForwardClicked();
         }
     }
 }

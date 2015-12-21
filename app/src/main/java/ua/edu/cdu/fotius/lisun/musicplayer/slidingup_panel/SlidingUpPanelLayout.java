@@ -879,6 +879,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.d(TAG, "SlidingPanel.OnInterceptTouch");
         // If the scrollable view is handling touch, never intercept
         if (mIsScrollableViewHandlingTouch) {
             mDragHelper.cancel();
@@ -900,6 +901,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             case MotionEvent.ACTION_MOVE: {
                 final float adx = Math.abs(x - mInitialMotionX);
                 final float ady = Math.abs(y - mInitialMotionY);
+                //TODO: bad idea to use raw pixels
                 final int dragSlop = mDragHelper.getTouchSlop();
 
                 if ((ady > dragSlop && adx > ady) || !isViewUnder(mDragView, (int) mInitialMotionX, (int) mInitialMotionY)) {
@@ -926,6 +928,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent ev) {
+
+        Log.d(TAG, "SlidingPanel.OnTouchEvent");
         if (!isEnabled() || !isTouchEnabled()) {
             return super.onTouchEvent(ev);
         }

@@ -10,29 +10,33 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditTrackInfoFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
+import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
-public class PlaybackFragment extends Fragment implements ServiceConnectionObserver, PlaybackViewsStateListener {
+public class PlaybackFragment extends Fragment implements ServiceConnectionObserver, OnForwardListener.ForwardClickedListener,
+        OnRewindListener.RewindClickedListener, OnShuffleClickListener.ShuffleClickedListener,
+        OnRepeatClickListener.RepeatClickedListener,
+        OnSeekBarChangeListener.SeekBarProgressChangedListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -40,14 +44,12 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     private final int REFRESH = 1;
 
     private ImageView mAlbumArt;
-    private ConcealableImageView mConcealableAlbumArtImageView;
-    private TextView mTrackName;
+    private TextView mTrackTitle;
     private BaseNameTextView mArtistName;
     private SeekBar mSeekBar;
     private TextView mCurrentTime;
     private TextView mTotalTime;
     private PlayPauseButton mPlayButton;
-    private PlayPauseButton mConcealablePlayPauseButton;
     private RepeatButton mRepeatButton;
     private ShuffleButton mShuffleButton;
     private MediaPlaybackServiceWrapper mServiceWrapper;
@@ -70,25 +72,37 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_media_playback, container, false);
 
-        PlaybackFragmentViewsCreator playbackFragmentViewsCreator =
-                new PlaybackFragmentViewsCreator(getActivity(), v, mServiceWrapper, this);
-        playbackFragmentViewsCreator.createPrevButton();
-        playbackFragmentViewsCreator.createPrevConcealableButton();
-        playbackFragmentViewsCreator.createNextButton();
-        playbackFragmentViewsCreator.createNextConcealableButton();
-        mAlbumArt = playbackFragmentViewsCreator.createAlbumArtImageView();
-        mConcealableAlbumArtImageView = playbackFragmentViewsCreator.createConcealableAlbumArtImageView();
-        mPlayButton = playbackFragmentViewsCreator.createPlayPauseButton();
-        mConcealablePlayPauseButton = playbackFragmentViewsCreator.createPlayPauseConcealableButton();
-        mRepeatButton = playbackFragmentViewsCreator.createRepeatButton();
-        mShuffleButton = playbackFragmentViewsCreator.createShuffleButton();
-        mTrackName = playbackFragmentViewsCreator.createTrackNameView();
-        mArtistName = playbackFragmentViewsCreator.createArtistNameView();
-        mSeekBar = playbackFragmentViewsCreator.createSeekBar();
-        mCurrentTime = playbackFragmentViewsCreator.createCurrentTimeView();
-        mTotalTime = playbackFragmentViewsCreator.createTotalTimeView();
+        LoopingImageButton prevButton =
+                (LoopingImageButton) v.findViewById(R.id.prev);
+        prevButton.setOnClickListener(new OnPreviousClickListener(mServiceWrapper));
+        prevButton.setRepeatListener(new OnRewindListener(mServiceWrapper, this));
 
-        playbackFragmentViewsCreator.createShowQueueBurtton();
+        LoopingImageButton nextButton =
+                (LoopingImageButton) v.findViewById(R.id.next);
+        nextButton.setOnClickListener(new OnNextClickListener(mServiceWrapper));
+        nextButton.setRepeatListener(new OnRewindListener(mServiceWrapper, this));
+
+        mAlbumArt = (ImageView) v.findViewById(R.id.album_art);
+        mPlayButton = (PlayPauseButton) v.findViewById(R.id.play);
+        mPlayButton.setOnClickListener(new OnPlayPauseClickListener(mServiceWrapper));
+
+        mRepeatButton = (RepeatButton) v.findViewById(R.id.repeat);
+        mRepeatButton.setOnClickListener(new OnRepeatClickListener(mServiceWrapper, this));
+
+        mShuffleButton = (ShuffleButton) v.findViewById(R.id.shuffle);
+        mShuffleButton.setOnClickListener(new OnShuffleClickListener(mServiceWrapper, this));
+        mTrackTitle = (TextView) v.findViewById(R.id.track_title);
+        mArtistName = (ArtistNameTextView) v.findViewById(R.id.artist_name);
+
+        mSeekBar = (SeekBar) v.findViewById(R.id.seek_bar);
+        mSeekBar.setMax(OnSeekBarChangeListener.SEEK_BAR_MAX);
+        mSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(mServiceWrapper, this));
+
+        mCurrentTime = (TextView) v.findViewById(R.id.current_time);
+        mTotalTime = (TextView) v.findViewById(R.id.total_time);
+
+        Button button = (Button) v.findViewById(R.id.show_current_queue);
+        button.setOnClickListener(new OnShowQueueClickListener(getActivity(), mServiceWrapper));
 
         return v;
     }
@@ -105,17 +119,16 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         trackInfoChangedFilter.addAction(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED);
         getActivity().registerReceiver(mTrackInfoChangedListener, trackInfoChangedFilter);
 
-        long nextRefreshDelay = updateSeekBarAndCurrentTime();
+        long nextRefreshDelay = updateSeekBarAndTime();
         queueNextRefresh(nextRefreshDelay);
-        updPlayPauseButtonImage();
+        updatePlayPauseButtonImage();
         mRepeatButton.setImage(mServiceWrapper.getRepeatMode());
         mShuffleButton.setImage(mServiceWrapper.getShuffleMode());
     }
 
-    private void updPlayPauseButtonImage() {
+    private void updatePlayPauseButtonImage() {
         boolean isPlaying = mServiceWrapper.isPlaying();
         mPlayButton.updateStateImage(isPlaying);
-        mConcealablePlayPauseButton.updateStateImage(isPlaying);
     }
 
     @Override
@@ -123,10 +136,6 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         super.onStop();
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        Log.d(TAG, "Scaling factor: " + metrics.density);
-        Log.d(TAG, "Display dpi: " + metrics.density * 160f);
-        Log.d(TAG, "Play button height: " + mPlayButton.getHeight());
 
         getActivity().unregisterReceiver(mServiceStatusListener);
         getActivity().unregisterReceiver(mTrackInfoChangedListener);
@@ -147,10 +156,10 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         long duration = mServiceWrapper.getTrackDuration();
 
         if ((trackName != null) && (artistName != null) && (duration > 0)) {
-            mTrackName.setText(trackName);
+            mTrackTitle.setText(trackName);
             mArtistName.setName(artistName);
             mTotalTime.setText(TimeUtils.makeTimeString(getActivity(),
-                    duration / PlaybackFragmentViewsCreator.SEEK_BAR_MAX));
+                    duration / OnSeekBarChangeListener.SEEK_BAR_MAX));
         } else {
             updateViewsOnError();
         }
@@ -158,12 +167,11 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         long albumID = mServiceWrapper.getAlbumID();
         if(albumID != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             mImageLoader.load(albumID).withDefault(R.drawable.default_album_art_512dp).into(mAlbumArt);
-            mConcealableAlbumArtImageView.setAlbumArt(albumID);
         }
     }
 
     private void updateViewsOnError() {
-        mTrackName.setText("");
+        mTrackTitle.setText("");
         mArtistName.setName("");
         mTotalTime.setText("--:--");
         mSeekBar.setProgress(0);
@@ -171,34 +179,15 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         //TODO: would be great to go to next song in this case
     }
 
-    @Override
-    public long updateSeekBarAndCurrentTime() {
-        return updSeekBarAndTime();
-    }
 
-    @Override
-    public void updatePlayPauseButtonImage() {
-        updPlayPauseButtonImage();
-    }
-
-    @Override
-    public void updateRepeatButtonImage() {
-        mRepeatButton.setImage(mServiceWrapper.getRepeatMode());
-    }
-
-    @Override
-    public void updateShuffleButtonImage() {
-        mShuffleButton.setImage(mServiceWrapper.getShuffleMode());
-    }
-
-    private long updSeekBarAndTime() {
+    private long updateSeekBarAndTime() {
         long position = mServiceWrapper.getPlayingPosition();
         long duration = mServiceWrapper.getTrackDuration();
         if (position >= 0 && duration > 0) {
-            int progress = (int) (PlaybackFragmentViewsCreator.SEEK_BAR_MAX * position / duration);
+            int progress = (int) (OnSeekBarChangeListener.SEEK_BAR_MAX * position / duration);
             mSeekBar.setProgress(progress);
             mCurrentTime.setText(TimeUtils.makeTimeString(getActivity(),
-                    position / PlaybackFragmentViewsCreator.SEEK_BAR_MAX));
+                    position / OnSeekBarChangeListener.SEEK_BAR_MAX));
             return getSmoothRefreshTime(position, duration);
         } else {
             updateViewsOnError();
@@ -229,7 +218,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     @Override
     public void ServiceConnected() {
         refreshTrackInfoAndTotalTime();
-        updPlayPauseButtonImage();
+        updatePlayPauseButtonImage();
         mRepeatButton.setImage(mServiceWrapper.getRepeatMode());
         mShuffleButton.setImage(mServiceWrapper.getShuffleMode());
     }
@@ -237,7 +226,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
     @Override
     public void ServiceDisconnected() {
         updateViewsOnError();
-        updPlayPauseButtonImage();
+        updatePlayPauseButtonImage();
     }
 
     private Handler mHandler = new Handler() {
@@ -245,7 +234,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case REFRESH:
-                    long nextRefreshDelay = updateSeekBarAndCurrentTime();
+                    long nextRefreshDelay = updateSeekBarAndTime();
                     queueNextRefresh(nextRefreshDelay);
                     break;
             }
@@ -260,7 +249,7 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
                 refreshTrackInfoAndTotalTime();
                 queueNextRefresh(1);
             } else if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
-                updPlayPauseButtonImage();
+                updatePlayPauseButtonImage();
             }
         }
     };
@@ -280,4 +269,29 @@ public class PlaybackFragment extends Fragment implements ServiceConnectionObser
             }
         }
     };
+
+    @Override
+    public void onForwardClicked() {
+        updateSeekBarAndTime();
+    }
+
+    @Override
+    public void onRewindClicked() {
+        updateSeekBarAndTime();
+    }
+
+    @Override
+    public void onRepeatClicked() {
+        mShuffleButton.setImage(mServiceWrapper.getShuffleMode());
+    }
+
+    @Override
+    public void onShuffleClicked() {
+        mRepeatButton.setImage(mServiceWrapper.getRepeatMode());
+    }
+
+    @Override
+    public void onProgressChanged() {
+        updateSeekBarAndTime();
+    }
 }

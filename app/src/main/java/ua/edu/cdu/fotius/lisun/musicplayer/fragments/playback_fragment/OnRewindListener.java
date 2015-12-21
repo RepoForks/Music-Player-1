@@ -1,11 +1,20 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
+import android.util.Log;
+
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 public class OnRewindListener extends BaseRewindFastForwardListener {
 
-    public OnRewindListener(MediaPlaybackServiceWrapper serviceWrapper, PlaybackViewsStateListener playbackViewsStateListener) {
-        super(serviceWrapper, playbackViewsStateListener);
+    public interface RewindClickedListener{
+        public void onRewindClicked();
+    }
+
+    private RewindClickedListener mClickedListener;
+
+    public OnRewindListener(MediaPlaybackServiceWrapper serviceWrapper, RewindClickedListener clickedListener) {
+        super(serviceWrapper);
+        mClickedListener = clickedListener;
     }
 
     @Override
@@ -21,7 +30,7 @@ public class OnRewindListener extends BaseRewindFastForwardListener {
                 newPosition = 0;
             }
             mServiceWrapper.seek(newPosition);
-            mPlaybackViewsStateListener.updateSeekBarAndCurrentTime();
+            mClickedListener.onRewindClicked();
         }
     }
 }

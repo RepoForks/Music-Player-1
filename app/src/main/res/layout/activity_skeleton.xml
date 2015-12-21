@@ -11,10 +11,29 @@
     <include layout="@layout/activity_toolbar" />
 
     <!--SLIDING VIEW-->
-    <fragment
-        android:id="@+id/playback_fragment"
-        android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:id="@+id/dock_playback_fragment"
+                android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.DockPlaybackFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <fragment
+            android:id="@+id/playback_fragment"
+            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout>

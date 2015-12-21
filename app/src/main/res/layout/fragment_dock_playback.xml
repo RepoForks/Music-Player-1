@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/album_art"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@null"
+            android:thumb="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/track_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/minimal_panel_song_text_size" />
+
+                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
+                    android:id="@+id/artist_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/minimal_panel_artist_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/concealable_control_panel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+                    android:id="@+id/prev_additional"
+                    style="@style/MediaButton.Small.Rewind" />
+
+                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton
+                    android:id="@+id/play_additional"
+                    style="@style/MediaButton.Small.PlayPause" />
+
+                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+                    android:id="@+id/next_additional"
+                    style="@style/MediaButton.Small.FastForward" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
