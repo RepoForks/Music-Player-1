@@ -1,11 +1,13 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ConcealableImageView;
-import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout;
+
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
@@ -14,10 +16,12 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     private boolean mIsConcealableViewsVisible;
 
     private DrawerLayout mDrawerLayout = null;
+    private FragmentManager mFragmentManager;
 
     //drawerLayout can be null, if there no drawer for this activity
-    public SlidingPanelListener(DrawerLayout drawerLayout) {
+    public SlidingPanelListener(DrawerLayout drawerLayout, FragmentManager fragmentManager) {
         mDrawerLayout = drawerLayout;
+        mFragmentManager = fragmentManager;
     }
 
     @Override
@@ -32,28 +36,25 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private void showConcealableViews(View panel) {
-        HideableLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
-        concealableMediaButtons.show();
-        ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
-        concealableAlbumArt.show();
+        Fragment fragment = mFragmentManager.findFragmentById(R.id.dock_playback_fragment);
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        if(fragment.isHidden()) {
+            ft.show(fragment);
+        }
+        ft.commit();
         mIsConcealableViewsVisible = true;
     }
 
     private void hideConcealableViews(View panel) {
-        HideableLayout concealableMediaButtons = getConcealableMediaButtonsLayout(panel);
-        concealableMediaButtons.hide();
-        ConcealableImageView concealableAlbumArt = getConcealableAlbumArt(panel);
-        concealableAlbumArt.hide();
+        Fragment fragment = mFragmentManager.findFragmentById(R.id.dock_playback_fragment);
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        if(fragment.isVisible()) {
+            ft.hide(fragment);
+        }
+        ft.commit();
         mIsConcealableViewsVisible = false;
     }
 
-    private HideableLayout getConcealableMediaButtonsLayout(View panel) {
-        return (HideableLayout) panel.findViewById(R.id.concealable_control_panel);
-    }
-
-    private ConcealableImageView getConcealableAlbumArt(View panel) {
-        return (ConcealableImageView) panel.findViewById(R.id.album_art);
-    }
 
     @Override
     public void onPanelCollapsed(View panel) {

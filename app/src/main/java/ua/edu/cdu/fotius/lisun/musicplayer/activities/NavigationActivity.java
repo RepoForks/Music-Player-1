@@ -36,7 +36,7 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
         setTitle(getResources().getString(R.string.app_name));
         setNavigationIconResourceID(R.drawable.ic_menu_black_24dp);
         setNavigationClickListener(new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
-        setPanelSlideListener(new SlidingPanelListener(drawerLayout));
+        setPanelSlideListener(new SlidingPanelListener(drawerLayout, getSupportFragmentManager()));
         //setDragView(R.id.panel_drag_view);
     }
 

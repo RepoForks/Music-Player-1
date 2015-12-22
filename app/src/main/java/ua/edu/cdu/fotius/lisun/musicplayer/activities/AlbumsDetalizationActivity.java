@@ -12,7 +12,7 @@ public class AlbumsDetalizationActivity extends SlidingPanelActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_skeleton);
+        setContentView(R.layout.activity_sliding_panel);
 
         if(!isFragmentSet()) {
             setDefaultFragment(new AlbumsBrowserFragment(),
@@ -23,7 +23,7 @@ public class AlbumsDetalizationActivity extends SlidingPanelActivity implements 
                 getResources().getString(R.string.default_albums_detalization_activity_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
-        setPanelSlideListener(new SlidingPanelListener(null));
+        setPanelSlideListener(new SlidingPanelListener(null, getSupportFragmentManager()));
     }
 
     @Override

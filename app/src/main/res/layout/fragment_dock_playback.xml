@@ -59,15 +59,15 @@
                 android:gravity="center">
 
                 <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
-                    android:id="@+id/prev_additional"
+                    android:id="@+id/prev"
                     style="@style/MediaButton.Small.Rewind" />
 
                 <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton
-                    android:id="@+id/play_additional"
+                    android:id="@+id/play"
                     style="@style/MediaButton.Small.PlayPause" />
 
                 <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
-                    android:id="@+id/next_additional"
+                    android:id="@+id/next"
                     style="@style/MediaButton.Small.FastForward" />
             </LinearLayout>
         </LinearLayout>
