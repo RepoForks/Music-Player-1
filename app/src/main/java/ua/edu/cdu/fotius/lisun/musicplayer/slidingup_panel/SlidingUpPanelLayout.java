@@ -528,6 +528,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
      * @param dragView A view that will be used to drag the panel.
      */
     public void setDragView(View dragView) {
+
+        //Log.e(TAG, "Drag View == null " + (dragView == null));
+
         if (mDragView != null) {
             mDragView.setOnClickListener(null);
         }
@@ -562,7 +565,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     public void setDragView(int dragViewResId) {
         mDragViewResId = dragViewResId;
-        Log.d(TAG, "findViewById(dragViewResId): " + findViewById(dragViewResId));
+        //Log.d(TAG, "findViewById(dragViewResId): " + findViewById(dragViewResId));
         setDragView(findViewById(dragViewResId));
     }
 
@@ -879,7 +882,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        Log.d(TAG, "SlidingPanel.OnInterceptTouch");
+        //Log.d(TAG, "SlidingPanel.OnInterceptTouch");
         // If the scrollable view is handling touch, never intercept
         if (mIsScrollableViewHandlingTouch) {
             mDragHelper.cancel();
@@ -929,7 +932,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent ev) {
 
-        Log.d(TAG, "SlidingPanel.OnTouchEvent");
+        //Log.d(TAG, "SlidingPanel.OnTouchEvent");
         if (!isEnabled() || !isTouchEnabled()) {
             return super.onTouchEvent(ev);
         }

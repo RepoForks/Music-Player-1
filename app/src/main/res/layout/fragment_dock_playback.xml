@@ -1,4 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dock_playback_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -72,4 +74,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout>

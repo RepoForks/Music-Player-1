@@ -51,9 +51,6 @@ public class PlaybackFragment extends AbstractPlaybackFragment implements OnRepe
         mCurrentTime = (TextView) v.findViewById(R.id.current_time);
         mTotalTime = (TextView) v.findViewById(R.id.total_time);
 
-        Button button = (Button) v.findViewById(R.id.show_current_queue);
-        button.setOnClickListener(new OnShowQueueClickListener(getActivity(), mServiceWrapper));
-
         return v;
     }
 

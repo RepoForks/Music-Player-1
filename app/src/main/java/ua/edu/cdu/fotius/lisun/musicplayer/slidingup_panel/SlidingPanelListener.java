@@ -2,11 +2,18 @@ package ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.SlidingPanelActivity;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.DockPlaybackFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackToolbarFragment;
 
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
@@ -27,34 +34,37 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     @Override
     public void onPanelSlide(View panel, float slideOffset) {
         if ((slideOffset > 0.6) && mIsConcealableViewsVisible) {
-           hideConcealableViews(panel);
+           showFragmentToolbar(panel);
         }
 
         if ((slideOffset < 0.6) && !mIsConcealableViewsVisible) {
-            showConcealableViews(panel);
+            showDockPanel(panel);
         }
     }
 
-    private void showConcealableViews(View panel) {
-        Fragment fragment = mFragmentManager.findFragmentById(R.id.dock_playback_fragment);
-        FragmentTransaction ft = mFragmentManager.beginTransaction();
-        if(fragment.isHidden()) {
-            ft.show(fragment);
+    private void showDockPanel(View panel) {
+        Log.d(TAG, "showDockPanel");
+
+        List<Fragment> list = mFragmentManager.getFragments();
+
+        for(Fragment f : list) {
+            Log.d(TAG, "TAG: " + f.getTag());
         }
-        ft.commit();
+
+        mFragmentManager.beginTransaction()
+                .replace(R.id.drag_handler_fragment_container, new DockPlaybackFragment(),
+                        SlidingPanelActivity.FRAGMENT_TAG).commit();
+
         mIsConcealableViewsVisible = true;
     }
 
-    private void hideConcealableViews(View panel) {
-        Fragment fragment = mFragmentManager.findFragmentById(R.id.dock_playback_fragment);
-        FragmentTransaction ft = mFragmentManager.beginTransaction();
-        if(fragment.isVisible()) {
-            ft.hide(fragment);
-        }
-        ft.commit();
+    private void showFragmentToolbar(View panel) {
+        Log.d(TAG, "showFragmentToolbar");
+        mFragmentManager.beginTransaction()
+                .replace(R.id.drag_handler_fragment_container, new PlaybackToolbarFragment(),
+                        SlidingPanelActivity.FRAGMENT_TAG).commit();
         mIsConcealableViewsVisible = false;
     }
-
 
     @Override
     public void onPanelCollapsed(View panel) {
