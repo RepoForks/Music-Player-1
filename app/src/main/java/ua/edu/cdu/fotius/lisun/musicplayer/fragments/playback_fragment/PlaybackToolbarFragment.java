@@ -15,8 +15,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 
 public class PlaybackToolbarFragment extends Fragment implements ServiceConnectionObserver{
 
-    public static final String TAG = "playback_toolbar_fragment";
-
     protected MediaPlaybackServiceWrapper mServiceWrapper;
 
     public PlaybackToolbarFragment() {
@@ -30,14 +28,6 @@ public class PlaybackToolbarFragment extends Fragment implements ServiceConnecti
 
         mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
-
-        Log.e(TAG.substring(0, 23), "PlaybackToolbarFragment.onCreate()");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e(TAG.substring(0, 23), "PlaybackToolbarFragment.onDestroy()");
     }
 
     @Override

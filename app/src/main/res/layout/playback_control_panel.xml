@@ -1,10 +1,10 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <LinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@color/accent_material_dark"
         android:orientation="horizontal" >
 
         <TextView
@@ -34,12 +34,13 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-    </LinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
 
-    <LinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@color/material_deep_teal_500"
         android:orientation="horizontal">
 
         <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton
@@ -62,5 +63,5 @@
             android:id="@+id/repeat"
             style="@style/MediaButton.Repeat" />
 
-    </LinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
 </merge>

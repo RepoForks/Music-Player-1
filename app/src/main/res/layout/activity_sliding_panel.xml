@@ -10,17 +10,17 @@
     <include layout="@layout/activity_toolbar" />
 
     <!--SLIDING VIEW-->
-    <LinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!--This layout needed only to handle the panel drag-->
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/drag_handler_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        </LinearLayout>
+        </FrameLayout>
 
         <fragment
             android:id="@+id/playback_fragment"
@@ -28,6 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
 
 </ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout>

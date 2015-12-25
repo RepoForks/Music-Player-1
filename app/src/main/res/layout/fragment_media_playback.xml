@@ -1,27 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingRight="@dimen/playback_fragment_layout_padding"
-    android:paddingLeft="@dimen/playback_fragment_layout_padding"
-    android:paddingTop="@dimen/playback_fragment_layout_padding"
-    android:paddingBottom="@dimen/playback_fragment_layout_padding_bottom"
-    android:clickable="false" >
+    android:orientation="vertical" >
 
     <!--Need this wrapper layout to shift below layout to bottom-->
-    <LinearLayout
-        android:clickable="false"
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
         android:background="@color/accent_material_light"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/album_art"
             android:layout_width="@dimen/album_cover_image_size"
             android:layout_height="@dimen/album_cover_image_size"
             android:cropToPadding="true"
+            android:clickable="true"
             android:src="@drawable/default_album_art_512dp" />
 
         <TextView
@@ -34,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
 
     <!--Playback control panel -->
     <include layout="@layout/playback_control_panel" />
 
-</LinearLayout>
+</ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>

@@ -1,4 +1,4 @@
-<ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dock_playback_layout"
     android:layout_width="match_parent"
@@ -23,6 +23,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:clickable="false"
             android:background="@null"
             android:thumb="@null" />
 
@@ -74,4 +75,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</ua.edu.cdu.fotius.lisun.musicplayer.custom_views.HideableLayout>
+</LinearLayout>
