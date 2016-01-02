@@ -103,4 +103,9 @@
 
     <!--PlaylistTracklistActivity-->
     <string name="playlist_tracklist_default_toolbar_title">Playlist\'s tracks</string>
+
+    <!--Notification-->
+    <string name="notification_action_previous">Previous</string>
+    <string name="notification_action_next">Next</string>
+    <string name="notification_action_play_pause">Play/Pause</string>
 </resources>

@@ -23,11 +23,17 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.Random;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaControllerCallback;
+import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager;
 
 /**
  * Provides "background" audio playback capabilities, allowing the
@@ -108,6 +114,11 @@ public class MediaPlaybackService extends Service {
 
     // interval after which we stop the service when idle
     private static final int IDLE_DELAY = 60000;
+
+    private MediaSessionCompat mSession;
+    private MediaControllerCompat mController;
+    private MediaControllerCompat.TransportControls mTransportControls;
+    private MediaNotificationManager mMediaNotificationManager;
 
     //Also used by MultiPlayer
     private Handler mMediaplayerHandler = new Handler() {
@@ -235,6 +246,32 @@ public class MediaPlaybackService extends Service {
         }
     };
 
+    private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
+
+        private final String TAG = getClass().getSimpleName();
+
+        @Override
+        public void onPlay() {
+            super.onPlay();
+            play();
+            Log.d(TAG, "onPlay");
+        }
+
+        @Override
+        public void onSkipToNext() {
+            super.onSkipToNext();
+            gotoNext(true);
+            Log.d(TAG, "skeepToNext");
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            super.onSkipToPrevious();
+            prev();
+            Log.d(TAG, "skeepToPrevious");
+        }
+    };
+
     public MediaPlaybackService() {
     }
 
@@ -258,6 +295,9 @@ public class MediaPlaybackService extends Service {
 //        PendingIntent pi = PendingIntent.getBroadcast(this /*context*/,
 //                0 /*requestCode, ignored*/, i /*intent*/, 0 /*flags*/);
 
+
+
+
         mPreferences = getSharedPreferences("Music", MODE_PRIVATE);
         mHistory = PlaybackHistory.getInstance();
 
@@ -275,6 +315,22 @@ public class MediaPlaybackService extends Service {
         notifyChange(QUEUE_CHANGED);
         notifyChange(META_CHANGED);
 
+        //TODO: make reverse actions in onDestroy
+        //TODO: refactor
+        mSession = new MediaSessionCompat(this, "MusicService");
+        mSession.setCallback(mMediaSessionCallback);
+
+        try {
+            mController = new MediaControllerCompat(this, mSession.getSessionToken());
+            mTransportControls = mController.getTransportControls();
+            mController.registerCallback(new MediaControllerCallback(this, mTransportControls));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        mMediaNotificationManager = new MediaNotificationManager(this, mTransportControls);
+        mMediaNotificationManager.startNotification(composeMetadata());
+
 //        IntentFilter commandFilter = new IntentFilter();
 //        commandFilter.addAction(PlaybackCommands.SERVICECMD);
 //        commandFilter.addAction(PlaybackCommands.TOGGLEPAUSE_ACTION);
@@ -291,6 +347,14 @@ public class MediaPlaybackService extends Service {
         // system will relaunch it. Make sure it gets stopped again in that case.
         Message msg = mDelayedStopHandler.obtainMessage();
         mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
+    }
+
+    private MediaMetadataCompat composeMetadata() {
+        MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName());
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName());
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName());
+        return metadataBuilder.build();
     }
 
     @Override
