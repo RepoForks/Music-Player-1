@@ -9,9 +9,10 @@ public class MediaControlActionsReceiver extends BroadcastReceiver{
 
     private final String TAG = getClass().getSimpleName();
 
-    public static String ACTION_PLAY = "ua.edu.cdu.fotius.lisun.action_play";
-    public static String ACTION_PREV = "ua.edu.cdu.fotius.lisun.action_prev";
-    public static String ACTION_NEXT = "ua.edu.cdu.fotius.lisun.action_next";
+    public static final String ACTION_PLAY = "ua.edu.cdu.fotius.lisun.action_play";
+    public static final String ACTION_PAUSE = "ua.edu.cdu.fotius.lisun.action_pause";
+    public static final String ACTION_PREV = "ua.edu.cdu.fotius.lisun.action_prev";
+    public static final String ACTION_NEXT = "ua.edu.cdu.fotius.lisun.action_next";
 
     private MediaControllerCompat.TransportControls mTransportControls;
 
@@ -22,12 +23,20 @@ public class MediaControlActionsReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if(action.equals(ACTION_PLAY)) {
-            mTransportControls.play();
-        } else if(action.equals(ACTION_NEXT)) {
-            mTransportControls.skipToNext();
-        } else if(action.equals(ACTION_PREV)) {
-            mTransportControls.skipToPrevious();
+
+        switch (action) {
+            case ACTION_PLAY :
+                mTransportControls.play();
+                break;
+            case ACTION_PAUSE :
+                mTransportControls.pause();
+                break;
+            case ACTION_PREV :
+                mTransportControls.skipToPrevious();
+                break;
+            case ACTION_NEXT :
+                mTransportControls.skipToNext();
+                break;
         }
     }
 }

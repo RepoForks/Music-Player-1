@@ -46,7 +46,7 @@ public class ChangeOrderInPlaylistAsyncTask extends AsyncTask<Void, Void, Void>{
     private void updateTrackOrder(long id, int newOrder) {
         ContentValues values = new ContentValues(1);
         values.put(AudioStorage.PlaylistMember.PLAY_ORDER, newOrder);
-        DatabaseUtils.queryParamsInLog(mUri, null, mSelection, new String[]{Long.toString(id)});
+        //DatabaseUtils.queryParamsInLog(mUri, null, mSelection, new String[]{Long.toString(id)});
         mContentResolver.update(mUri, values, mSelection, new String[]{Long.toString(id)});
     }
 }

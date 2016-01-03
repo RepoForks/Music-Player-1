@@ -32,7 +32,6 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaControllerCallback;
 import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager;
 
 /**
@@ -51,7 +50,6 @@ public class MediaPlaybackService extends Service {
     public static final int NOW = 1;
     public static final int NEXT = 2;
     public static final int LAST = 3;
-    public static final int PLAYBACKSERVICE_STATUS = 1;
 
     //TODO:
     public static final String PLAYSTATE_CHANGED = "com.android.music.playstatechanged";
@@ -113,7 +111,7 @@ public class MediaPlaybackService extends Service {
 
 
     // interval after which we stop the service when idle
-    private static final int IDLE_DELAY = 60000;
+    private static final int IDLE_DELAY = 1000;
 
     private MediaSessionCompat mSession;
     private MediaControllerCompat mController;
@@ -169,6 +167,7 @@ public class MediaPlaybackService extends Service {
                     //update Notification in dropdown
                     //bar
                     //TODO: update notification
+                    mMediaNotificationManager.startOrUpdateNotification(composeMetadata(), getAlbumId(), isPlaying());
                     //updateNotification();
                     //move to next track
                     setNextTrack();
@@ -251,22 +250,25 @@ public class MediaPlaybackService extends Service {
         private final String TAG = getClass().getSimpleName();
 
         @Override
+        public void onPause() {
+            pause();
+            Log.d(TAG, "onPause");
+        }
+
+        @Override
         public void onPlay() {
-            super.onPlay();
             play();
             Log.d(TAG, "onPlay");
         }
 
         @Override
         public void onSkipToNext() {
-            super.onSkipToNext();
             gotoNext(true);
             Log.d(TAG, "skeepToNext");
         }
 
         @Override
         public void onSkipToPrevious() {
-            super.onSkipToPrevious();
             prev();
             Log.d(TAG, "skeepToPrevious");
         }
@@ -282,21 +284,6 @@ public class MediaPlaybackService extends Service {
         mPlaylist = Playlist.getInstance();
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-//        ComponentName rec = new ComponentName(getPackageName(),
-//                MediaButtonIntentReceiver.class.getName());
-        // Register MediaButtonIntentReceiver
-        // to be the sole receiver of MEDIA_BUTTON intents.
-        // from now all MEDIA_BUTTON events will be delivered to
-        // this sole receiver - MediaButtonIntentReceiver
-//        mAudioManager.registerMediaButtonEventReceiver(rec);
-//        Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
-//        i.setComponent(rec);
-//        PendingIntent pi = PendingIntent.getBroadcast(this /*context*/,
-//                0 /*requestCode, ignored*/, i /*intent*/, 0 /*flags*/);
-
-
-
 
         mPreferences = getSharedPreferences("Music", MODE_PRIVATE);
         mHistory = PlaybackHistory.getInstance();
@@ -315,29 +302,19 @@ public class MediaPlaybackService extends Service {
         notifyChange(QUEUE_CHANGED);
         notifyChange(META_CHANGED);
 
-        //TODO: make reverse actions in onDestroy
-        //TODO: refactor
+        Log.d(TAG, "SERVICE. ON_CREATE()");
+
         mSession = new MediaSessionCompat(this, "MusicService");
         mSession.setCallback(mMediaSessionCallback);
 
         try {
             mController = new MediaControllerCompat(this, mSession.getSessionToken());
             mTransportControls = mController.getTransportControls();
-            mController.registerCallback(new MediaControllerCallback(this, mTransportControls));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
         mMediaNotificationManager = new MediaNotificationManager(this, mTransportControls);
-        mMediaNotificationManager.startNotification(composeMetadata());
-
-//        IntentFilter commandFilter = new IntentFilter();
-//        commandFilter.addAction(PlaybackCommands.SERVICECMD);
-//        commandFilter.addAction(PlaybackCommands.TOGGLEPAUSE_ACTION);
-//        commandFilter.addAction(PlaybackCommands.PAUSE_ACTION);
-//        commandFilter.addAction(PlaybackCommands.NEXT_ACTION);
-//        commandFilter.addAction(PlaybackCommands.PREVIOUS_ACTION);
-//        registerReceiver(mIntentReceiver, commandFilter);
 
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this.getClass().getName());
@@ -363,6 +340,10 @@ public class MediaPlaybackService extends Service {
         if (isPlaying()) {
             Log.e(LOGTAG, "Service being destroyed while still playing.");
         }
+
+        //TODO:
+        Log.d(TAG, "SERVICE. ON_DESTROY()");
+
         // release all MediaPlayer resources, including the native player and wakelocks
         Intent i = new Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
         i.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, getAudioSessionId());
@@ -388,6 +369,7 @@ public class MediaPlaybackService extends Service {
             mUnmountReceiver = null;
         }
         mWakeLock.release();
+
         super.onDestroy();
     }
 
@@ -520,43 +502,11 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Log.d(TAG, "SERVICE. ON_START()");
+
         mServiceStartId = startId;
         mDelayedStopHandler.removeCallbacksAndMessages(null);
-
-        if (intent != null) {
-            String action = intent.getAction();
-            String cmd = intent.getStringExtra("command");
-
-            if (PlaybackCommands.CMDNEXT.equals(cmd)
-                    || PlaybackCommands.NEXT_ACTION.equals(action)) {
-                gotoNext(true);
-            } else if (PlaybackCommands.CMDPREVIOUS.equals(cmd) || PlaybackCommands.PREVIOUS_ACTION.equals(action)) {
-                if (position() < 2000) {
-                    prev();
-                } else {
-                    seek(0);
-                    play();
-                }
-            } else if (PlaybackCommands.CMDTOGGLEPAUSE.equals(cmd)
-                    || PlaybackCommands.TOGGLEPAUSE_ACTION.equals(action)) {
-                if (isPlaying()) {
-                    pause();
-                    mPausedByTransientLossOfFocus = false;
-                } else {
-                    play();
-                }
-            } else if (PlaybackCommands.CMDPAUSE.equals(cmd)
-                    || PlaybackCommands.PAUSE_ACTION.equals(action)) {
-                pause();
-                mPausedByTransientLossOfFocus = false;
-            } else if (PlaybackCommands.CMDPLAY.equals(cmd)) {
-                play();
-            } else if (PlaybackCommands.CMDSTOP.equals(cmd)) {
-                pause();
-                mPausedByTransientLossOfFocus = false;
-                seek(0);
-            }
-        }
 
         // make sure the service will shut down on its own if it was
         // just started but not bound to and nothing is playing
@@ -568,6 +518,9 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
+
+        Log.d(TAG, "SERVICE. ON_UNBIND()");
+
         mServiceInUse = false;
 
         // Take a snapshot of the current playlist
@@ -576,6 +529,7 @@ public class MediaPlaybackService extends Service {
         if (isPlaying() || mPausedByTransientLossOfFocus) {
             // something is currently playing, or will be playing once
             // an in-progress action requesting audio focus ends, so don't stop the service now.
+            Log.d(TAG, "SERVICE. ON_UNBIND()____IS PLAYING");
             return true;
         }
 
@@ -1004,8 +958,6 @@ public class MediaPlaybackService extends Service {
     public void play() {
         mAudioManager.requestAudioFocus(mAudioFocusListener, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
-//        mAudioManager.registerMediaButtonEventReceiver(new ComponentName(this.getPackageName(),
-//                MediaButtonIntentReceiver.class.getName()));
 
         if (mPlayer.isInitialized()) {
             // if we are at the end of the song, go to the next song first
@@ -1021,12 +973,12 @@ public class MediaPlaybackService extends Service {
             mMediaplayerHandler.removeMessages(FADEDOWN);
             mMediaplayerHandler.sendEmptyMessage(FADEUP);
 
-            //TODO: update notification
-            //updateNotification();
             if (!mIsSupposedToBePlaying) {
                 mIsSupposedToBePlaying = true;
                 notifyChange(PLAYSTATE_CHANGED);
             }
+
+            mMediaNotificationManager.startOrUpdateNotification(composeMetadata(), getAlbumId(), isPlaying());
 
         } else if (mPlaylist.size() <= 0) {
             // This is mostly so that if you press 'play' on a bluetooth headset
@@ -1035,41 +987,6 @@ public class MediaPlaybackService extends Service {
             setShuffleMode(Playlist.SHUFFLE_AUTO);
         }
     }
-
-    /**
-     * Updates notification in dropdown bar
-     */
-//    private void updateNotification() {
-//        RemoteViews views = new RemoteViews(getPackageName(), R.layout.statusbar);
-//        views.setImageViewResource(R.id.icon, R.drawable.stat_notify_musicplayer);
-//        if (getAudioId() < 0) {
-//            // streaming
-//            views.setTextViewText(R.id.trackname, getPath());
-//            views.setTextViewText(R.id.artistalbum, null);
-//        } else {
-//            String artist = getArtistName();
-//            views.setTextViewText(R.id.trackname, getTrackName());
-//            if (artist == null || artist.equals(MediaStore.UNKNOWN_STRING)) {
-//                artist = getString(R.string.unknown_artist_name);
-//            }
-//            String album = getAlbumName();
-//            if (album == null || album.equals(MediaStore.UNKNOWN_STRING)) {
-//                album = getString(R.string.unknown_album_name);
-//            }
-//
-//            views.setTextViewText(R.id.artistalbum,
-//                    getString(R.string.notification_artist_album, artist, album)
-//                    );
-//        }
-//        Notification status = new Notification();
-//        status.contentView = views;
-//        status.flags |= Notification.FLAG_ONGOING_EVENT;
-//        status.icon = R.drawable.stat_notify_musicplayer;
-//        status.contentIntent = PendingIntent.getActivity(this, 0,
-//                new Intent("com.android.music.PLAYBACK_VIEWER")
-//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
-//        startForeground(PLAYBACKSERVICE_STATUS, status);
-//    }
 
     private void stop(boolean remove_status_icon) {
         if (mPlayer != null && mPlayer.isInitialized()) {
@@ -1080,11 +997,11 @@ public class MediaPlaybackService extends Service {
             mCursor.close();
             mCursor = null;
         }
+
         if (remove_status_icon) {
             gotoIdleState();
-        } else {
-            stopForeground(false);
         }
+
         if (remove_status_icon) {
             mIsSupposedToBePlaying = false;
         }
@@ -1146,6 +1063,7 @@ public class MediaPlaybackService extends Service {
         the next/previous track will be picked in sequential order again.
      */
     public void prev() {
+        Log.d(TAG, "PREV");
         synchronized (this) {
             if (mPlaylist.getShuffleMode() == Playlist.SHUFFLE_NORMAL) {
                 // go to previously-played track and remove it from the history
@@ -1164,6 +1082,7 @@ public class MediaPlaybackService extends Service {
                 }
             }
             saveBookmarkIfNeeded();
+            Log.d(TAG, "before_STOP");
             stop(false);
             openCurrentAndNext();
             play();
@@ -1300,7 +1219,7 @@ public class MediaPlaybackService extends Service {
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         Message msg = mDelayedStopHandler.obtainMessage();
         mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
-        stopForeground(true);
+        mMediaNotificationManager.stopNotification();
     }
 
     private void saveBookmarkIfNeeded() {

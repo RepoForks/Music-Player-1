@@ -107,5 +107,6 @@
     <!--Notification-->
     <string name="notification_action_previous">Previous</string>
     <string name="notification_action_next">Next</string>
-    <string name="notification_action_play_pause">Play/Pause</string>
+    <string name="notification_action_play">Play</string>
+    <string name="notification_action_pause">Pause</string>
 </resources>

@@ -58,6 +58,12 @@ public class MediaPlaybackServiceWrapper
         /*Adding observer should be the first operation in this function*/
         mConnectionObservers.add(connectionObserver);
 
+        //first element binding to service
+        if(mConnectionObservers.size() == 1) {
+            //TODO: maybe remove all commands from onStartCommand()
+            context.startService(new Intent(context, MediaPlaybackService.class));
+        }
+
         //service hasn't been connected yet
         if(mService == null) {
             /*Better to use application context, because
