@@ -5,7 +5,7 @@
     android:layout_height="@dimen/row_height"
     android:background="@drawable/list_item_selector" >
 
-    <ImageView
+    <ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader
         android:id="@+id/album_art"
         android:layout_width="@dimen/row_album_art_size"
         android:layout_height="@dimen/row_album_art_size" />

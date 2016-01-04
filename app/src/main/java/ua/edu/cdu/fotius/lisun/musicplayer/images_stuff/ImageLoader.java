@@ -2,7 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
@@ -32,7 +32,10 @@ public class ImageLoader {
         return this;
     }
 
-    public void into(ImageView imageView) {
+    public void into(ImageViewForLoader imageView) {
+
+        Log.d(TAG, "into called");
+
         if(mDefaultImageId == WRONG_RES_ID) {
             throw new IllegalStateException("Default image must be set " +
                     "with \"withDefault(int)\" method before calling  \"into()\" method()");
@@ -45,41 +48,49 @@ public class ImageLoader {
         }
     }
 
-    private void loadBitmap(long albumId, int defaultImageId, ImageView imageView) {
+    private void loadBitmap(long albumId, int defaultImageId, ImageViewForLoader imageView) {
         BitmapAsyncAlbumArtLoader bitmapAsyncAlbumArtLoader =
                 new BitmapAsyncAlbumArtLoader(mContext, defaultImageId, imageView, mImageMemoryCache);
         loadBitmapGeneral(albumId, imageView, bitmapAsyncAlbumArtLoader);
     }
 
-    private void loadBitmap(final int resId, final ImageView imageView) {
+    private void loadBitmap(final int resId, final ImageViewForLoader imageView) {
         BitmapAsyncResLoader bitmapAsyncResLoader =
                 new BitmapAsyncResLoader(mContext.getResources(),
                         imageView, mImageMemoryCache);
         loadBitmapGeneral(resId, imageView, bitmapAsyncResLoader);
     }
 
-    private void loadBitmapGeneral(final Object imageSource, final ImageView imageView, final BaseBitmapAsyncLoader asyncLoader) {
+    private void loadBitmapGeneral(final Object imageSource, final ImageViewForLoader imageView, final BaseBitmapAsyncLoader asyncLoader) {
         if (cancelPotentialWork(imageSource, imageView)) {
+            //if we have no view sizes for now
+            if((imageView.getViewWidth() == 0) || (imageView.getViewHeight() == 0)) {
             /*Post's runnable will be executed after creating view.
             Need this because in AsyncTask we use width, height
             which are not accessible before creating view.*/
-            imageView.post(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(imageSource,
-                            imageView.getMeasuredWidth(), imageView.getMeasuredHeight()));
-                    if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
-                    } else {
-                        startAsyncBitmapLoad(asyncLoader, imageView, imageSource);
+                imageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        startLoadingBitmap(imageSource, imageView, asyncLoader);
                     }
-                }
-            });
-
+                });
+            } else {
+                startLoadingBitmap(imageSource, imageView, asyncLoader);
+            }
         }
     }
 
-    private boolean cancelPotentialWork(Object newData, ImageView imageView) {
+    private void startLoadingBitmap(Object imageSource, ImageViewForLoader imageView, BaseBitmapAsyncLoader asyncLoader) {
+        Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(imageSource,
+                imageView.getMeasuredWidth(), imageView.getMeasuredHeight()));
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            startAsyncBitmapLoad(asyncLoader, imageView, imageSource);
+        }
+    }
+
+    private boolean cancelPotentialWork(Object newData, ImageViewForLoader imageView) {
         BaseBitmapAsyncLoader bitmapAsyncLoader = ImageUtils.retreiveAsyncLoader(imageView);
         if (bitmapAsyncLoader != null) {
             Object data = bitmapAsyncLoader.getData();
@@ -94,7 +105,7 @@ public class ImageLoader {
     }
 
     private void startAsyncBitmapLoad(final BaseBitmapAsyncLoader asyncLoader,
-                                      final ImageView imageView, final Object imageSource) {
+                                      final ImageViewForLoader imageView, final Object imageSource) {
         AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(asyncLoader);
         imageView.setImageDrawable(asyncTempDrawable);
         asyncLoader.execute(imageSource);

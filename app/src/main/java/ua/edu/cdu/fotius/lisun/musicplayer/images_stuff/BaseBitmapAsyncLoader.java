@@ -3,8 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ImageView;
+
 
 import java.lang.ref.WeakReference;
 
@@ -12,23 +11,23 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
 
     private final String TAG = getClass().getSimpleName();
 
-    private WeakReference<ImageView> mImageViewWeakReference;
+    private WeakReference<ImageViewForLoader> mImageViewWeakReference;
     protected ImageMemoryCache mImageMemoryCache = null;
     protected Object mData = null;
 
-    public BaseBitmapAsyncLoader(ImageView imageView, ImageMemoryCache imageMemoryCache) {
-        mImageViewWeakReference = new WeakReference<ImageView>(imageView);
+    public BaseBitmapAsyncLoader(ImageViewForLoader imageView, ImageMemoryCache imageMemoryCache) {
+        mImageViewWeakReference = new WeakReference<ImageViewForLoader>(imageView);
         mImageMemoryCache  = imageMemoryCache;
     }
 
     @Override
     protected Bitmap doInBackground(Object[] params) {
         Object bitmapSource = params[0];
-        ImageView imageView = mImageViewWeakReference.get();
+        ImageViewForLoader imageView = mImageViewWeakReference.get();
         Bitmap bitmap = null;
         if (imageView != null) {
-            bitmap = decodeBitmap(bitmapSource, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
-            addToMemoryCache(bitmap, imageView.getMeasuredWidth(), imageView.getMeasuredHeight());
+            bitmap = decodeBitmap(bitmapSource, imageView.getViewWidth(), imageView.getViewHeight());
+            addToMemoryCache(bitmap, imageView.getViewWidth(), imageView.getViewHeight());
         }
         return bitmap;
     }
@@ -43,7 +42,7 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
             bitmap = null;
         }
 
-        ImageView imageView = mImageViewWeakReference.get();
+        ImageViewForLoader imageView = mImageViewWeakReference.get();
         if(imageView != null) {
             BaseBitmapAsyncLoader bitmapAsyncFileLoader = ImageUtils.retreiveAsyncLoader(imageView);
             if((this == bitmapAsyncFileLoader) && (bitmap != null)) {

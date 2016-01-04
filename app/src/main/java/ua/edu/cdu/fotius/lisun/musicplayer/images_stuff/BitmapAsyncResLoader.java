@@ -2,13 +2,12 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.widget.ImageView;
 
 public class BitmapAsyncResLoader extends BaseBitmapAsyncLoader{
 
     private Resources mResources;
 
-    public BitmapAsyncResLoader(Resources resources, ImageView imageView, ImageMemoryCache imageMemoryCache) {
+    public BitmapAsyncResLoader(Resources resources, ImageViewForLoader imageView, ImageMemoryCache imageMemoryCache) {
         super(imageView, imageMemoryCache);
         mResources = resources;
     }

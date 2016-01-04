@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v4.app.NotificationManagerCompat;
+import android.content.res.Resources;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.app.NotificationCompat;
@@ -32,10 +32,15 @@ public class MediaNotificationManager {
     private MediaControlActionsReceiver mMediaControlActionsReceiver;
     private NotificationManager mNotificationManager;
 
+    private ImageLoader mImageLoader;
+
+
     private boolean mIsStarted = false;
 
     public MediaNotificationManager(MediaPlaybackService service, MediaControllerCompat.TransportControls controls) {
         mService = service;
+
+        mImageLoader = new ImageLoader(mService);
 
         Log.d(TAG, "MediaNotificationManager constructor");
         mMediaControlActionsReceiver =
@@ -68,26 +73,28 @@ public class MediaNotificationManager {
         }
     }
 
-
     private Notification createNotification(MediaMetadataCompat metaData, long playingAlbumId, boolean isPlaying) {
+        Resources resources = mService.getResources();
+
         android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(mService)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(metaData.getString(MediaMetadataCompat.METADATA_KEY_TITLE))
                 .setContentText(metaData.getString(MediaMetadataCompat.METADATA_KEY_ALBUM) +
                         " - "+ metaData.getString(MediaMetadataCompat.METADATA_KEY_ARTIST))
                 .setStyle(new NotificationCompat.MediaStyle())
-                .addAction(R.mipmap.ic_launcher,
-                        mService.getResources()
-                                .getString(R.string.notification_action_previous), mPrevAction)
+                .addAction(R.drawable.ic_skip_previous_white_24dp,
+                       resources.getString(R.string.notification_action_previous), mPrevAction)
                 .addAction(getPlayPauseAction(isPlaying))
-                .addAction(R.mipmap.ic_launcher,
-                        mService.getResources()
-                                .getString(R.string.notification_action_next), mNextAction);
+                .addAction(R.drawable.ic_skip_next_white_24dp,
+                       resources.getString(R.string.notification_action_next), mNextAction);
 
-        FakeImageView fakeImageView = new FakeImageView(mService, mNotificationManager, builder, mNotificationID);
-        fakeImageView.setMaxWidth(50);
-        fakeImageView.setMaxHeight(50);
-        ImageLoader loader = new ImageLoader(mService);
-        loader.load(playingAlbumId).withDefault(R.drawable.default_album_art_512dp).into(fakeImageView);
+        FakeImageView fakeImageView = new FakeImageView(mService,
+                mNotificationManager, builder, mNotificationID,
+                resources.getDimensionPixelSize(R.dimen.large_icon_width),
+                resources.getDimensionPixelSize(R.dimen.large_icon_height));
+
+        mImageLoader.load(playingAlbumId).withDefault(R.drawable.ic_notification)
+                .into(fakeImageView);
 
         return builder.build();
     }
@@ -97,11 +104,11 @@ public class MediaNotificationManager {
         String title;
         PendingIntent intent;
         if(isPlaying) {
-            icon = R.drawable.ic_pause_circle_filled_black_32dp;
+            icon = R.drawable.ic_pause_white_24dp;
             title = mService.getResources().getString(R.string.notification_action_pause);
             intent = mPauseAction;
         } else {
-            icon = R.drawable.ic_play_circle_filled_black_32dp;
+            icon = R.drawable.ic_play_white_24dp;
             title = mService.getResources().getString(R.string.notification_action_play);
             intent = mPlayAction;
         }

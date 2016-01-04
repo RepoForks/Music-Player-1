@@ -27,6 +27,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
+import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 public abstract class AbstractPlaybackFragment extends Fragment implements ServiceConnectionObserver,
@@ -40,7 +41,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
 
     protected MediaPlaybackServiceWrapper mServiceWrapper;
 
-    private ImageView mAlbumArt;
+    private ImageViewForLoader mAlbumArt;
     private PlayPauseButton mPlayButton;
     private TextView mTrackTitle;
     private ArtistNameTextView mArtistTitle;
@@ -112,10 +113,10 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     }
 
     private void initAlbumArtView(View parent) {
-        mAlbumArt = (ImageView) parent.findViewById(R.id.album_art);
+        mAlbumArt = (ImageViewForLoader) parent.findViewById(R.id.album_art);
         if(mAlbumArt == null) {
             throw new RuntimeException(
-                    "Your layout must have a ImageView " +
+                    "Your layout must have a ImageViewForLoader " +
                             "whose id attribute is " +
                             "'R.id.album_art'");
         }

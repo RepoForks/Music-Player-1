@@ -6,9 +6,6 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import java.util.HashMap;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;

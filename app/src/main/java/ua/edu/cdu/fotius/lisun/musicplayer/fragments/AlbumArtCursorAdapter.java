@@ -4,15 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
 public class AlbumArtCursorAdapter extends BaseSimpleCursorAdapter{
-
-    private final String TAG = getClass().getSimpleName();
 
     private String mAlbumIDColumnName;
     private int mAlbumArtViewResourceId;
@@ -32,7 +30,8 @@ public class AlbumArtCursorAdapter extends BaseSimpleCursorAdapter{
             //TODO : cursor == null
             int albumIdIdx = cursor.getColumnIndexOrThrow(mAlbumIDColumnName);
             long albumId = cursor.getLong(albumIdIdx);
-            mImageLoader.load(albumId).withDefault(R.drawable.default_album_art_512dp).into((ImageView) v);
+            mImageLoader.load(albumId).withDefault(R.drawable.default_album_art_512dp)
+                    .into((ImageViewForLoader) v);
         }
         super.bindView(rowLayout, context, cursor);
     }

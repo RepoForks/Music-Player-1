@@ -17,4 +17,9 @@
     <!--TracksBrowserFragment row-->
     <dimen name="row_height">50dp</dimen>
     <dimen name="row_album_art_size">50dp</dimen>
+
+    <!--Notification-->
+    <dimen name = "large_icon_height">64dp</dimen>
+    <dimen name = "large_icon_width">64dp</dimen>
+
 </resources>

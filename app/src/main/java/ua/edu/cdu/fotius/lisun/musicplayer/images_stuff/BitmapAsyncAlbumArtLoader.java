@@ -1,10 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.images_stuff;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.File;
 
@@ -18,7 +16,7 @@ public class BitmapAsyncAlbumArtLoader extends BaseBitmapAsyncLoader {
     private Context mContext;
     private int mDefaultImageResId;
 
-    public BitmapAsyncAlbumArtLoader(Context context, int defaultImageResId, ImageView imageView, ImageMemoryCache imageMemoryCache) {
+    public BitmapAsyncAlbumArtLoader(Context context, int defaultImageResId, ImageViewForLoader imageView, ImageMemoryCache imageMemoryCache) {
         super(imageView, imageMemoryCache);
         mContext = context;
         mDefaultImageResId = defaultImageResId;
@@ -26,6 +24,9 @@ public class BitmapAsyncAlbumArtLoader extends BaseBitmapAsyncLoader {
 
     @Override
     protected Bitmap decodeBitmap(Object albumId, int width, int height) {
+
+        Log.d(TAG, "width: " + width + " height: " + height);
+
         String albumArtPath = DatabaseUtils.queryAlbumArtPath(mContext, (Long) albumId);
         if ((albumArtPath != null) && (new File(albumArtPath).exists())) {
             mData = albumId;
