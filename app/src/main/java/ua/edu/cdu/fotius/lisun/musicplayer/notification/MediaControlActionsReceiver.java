@@ -7,8 +7,6 @@ import android.support.v4.media.session.MediaControllerCompat;
 
 public class MediaControlActionsReceiver extends BroadcastReceiver{
 
-    private final String TAG = getClass().getSimpleName();
-
     public static final String ACTION_PLAY = "ua.edu.cdu.fotius.lisun.action_play";
     public static final String ACTION_PAUSE = "ua.edu.cdu.fotius.lisun.action_pause";
     public static final String ACTION_PREV = "ua.edu.cdu.fotius.lisun.action_prev";

@@ -30,17 +30,9 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume");
         super.onPause();
+        Log.e(TAG, "startLoader");
         getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
-    }
-
-    public String getFragmentTag() {
-        return tag;
-    }
-
-    public void setFragmentTag(String tag) {
-        this.tag = tag;
     }
 
     protected abstract CursorAdapter createCursorAdapter();
@@ -51,6 +43,7 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.e(TAG, "finishLoader");
         Log.d(TAG, "onLoadFinished. Cursor count: " + data.getCount());
         mCursorAdapter.swapCursor(data);
     }

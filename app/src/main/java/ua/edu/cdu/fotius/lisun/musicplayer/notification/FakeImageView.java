@@ -33,8 +33,6 @@ public class FakeImageView extends ImageViewForLoader{
 
     @Override
     public void setImageBitmap(Bitmap bm) {
-
-        Log.d(TAG, "set bitmap called");
         mNotificationBuilder.setLargeIcon(bm);
         mNotificationManager.notify(mNotificationId, mNotificationBuilder.build());
     }
