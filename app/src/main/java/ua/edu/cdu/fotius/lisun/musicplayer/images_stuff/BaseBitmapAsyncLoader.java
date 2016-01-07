@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference;
 
 public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitmap>{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private WeakReference<ImageViewForLoader> mImageViewWeakReference;
     protected ImageMemoryCache mImageMemoryCache = null;

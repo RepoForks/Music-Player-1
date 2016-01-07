@@ -11,7 +11,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.activities.NowPlayingActivity;
 
 public class OnShowQueueClickListener implements View.OnClickListener{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private Context mContext;
     private MediaPlaybackServiceWrapper mServiceWrapper;
@@ -23,7 +23,6 @@ public class OnShowQueueClickListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "click");
         Intent intent = new Intent(mContext, NowPlayingActivity.class);
         mContext.startActivity(intent);
     }

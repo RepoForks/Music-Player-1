@@ -118,11 +118,9 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment implements Ser
 
     @Override
     public void ServiceConnected() {
-
     }
 
     @Override
     public void ServiceDisconnected() {
-
     }
 }

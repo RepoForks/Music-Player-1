@@ -11,7 +11,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public abstract class ToolbarActivity extends AppCompatActivity {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public static final String TOOLBAR_TITLE_KEY = "title_key";
 
@@ -28,8 +28,6 @@ public abstract class ToolbarActivity extends AppCompatActivity {
             mCurrentFragment = getSupportFragmentManager()
                     .findFragmentByTag(savedFragmentTag);
         }
-
-        Log.d(TAG, "Current fragment == null: " + (mCurrentFragment == null));
     }
 
     @Override
@@ -58,7 +56,6 @@ public abstract class ToolbarActivity extends AppCompatActivity {
 
     public void setDefaultFragment(Fragment fragment, String tag, Bundle arguments) {
         if(mCurrentFragment == null) {
-            Log.d(TAG, "Setting initial fragment");
             checkFragmentContainerResourceID();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

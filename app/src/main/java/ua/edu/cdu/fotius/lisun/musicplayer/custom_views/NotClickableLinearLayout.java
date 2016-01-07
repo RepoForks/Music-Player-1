@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 // on default LinearLayout(it resets the media player)
 public class NotClickableLinearLayout extends LinearLayout {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public NotClickableLinearLayout(Context context) {
         super(context);

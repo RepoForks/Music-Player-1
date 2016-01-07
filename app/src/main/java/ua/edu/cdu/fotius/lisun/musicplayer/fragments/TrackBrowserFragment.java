@@ -70,7 +70,10 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "R.layout.fragment_tracks_browser id: " + R.layout.fragment_tracks_browser);
         View v = inflater.inflate(R.layout.fragment_tracks_browser, container, false);
+        Log.d(TAG, "v id: " + v.getId());
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());

@@ -6,18 +6,12 @@ import android.util.Log;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 public class Play extends Command {
-
-    private final String TAG = getClass().getSimpleName();
-
     public Play(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
         super(context, serviceWrapper);
     }
 
     @Override
     public void execute(long[] idsOverWhichToExecute) {
-        for(int i = 0; i < idsOverWhichToExecute.length; i++) {
-            Log.d(TAG, "id(" + i + ") --> " + idsOverWhichToExecute[i]);
-        }
         mServiceWrapper.playAll(idsOverWhichToExecute, 0);
     }
 }

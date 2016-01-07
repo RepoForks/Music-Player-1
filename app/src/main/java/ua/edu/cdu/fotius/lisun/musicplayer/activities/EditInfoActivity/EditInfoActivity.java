@@ -10,7 +10,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 
 public class EditInfoActivity extends ToolbarActivity {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

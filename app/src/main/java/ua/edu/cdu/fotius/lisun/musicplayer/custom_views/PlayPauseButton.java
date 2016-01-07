@@ -10,7 +10,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class PlayPauseButton extends ImageButton{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private int mPlayButtonResId = 0;
     private int mPauseButtonResId = 0;

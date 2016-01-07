@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class MenuItem {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private String mTitle;
     private int mIconResource;

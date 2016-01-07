@@ -22,7 +22,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
 public class MediaNotificationManager {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private MediaPlaybackService mService;
 
@@ -49,7 +49,6 @@ public class MediaNotificationManager {
         mResources = mService.getResources();
         mImageLoader = new ImageLoader(mService);
 
-        Log.d(TAG, "MediaNotificationManager constructor");
         mMediaControlActionsReceiver =
                 new MediaControlActionsReceiver(controls);
 
@@ -144,7 +143,6 @@ public class MediaNotificationManager {
     }
 
     public void stopNotification() {
-        Log.d(TAG, "MediaNotificationManager stopNotification");
         mService.unregisterReceiver(mMediaControlActionsReceiver);
         mService.stopForeground(true);
         mNotificationManager.cancel(mNotificationID);

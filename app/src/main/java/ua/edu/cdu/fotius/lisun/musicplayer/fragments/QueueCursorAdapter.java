@@ -13,7 +13,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
 
 public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private final int INVALID_POSITION = -1;
     private HashMap<Long, Integer> mCursorTracksID;
@@ -51,7 +51,6 @@ public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
 
     @Override
     public void bindView(View rowLayout, Context context, Cursor cursor) {
-        Log.d(TAG, "QueueCursorsAdapter. bindView");
         int cursorPosition = cursor.getPosition();
         long trackIDPosition = mCurrentTracksID[cursorPosition];
         int newCursorPosition = mCursorTracksID.get(trackIDPosition);
@@ -67,7 +66,6 @@ public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
     }
 
     public void swapItems(int from, int to) {
-        Log.d(TAG, "swapItems. from: " + from + " to: " + to);
         long tmp = mCurrentTracksID[from];
         mCurrentTracksID[from] = mCurrentTracksID[to];
         mCurrentTracksID[to] = tmp;

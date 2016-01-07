@@ -62,7 +62,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.QueueCursorAdapter;
  */
 public class DragNDropListView extends ListView {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public interface DropListener {
         public void onDrop(HashMap<Long, Integer> initialIdToPositionMap, long[] newQueue, int from, int to);
@@ -353,15 +353,6 @@ public class DragNDropListView extends ListView {
         View mobileView = getViewForID(mMobileItemId);
         View aboveView = getViewForID(mAboveItemId);
 
-        Log.d(TAG, "mHoverCellOriginalBounds.top: " + mHoverCellOriginalBounds.top +
-                " mTotalOffset: " + mTotalOffset + " deltaY: " + deltaY);
-        Log.d(TAG, "mobileViewItemID: " + mMobileItemId);
-        Log.d(TAG, "belowItemID: " + mBelowItemId);
-        Log.d(TAG, "deltaYTotal: " + deltaYTotal);
-        if(belowView != null) {
-            Log.d(TAG, "belowView.getTop()" + belowView.getTop());
-        }
-
         boolean isBelow = (belowView != null) && (deltaYTotal > belowView.getTop());
         boolean isAbove = (aboveView != null) && (deltaYTotal < aboveView.getTop());
 
@@ -376,8 +367,6 @@ public class DragNDropListView extends ListView {
                 return;
             }
 
-
-            Log.d(TAG, "swap(" + originalItem + ", " + getPositionForView(switchView) + ")");
             mNextDragPoisition = getPositionForView(switchView);
             ((QueueCursorAdapter) getAdapter()).swapItems(originalItem, mNextDragPoisition);
             ((QueueCursorAdapter) getAdapter()).notifyDataSetChanged();
@@ -385,11 +374,6 @@ public class DragNDropListView extends ListView {
             mDownY = mLastEventY;
 
             final int switchViewStartTop = switchView.getTop();
-
-//            mobileView = getViewForID(mMobileItemId);
-//            switchView = getViewForID(switchItemID);
-//            mobileView.setVisibility(View.INVISIBLE);
-//            switchView.setVisibility(View.VISIBLE);
 
             updateNeighborViewsForID(mMobileItemId);
 
@@ -423,7 +407,6 @@ public class DragNDropListView extends ListView {
      * the hover cell back to its correct location.
      */
     private void touchEventsEnded () {
-        Log.d(TAG, "Touch event ended");
         final View mobileView = getViewForID(mMobileItemId);
         if (mCellIsMobile|| mIsWaitingForScrollFinish) {
             mCellIsMobile = false;

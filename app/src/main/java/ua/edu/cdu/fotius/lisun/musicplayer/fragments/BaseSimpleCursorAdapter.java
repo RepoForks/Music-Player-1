@@ -20,7 +20,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
  */
 public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public BaseSimpleCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);

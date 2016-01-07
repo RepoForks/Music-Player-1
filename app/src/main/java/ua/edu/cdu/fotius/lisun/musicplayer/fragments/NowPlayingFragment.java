@@ -97,11 +97,9 @@ public class NowPlayingFragment extends BaseLoaderFragment implements ServiceCon
 
     @Override
     public void ServiceConnected() {
-
     }
 
     @Override
     public void ServiceDisconnected() {
-
     }
 }

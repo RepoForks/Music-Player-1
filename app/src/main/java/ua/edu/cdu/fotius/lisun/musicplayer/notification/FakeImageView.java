@@ -13,7 +13,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
 public class FakeImageView extends ImageViewForLoader{
 
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private int mNotificationId;
     private NotificationCompat.Builder mNotificationBuilder;

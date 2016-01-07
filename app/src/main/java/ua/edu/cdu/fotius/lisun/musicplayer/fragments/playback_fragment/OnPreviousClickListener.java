@@ -7,7 +7,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 
 public class OnPreviousClickListener implements View.OnClickListener{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private MediaPlaybackServiceWrapper mServiceWrapper;
 
@@ -17,7 +17,6 @@ public class OnPreviousClickListener implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "OnPreviousClicked");
         long GO_TO_PREV_TRACK_THRESHOLD_IN_MILLIS = 2000;
         if (mServiceWrapper.getPlayingPosition() < GO_TO_PREV_TRACK_THRESHOLD_IN_MILLIS) {
             mServiceWrapper.prev();

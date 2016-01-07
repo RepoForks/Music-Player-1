@@ -16,7 +16,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
 public class OnPlaylistClickListener extends BaseFragmentItemClickListener{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private String mPlaylistIdColumnName;
     private String mPlaylistColumnName;
@@ -39,8 +39,6 @@ public class OnPlaylistClickListener extends BaseFragmentItemClickListener{
 
             int playlistColumnIndex = cursor.getColumnIndexOrThrow(mPlaylistColumnName);
             String playlistName = cursor.getString(playlistColumnIndex);
-
-            Log.d(TAG, "playlistId: " + playlistId);
 
             Bundle extras = new Bundle();
             extras.putLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, playlistId);

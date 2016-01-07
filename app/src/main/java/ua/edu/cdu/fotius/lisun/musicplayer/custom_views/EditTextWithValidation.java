@@ -12,7 +12,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.BaseValid
 
 public class EditTextWithValidation extends EditText {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private ArrayList<BaseValidator> mValidators;
     private String mInitiallyInputedData;

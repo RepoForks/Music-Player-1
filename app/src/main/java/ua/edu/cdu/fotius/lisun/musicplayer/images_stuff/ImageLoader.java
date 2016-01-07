@@ -8,8 +8,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
 public class ImageLoader {
 
-    private final String TAG = getClass().getSimpleName();
-
     private long mAlbumId = AudioStorage.WRONG_ID;
     private ImageMemoryCache mImageMemoryCache;
     private Context mContext;
@@ -33,9 +31,6 @@ public class ImageLoader {
     }
 
     public void into(ImageViewForLoader imageView) {
-
-        Log.d(TAG, "into called");
-
         if(mDefaultImageId == WRONG_RES_ID) {
             throw new IllegalStateException("Default image must be set " +
                     "with \"withDefault(int)\" method before calling  \"into()\" method()");

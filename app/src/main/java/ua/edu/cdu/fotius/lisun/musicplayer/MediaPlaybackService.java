@@ -45,7 +45,7 @@ public class MediaPlaybackService extends Service {
      * queued files have been played
      */
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public static final int NOW = 1;
     public static final int NEXT = 2;
@@ -246,31 +246,24 @@ public class MediaPlaybackService extends Service {
     };
 
     private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
-
-        private final String TAG = getClass().getSimpleName();
-
         @Override
         public void onPause() {
             pause();
-            Log.d(TAG, "onPause");
         }
 
         @Override
         public void onPlay() {
             play();
-            Log.d(TAG, "onPlay");
         }
 
         @Override
         public void onSkipToNext() {
             gotoNext(true);
-            Log.d(TAG, "skeepToNext");
         }
 
         @Override
         public void onSkipToPrevious() {
             prev();
-            Log.d(TAG, "skeepToPrevious");
         }
     };
 
@@ -301,8 +294,6 @@ public class MediaPlaybackService extends Service {
         //Calls saveQueue(true)
         notifyChange(QUEUE_CHANGED);
         notifyChange(META_CHANGED);
-
-        Log.d(TAG, "SERVICE. ON_CREATE()");
 
         mSession = new MediaSessionCompat(this, "MusicService");
         mSession.setCallback(mMediaSessionCallback);
@@ -340,9 +331,6 @@ public class MediaPlaybackService extends Service {
         if (isPlaying()) {
             Log.e(LOGTAG, "Service being destroyed while still playing.");
         }
-
-        //TODO:
-        Log.d(TAG, "SERVICE. ON_DESTROY()");
 
         // release all MediaPlayer resources, including the native player and wakelocks
         Intent i = new Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
@@ -502,9 +490,6 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Log.d(TAG, "SERVICE. ON_START()");
-
         mServiceStartId = startId;
         mDelayedStopHandler.removeCallbacksAndMessages(null);
 
@@ -518,9 +503,6 @@ public class MediaPlaybackService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-
-        Log.d(TAG, "SERVICE. ON_UNBIND()");
-
         mServiceInUse = false;
 
         // Take a snapshot of the current playlist
@@ -529,7 +511,6 @@ public class MediaPlaybackService extends Service {
         if (isPlaying() || mPausedByTransientLossOfFocus) {
             // something is currently playing, or will be playing once
             // an in-progress action requesting audio focus ends, so don't stop the service now.
-            Log.d(TAG, "SERVICE. ON_UNBIND()____IS PLAYING");
             return true;
         }
 
@@ -1063,7 +1044,6 @@ public class MediaPlaybackService extends Service {
         the next/previous track will be picked in sequential order again.
      */
     public void prev() {
-        Log.d(TAG, "PREV");
         synchronized (this) {
             if (mPlaylist.getShuffleMode() == Playlist.SHUFFLE_NORMAL) {
                 // go to previously-played track and remove it from the history
@@ -1082,7 +1062,6 @@ public class MediaPlaybackService extends Service {
                 }
             }
             saveBookmarkIfNeeded();
-            Log.d(TAG, "before_STOP");
             stop(false);
             openCurrentAndNext();
             play();

@@ -16,7 +16,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class CreateNewPlaylistDialog extends BaseDialog {
 
-    private final String TAG = getClass().getSimpleName();
+
     private EditText mEditText;
 
     public CreateNewPlaylistDialog(Context context, long[] trackIds) {

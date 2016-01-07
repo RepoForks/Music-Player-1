@@ -7,7 +7,7 @@ import android.util.LruCache;
 
 public class ImageMemoryCache {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public static ImageMemoryCache mInstance = null;
 

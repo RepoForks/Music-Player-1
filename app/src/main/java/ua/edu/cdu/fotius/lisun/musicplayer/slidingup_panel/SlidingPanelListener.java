@@ -18,7 +18,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackT
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private boolean mIsConcealableViewsVisible;
 
@@ -43,14 +43,7 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private void showDockPanel(View panel) {
-        Log.d(TAG, "showDockPanel");
-
         List<Fragment> list = mFragmentManager.getFragments();
-
-        for(Fragment f : list) {
-            Log.d(TAG, "TAG: " + f.getTag());
-        }
-
         mFragmentManager.beginTransaction()
                 .replace(R.id.drag_handler_fragment_container, new DockPlaybackFragment(),
                         SlidingPanelActivity.FRAGMENT_TAG).commit();
@@ -59,7 +52,6 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     }
 
     private void showFragmentToolbar(View panel) {
-        Log.d(TAG, "showFragmentToolbar");
         mFragmentManager.beginTransaction()
                 .replace(R.id.drag_handler_fragment_container, new PlaybackToolbarFragment(),
                         SlidingPanelActivity.FRAGMENT_TAG).commit();

@@ -2,8 +2,11 @@ package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import java.lang.ref.WeakReference;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.IndeterminateProgressBarManager;
 
 public abstract class BaseTracksQueryAsyncTask extends AsyncTask<long[], Void, long[]>{
     public interface Callbacks {
@@ -13,10 +16,12 @@ public abstract class BaseTracksQueryAsyncTask extends AsyncTask<long[], Void, l
 
     private WeakReference<Context> mContextReference;
     private WeakReference<Callbacks> mQueryCallbacksReference;
+    private IndeterminateProgressBarManager mProgressBar;
 
     public BaseTracksQueryAsyncTask(Context context, Callbacks callbacks) {
         mContextReference = new WeakReference<Context>(context);
         mQueryCallbacksReference = new WeakReference<Callbacks>(callbacks);
+        mProgressBar = new IndeterminateProgressBarManager(context);
     }
 
     @Override
@@ -32,7 +37,6 @@ public abstract class BaseTracksQueryAsyncTask extends AsyncTask<long[], Void, l
         return trackIds;
     }
 
-    private final String TAG = getClass().getSimpleName();
 
     @Override
     protected void onPostExecute(long[] tracksIds) {

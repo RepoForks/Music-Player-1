@@ -16,7 +16,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
 
 public abstract class SlidingPanelActivity extends ToolbarActivity {
 
-    private final String TAG = getClass().getSimpleName();
+
 
     public static final String PANEL_STATE_KEY = "panel_state_key";
 
@@ -42,8 +42,6 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "SlidingPanelActivity.OnCreate()");
-
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             mPanelState = (PanelState)extras.getSerializable(PANEL_STATE_KEY);
@@ -57,7 +55,6 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        Log.d(TAG, "SlidingPanelActivity.OnContentChange");
         mSlidingPanel = (SlidingUpPanelLayout) findViewById(R.id.sliding_panel);
 
         if (mSlidingPanel == null) {
@@ -78,7 +75,6 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
         mSlidingPanel.setPanelState(mPanelState.getPanelState());
 
         if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-            Log.e(TAG, "onContentChanged.settingInitial");
             Fragment fragment = null;
 
             if(mPanelState == PanelState.COLLAPSED) {

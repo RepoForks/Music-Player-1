@@ -33,7 +33,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 public abstract class AbstractPlaybackFragment extends Fragment implements ServiceConnectionObserver,
         OnRewindListener.RewindClickedListener, OnForwardListener.ForwardClickedListener{
 
-    private final String TAG = getClass().getSimpleName();
+
 
     protected final long ERROR_REFRESH_DELAY_IN_MILLIS = -1;
     protected final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;

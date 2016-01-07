@@ -32,7 +32,7 @@ public class MediaPlaybackServiceWrapper
     //TODO: maybe its AudioStorage.WRONG_ID
     public static int ERROR_RETURN_VALUE = -1;
 
-    private final String TAG = getClass().getSimpleName();
+
 
     private static MediaPlaybackServiceWrapper instance = null;
 
@@ -117,7 +117,6 @@ public class MediaPlaybackServiceWrapper
     }
 
     public void prev() {
-        Log.d(TAG, "ServiceWrapper.prev()");
         if (mService != null) {
             try {
                 mService.prev();
