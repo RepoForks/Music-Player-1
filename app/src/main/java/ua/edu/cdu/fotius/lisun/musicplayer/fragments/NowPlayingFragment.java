@@ -83,7 +83,7 @@ public class NowPlayingFragment extends BaseLoaderFragment implements ServiceCon
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         NowPlayingCursorLoaderCreator loaderCreator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper),
+                mToolbarStateListener, listView, new TrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }

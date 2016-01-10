@@ -80,7 +80,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         AbstractTracksCursorLoaderCreator loaderCreator = (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper),
+                mToolbarStateListener, listView, new TrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }

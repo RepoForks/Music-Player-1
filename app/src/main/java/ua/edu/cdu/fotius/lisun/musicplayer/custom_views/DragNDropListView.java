@@ -62,8 +62,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.QueueCursorAdapter;
  */
 public class DragNDropListView extends ListView {
 
-
-
     public interface DropListener {
         public void onDrop(HashMap<Long, Integer> initialIdToPositionMap, long[] newQueue, int from, int to);
     }

@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -10,22 +11,27 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.IndeterminateProgressBarManager;
+import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 
-public abstract class BaseLoaderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    private final String TAG = getClass().getSimpleName();
+public abstract class BaseLoaderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected CursorAdapter mCursorAdapter;
     protected AbstractCursorLoaderCreator mLoaderCreator;
+    private ToolbarActivity mToolbarActivity;
 
-    private IndeterminateProgressBarManager mProgressBar;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mToolbarActivity = (ToolbarActivity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mToolbarActivity = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,23 +39,19 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
         setRetainInstance(true);
         mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
-        mProgressBar = new IndeterminateProgressBarManager(getActivity());
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mProgressBar.setRoot((ViewGroup) view);
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onPause();
-        mProgressBar.start();
+        if(mToolbarActivity != null) {
+            mToolbarActivity.showProgress();
+        }
         getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
     protected abstract CursorAdapter createCursorAdapter();
+
     protected abstract AbstractCursorLoaderCreator createCursorLoaderCreator();
 
     @Override
@@ -58,7 +60,9 @@ public abstract class BaseLoaderFragment extends Fragment implements LoaderManag
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
-        mProgressBar.stop();
+        if(mToolbarActivity != null) {
+            mToolbarActivity.hideProgress();
+        }
     }
 
     @Override

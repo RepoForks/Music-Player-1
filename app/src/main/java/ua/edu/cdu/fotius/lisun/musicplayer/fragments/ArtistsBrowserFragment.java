@@ -80,7 +80,7 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment implements Servic
                 loaderCreator.getArtistColumnName()));
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new ArtistMenuCommandSet(getActivity(), mServiceWrapper),
+                mToolbarStateListener, listView, new ArtistMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getArtistIdColumnName()));
         return v;
     }

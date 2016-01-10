@@ -90,7 +90,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment implements Service
                 loaderCreator.getAlbumIdColumnName(), loaderCreator.getAlbumColumnName()));
         gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         gridView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, gridView, new AlbumMenuCommandSet(getActivity(), mServiceWrapper, mArtistID),  loaderCreator.getAlbumIdColumnName()));
+                mToolbarStateListener, gridView, new AlbumMenuCommandSet(this, mServiceWrapper, mArtistID),  loaderCreator.getAlbumIdColumnName()));
         return v;
     }
 

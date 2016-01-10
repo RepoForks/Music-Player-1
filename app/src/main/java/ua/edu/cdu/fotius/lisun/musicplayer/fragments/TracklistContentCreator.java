@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,8 @@ public class TracklistContentCreator extends BaseTracklistContentCreator{
     }
 
     @Override
-    public BaseMenuCommandSet getMenuCommandSet(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
-        return new TrackMenuCommandSet(context, serviceWrapper);
+    public BaseMenuCommandSet getMenuCommandSet(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper) {
+        return new TrackMenuCommandSet(fragment, serviceWrapper);
     }
 
 

@@ -8,9 +8,6 @@ import android.os.AsyncTask;
 import java.lang.ref.WeakReference;
 
 public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitmap>{
-
-
-
     private WeakReference<ImageViewForLoader> mImageViewWeakReference;
     protected ImageMemoryCache mImageMemoryCache = null;
     protected Object mData = null;

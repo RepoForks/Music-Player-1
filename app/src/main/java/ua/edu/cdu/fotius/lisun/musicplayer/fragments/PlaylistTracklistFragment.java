@@ -75,14 +75,14 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment implements Ser
         View v = inflater.inflate(R.layout.fragment_dragndrop_list, container, false);
         DragNDropListView listView = (DragNDropListView) v.findViewById(R.id.list);
         listView.setDragHandlerResourceID(R.id.handler);
-        listView.setDropListener(new OnDropPlaylistTrackListener(getActivity(), mPlaylistID));
+        listView.setDropListener(new OnDropPlaylistTrackListener(this, mPlaylistID));
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         PlaylistTracksCursorLoaderCreator loaderCreator =
                 (PlaylistTracksCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(getActivity(), mServiceWrapper),
+                mToolbarStateListener, listView, new TrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }

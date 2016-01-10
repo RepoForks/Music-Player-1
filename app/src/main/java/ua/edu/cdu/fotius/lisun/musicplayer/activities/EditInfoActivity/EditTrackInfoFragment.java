@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -46,13 +47,16 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
         Bundle arguments = getArguments();
         mTrackId = arguments.getLong(TRACK_ID_KEY);
         mEditInfoQueryCreator = new EditInfoQueryCreator(mTrackId);
-        mQueryHandler = new EditInfoAsyncQueryHandler(getActivity().getContentResolver(), mEditInfoQueryCreator, this);
+        mQueryHandler = new EditInfoAsyncQueryHandler(this, mEditInfoQueryCreator, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_edit_track_info, container, false);
+
+        ImageButton doneEditingButton = (ImageButton) v.findViewById(R.id.done_editing);
+        doneEditingButton.setOnClickListener(mOnDoneEditingClick);
 
         mTitleEditText = (EditTextWithValidation)v.findViewById(R.id.title_input);
         mTitleEditText.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
@@ -180,4 +184,11 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
                 invalidFieldName, invalidityMessage);
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
+    private View.OnClickListener mOnDoneEditingClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            doneEditing();
+        }
+    };
 }

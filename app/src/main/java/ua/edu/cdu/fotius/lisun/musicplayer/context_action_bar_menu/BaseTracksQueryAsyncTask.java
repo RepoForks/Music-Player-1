@@ -1,50 +1,51 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.ProgressBar;
+import android.support.v4.app.Fragment;
 
 import java.lang.ref.WeakReference;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.IndeterminateProgressBarManager;
+import ua.edu.cdu.fotius.lisun.musicplayer.AsyncTaskWithProgressBar;
 
-public abstract class BaseTracksQueryAsyncTask extends AsyncTask<long[], Void, long[]>{
+public abstract class BaseTracksQueryAsyncTask extends AsyncTaskWithProgressBar {
+
     public interface Callbacks {
         public void onQueryStart();
         public void onQueryCompleted(long[] tracksId);
     }
 
-    private WeakReference<Context> mContextReference;
     private WeakReference<Callbacks> mQueryCallbacksReference;
-    private IndeterminateProgressBarManager mProgressBar;
 
-    public BaseTracksQueryAsyncTask(Context context, Callbacks callbacks) {
-        mContextReference = new WeakReference<Context>(context);
+    public BaseTracksQueryAsyncTask(Fragment fragment, Callbacks callbacks) {
+        super(fragment);
         mQueryCallbacksReference = new WeakReference<Callbacks>(callbacks);
-        mProgressBar = new IndeterminateProgressBarManager(context);
     }
 
     @Override
-    protected long[] doInBackground(long[]... params) {
+    protected Object doInBackground(Object... params) {
+        Context context = mFragmentWrapper.getActivity();
+        if(context == null) return null;
+
         long[] trackIds = null;
-        Context context = mContextReference.get();
         Callbacks queryCallbacks = mQueryCallbacksReference.get();
         if ((context != null) && (queryCallbacks != null)) {
             queryCallbacks.onQueryStart();
-            long[] ids = params[0];
+            long[] ids = (long[])params[0];
             trackIds = queryProvider(context, ids);
         }
         return trackIds;
     }
 
-
     @Override
-    protected void onPostExecute(long[] tracksIds) {
-        super.onPostExecute(tracksIds);
+    protected void onPostExecute(Object obj) {
+        if(obj == null) return;
+
+        long[] tracksIds = (long[])obj;
         Callbacks queryCallbacks = mQueryCallbacksReference.get();
-        if(queryCallbacks != null) {
+        if (queryCallbacks != null) {
             queryCallbacks.onQueryCompleted(tracksIds);
         }
+        super.onPostExecute(tracksIds);
     }
 
     protected abstract long[] queryProvider(Context context, long[] id);

@@ -4,19 +4,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public abstract class ToolbarActivity extends AppCompatActivity {
 
-
-
     public static final String TOOLBAR_TITLE_KEY = "title_key";
 
     private final String EXTRA_FRAGMENT_TAG = "extra_fragment_tag";
     private Fragment mCurrentFragment;
+    private ProgressBar mProgressBar;
     protected Toolbar mToolbar;
 
     @Override
@@ -42,6 +41,14 @@ public abstract class ToolbarActivity extends AppCompatActivity {
                             "'R.id.toolbar'");
         }
         setSupportActionBar(mToolbar);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        if(mProgressBar == null) {
+            throw new RuntimeException(
+                    "Your content must have a ProgressBar" +
+                            "whose id attribute is " +
+                            "'R.id.progress_bar'");
+        }
     }
 
     @Override
@@ -59,7 +66,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
             checkFragmentContainerResourceID();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, tag)
+                    .add(R.id.root_view, fragment, tag)
                     .commit();
             mCurrentFragment = fragment;
         }
@@ -68,13 +75,13 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment, String fragmentTag) {
         checkFragmentContainerResourceID();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, fragmentTag)
+                .replace(R.id.root_view, fragment, fragmentTag)
                 .commit();
         mCurrentFragment = fragment;
     }
 
     private void checkFragmentContainerResourceID() {
-        if(findViewById(R.id.fragment_container) == null) {
+        if(findViewById(R.id.root_view) == null) {
             throw new RuntimeException(
                     "Your content must have a container for fragment " +
                             "whose id attribute is " +
@@ -120,5 +127,13 @@ public abstract class ToolbarActivity extends AppCompatActivity {
             title = defaultString;
         }
         return title;
+    }
+
+    public void showProgress() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress() {
+        mProgressBar.setVisibility(View.GONE);
     }
 }

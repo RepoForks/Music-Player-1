@@ -13,8 +13,16 @@
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ColoredProgressBar
+        android:id="@+id/progress_bar"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+
+    <RelativeLayout
+        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

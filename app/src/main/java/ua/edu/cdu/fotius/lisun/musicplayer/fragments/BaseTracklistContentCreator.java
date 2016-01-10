@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,6 @@ public abstract class BaseTracklistContentCreator {
                                                       Context context);
     public abstract ListView createListView(View v, LayoutInflater inflater, ViewGroup container);
     public abstract int getMultichoiceMode();
-    public abstract BaseMenuCommandSet getMenuCommandSet(Context context,
+    public abstract BaseMenuCommandSet getMenuCommandSet(Fragment fragment,
                                                          MediaPlaybackServiceWrapper serviceWrapper);
 }

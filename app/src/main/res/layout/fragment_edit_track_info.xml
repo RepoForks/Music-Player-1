@@ -1,7 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/title_label"
@@ -10,37 +9,52 @@
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/title_input"
+        android:layout_below="@+id/title_label"
         android:contentDescription="@string/title_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
         android:id="@+id/artist_label"
+        android:layout_below="@+id/title_input"
         android:text="@string/artist_label"
         style="@style/EditInfoActivityView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/artist_input"
+        android:layout_below="@+id/artist_label"
         android:contentDescription="@string/artist_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
         android:id="@+id/album_label"
         android:text="@string/album_label"
+        android:layout_below="@+id/artist_input"
         style="@style/EditInfoActivityView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/album_input"
         android:contentDescription="@string/album_label"
+        android:layout_below="@+id/album_label"
         style="@style/EditInfoActivityView" />
 
     <TextView
         android:id="@+id/year_label"
         android:text="@string/year_label"
+        android:layout_below="@+id/album_input"
         style="@style/EditInfoActivityView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/year_input"
         android:contentDescription="@string/year_label"
+        android:layout_below="@+id/year_label"
         style="@style/EditInfoActivityView" />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/done_editing"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher" />
+
+</RelativeLayout>

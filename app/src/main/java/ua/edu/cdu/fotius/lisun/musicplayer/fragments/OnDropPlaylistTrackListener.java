@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import java.util.HashMap;
 
@@ -8,11 +9,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
 
 public class OnDropPlaylistTrackListener implements DragNDropListView.DropListener {
 
-    private Context mContext;
+    private Fragment mFragment;
     private long mPlaylistId;
 
-    public OnDropPlaylistTrackListener(Context context, long playlistId) {
-        mContext = context;
+    public OnDropPlaylistTrackListener(Fragment fragment, long playlistId) {
+        mFragment = fragment;
         mPlaylistId = playlistId;
     }
 
@@ -20,7 +21,7 @@ public class OnDropPlaylistTrackListener implements DragNDropListView.DropListen
     public void onDrop(HashMap<Long, Integer> initialIdToPositionMap,
                        long[] newQueue, int from, int to) {
         ChangeOrderInPlaylistAsyncTask task =
-                new ChangeOrderInPlaylistAsyncTask(mContext,
+                new ChangeOrderInPlaylistAsyncTask(mFragment,
                         mPlaylistId, initialIdToPositionMap, newQueue);
         task.execute();
     }

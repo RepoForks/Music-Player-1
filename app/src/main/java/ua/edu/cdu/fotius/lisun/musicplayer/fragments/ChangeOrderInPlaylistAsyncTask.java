@@ -6,24 +6,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 
 import java.util.HashMap;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AsyncTaskWithProgressBar;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
-public class ChangeOrderInPlaylistAsyncTask extends AsyncTask<Void, Void, Void>{
+public class ChangeOrderInPlaylistAsyncTask extends AsyncTaskWithProgressBar {
 
     private HashMap<Long, Integer> mOldIdToPositionMap;
     private long[] mNewPlaylistOrder;
-    private ContentResolver mContentResolver;
     private Uri mUri;
     private String mSelection;
 
-    public ChangeOrderInPlaylistAsyncTask(Context context, long playlistID, HashMap<Long, Integer> oldIdToPositionMap,
+    public ChangeOrderInPlaylistAsyncTask(Fragment fragment, long playlistID, HashMap<Long, Integer> oldIdToPositionMap,
                                           long[] newPlaylistOrder) {
-        mContentResolver = context.getContentResolver();
-
+        super(fragment);
         mNewPlaylistOrder = newPlaylistOrder;
         mOldIdToPositionMap = oldIdToPositionMap;
 
@@ -32,7 +32,7 @@ public class ChangeOrderInPlaylistAsyncTask extends AsyncTask<Void, Void, Void>{
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Object doInBackground(Object... params) {
         for(int i = 0; i < mNewPlaylistOrder.length; i++) {
             long id = mNewPlaylistOrder[i];
             int order = i;
@@ -44,9 +44,11 @@ public class ChangeOrderInPlaylistAsyncTask extends AsyncTask<Void, Void, Void>{
     }
 
     private void updateTrackOrder(long id, int newOrder) {
+        Context context = mFragmentWrapper.getActivity();
+        if(context == null) return;
+
         ContentValues values = new ContentValues(1);
         values.put(AudioStorage.PlaylistMember.PLAY_ORDER, newOrder);
-        //DatabaseUtils.queryParamsInLog(mUri, null, mSelection, new String[]{Long.toString(id)});
-        mContentResolver.update(mUri, values, mSelection, new String[]{Long.toString(id)});
+        context.getContentResolver().update(mUri, values, mSelection, new String[]{Long.toString(id)});
     }
 }

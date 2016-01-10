@@ -22,8 +22,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
 public class MediaNotificationManager {
 
-
-
     private MediaPlaybackService mService;
 
     private final int mNotificationID = 1;
@@ -143,6 +141,8 @@ public class MediaNotificationManager {
     }
 
     public void stopNotification() {
+        if(!mIsStarted)return;
+
         mService.unregisterReceiver(mMediaControlActionsReceiver);
         mService.stopForeground(true);
         mNotificationManager.cancel(mNotificationID);
