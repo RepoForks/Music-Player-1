@@ -19,7 +19,7 @@ public class AsyncFragmentWrapper {
     }
 
     public ToolbarActivity getActivity() {
-        Fragment fragment = mFragmentReference.get();
+        Fragment fragment = getFragment();
         if(fragment == null) {
             Log.d(TAG, "fragment == null");
             return null;
@@ -32,5 +32,14 @@ public class AsyncFragmentWrapper {
         }
 
         return activity;
+    }
+
+    public Fragment getFragment() {
+        Fragment fragment = mFragmentReference.get();
+        if(fragment == null) {
+            Log.d(TAG, "fragment == null");
+            return null;
+        }
+        return fragment;
     }
 }

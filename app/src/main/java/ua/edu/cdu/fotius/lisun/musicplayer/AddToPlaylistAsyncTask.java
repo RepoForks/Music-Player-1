@@ -20,6 +20,8 @@ public class AddToPlaylistAsyncTask extends AsyncTaskWithProgressBar {
 
     @Override
     protected Object doInBackground(Object... params) {
+        super.doInBackground();
+
         long playlistId = mPlaylistInfo.getId();
 
         Context context = mFragmentWrapper.getActivity();

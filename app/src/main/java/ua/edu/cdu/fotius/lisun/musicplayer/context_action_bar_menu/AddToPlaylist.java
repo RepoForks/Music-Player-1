@@ -13,6 +13,6 @@ public class AddToPlaylist extends Command {
 
     @Override
     public void execute(long[] tracksID) {
-        new ChoosePlaylistDialog(mFragment, tracksID).show();
+        new QueryPlaylistsAsyncTask(mFragment, tracksID).execute();
     }
 }

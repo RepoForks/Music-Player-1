@@ -23,6 +23,8 @@ public abstract class BaseTracksQueryAsyncTask extends AsyncTaskWithProgressBar 
 
     @Override
     protected Object doInBackground(Object... params) {
+        super.doInBackground();
+
         Context context = mFragmentWrapper.getActivity();
         if(context == null) return null;
 

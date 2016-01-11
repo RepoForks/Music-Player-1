@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,11 @@ import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.QueryTrackInfoAsyncTask;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.UpdateTrackInfoAsyncTask;
 
 //ToDO: maybe extends BaseFragment
-public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQueryHandler.QueryCallbacks{
+public class EditTrackInfoFragment extends Fragment implements QueryTrackInfoAsyncTask.Callback, UpdateTrackInfoAsyncTask.Callback{
 
     public static final String ACTION_TRACK_INFO_CHANGED =
             "ua.edu.cdu.fotius.lisun.musicplayer.track_info_changed";
@@ -28,14 +29,12 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
 
     private long mTrackId;
 
-    private EditInfoQueryCreator mEditInfoQueryCreator;
+    private EditInfoQueryCreator mQueryCreator;
 
-    private EditTextWithValidation mTitleEditText;
-    private EditTextWithValidation mAlbumEditText;
-    private EditTextWithValidation mArtistEditText;
-    private EditTextWithValidation mYearEditText;
-
-    private EditInfoAsyncQueryHandler mQueryHandler;
+    private EditTextWithValidation mTitle;
+    private EditTextWithValidation mAlbum;
+    private EditTextWithValidation mArtist;
+    private EditTextWithValidation mYear;
 
     public EditTrackInfoFragment() {
     }
@@ -46,8 +45,7 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
         setRetainInstance(true);
         Bundle arguments = getArguments();
         mTrackId = arguments.getLong(TRACK_ID_KEY);
-        mEditInfoQueryCreator = new EditInfoQueryCreator(mTrackId);
-        mQueryHandler = new EditInfoAsyncQueryHandler(this, mEditInfoQueryCreator, this);
+        mQueryCreator = new EditInfoQueryCreator(mTrackId);
     }
 
     @Override
@@ -58,110 +56,66 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
         ImageButton doneEditingButton = (ImageButton) v.findViewById(R.id.done_editing);
         doneEditingButton.setOnClickListener(mOnDoneEditingClick);
 
-        mTitleEditText = (EditTextWithValidation)v.findViewById(R.id.title_input);
-        mTitleEditText.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
+        mTitle = (EditTextWithValidation)v.findViewById(R.id.title_input);
+        mTitle.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
 
-        mAlbumEditText = (EditTextWithValidation)v.findViewById(R.id.album_input);
-        mAlbumEditText.setValidators(new AlbumValidatorsSetCreator(getActivity()).create());
+        mAlbum = (EditTextWithValidation)v.findViewById(R.id.album_input);
+        mAlbum.setValidators(new AlbumValidatorsSetCreator(getActivity()).create());
 
-        mArtistEditText = (EditTextWithValidation)v.findViewById(R.id.artist_input);
-        mArtistEditText.setValidators(new ArtistValidatorSetCreator(getActivity()).create());
+        mArtist = (EditTextWithValidation)v.findViewById(R.id.artist_input);
+        mArtist.setValidators(new ArtistValidatorSetCreator(getActivity()).create());
 
-        mYearEditText = (EditTextWithValidation)v.findViewById(R.id.year_input);
-        mYearEditText.setValidators(new YearValidatorSetCreator(getActivity()).create());
+        mYear = (EditTextWithValidation)v.findViewById(R.id.year_input);
+        mYear.setValidators(new YearValidatorSetCreator(getActivity()).create());
 
         /*Should be called after initializing EditText views*/
         if (savedInstanceState == null) {
-            mQueryHandler.queryTrackInfo();
+            new QueryTrackInfoAsyncTask(this, mQueryCreator, this).execute();
         }
         return v;
-    }
-
-    @Override
-    public void onQueryTrackInfoStarted() {
-    }
-
-    @Override
-    public void onQueryTrackInfoCompleted(Cursor c) {
-//        if((c == null) && (!c.moveToFirst())) {
-//            getActivity().finish();
-//            return;
-//        }
-
-        c.moveToFirst();
-
-        int idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getTitleColumnName());
-        mTitleEditText.setInitialText(c.getString(idx));
-
-        idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getAlbumColumnName());
-        mAlbumEditText.setInitialText(c.getString(idx));
-
-        idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getArtistColumnName());
-        mArtistEditText.setInitialText(c.getString(idx));
-
-        idx = c.getColumnIndexOrThrow(mEditInfoQueryCreator.getYearColumnName());
-        mYearEditText.setInitialText(Integer.toString(c.getInt(idx)));
-
-        c.close();
-    }
-
-    @Override
-    public void onUpdateTrackInfoStarted() {
-
-    }
-
-    @Override
-    public void onUpdateTrackInfoCompleted() {
-        Log.d(TAG, "Update completed");
-        Intent intent = new Intent();
-        intent.setAction(ACTION_TRACK_INFO_CHANGED);
-        intent.putExtra(TRACK_ID_KEY, mTrackId);
-        getActivity().sendBroadcast(intent);
-        getActivity().finish();
     }
 
     public void doneEditing() {
         if(isAllEnteredTextValid()) {
             ContentValues contentValues = new ContentValues();
-            if(mTitleEditText.isChanged()) {
-                contentValues.put(mEditInfoQueryCreator.getTitleColumnName(),
-                        mTitleEditText.getText().toString());
+            if(mTitle.isChanged()) {
+                contentValues.put(mQueryCreator.getTitleColumnName(),
+                        mTitle.getText().toString());
             }
 
-            if(mAlbumEditText.isChanged()) {
-                contentValues.put(mEditInfoQueryCreator.getAlbumColumnName(),
-                        mAlbumEditText.getText().toString());
+            if(mAlbum.isChanged()) {
+                contentValues.put(mQueryCreator.getAlbumColumnName(),
+                        mAlbum.getText().toString());
             }
 
-            if(mArtistEditText.isChanged()) {
-                contentValues.put(mEditInfoQueryCreator.getArtistColumnName(),
-                        mArtistEditText.getText().toString());
+            if(mArtist.isChanged()) {
+                contentValues.put(mQueryCreator.getArtistColumnName(),
+                        mArtist.getText().toString());
             }
 
-            if(mYearEditText.isChanged()) {
-                contentValues.put(mEditInfoQueryCreator.getYearColumnName(),
-                        mYearEditText.getText().toString());
+            if(mYear.isChanged()) {
+                contentValues.put(mQueryCreator.getYearColumnName(),
+                        mYear.getText().toString());
             }
 
-            mQueryHandler.updateTrackInfo(contentValues);
-            //TODO: make update query
+            new UpdateTrackInfoAsyncTask(this, contentValues, mQueryCreator, this).execute();
         }
     }
 
     private boolean isAllEnteredTextValid() {
-        if(!isSpecificEnteredTextValid(mTitleEditText)) {
+        if(!isSpecificEnteredTextValid(mTitle)) {
             return false;
         }
 
-        if(!isSpecificEnteredTextValid(mAlbumEditText)) {
+        if(!isSpecificEnteredTextValid(mAlbum)) {
             return false;
         }
 
-        if(!isSpecificEnteredTextValid(mArtistEditText)) {
+        if(!isSpecificEnteredTextValid(mArtist)) {
             return false;
         }
 
-        if(!isSpecificEnteredTextValid(mYearEditText)) {
+        if(!isSpecificEnteredTextValid(mYear)) {
             return false;
         }
 
@@ -191,4 +145,36 @@ public class EditTrackInfoFragment extends Fragment implements EditInfoAsyncQuer
             doneEditing();
         }
     };
+
+    @Override
+    public void updateCompleted() {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_TRACK_INFO_CHANGED);
+        intent.putExtra(TRACK_ID_KEY, mTrackId);
+        getActivity().sendBroadcast(intent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void queryCompleted(Cursor c) {
+        /*if couldn't retrieve track info*/
+        //TODO: maybe return result to activity and notify user
+        if((c == null) || (!c.moveToFirst())) {
+            getActivity().finish();
+        }
+
+        int idx = c.getColumnIndexOrThrow(mQueryCreator.getTitleColumnName());
+        mTitle.setInitialText(c.getString(idx));
+
+        idx = c.getColumnIndexOrThrow(mQueryCreator.getAlbumColumnName());
+        mAlbum.setInitialText(c.getString(idx));
+
+        idx = c.getColumnIndexOrThrow(mQueryCreator.getArtistColumnName());
+        mArtist.setInitialText(c.getString(idx));
+
+        idx = c.getColumnIndexOrThrow(mQueryCreator.getYearColumnName());
+        mYear.setInitialText(Integer.toString(c.getInt(idx)));
+
+        c.close();
+    }
 }

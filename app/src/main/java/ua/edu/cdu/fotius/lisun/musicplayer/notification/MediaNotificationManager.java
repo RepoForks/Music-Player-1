@@ -106,6 +106,7 @@ public class MediaNotificationManager {
     private NotificationCompat.Builder createBuilder(MediaMetadataCompat metaData, boolean isPlaying) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mService);
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(Notification.CATEGORY_TRANSPORT)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setShowWhen(false) /*don't show time*/
                 .setContentTitle(metaData.getString(MediaMetadataCompat.METADATA_KEY_TITLE))

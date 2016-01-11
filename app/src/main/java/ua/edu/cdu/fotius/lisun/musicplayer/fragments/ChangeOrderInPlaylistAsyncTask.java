@@ -33,6 +33,7 @@ public class ChangeOrderInPlaylistAsyncTask extends AsyncTaskWithProgressBar {
 
     @Override
     protected Object doInBackground(Object... params) {
+        super.doInBackground();
         for(int i = 0; i < mNewPlaylistOrder.length; i++) {
             long id = mNewPlaylistOrder[i];
             int order = i;

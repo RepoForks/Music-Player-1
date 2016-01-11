@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
 
-public abstract class AsyncTaskWithProgressBar extends AsyncTask<Object, Object, Object>{
+public abstract class AsyncTaskWithProgressBar extends AsyncTask<Object, Object, Object> {
 
     /*note: this fragment should call setRetainInstance(true)*/
     //TODO: maybe create super class which calls setRetainInstance(true)
@@ -31,21 +31,20 @@ public abstract class AsyncTaskWithProgressBar extends AsyncTask<Object, Object,
 
     @Override
     protected Object doInBackground(Object... params) {
+        //TODO: debug
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        //TODO: remove this
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ToolbarActivity activity = mFragmentWrapper.getActivity();
-                if (activity != null) {
-                    activity.hideProgress();
-                }
-            }
-        }, 5000);
+        ToolbarActivity activity = mFragmentWrapper.getActivity();
+        if (activity != null) {
+            activity.hideProgress();
+        }
     }
 }
