@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -28,12 +29,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
 
-public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver {
+public class TrackBrowserFragment extends BaseLoaderFragment {
 
     //TODO: refactor this to tracklist
     public static final String TAG = "tracks";
 
-    protected MediaPlaybackServiceWrapper mServiceWrapper;
+
     protected ToolbarStateListener mToolbarStateListener;
 
     private Bundle mPassedArguments;
@@ -42,23 +43,19 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mToolbarStateListener = (ToolbarStateListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mToolbarStateListener = (ToolbarStateListener) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mPassedArguments = getArguments();
-
         super.onCreate(savedInstanceState);
-
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindToService(getActivity(), this);
     }
 
     @Override
-    protected CursorAdapter createCursorAdapter() {
+    protected IndicatorCursorAdapter createCursorAdapter() {
         AbstractTracksCursorLoaderCreator loaderFactory = (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getTrackColumnName(),
                 loaderFactory.getArtistColumnName()};
@@ -109,16 +106,10 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
     }
 
     protected AdapterView.OnItemClickListener createOnItemClickListener() {
-        AbstractTracksCursorLoaderCreator loaderFactory =
+        AbstractTracksCursorLoaderCreator loaderCreator =
                 (AbstractTracksCursorLoaderCreator) mLoaderCreator;
         return new OnTrackClickListener(getActivity(), mCursorAdapter,
-                mServiceWrapper, loaderFactory.getTrackIdColumnName());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mServiceWrapper.unbindFromService(getActivity(), this);
+                mServiceWrapper, loaderCreator.getTrackIdColumnName());
     }
 
     @Override
@@ -127,12 +118,19 @@ public class TrackBrowserFragment extends BaseLoaderFragment implements ServiceC
     }
 
     @Override
-    public void ServiceConnected() {
-        //TODO
+    public void onMetadataChanged() {
+        AbstractTracksCursorLoaderCreator loaderCreator =
+                (AbstractTracksCursorLoaderCreator) mLoaderCreator;
+        mCursorAdapter.setIndicatorData(loaderCreator.getTrackIdColumnName(),
+                mServiceWrapper.getTrackID(), R.id.play_indicator);
+        mCursorAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void ServiceDisconnected() {
-        //TODO
+    public void onPlaybackStateChanged() {
+        if(!mServiceWrapper.isPlaying()) {
+            mCursorAdapter.setIndicatorData(null, -1, IndicatorCursorAdapter.WRONG_INDICATOR_ID);
+            mCursorAdapter.notifyDataSetChanged();
+        }
     }
 }

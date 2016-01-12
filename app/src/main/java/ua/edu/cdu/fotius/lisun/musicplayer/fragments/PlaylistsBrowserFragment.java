@@ -27,12 +27,12 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    protected CursorAdapter createCursorAdapter() {
+    protected IndicatorCursorAdapter createCursorAdapter() {
         PlaylistCursorLoaderCreator loaderFactory = (PlaylistCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[] { loaderFactory.getPlaylistColumnName()};
         int[] to = new int[] { R.id.playlist_name};
 
-        return new BaseSimpleCursorAdapter(getActivity(),
+        return new IndicatorCursorAdapter(getActivity(),
                 R.layout.row_user_playlists_list, from, to);
     }
 
@@ -56,5 +56,15 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         return mLoaderCreator.createCursorLoader();
+    }
+
+    @Override
+    public void onMetadataChanged() {
+
+    }
+
+    @Override
+    public void onPlaybackStateChanged() {
+
     }
 }

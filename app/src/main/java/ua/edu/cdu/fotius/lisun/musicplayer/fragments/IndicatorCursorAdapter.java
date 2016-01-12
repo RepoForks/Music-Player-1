@@ -18,11 +18,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
  * string({@link ua.edu.cdu.fotius.lisun.musicplayer.fragments
  * .BaseSimpleCursorAdapter#getUnknownText(android.content.Context, android.database.Cursor, int)})
  */
-public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
+public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
+    public static final int WRONG_INDICATOR_ID = -1;
 
+    private String mIdColumnName;
+    private long mCurrentId;
+    private int mIndicatorResource = WRONG_INDICATOR_ID;
 
-    public BaseSimpleCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
+    public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
     }
 
@@ -52,6 +56,23 @@ public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
                         " view that can be bounds by this BaseSimpleCursorAdapter");
             }
         }
+
+        if (mIndicatorResource == WRONG_INDICATOR_ID) return;
+
+        int idIdx = cursor.getColumnIndex(mIdColumnName);
+        if(idIdx == -1) return;
+        long id = cursor.getLong(idIdx);
+
+        View indicator = rowLayout.findViewById(mIndicatorResource);
+        if(indicator == null) return;
+
+        int visibility;
+        if (id == mCurrentId) {
+            visibility = View.VISIBLE;
+        } else {
+            visibility = View.GONE;
+        }
+        indicator.setVisibility(visibility);
     }
 
     @Override
@@ -61,5 +82,11 @@ public class BaseSimpleCursorAdapter extends SimpleCursorAdapter {
         } else {
             v.setText(text);
         }
+    }
+
+    public void setIndicatorData(String idColumnName, long currentId, int indicatorResource) {
+        mIdColumnName = idColumnName;
+        mCurrentId = currentId;
+        mIndicatorResource = indicatorResource;
     }
 }

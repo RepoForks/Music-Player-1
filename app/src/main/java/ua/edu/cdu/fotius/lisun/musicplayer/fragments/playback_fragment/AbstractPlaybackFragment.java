@@ -22,6 +22,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceStateChangesObserver;
+import ua.edu.cdu.fotius.lisun.musicplayer.ServiceStateReceiver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditTrackInfoFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton;
@@ -31,9 +33,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
 public abstract class AbstractPlaybackFragment extends Fragment implements ServiceConnectionObserver,
-        OnRewindListener.RewindClickedListener, OnForwardListener.ForwardClickedListener{
-
-
+        OnRewindListener.RewindClickedListener, OnForwardListener.ForwardClickedListener, ServiceStateChangesObserver{
 
     protected final long ERROR_REFRESH_DELAY_IN_MILLIS = -1;
     protected final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
@@ -47,6 +47,8 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     private ArtistNameTextView mArtistTitle;
     protected SeekBar mSeekBar;
     private ImageLoader mImageLoader;
+
+    private ServiceStateReceiver mServiceStateReceiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,7 +161,8 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
         IntentFilter actionFilter = new IntentFilter();
         actionFilter.addAction(MediaPlaybackService.META_CHANGED);
         actionFilter.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
-        getActivity().registerReceiver(mServiceStatusListener, actionFilter);
+        mServiceStateReceiver = new ServiceStateReceiver(this);
+        getActivity().registerReceiver(mServiceStateReceiver, actionFilter);
 
         IntentFilter trackInfoChangedFilter = new IntentFilter();
         trackInfoChangedFilter.addAction(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED);
@@ -222,7 +225,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().unregisterReceiver(mServiceStatusListener);
+        getActivity().unregisterReceiver(mServiceStateReceiver);
         getActivity().unregisterReceiver(mTrackInfoChangedListener);
         mHandler.removeMessages(REFRESH);
     }
@@ -248,18 +251,16 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
         }
     };
 
-    private BroadcastReceiver mServiceStatusListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(MediaPlaybackService.META_CHANGED)) {
-                refreshPlaybackInfoViews();
-                queueNextRefresh(1);
-            } else if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
-                refreshPlayPauseButtonImage();
-            }
-        }
-    };
+    @Override
+    public void onMetadataChanged() {
+        refreshPlaybackInfoViews();
+        queueNextRefresh(1);
+    }
+
+    @Override
+    public void onPlaybackStateChanged() {
+        refreshPlayPauseButtonImage();
+    }
 
     protected boolean refreshPlaybackInfoViews() {
         String trackName = mServiceWrapper.getTrackName();

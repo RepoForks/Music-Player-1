@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.IndicatorCursorAdapter;
 
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
@@ -90,7 +89,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     }
 
     private long[] getCheckedIds(ArrayList<Integer> checkedPositions) {
-        BaseSimpleCursorAdapter adapter = (BaseSimpleCursorAdapter) mAbsListView.getAdapter();
+        IndicatorCursorAdapter adapter = (IndicatorCursorAdapter) mAbsListView.getAdapter();
         Cursor cursor = adapter.getCursor();
         long[] checkedIds = new long[checkedPositions.size()];
         int idColumnIndex = cursor.getColumnIndexOrThrow(mChoosingItemIdColumnName);

@@ -23,11 +23,10 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.NowPlayingCursorLoaderCreator;
 
-public class NowPlayingFragment extends BaseLoaderFragment implements ServiceConnectionObserver{
+public class NowPlayingFragment extends BaseLoaderFragment {
 
     public static String TAG = "now_playing_tag";
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
     private ToolbarStateListener mToolbarStateListener;
 
     public NowPlayingFragment() {
@@ -41,15 +40,11 @@ public class NowPlayingFragment extends BaseLoaderFragment implements ServiceCon
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindToService(getActivity(), this);
-
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected CursorAdapter createCursorAdapter() {
+    protected IndicatorCursorAdapter createCursorAdapter() {
         NowPlayingCursorLoaderCreator loaderCreator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderCreator.getTrackColumnName(),
                 loaderCreator.getAlbumColumnName()};
@@ -96,10 +91,12 @@ public class NowPlayingFragment extends BaseLoaderFragment implements ServiceCon
     }
 
     @Override
-    public void ServiceConnected() {
+    public void onMetadataChanged() {
+
     }
 
     @Override
-    public void ServiceDisconnected() {
+    public void onPlaybackStateChanged() {
+
     }
 }

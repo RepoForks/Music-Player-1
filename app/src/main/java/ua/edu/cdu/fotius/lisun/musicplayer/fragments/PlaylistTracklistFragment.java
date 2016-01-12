@@ -25,11 +25,10 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
 
-public class PlaylistTracklistFragment extends BaseLoaderFragment implements ServiceConnectionObserver{
+public class PlaylistTracklistFragment extends BaseLoaderFragment {
 
     public static final String TAG = "playlist_tracklist";
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
     private ToolbarStateListener mToolbarStateListener;
 
     private long mPlaylistID;
@@ -45,10 +44,6 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment implements Ser
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindToService(getActivity(), this);
-
         mPlaylistID = fetchPlaylistID(getArguments());
 
         Log.d(TAG, "mPlaylistID: " + mPlaylistID);
@@ -95,7 +90,7 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment implements Ser
     }
 
     @Override
-    protected CursorAdapter createCursorAdapter() {
+    protected IndicatorCursorAdapter createCursorAdapter() {
         PlaylistTracksCursorLoaderCreator loaderCreator =
                 (PlaylistTracksCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderCreator.getTrackColumnName(),
@@ -117,10 +112,12 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment implements Ser
     }
 
     @Override
-    public void ServiceConnected() {
+    public void onMetadataChanged() {
+
     }
 
     @Override
-    public void ServiceDisconnected() {
+    public void onPlaybackStateChanged() {
+
     }
 }

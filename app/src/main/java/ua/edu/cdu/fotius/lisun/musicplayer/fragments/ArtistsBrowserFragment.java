@@ -17,19 +17,14 @@ import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.ArtistMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumsCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistCursorLoaderCreator;
 
-public class ArtistsBrowserFragment extends BaseLoaderFragment implements ServiceConnectionObserver {
+public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
     public static final String TAG = "artists";
     public static final String ARTIST_ID_KEY = "artist_id_key";
 
-    //TODO: move to super
-    private MediaPlaybackServiceWrapper mServiceWrapper;
     protected ToolbarStateListener mToolbarStateListener;
 
     public ArtistsBrowserFragment() {
@@ -45,20 +40,17 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment implements Servic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
-        mServiceWrapper.bindToService(getActivity(), this);
     }
 
     @Override
-    protected CursorAdapter createCursorAdapter() {
+    protected IndicatorCursorAdapter createCursorAdapter() {
         ArtistCursorLoaderCreator loaderFactory = (ArtistCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getArtistColumnName(),
                 loaderFactory.getAlbumsQuantityColumnName(),
                 loaderFactory.getTracksQuantityColumnName()};
         int[] to = new int[]{R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity};
 
-        return new BaseSimpleCursorAdapter(getActivity(),
+        return new IndicatorCursorAdapter(getActivity(),
                 R.layout.row_artist_list, from, to);
     }
 
@@ -91,12 +83,12 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment implements Servic
     }
 
     @Override
-    public void ServiceConnected() {
+    public void onMetadataChanged() {
 
     }
 
     @Override
-    public void ServiceDisconnected() {
+    public void onPlaybackStateChanged() {
 
     }
 }

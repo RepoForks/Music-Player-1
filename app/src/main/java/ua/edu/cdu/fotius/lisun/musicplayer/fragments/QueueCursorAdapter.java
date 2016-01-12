@@ -2,16 +2,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.MediaStore;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.View;
 import java.util.HashMap;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.BaseSimpleCursorAdapter;
-
-public class QueueCursorAdapter extends BaseSimpleCursorAdapter {
+public class QueueCursorAdapter extends IndicatorCursorAdapter {
 
 
 

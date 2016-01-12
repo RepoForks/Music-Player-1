@@ -2,21 +2,20 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
-import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
 
-public class AlbumArtCursorAdapter extends BaseSimpleCursorAdapter{
+public class AlbumArtCursorAdapter extends IndicatorCursorAdapter {
 
     private String mAlbumIDColumnName;
     private int mAlbumArtViewResourceId;
     private ImageLoader mImageLoader;
 
-    public AlbumArtCursorAdapter(Context context, int rowLayout, String[] from, int[] to, int albumArtViewResId, String albumIDColumnName) {
+    public AlbumArtCursorAdapter(Context context, int rowLayout, String[] from, int[] to,
+                                 int albumArtViewResId, String albumIDColumnName) {
         super(context, rowLayout, from, to);
         mAlbumIDColumnName = albumIDColumnName;
         mAlbumArtViewResourceId = albumArtViewResId;
