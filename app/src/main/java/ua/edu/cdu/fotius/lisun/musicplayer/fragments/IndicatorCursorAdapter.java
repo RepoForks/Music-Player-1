@@ -20,11 +20,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
  */
 public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
-    public static final int WRONG_INDICATOR_ID = -1;
+    private final String TAG = getClass().getSimpleName();
 
-    private String mIdColumnName;
     private long mCurrentId;
-    private int mIndicatorResource = WRONG_INDICATOR_ID;
 
     public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
@@ -57,22 +55,7 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
             }
         }
 
-        if (mIndicatorResource == WRONG_INDICATOR_ID) return;
-
-        int idIdx = cursor.getColumnIndex(mIdColumnName);
-        if(idIdx == -1) return;
-        long id = cursor.getLong(idIdx);
-
-        View indicator = rowLayout.findViewById(mIndicatorResource);
-        if(indicator == null) return;
-
-        int visibility;
-        if (id == mCurrentId) {
-            visibility = View.VISIBLE;
-        } else {
-            visibility = View.GONE;
-        }
-        indicator.setVisibility(visibility);
+        tryToSetIndicator(rowLayout, cursor);
     }
 
     @Override
@@ -84,9 +67,28 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         }
     }
 
-    public void setIndicatorData(String idColumnName, long currentId, int indicatorResource) {
-        mIdColumnName = idColumnName;
+    private void tryToSetIndicator(View rowLayout, Cursor cursor) {
+        View indicator = rowLayout.findViewById(R.id.play_indicator);
+        /*if resource doesn't contain indicator.*/
+        if(indicator == null) return;
+
+        //TODO: maybe make named constant
+        int idIdx = cursor.getColumnIndexOrThrow("_id");
+        int visibility;
+        long id = cursor.getLong(idIdx);
+        Log.d(TAG, "tryToSetIndicator..._id == " + id);
+
+        if (id == mCurrentId) {
+            Log.d(TAG, "VISIBLE");
+            visibility = View.VISIBLE;
+        } else {
+            visibility = View.GONE;
+        }
+        indicator.setVisibility(visibility);
+    }
+
+    public void setIndicatorFor(long currentId) {
         mCurrentId = currentId;
-        mIndicatorResource = indicatorResource;
+        notifyDataSetChanged();
     }
 }

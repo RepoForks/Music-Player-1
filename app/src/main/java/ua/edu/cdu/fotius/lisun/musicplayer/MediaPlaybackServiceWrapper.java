@@ -275,7 +275,18 @@ public class MediaPlaybackServiceWrapper
             } catch(RemoteException e) {
             }
         }
-        return ERROR_RETURN_VALUE;
+        return AudioStorage.WRONG_ID;
+    }
+
+    public long getArtistID() {
+        if(mService != null) {
+            try {
+                return mService.getArtistId();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return AudioStorage.WRONG_ID;
     }
 
     public long getTrackID() {
@@ -285,7 +296,7 @@ public class MediaPlaybackServiceWrapper
             } catch(RemoteException e) {
             }
         }
-        return ERROR_RETURN_VALUE;
+        return AudioStorage.WRONG_ID;
     }
 
     public void updateCurrentTrackInfo() {

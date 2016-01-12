@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
@@ -97,7 +94,7 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment {
                 loaderCreator.getArtistColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.track_details};
 
-        return new QueueCursorAdapter(getActivity(), R.layout.drag_n_drop_row_layout, from, to,
+        return new QueueCursorAdapter(getActivity(), R.layout.row_drag_n_drop_list, from, to,
                 loaderCreator.getTrackIdColumnName());
     }
 

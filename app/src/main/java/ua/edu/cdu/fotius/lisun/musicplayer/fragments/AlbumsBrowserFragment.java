@@ -94,11 +94,15 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public void onMetadataChanged() {
-
+        mCursorAdapter.setIndicatorFor(mServiceWrapper.getAlbumID());
     }
 
     @Override
     public void onPlaybackStateChanged() {
-
+        if(!mServiceWrapper.isPlaying()) {
+            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
+        } else {
+            mCursorAdapter.setIndicatorFor(mServiceWrapper.getAlbumID());
+        }
     }
 }

@@ -2,15 +2,18 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
@@ -31,9 +34,9 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mToolbarStateListener = (ToolbarStateListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mToolbarStateListener = (ToolbarStateListener) context;
     }
 
 
@@ -84,11 +87,15 @@ public class ArtistsBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public void onMetadataChanged() {
-
+        mCursorAdapter.setIndicatorFor(mServiceWrapper.getArtistID());
     }
 
     @Override
     public void onPlaybackStateChanged() {
-
+        if(!mServiceWrapper.isPlaying()) {
+            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
+        } else {
+            mCursorAdapter.setIndicatorFor(mServiceWrapper.getArtistID());
+        }
     }
 }

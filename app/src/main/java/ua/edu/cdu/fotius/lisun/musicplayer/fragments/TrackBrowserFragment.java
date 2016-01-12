@@ -1,12 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
@@ -26,14 +21,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Album
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AllTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
+
 
 public class TrackBrowserFragment extends BaseLoaderFragment {
 
-    //TODO: refactor this to tracklist
     public static final String TAG = "tracks";
-
 
     protected ToolbarStateListener mToolbarStateListener;
 
@@ -67,10 +60,7 @@ public class TrackBrowserFragment extends BaseLoaderFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Log.d(TAG, "R.layout.fragment_tracks_browser id: " + R.layout.fragment_tracks_browser);
         View v = inflater.inflate(R.layout.fragment_tracks_browser, container, false);
-        Log.d(TAG, "v id: " + v.getId());
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());
@@ -119,18 +109,16 @@ public class TrackBrowserFragment extends BaseLoaderFragment {
 
     @Override
     public void onMetadataChanged() {
-        AbstractTracksCursorLoaderCreator loaderCreator =
-                (AbstractTracksCursorLoaderCreator) mLoaderCreator;
-        mCursorAdapter.setIndicatorData(loaderCreator.getTrackIdColumnName(),
-                mServiceWrapper.getTrackID(), R.id.play_indicator);
-        mCursorAdapter.notifyDataSetChanged();
+        Log.d(TAG, "onMetadataChanged");
+        mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
     }
 
     @Override
     public void onPlaybackStateChanged() {
         if(!mServiceWrapper.isPlaying()) {
-            mCursorAdapter.setIndicatorData(null, -1, IndicatorCursorAdapter.WRONG_INDICATOR_ID);
-            mCursorAdapter.notifyDataSetChanged();
+            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
+        } else {
+            mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
         }
     }
 }

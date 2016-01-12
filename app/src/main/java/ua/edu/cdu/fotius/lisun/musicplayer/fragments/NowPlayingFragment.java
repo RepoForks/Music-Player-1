@@ -1,20 +1,18 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
@@ -33,9 +31,9 @@ public class NowPlayingFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mToolbarStateListener = (ToolbarStateListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mToolbarStateListener = (ToolbarStateListener) context;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class NowPlayingFragment extends BaseLoaderFragment {
                 loaderCreator.getAlbumColumnName()};
         int[] to = new int[]{R.id.track_title, R.id.track_details};
 
-        return new QueueCursorAdapter(getActivity(), R.layout.drag_n_drop_row_layout, from, to,
+        return new QueueCursorAdapter(getActivity(), R.layout.row_drag_n_drop_list, from, to,
                 loaderCreator.getTrackIdColumnName());
     }
 
@@ -92,11 +90,15 @@ public class NowPlayingFragment extends BaseLoaderFragment {
 
     @Override
     public void onMetadataChanged() {
-
+        mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
     }
 
     @Override
     public void onPlaybackStateChanged() {
-
+        if(!mServiceWrapper.isPlaying()) {
+            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
+        } else {
+            mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
+        }
     }
 }

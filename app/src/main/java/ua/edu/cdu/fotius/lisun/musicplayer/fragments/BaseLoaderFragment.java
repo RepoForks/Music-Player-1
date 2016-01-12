@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
@@ -25,6 +26,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 TODO: maybe should distinguish by fragment*/
 public abstract class BaseLoaderFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver, ServiceStateChangesObserver {
+
+    private final String TAG = getClass().getSimpleName();
 
     protected IndicatorCursorAdapter mCursorAdapter;
     protected AbstractCursorLoaderCreator mLoaderCreator;
@@ -113,4 +116,6 @@ public abstract class BaseLoaderFragment extends Fragment
     @Override
     public void ServiceDisconnected() {
     }
+
+
 }
