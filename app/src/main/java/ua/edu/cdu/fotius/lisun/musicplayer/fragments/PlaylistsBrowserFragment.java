@@ -3,27 +3,22 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
 
-public class PlaylistsBrowserFragment extends BaseLoaderFragment {
+public class PlaylistsBrowserFragment extends BaseListFragment {
 
     public static final String TAG = "playlists";
     public static final String PLAYLIST_ID_KEY = "playlist_id_key";
 
     public PlaylistsBrowserFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -59,12 +54,7 @@ public class PlaylistsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onMetadataChanged() {
-
-    }
-
-    @Override
-    public void onPlaybackStateChanged() {
-
-    }
+    protected void setIndicator(PlaybackServiceWrapper serviceWrapper,
+                                IndicatorCursorAdapter adapter,
+                                AbstractCursorLoaderCreator loaderCreator) {}
 }

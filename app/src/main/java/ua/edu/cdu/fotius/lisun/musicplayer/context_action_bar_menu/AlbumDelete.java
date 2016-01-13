@@ -1,15 +1,14 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class AlbumDelete extends Delete implements BaseTracksQueryAsyncTask.Callbacks{
 
     private long mArtistID;
 
-    public AlbumDelete(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper, long artistID) {
+    public AlbumDelete(Fragment fragment, PlaybackServiceWrapper serviceWrapper, long artistID) {
         super(fragment, serviceWrapper);
         mArtistID = artistID;
     }

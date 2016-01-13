@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
@@ -65,6 +66,12 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
                                 replaceFragment(new PlaylistsBrowserFragment(),
                                         PlaylistsBrowserFragment.TAG);
                                 break;
+
+                            case R.id.navigation_item_genres:
+                                replaceFragment(new GenresFragment(),
+                                        PlaylistsBrowserFragment.TAG);
+                                break;
+
                             case R.id.navigation_item_settings:
                                 //TODO: initialize selectedFragment
                                 Toast.makeText(NavigationActivity.this, "Settings", Toast.LENGTH_SHORT).show();

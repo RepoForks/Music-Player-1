@@ -8,7 +8,6 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 import java.util.Vector;
 
@@ -26,7 +25,7 @@ import java.util.Vector;
 // Или class loader может в какой момент быть рассматриваться как "мусор"?
 // Запасным и не очень желательным вариантом есть инициализация данного объекта в ApplicationContext.
 // Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
-public class MediaPlaybackServiceWrapper
+public class PlaybackServiceWrapper
         implements ServiceConnection {
 
     //TODO: maybe its AudioStorage.WRONG_ID
@@ -34,11 +33,11 @@ public class MediaPlaybackServiceWrapper
 
 
 
-    private static MediaPlaybackServiceWrapper instance = null;
+    private static PlaybackServiceWrapper instance = null;
 
-    public static MediaPlaybackServiceWrapper getInstance() {
+    public static PlaybackServiceWrapper getInstance() {
         if (instance == null) {
-            instance = new MediaPlaybackServiceWrapper();
+            instance = new PlaybackServiceWrapper();
         }
         return instance;
     }
@@ -51,7 +50,7 @@ public class MediaPlaybackServiceWrapper
 
     private IMediaPlaybackService mService = null;
 
-    private MediaPlaybackServiceWrapper(){
+    private PlaybackServiceWrapper(){
     }
 
     public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {

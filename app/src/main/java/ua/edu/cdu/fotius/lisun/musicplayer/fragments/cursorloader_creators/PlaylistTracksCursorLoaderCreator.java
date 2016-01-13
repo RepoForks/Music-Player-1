@@ -30,7 +30,7 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
     @Override
     public String[] getProjection() {
         return new String[]{
-                getIdWithinPlaylistColumnName(),
+                getPrimaryColumnName(),
                 getTrackIdColumnName(),
                 getTrackColumnName(),
                 getArtistColumnName(),
@@ -40,12 +40,14 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
 
     @Override
     public String getSelection() {
-        return AudioStorage.PlaylistMember.PLAYLIST_ID + "=?";
+        return null;
+        //return AudioStorage.PlaylistMember.PLAYLIST_ID + "=?";
     }
 
     @Override
     public String[] getSelectionArgs() {
-        return new String[] {Long.toString(mPlaylistId)};
+        return null;
+        //return new String[] {Long.toString(mPlaylistId)};
     }
 
     @Override
@@ -73,8 +75,8 @@ public class PlaylistTracksCursorLoaderCreator extends AbstractTracksCursorLoade
         return AudioStorage.PlaylistMember.ALBUM_ID;
     }
 
-    public String getIdWithinPlaylistColumnName() {
-        return AudioStorage.PlaylistMember.ID_WITHIN_PLAYLIST;
+    public String getPrimaryColumnName() {
+        return AudioStorage.PlaylistMember.PRIMARY_ID;
     }
 
     public String getPlayOrder() {

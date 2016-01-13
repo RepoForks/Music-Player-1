@@ -5,17 +5,15 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
+import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceStateChangesObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceStateReceiver;
@@ -24,15 +22,13 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 
 /*Methods from ServiceConnectionObserver do anything. Interface is needed to distinguish elements connected to service.
 TODO: maybe should distinguish by fragment*/
-public abstract class BaseLoaderFragment extends Fragment
+public abstract class BaseListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver, ServiceStateChangesObserver {
-
-    private final String TAG = getClass().getSimpleName();
 
     protected IndicatorCursorAdapter mCursorAdapter;
     protected AbstractCursorLoaderCreator mLoaderCreator;
     private ToolbarActivity mToolbarActivity;
-    protected MediaPlaybackServiceWrapper mServiceWrapper;
+    protected PlaybackServiceWrapper mServiceWrapper;
 
     private ServiceStateReceiver mServiceStateReceiver;
 
@@ -52,7 +48,7 @@ public abstract class BaseLoaderFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper = PlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
         mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
@@ -102,6 +98,20 @@ public abstract class BaseLoaderFragment extends Fragment
         if(mToolbarActivity != null) {
             mToolbarActivity.hideProgress();
         }
+
+        View v = getActivity().findViewById(R.id.empty);
+        if(v == null) {
+            throw new RuntimeException(
+                    "Your content must have a View " +
+                            "whose id attribute is " +
+                            "'R.id.empty'");
+        }
+
+        if(mCursorAdapter.getCount() > 0) {
+            v.setVisibility(View.GONE);
+        } else {
+            v.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -117,5 +127,21 @@ public abstract class BaseLoaderFragment extends Fragment
     public void ServiceDisconnected() {
     }
 
+    @Override
+    public void onMetadataChanged() {
+        setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);
+    }
 
+    @Override
+    public void onPlaybackStateChanged() {
+        if(!mServiceWrapper.isPlaying()) {
+            mCursorAdapter.setIndicatorFor(null, AudioStorage.WRONG_ID);
+        } else {
+            setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);
+        }
+    }
+
+    protected abstract void setIndicator(PlaybackServiceWrapper serviceWrapper,
+                                         IndicatorCursorAdapter adapter,
+                                         AbstractCursorLoaderCreator loaderCreator);
 }

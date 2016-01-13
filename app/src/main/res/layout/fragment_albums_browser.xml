@@ -3,7 +3,7 @@
     android:layout_height="match_parent" >
 
     <GridView
-        android:id="@+id/grid_container"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="150dp"
@@ -11,5 +11,11 @@
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp">
     </GridView>
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_albums_label" />
     
 </RelativeLayout>

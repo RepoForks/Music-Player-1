@@ -3,10 +3,9 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.NowPlayingActivity;
 
 public class OnShowQueueClickListener implements View.OnClickListener{
@@ -14,9 +13,9 @@ public class OnShowQueueClickListener implements View.OnClickListener{
 
 
     private Context mContext;
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private PlaybackServiceWrapper mServiceWrapper;
 
-    public OnShowQueueClickListener(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
+    public OnShowQueueClickListener(Context context, PlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
         mContext = context;
     }

@@ -1,14 +1,13 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 
 public class Delete extends Command {
 
-    public Delete(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper) {
+    public Delete(Fragment fragment, PlaybackServiceWrapper serviceWrapper) {
         super(fragment, serviceWrapper);
     }
 

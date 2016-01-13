@@ -25,18 +25,30 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
         return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     }
 
+    private boolean isAbleToFormQuery() {
+        return ((mPlayingQueue != null) && (mPlayingQueue.length > 0));
+    }
+
     @Override
     public String[] getProjection() {
-        return new String[]{
-                getTrackIdColumnName(),
-                getTrackColumnName(),
-                getAlbumColumnName()
-        };
+        String[] projection = null;
+        if (isAbleToFormQuery()) {
+            projection = new String[]{
+                    getTrackIdColumnName(),
+                    getTrackColumnName(),
+                    getAlbumColumnName()
+            };
+        }
+        return projection;
     }
 
     @Override
     public String getSelection() {
-        return getTrackIdColumnName() + " IN (" + makeInBody() + ")";
+        String selection = null;
+        if (isAbleToFormQuery()) {
+            selection = getTrackIdColumnName() + " IN (" + makeInBody() + ")";
+        }
+        return selection;
     }
 
     @Override
@@ -47,7 +59,7 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
     private String makeInBody() {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(mPlayingQueue[0]);
-        for(int i = 1; i < mPlayingQueue.length; i++) {
+        for (int i = 1; i < mPlayingQueue.length; i++) {
             stringBuffer.append(", " + mPlayingQueue[i]);
         }
         return stringBuffer.toString();
@@ -55,13 +67,16 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
 
     @Override
     public String getSortOrder() {
-        return "CASE " + getTrackIdColumnName() + makeCaseBody();
-        //return null;
+        String order = null;
+        if (isAbleToFormQuery()) {
+            order = "CASE " + getTrackIdColumnName() + makeCaseBody();
+        }
+        return order;
     }
 
     private String makeCaseBody() {
         StringBuffer stringBuffer = new StringBuffer();
-        for(int i = 0; i < mPlayingQueue.length; i++) {
+        for (int i = 0; i < mPlayingQueue.length; i++) {
             stringBuffer.append(" when " + mPlayingQueue[i] +
                     " then " + i);
         }

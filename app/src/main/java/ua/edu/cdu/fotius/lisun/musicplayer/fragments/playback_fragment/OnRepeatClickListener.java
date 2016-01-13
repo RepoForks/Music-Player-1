@@ -2,7 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.Playlist;
 
@@ -14,7 +14,7 @@ public class OnRepeatClickListener extends BaseRepeatShuffleClickListener {
 
     private RepeatClickedListener mClickedListener;
 
-    public OnRepeatClickListener(MediaPlaybackServiceWrapper serviceWrapper,
+    public OnRepeatClickListener(PlaybackServiceWrapper serviceWrapper,
                                  RepeatClickedListener clickedListener) {
         super(serviceWrapper);
         mClickedListener = clickedListener;
@@ -27,7 +27,7 @@ public class OnRepeatClickListener extends BaseRepeatShuffleClickListener {
 
     private void setRepeatMode(View clickedView) {
         int mode = mServiceWrapper.getRepeatMode();
-        if (mode != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
+        if (mode != PlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             if (mode == Playlist.REPEAT_NONE) {
                 mServiceWrapper.setRepeatMode(Playlist.REPEAT_ALL);
             } else if (mode == Playlist.REPEAT_ALL) {

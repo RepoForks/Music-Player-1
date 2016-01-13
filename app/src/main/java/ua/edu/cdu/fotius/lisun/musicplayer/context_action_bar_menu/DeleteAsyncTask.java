@@ -12,17 +12,17 @@ import java.lang.ref.WeakReference;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AsyncTaskWithProgressBar;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class DeleteAsyncTask extends AsyncTaskWithProgressBar {
 
     private long[] mTrackIds;
-    private WeakReference<MediaPlaybackServiceWrapper> mServiceWrapperReference;
+    private WeakReference<PlaybackServiceWrapper> mServiceWrapperReference;
 
-    public DeleteAsyncTask(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper, long[] tracksId) {
+    public DeleteAsyncTask(Fragment fragment, PlaybackServiceWrapper serviceWrapper, long[] tracksId) {
         super(fragment);
         mTrackIds = tracksId;
-        mServiceWrapperReference = new WeakReference<MediaPlaybackServiceWrapper>(serviceWrapper);
+        mServiceWrapperReference = new WeakReference<PlaybackServiceWrapper>(serviceWrapper);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DeleteAsyncTask extends AsyncTaskWithProgressBar {
     }
 
     private void deleteFromCurrentPlayQueue(Cursor cursor) {
-        MediaPlaybackServiceWrapper serviceWrapper = mServiceWrapperReference.get();
+        PlaybackServiceWrapper serviceWrapper = mServiceWrapperReference.get();
         if (serviceWrapper == null) {
             return;
         }

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
@@ -21,10 +22,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Album
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AllTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.GenreTracksCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.GenresCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
 
 
-public class TrackBrowserFragment extends BaseLoaderFragment {
+public class TrackBrowserFragment extends BaseListFragment {
 
     public static final String TAG = "tracks";
 
@@ -78,9 +81,11 @@ public class TrackBrowserFragment extends BaseLoaderFragment {
         if (extras == null) {
             return new AllTracksCursorLoaderCreator(getActivity());
         }
+
         long artistId = extras.getLong(ArtistsBrowserFragment.ARTIST_ID_KEY, AudioStorage.WRONG_ID);
         long albumId = extras.getLong(AlbumsBrowserFragment.ALBUM_ID_KEY, AudioStorage.WRONG_ID);
         long playlistId = extras.getLong(PlaylistsBrowserFragment.PLAYLIST_ID_KEY, AudioStorage.WRONG_ID);
+        long genreId = extras.getLong(GenresFragment.GENRE_ID_KEY, AudioStorage.WRONG_ID);
 
         if ((artistId != AudioStorage.WRONG_ID) && (albumId != AudioStorage.WRONG_ID)) {
             return new ArtistAlbumTracksCursorLoaderCreator(getActivity(), artistId, albumId);
@@ -88,6 +93,8 @@ public class TrackBrowserFragment extends BaseLoaderFragment {
             return new AlbumTracksCursorLoaderCreator(getActivity(), albumId);
         } else if(playlistId != AudioStorage.WRONG_ID) {
             return new PlaylistTracksCursorLoaderCreator(getActivity(), playlistId);
+        } else if(genreId != AudioStorage.WRONG_ID) {
+            return new GenreTracksCursorLoaderCreator(getActivity(), genreId);
         } else {
             /*this won't be executed, but keep this as "default value"*/
             return new AllTracksCursorLoaderCreator(getActivity());
@@ -108,17 +115,11 @@ public class TrackBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onMetadataChanged() {
-        Log.d(TAG, "onMetadataChanged");
-        mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
-    }
-
-    @Override
-    public void onPlaybackStateChanged() {
-        if(!mServiceWrapper.isPlaying()) {
-            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
-        } else {
-            mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
-        }
+    protected void setIndicator(PlaybackServiceWrapper serviceWrapper,
+                                IndicatorCursorAdapter adapter,
+                                AbstractCursorLoaderCreator loaderCreator) {
+        AbstractTracksCursorLoaderCreator creator =
+                (AbstractTracksCursorLoaderCreator) loaderCreator;
+        adapter.setIndicatorFor(creator.getTrackIdColumnName(), serviceWrapper.getTrackID());
     }
 }

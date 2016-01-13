@@ -2,14 +2,14 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton;
 
 public class OnPlayPauseClickListener implements View.OnClickListener{
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private PlaybackServiceWrapper mServiceWrapper;
 
-    public OnPlayPauseClickListener(MediaPlaybackServiceWrapper serviceWrapper) {
+    public OnPlayPauseClickListener(PlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
     }
 

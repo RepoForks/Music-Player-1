@@ -13,8 +13,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.activities.TrackDetalizationActivity;
 
 public class OnAlbumClickListener extends BaseFragmentItemClickListener{
 
-
-
     private Bundle mArgumentsPassedToFragment;
     private String mAlbumIdColumnName;
     private String mAlbumTitleColumnName;

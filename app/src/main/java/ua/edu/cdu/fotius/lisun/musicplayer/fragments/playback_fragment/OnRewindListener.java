@@ -1,8 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
-import android.util.Log;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class OnRewindListener extends BaseRewindFastForwardListener {
 
@@ -12,7 +10,7 @@ public class OnRewindListener extends BaseRewindFastForwardListener {
 
     private RewindClickedListener mClickedListener;
 
-    public OnRewindListener(MediaPlaybackServiceWrapper serviceWrapper, RewindClickedListener clickedListener) {
+    public OnRewindListener(PlaybackServiceWrapper serviceWrapper, RewindClickedListener clickedListener) {
         super(serviceWrapper);
         mClickedListener = clickedListener;
     }

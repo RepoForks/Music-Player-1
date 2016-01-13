@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
@@ -22,7 +23,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistTracksCursorLoaderCreator;
 
-public class PlaylistTracklistFragment extends BaseLoaderFragment {
+public class PlaylistTracklistFragment extends BaseListFragment {
 
     public static final String TAG = "playlist_tracklist";
 
@@ -109,12 +110,7 @@ public class PlaylistTracklistFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onMetadataChanged() {
-
-    }
-
-    @Override
-    public void onPlaybackStateChanged() {
-
-    }
+    protected void setIndicator(PlaybackServiceWrapper serviceWrapper,
+                                IndicatorCursorAdapter adapter,
+                                AbstractCursorLoaderCreator loaderCreator){}
 }

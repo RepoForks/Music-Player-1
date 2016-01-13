@@ -3,19 +3,18 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 
 public class PlaybackToolbarFragment extends Fragment implements ServiceConnectionObserver{
 
-    protected MediaPlaybackServiceWrapper mServiceWrapper;
+    protected PlaybackServiceWrapper mServiceWrapper;
 
     public PlaybackToolbarFragment() {
     }
@@ -26,7 +25,7 @@ public class PlaybackToolbarFragment extends Fragment implements ServiceConnecti
 
         setRetainInstance(true);
 
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper = PlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
     }
 

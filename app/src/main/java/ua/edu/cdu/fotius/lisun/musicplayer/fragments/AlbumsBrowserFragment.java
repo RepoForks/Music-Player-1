@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,8 @@ import android.widget.GridView;
 import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.AlbumMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
@@ -23,7 +21,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumsCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.ArtistAlbumsCursorLoaderCreator;
 
-public class AlbumsBrowserFragment extends BaseLoaderFragment {
+public class AlbumsBrowserFragment extends BaseListFragment {
 
     public static final String TAG = "albums";
     public static final String ALBUM_ID_KEY = "album_id_key";
@@ -75,7 +73,7 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_albums_browser, container, false);
-        GridView gridView = (GridView) v.findViewById(R.id.grid_container);
+        GridView gridView = (GridView) v.findViewById(R.id.list);
         gridView.setAdapter(mCursorAdapter);
         AbstractAlbumCursorLoaderCreator loaderCreator = (AbstractAlbumCursorLoaderCreator) mLoaderCreator;
         gridView.setOnItemClickListener(new OnAlbumClickListener(getActivity(),
@@ -93,16 +91,11 @@ public class AlbumsBrowserFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onMetadataChanged() {
-        mCursorAdapter.setIndicatorFor(mServiceWrapper.getAlbumID());
-    }
-
-    @Override
-    public void onPlaybackStateChanged() {
-        if(!mServiceWrapper.isPlaying()) {
-            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
-        } else {
-            mCursorAdapter.setIndicatorFor(mServiceWrapper.getAlbumID());
-        }
+    protected void setIndicator(PlaybackServiceWrapper serviceWrapper,
+                                IndicatorCursorAdapter adapter,
+                                AbstractCursorLoaderCreator loaderCreator) {
+        AbstractAlbumCursorLoaderCreator creator =
+                (AbstractAlbumCursorLoaderCreator) loaderCreator;
+        adapter.setIndicatorFor(creator.getAlbumIdColumnName(), mServiceWrapper.getAlbumID());
     }
 }

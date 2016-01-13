@@ -2,7 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.Playlist;
 
@@ -14,7 +14,7 @@ public class OnShuffleClickListener extends BaseRepeatShuffleClickListener {
 
     private ShuffleClickedListener mClickedListener;
 
-    public OnShuffleClickListener(MediaPlaybackServiceWrapper serviceWrapper,
+    public OnShuffleClickListener(PlaybackServiceWrapper serviceWrapper,
                                   ShuffleClickedListener clickedListener) {
         super(serviceWrapper);
         mClickedListener = clickedListener;
@@ -27,7 +27,7 @@ public class OnShuffleClickListener extends BaseRepeatShuffleClickListener {
 
     private void setShuffleMode(View clickedView) {
         int shuffle =  mServiceWrapper.getShuffleMode();
-        if (shuffle != MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE) {
+        if (shuffle != PlaybackServiceWrapper.ERROR_RETURN_VALUE) {
             /*As we entered this method we clicked shuffle button for specific album
             * so only two shuffle mode available. "Party shuffle" isn't available in this case*/
             //TODO: add party shuffle in toolbar menu

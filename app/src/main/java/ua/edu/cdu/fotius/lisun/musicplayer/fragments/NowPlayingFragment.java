@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
@@ -21,7 +21,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.NowPlayingCursorLoaderCreator;
 
-public class NowPlayingFragment extends BaseLoaderFragment {
+public class NowPlayingFragment extends BaseListFragment {
 
     public static String TAG = "now_playing_tag";
 
@@ -89,16 +89,9 @@ public class NowPlayingFragment extends BaseLoaderFragment {
     }
 
     @Override
-    public void onMetadataChanged() {
-        mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
-    }
-
-    @Override
-    public void onPlaybackStateChanged() {
-        if(!mServiceWrapper.isPlaying()) {
-            mCursorAdapter.setIndicatorFor(AudioStorage.WRONG_ID);
-        } else {
-            mCursorAdapter.setIndicatorFor(mServiceWrapper.getTrackID());
-        }
+    protected void setIndicator(PlaybackServiceWrapper serviceWrapper, IndicatorCursorAdapter adapter,
+                                AbstractCursorLoaderCreator loaderCreator) {
+        NowPlayingCursorLoaderCreator creator = (NowPlayingCursorLoaderCreator)loaderCreator;
+        adapter.setIndicatorFor(creator.getTrackIdColumnName(), serviceWrapper.getTrackID());
     }
 }

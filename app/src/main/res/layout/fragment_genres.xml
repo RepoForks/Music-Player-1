@@ -13,6 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/no_users_playlists_label" />
+        android:text="@string/no_genres_label" />
 
 </RelativeLayout>

@@ -2,13 +2,13 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public abstract class BaseRepeatShuffleClickListener implements View.OnClickListener{
 
-    protected MediaPlaybackServiceWrapper mServiceWrapper;
+    protected PlaybackServiceWrapper mServiceWrapper;
 
-    public BaseRepeatShuffleClickListener(MediaPlaybackServiceWrapper serviceWrapper) {
+    public BaseRepeatShuffleClickListener(PlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
     }
 

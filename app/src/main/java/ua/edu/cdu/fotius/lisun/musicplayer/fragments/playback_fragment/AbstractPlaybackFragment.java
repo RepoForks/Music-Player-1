@@ -9,17 +9,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.ServiceStateChangesObserver;
@@ -39,7 +37,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     protected final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
-    protected MediaPlaybackServiceWrapper mServiceWrapper;
+    protected PlaybackServiceWrapper mServiceWrapper;
 
     private ImageViewForLoader mAlbumArt;
     private PlayPauseButton mPlayButton;
@@ -56,7 +54,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
 
         setRetainInstance(true);
 
-        mServiceWrapper = MediaPlaybackServiceWrapper.getInstance();
+        mServiceWrapper = PlaybackServiceWrapper.getInstance();
         mServiceWrapper.bindToService(getActivity(), this);
         mImageLoader = new ImageLoader(getActivity());
     }
@@ -217,7 +215,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
         mArtistTitle.setName("");
         mSeekBar.setProgress(0);
         //this will set default image
-        mImageLoader.load(MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE)
+        mImageLoader.load(PlaybackServiceWrapper.ERROR_RETURN_VALUE)
                 .withDefault(R.drawable.default_album_art_512dp).into(mAlbumArt);
         //TODO: maybe go to next song
     }
@@ -268,7 +266,7 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
         long albumID = mServiceWrapper.getAlbumID();
 
         if ((trackName == null) || (artistName == null)
-                || (albumID == MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE)) {
+                || (albumID == PlaybackServiceWrapper.ERROR_RETURN_VALUE)) {
             refreshViewsOnError();
             return false;
         }

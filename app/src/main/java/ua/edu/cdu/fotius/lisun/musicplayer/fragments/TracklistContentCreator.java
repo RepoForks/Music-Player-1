@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.BaseMenuCommandSet;
-import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
 
@@ -43,7 +42,7 @@ public class TracklistContentCreator extends BaseTracklistContentCreator{
     }
 
     @Override
-    public BaseMenuCommandSet getMenuCommandSet(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper) {
+    public BaseMenuCommandSet getMenuCommandSet(Fragment fragment, PlaybackServiceWrapper serviceWrapper) {
         return new TrackMenuCommandSet(fragment, serviceWrapper);
     }
 

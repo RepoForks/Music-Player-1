@@ -1,17 +1,16 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
-import android.util.Log;
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class OnPreviousClickListener implements View.OnClickListener{
 
 
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private PlaybackServiceWrapper mServiceWrapper;
 
-    public OnPreviousClickListener(MediaPlaybackServiceWrapper serviceWrapper) {
+    public OnPreviousClickListener(PlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
     }
 

@@ -6,11 +6,11 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class AsRingtone extends Command {
 
-    public AsRingtone(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper) {
+    public AsRingtone(Fragment fragment, PlaybackServiceWrapper serviceWrapper) {
         super(fragment, serviceWrapper);
     }
 

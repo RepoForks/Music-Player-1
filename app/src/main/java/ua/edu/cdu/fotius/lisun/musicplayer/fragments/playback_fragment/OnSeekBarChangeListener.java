@@ -2,7 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
 import android.widget.SeekBar;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class OnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
 
@@ -13,10 +13,10 @@ public class OnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
     }
 
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private PlaybackServiceWrapper mServiceWrapper;
     private SeekBarProgressChangedListener mChangerListener;
 
-    public OnSeekBarChangeListener(MediaPlaybackServiceWrapper serviceWrapper,
+    public OnSeekBarChangeListener(PlaybackServiceWrapper serviceWrapper,
                                    SeekBarProgressChangedListener progressChangedListener) {
         mServiceWrapper = serviceWrapper;
         mChangerListener = progressChangedListener;

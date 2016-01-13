@@ -22,7 +22,8 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
     private final String TAG = getClass().getSimpleName();
 
-    private long mCurrentId;
+    private long mCurrentId = AudioStorage.WRONG_ID;
+    private String mIdColumnName = null;
 
     public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
@@ -72,14 +73,19 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         /*if resource doesn't contain indicator.*/
         if(indicator == null) return;
 
-        //TODO: maybe make named constant
-        int idIdx = cursor.getColumnIndexOrThrow("_id");
-        int visibility;
-        long id = cursor.getLong(idIdx);
-        Log.d(TAG, "tryToSetIndicator..._id == " + id);
+        if(mCurrentId == AudioStorage.WRONG_ID) {
+            indicator.setVisibility(View.GONE);
+            return;
+        }
 
+        Log.d(TAG, "ID Column Name: " + mIdColumnName);
+        Log.d(TAG, "mCurrentId: " + mCurrentId);
+
+        int idIdx = cursor.getColumnIndexOrThrow(mIdColumnName);
+        long id = cursor.getLong(idIdx);
+
+        int visibility;
         if (id == mCurrentId) {
-            Log.d(TAG, "VISIBLE");
             visibility = View.VISIBLE;
         } else {
             visibility = View.GONE;
@@ -87,8 +93,9 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         indicator.setVisibility(visibility);
     }
 
-    public void setIndicatorFor(long currentId) {
+    public void setIndicatorFor(String idColumnName, long currentId) {
         mCurrentId = currentId;
+        mIdColumnName = idColumnName;
         notifyDataSetChanged();
     }
 }

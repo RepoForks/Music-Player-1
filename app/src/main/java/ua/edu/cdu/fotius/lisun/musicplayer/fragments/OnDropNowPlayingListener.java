@@ -2,14 +2,14 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import java.util.HashMap;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
 
 public class OnDropNowPlayingListener implements DragNDropListView.DropListener{
 
-    private MediaPlaybackServiceWrapper mServiceWrapper;
+    private PlaybackServiceWrapper mServiceWrapper;
 
-    public OnDropNowPlayingListener(MediaPlaybackServiceWrapper serviceWrapper) {
+    public OnDropNowPlayingListener(PlaybackServiceWrapper serviceWrapper) {
         mServiceWrapper = serviceWrapper;
     }
 

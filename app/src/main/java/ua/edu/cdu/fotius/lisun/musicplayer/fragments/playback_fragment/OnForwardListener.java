@@ -1,6 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 
 public class OnForwardListener extends BaseRewindFastForwardListener {
 
@@ -11,7 +11,7 @@ public class OnForwardListener extends BaseRewindFastForwardListener {
     private ForwardClickedListener mClickedListener;
 
 
-    public OnForwardListener(MediaPlaybackServiceWrapper serviceWrapper, ForwardClickedListener clickedListener) {
+    public OnForwardListener(PlaybackServiceWrapper serviceWrapper, ForwardClickedListener clickedListener) {
         super(serviceWrapper);
         mClickedListener = clickedListener;
     }
