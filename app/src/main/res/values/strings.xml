@@ -80,16 +80,13 @@
     <string name="artist_label">Artist</string>
     <string name="album_label">Album</string>
     <string name="year_label">Year</string>
+    <string name="query_track_info_error">Something went wrong. Can\'t retrieve track data.</string>
 
     <!--Activities-->
     <string name="navigation_activity_title">@string/app_name</string>
     <string name="default_albums_detalization_activity_title">@string/albums_label</string>
     <string name="default_track_detalization_activity_title">@string/songs_label</string>
     <string name="default_edit_info_activity">Edit Info</string>
-
-    <!--EditInfoActivity-->
-    <string name="edit_info_done">Done</string>
-    <string name="edit_info_cancel">Cancel</string>
 
     <!--TrackInfoActivity/Fragment-->
     <string name="invalid_input">Data is invalid at %1$s field. %2$s</string>

@@ -15,7 +15,6 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
@@ -27,24 +26,14 @@ public class PlaylistTracklistFragment extends BaseListFragment {
 
     public static final String TAG = "playlist_tracklist";
 
-    private ToolbarStateListener mToolbarStateListener;
-
     private long mPlaylistID;
 
     public PlaylistTracklistFragment() {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mToolbarStateListener = (ToolbarStateListener) activity;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         mPlaylistID = fetchPlaylistID(getArguments());
-
-        Log.d(TAG, "mPlaylistID: " + mPlaylistID);
 
         if(mPlaylistID == AudioStorage.WRONG_ID) {
             throw new RuntimeException("Playlist id should be passed " +
@@ -74,8 +63,8 @@ public class PlaylistTracklistFragment extends BaseListFragment {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         PlaylistTracksCursorLoaderCreator loaderCreator =
                 (PlaylistTracksCursorLoaderCreator) mLoaderCreator;
-        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(this, mServiceWrapper),
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), listView,
+                new TrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }

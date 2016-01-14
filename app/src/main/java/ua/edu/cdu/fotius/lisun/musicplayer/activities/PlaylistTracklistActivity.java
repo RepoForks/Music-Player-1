@@ -5,7 +5,7 @@ import android.os.Bundle;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistTracklistFragment;
 
-public class PlaylistTracklistActivity extends ToolbarActivity implements ToolbarStateListener{
+public class PlaylistTracklistActivity extends ToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +23,5 @@ public class PlaylistTracklistActivity extends ToolbarActivity implements Toolba
                 .getString(R.string.playlist_tracklist_default_toolbar_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
-    }
-
-    @Override
-    public void showToolbar() {
-
-    }
-
-    @Override
-    public void hideToolbar() {
-
     }
 }

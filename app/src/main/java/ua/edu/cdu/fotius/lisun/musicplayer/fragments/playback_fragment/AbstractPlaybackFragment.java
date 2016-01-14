@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     protected final long ERROR_REFRESH_DELAY_IN_MILLIS = -1;
     protected final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
+
+    private final String TAG = getClass().getSimpleName();
 
     protected PlaybackServiceWrapper mServiceWrapper;
 
@@ -162,10 +165,6 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
         mServiceStateReceiver = new ServiceStateReceiver(this);
         getActivity().registerReceiver(mServiceStateReceiver, actionFilter);
 
-        IntentFilter trackInfoChangedFilter = new IntentFilter();
-        trackInfoChangedFilter.addAction(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED);
-        getActivity().registerReceiver(mTrackInfoChangedListener, trackInfoChangedFilter);
-
         long nextRefreshDelay = refreshRepeatedlyUpdateableViews();
         queueNextRefresh(nextRefreshDelay);
         refreshPlayPauseButtonImage();
@@ -224,7 +223,6 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
     public void onStop() {
         super.onStop();
         getActivity().unregisterReceiver(mServiceStateReceiver);
-        getActivity().unregisterReceiver(mTrackInfoChangedListener);
         mHandler.removeMessages(REFRESH);
     }
 
@@ -278,22 +276,6 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
 
         return true;
     }
-
-    private BroadcastReceiver mTrackInfoChangedListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(EditTrackInfoFragment.ACTION_TRACK_INFO_CHANGED)) {
-                long changedInfoTrackId = intent.getLongExtra(EditTrackInfoFragment.TRACK_ID_KEY,
-                        AudioStorage.WRONG_ID);
-                if((changedInfoTrackId != AudioStorage.WRONG_ID)
-                        && (changedInfoTrackId == mServiceWrapper.getTrackID())) {
-                    mServiceWrapper.updateCurrentTrackInfo();
-                    refreshPlaybackInfoViews();
-                }
-            }
-        }
-    };
 
     @Override
     public void ServiceConnected() {

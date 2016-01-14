@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import java.lang.ref.WeakReference;
+
 import ua.edu.cdu.fotius.lisun.musicplayer.AsyncTaskWithProgressBar;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoQueryCreator;
 
@@ -13,13 +15,13 @@ public class UpdateTrackInfoAsyncTask extends AsyncTaskWithProgressBar{
         public void updateCompleted();
     }
 
-    private Callback mCallback;
+    private WeakReference<Callback> mCallback;
     private EditInfoQueryCreator mQueryCreator;
     private ContentValues mContentValues;
 
     public UpdateTrackInfoAsyncTask(Fragment fragment, ContentValues contentValues, EditInfoQueryCreator queryCreator, Callback callback) {
         super(fragment);
-        mCallback = callback;
+        mCallback = new WeakReference<Callback>(callback);
         mQueryCreator = queryCreator;
         mContentValues = contentValues;
     }
@@ -27,12 +29,10 @@ public class UpdateTrackInfoAsyncTask extends AsyncTaskWithProgressBar{
     @Override
     protected Object doInBackground(Object... params) {
         super.doInBackground(params);
-
         Context context = mFragmentWrapper.getActivity();
         if(context == null) {
             return null;
         }
-
         context.getContentResolver().update(mQueryCreator.getUri(),
                 mContentValues, mQueryCreator.getSelection(),
                 mQueryCreator.getSelectionArgs());
@@ -41,7 +41,10 @@ public class UpdateTrackInfoAsyncTask extends AsyncTaskWithProgressBar{
 
     @Override
     protected void onPostExecute(Object o) {
+        Callback callback = mCallback.get();
+        if(callback != null) {
+            callback.updateCompleted();
+        }
         super.onPostExecute(o);
-        mCallback.updateCompleted();
     }
 }

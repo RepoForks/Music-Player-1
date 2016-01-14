@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
 
 
-public class NavigationActivity extends SlidingPanelActivity implements ToolbarStateListener {
+public class NavigationActivity extends SlidingPanelActivity {
+
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,14 +53,14 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
                         //if tending to replace with the same fragment don't do this, because this will call
                         //Fragment#OnCreate() where database time consuming operations are performed
                         switch (menuItem.getItemId()){
-                            case R.id.navigation_item_artists:
+                            case R.id.navigation_item_artists:{
                                 replaceFragment(new ArtistsBrowserFragment(),
                                         ArtistsBrowserFragment.TAG);
-                                break;
-                            case R.id.navigation_item_albums:
+                                break;}
+                            case R.id.navigation_item_albums: {
                                 replaceFragment(new AlbumsBrowserFragment(),
                                         AlbumsBrowserFragment.TAG);
-                                break;
+                                break;}
                             case R.id.navigation_item_songs:
                                 replaceFragment(new TrackBrowserFragment(),
                                         TrackBrowserFragment.TAG);
@@ -98,15 +101,5 @@ public class NavigationActivity extends SlidingPanelActivity implements ToolbarS
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void showToolbar() {
-        mToolbar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideToolbar() {
-        mToolbar.setVisibility(View.GONE);
     }
 }

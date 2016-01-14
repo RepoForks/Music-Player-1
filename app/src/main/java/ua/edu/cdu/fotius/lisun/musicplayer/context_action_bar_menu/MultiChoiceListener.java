@@ -3,31 +3,29 @@ package ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.IndicatorCursorAdapter;
 
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
-
-    private ToolbarStateListener mToolbarStateListener;
     private AbsListView mAbsListView;
     private BaseMenuCommandSet mBaseMenuCommandsSet;
     private Context mContext;
     private String mChoosingItemIdColumnName;
-    private TextView mActionModeTitleView;
 
-    public MultiChoiceListener(Context context, ToolbarStateListener toolbarStateListener,
+    public MultiChoiceListener(Context context,
                                AbsListView absListView, BaseMenuCommandSet baseMenuCommandSet, String choosingItemIdColumnName){
-        mToolbarStateListener = toolbarStateListener;
         mAbsListView = absListView;
         mBaseMenuCommandsSet = baseMenuCommandSet;
         mContext = context;
@@ -40,21 +38,17 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     }
 
     @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        mToolbarStateListener.showToolbar();
-        mAbsListView.clearChoices();
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        Resources resources = mContext.getResources();
+        mode.setTitle(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
+        initializeMenu(menu);
+        return true;
     }
 
     @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService
-//                (Context.LAYOUT_INFLATER_SERVICE);
-//        mActionModeTitleView = (TextView)inflater.inflate(R.layout.action_mode_title);
-//        mode.setCustomView(mAbsListView);
-
-        initializeMenu(menu);
-        mToolbarStateListener.hideToolbar();
-        return true;
+    public void onDestroyActionMode(ActionMode mode) {
+        //mToolbarStateListener.showToolbar();
+        mAbsListView.clearChoices();
     }
 
     private void initializeMenu(Menu menu) {
@@ -111,6 +105,5 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
         }
         Resources resources = mContext.getResources();
         mode.setTitle(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
-//        ((TextView)mode.getCustomView()).setText(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
     }
 }

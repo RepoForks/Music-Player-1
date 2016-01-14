@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
+
+import java.util.List;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
@@ -24,6 +28,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Abstr
 TODO: maybe should distinguish by fragment*/
 public abstract class BaseListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver, ServiceStateChangesObserver {
+
+    private final String TAG = getClass().getSimpleName();
 
     protected IndicatorCursorAdapter mCursorAdapter;
     protected AbstractCursorLoaderCreator mLoaderCreator;
@@ -79,9 +85,17 @@ public abstract class BaseListFragment extends Fragment
     @Override
     public void onResume() {
         super.onPause();
-        if(mToolbarActivity != null) {
+        if (mToolbarActivity != null) {
             mToolbarActivity.showProgress();
         }
+
+        List<Fragment> fragments = mToolbarActivity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            Log.d(TAG, "onResume" + f);
+        }
+
+        Log.d(TAG, "onResume.Current Fragment == " + this);
+
         getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
@@ -95,19 +109,19 @@ public abstract class BaseListFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
-        if(mToolbarActivity != null) {
-            mToolbarActivity.hideProgress();
-        }
+        if (mToolbarActivity == null) return;
 
-        View v = getActivity().findViewById(R.id.empty);
-        if(v == null) {
+        mToolbarActivity.hideProgress();
+        View v = mToolbarActivity.findViewById(R.id.empty);
+
+        if (v == null) {
             throw new RuntimeException(
                     "Your content must have a View " +
                             "whose id attribute is " +
                             "'R.id.empty'");
         }
 
-        if(mCursorAdapter.getCount() > 0) {
+        if (mCursorAdapter.getCount() > 0) {
             v.setVisibility(View.GONE);
         } else {
             v.setVisibility(View.VISIBLE);
@@ -134,7 +148,7 @@ public abstract class BaseListFragment extends Fragment
 
     @Override
     public void onPlaybackStateChanged() {
-        if(!mServiceWrapper.isPlaying()) {
+        if (!mServiceWrapper.isPlaying()) {
             mCursorAdapter.setIndicatorFor(null, AudioStorage.WRONG_ID);
         } else {
             setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);

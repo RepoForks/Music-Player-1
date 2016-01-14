@@ -5,7 +5,7 @@ import android.os.Bundle;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.NowPlayingFragment;
 
-public class NowPlayingActivity extends ToolbarActivity implements ToolbarStateListener {
+public class NowPlayingActivity extends ToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,15 +19,5 @@ public class NowPlayingActivity extends ToolbarActivity implements ToolbarStateL
         setTitle(getResources().getString(R.string.now_playing_activity_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
-    }
-
-    @Override
-    public void showToolbar() {
-
-    }
-
-    @Override
-    public void hideToolbar() {
-
     }
 }

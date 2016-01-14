@@ -20,8 +20,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.BaseNameTextView;
  */
 public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
-    private final String TAG = getClass().getSimpleName();
-
     private long mCurrentId = AudioStorage.WRONG_ID;
     private String mIdColumnName = null;
 
@@ -77,9 +75,6 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
             indicator.setVisibility(View.GONE);
             return;
         }
-
-        Log.d(TAG, "ID Column Name: " + mIdColumnName);
-        Log.d(TAG, "mCurrentId: " + mCurrentId);
 
         int idIdx = cursor.getColumnIndexOrThrow(mIdColumnName);
         long id = cursor.getLong(idIdx);

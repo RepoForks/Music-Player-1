@@ -30,8 +30,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class SlidingUpPanelLayout extends ViewGroup {
 
-    private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();
-
     /**
      * Default peeking out panel height
      */
@@ -930,8 +928,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent ev) {
-
-        Log.d(TAG, "SlidingPanel.OnTouchEvent");
         if (!isEnabled() || !isTouchEnabled()) {
             return super.onTouchEvent(ev);
         }
@@ -946,7 +942,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-        Log.d(TAG, "SlidingPanel.DispatchTouchEvent");
         final int action = MotionEventCompat.getActionMasked(ev);
 
         if (!isEnabled() || !isTouchEnabled() || (mIsUnableToDrag && action != MotionEvent.ACTION_DOWN)) {
@@ -1336,9 +1331,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-
-        Log.e(TAG, "Layout.onRestoreInstanceState()");
-
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         mSlideState = ss.mSlideState != null ? ss.mSlideState : DEFAULT_SLIDE_STATE;

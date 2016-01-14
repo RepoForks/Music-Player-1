@@ -1638,6 +1638,7 @@ public class MediaPlaybackService extends Service {
 
     public void updateCurrentTrackInfo() {
         mCursor = getCursorForId(mPlaylist.getCurrentTrack());
+        notifyChange(META_CHANGED);
     }
 
     /*

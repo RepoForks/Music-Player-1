@@ -3,6 +3,9 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
+
+import java.lang.ref.WeakReference;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.AsyncTaskWithProgressBar;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.EditInfoActivity.EditInfoQueryCreator;
@@ -14,12 +17,14 @@ public class QueryTrackInfoAsyncTask extends AsyncTaskWithProgressBar{
         public void queryCompleted(Cursor c);
     }
 
-    private Callback mCallback;
+    /*Callback can be Fragment or Activity
+    which can be destroyed anytime*/
+    private WeakReference<Callback> mCallback;
     private EditInfoQueryCreator mQueryCreator;
 
     public QueryTrackInfoAsyncTask(Fragment fragment, EditInfoQueryCreator queryCreator, Callback callback) {
         super(fragment);
-        mCallback = callback;
+        mCallback = new WeakReference<Callback>(callback);
         mQueryCreator = queryCreator;
     }
 
@@ -41,7 +46,10 @@ public class QueryTrackInfoAsyncTask extends AsyncTaskWithProgressBar{
 
     @Override
     protected void onPostExecute(Object obj) {
-        mCallback.queryCompleted((Cursor) obj);
+        Callback callback = mCallback.get();
+        if(callback != null) {
+            callback.queryCompleted((Cursor) obj);
+        }
         super.onPostExecute(obj);
     }
 }

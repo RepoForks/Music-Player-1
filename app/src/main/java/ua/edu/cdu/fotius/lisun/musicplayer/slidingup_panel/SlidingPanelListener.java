@@ -18,8 +18,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackT
 
 public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
 
-
-
     private boolean mIsConcealableViewsVisible;
 
     private DrawerLayout mDrawerLayout = null;
@@ -34,16 +32,15 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
     @Override
     public void onPanelSlide(View panel, float slideOffset) {
         if ((slideOffset > 0.6) && mIsConcealableViewsVisible) {
-           showFragmentToolbar(panel);
+           showFragmentToolbar();
         }
 
         if ((slideOffset < 0.6) && !mIsConcealableViewsVisible) {
-            showDockPanel(panel);
+            showDockPanel();
         }
     }
 
-    private void showDockPanel(View panel) {
-        List<Fragment> list = mFragmentManager.getFragments();
+    private void showDockPanel() {
         mFragmentManager.beginTransaction()
                 .replace(R.id.drag_handler_fragment_container, new DockPlaybackFragment(),
                         SlidingPanelActivity.FRAGMENT_TAG).commit();
@@ -51,7 +48,7 @@ public class SlidingPanelListener implements SlidingUpPanelLayout.PanelSlideList
         mIsConcealableViewsVisible = true;
     }
 
-    private void showFragmentToolbar(View panel) {
+    private void showFragmentToolbar() {
         mFragmentManager.beginTransaction()
                 .replace(R.id.drag_handler_fragment_container, new PlaybackToolbarFragment(),
                         SlidingPanelActivity.FRAGMENT_TAG).commit();

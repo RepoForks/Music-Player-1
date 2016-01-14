@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
@@ -13,7 +14,6 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.AlbumMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractAlbumCursorLoaderCreator;
@@ -26,15 +26,8 @@ public class AlbumsBrowserFragment extends BaseListFragment {
     public static final String TAG = "albums";
     public static final String ALBUM_ID_KEY = "album_id_key";
     private Bundle mExtras;
-    protected ToolbarStateListener mToolbarStateListener;
 
     private long mArtistID = AudioStorage.WRONG_ID;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mToolbarStateListener = (ToolbarStateListener) activity;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,8 +73,9 @@ public class AlbumsBrowserFragment extends BaseListFragment {
                 mCursorAdapter, mExtras,
                 loaderCreator.getAlbumIdColumnName(), loaderCreator.getAlbumColumnName()));
         gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        gridView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, gridView, new AlbumMenuCommandSet(this, mServiceWrapper, mArtistID),  loaderCreator.getAlbumIdColumnName()));
+        gridView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), gridView,
+                new AlbumMenuCommandSet(this, mServiceWrapper, mArtistID),
+                loaderCreator.getAlbumIdColumnName()));
         return v;
     }
 

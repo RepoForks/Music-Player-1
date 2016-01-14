@@ -5,49 +5,49 @@
     <TextView
         android:id="@+id/title_label"
         android:text="@string/title_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/title_input"
         android:layout_below="@+id/title_label"
         android:contentDescription="@string/title_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView.EditText" />
 
     <TextView
         android:id="@+id/artist_label"
         android:layout_below="@+id/title_input"
         android:text="@string/artist_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/artist_input"
         android:layout_below="@+id/artist_label"
         android:contentDescription="@string/artist_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView.EditText" />
 
     <TextView
         android:id="@+id/album_label"
         android:text="@string/album_label"
         android:layout_below="@+id/artist_input"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/album_input"
         android:contentDescription="@string/album_label"
         android:layout_below="@+id/album_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView.EditText" />
 
     <TextView
         android:id="@+id/year_label"
         android:text="@string/year_label"
         android:layout_below="@+id/album_input"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.EditTextWithValidation
         android:id="@+id/year_input"
         android:contentDescription="@string/year_label"
         android:layout_below="@+id/year_label"
-        style="@style/EditInfoActivityView" />
+        style="@style/EditInfoView.EditText" />
 
     <ImageButton
         android:id="@+id/done_editing"

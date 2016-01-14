@@ -7,7 +7,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
 
-public class AlbumsDetalizationActivity extends SlidingPanelActivity implements ToolbarStateListener{
+public class AlbumsDetalizationActivity extends SlidingPanelActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +24,5 @@ public class AlbumsDetalizationActivity extends SlidingPanelActivity implements 
         setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
         setPanelSlideListener(new SlidingPanelListener(null, getSupportFragmentManager()));
-    }
-
-    @Override
-    public void showToolbar() {
-        mToolbar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideToolbar() {
-        mToolbar.setVisibility(View.GONE);
     }
 }

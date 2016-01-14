@@ -14,7 +14,6 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarStateListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
@@ -28,20 +27,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.Playl
 
 
 public class TrackBrowserFragment extends BaseListFragment {
-
     public static final String TAG = "tracks";
-
-    protected ToolbarStateListener mToolbarStateListener;
 
     private Bundle mPassedArguments;
 
     public TrackBrowserFragment() {
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mToolbarStateListener = (ToolbarStateListener) context;
     }
 
     @Override
@@ -69,8 +59,8 @@ public class TrackBrowserFragment extends BaseListFragment {
         listView.setOnItemClickListener(createOnItemClickListener());
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         AbstractTracksCursorLoaderCreator loaderCreator = (AbstractTracksCursorLoaderCreator) mLoaderCreator;
-        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(),
-                mToolbarStateListener, listView, new TrackMenuCommandSet(this, mServiceWrapper),
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), listView,
+                new TrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }
