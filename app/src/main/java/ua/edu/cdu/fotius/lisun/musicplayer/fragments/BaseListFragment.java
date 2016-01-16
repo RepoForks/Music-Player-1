@@ -88,15 +88,11 @@ public abstract class BaseListFragment extends Fragment
         if (mToolbarActivity != null) {
             mToolbarActivity.showProgress();
         }
-
-        List<Fragment> fragments = mToolbarActivity.getSupportFragmentManager().getFragments();
-        for (Fragment f : fragments) {
-            Log.d(TAG, "onResume" + f);
-        }
-
-        Log.d(TAG, "onResume.Current Fragment == " + this);
-
         getLoaderManager().initLoader(mLoaderCreator.getLoaderId(), null, this);
+    }
+
+    public void restartLoader() {
+        getLoaderManager().restartLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
     protected abstract IndicatorCursorAdapter createCursorAdapter();
@@ -108,6 +104,9 @@ public abstract class BaseListFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        Log.d(TAG, "onLoadFinished(). Data size: " + data.getCount());
+
         mCursorAdapter.swapCursor(data);
         if (mToolbarActivity == null) return;
 

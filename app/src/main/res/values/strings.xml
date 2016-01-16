@@ -100,6 +100,7 @@
     <string name="cab_menu_add_to_playlist">Add to playlist</string>
     <string name="cab_menu_as_ringtone">As ringtone</string>
     <string name="cab_menu_edit_into">Edit info</string>
+    <string name="cab_remove_from_queue">Remove from queue</string>
     <string name="title_activity_now_playing">NowPlayingActivity</string>
 
     <!--NowPlayingActivity-->

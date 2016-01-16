@@ -39,4 +39,5 @@ interface IMediaPlaybackService
     int getMediaMountedCount();
     int getAudioSessionId();
     void updateCurrentTrackInfo();
+    void removeFromQueue(in long[] ids);
 }

@@ -40,11 +40,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager
  */
 public class MediaPlaybackService extends Service {
 
-    /** used to specify whether enqueue() should start playing
+    /**
+     * used to specify whether enqueue() should start playing
      * the new list of files right away, next or once all the currently
      * queued files have been played
      */
-
 
 
     public static final int NOW = 1;
@@ -65,11 +65,11 @@ public class MediaPlaybackService extends Service {
     public static final int TRACK_WENT_TO_NEXT = 7;
     public static final int ACQUIRE_WAKELOCK = 8;
     private static final int ACQUIRE_WAKELOCK_TIMEOUT = 30000;
-//
+    //
     private MultiPlayer mPlayer;
     private String mFileToPlay;
     private int mMediaMountedCount = 0;
-    private long [] mAutoShuffleList = null;
+    private long[] mAutoShuffleList = null;
 
     private PlaybackHistory mHistory;
     private Cursor mCursor;
@@ -78,7 +78,7 @@ public class MediaPlaybackService extends Service {
     private static final String LOGTAG = "MediaPlaybackService";
     private final Shuffler mRand = new Shuffler();
     private int mOpenFailedCounter = 0;
-    String[] mCursorCols = new String[] {
+    String[] mCursorCols = new String[]{
             "audio._id AS _id",             // index must match IDCOLIDX below
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.ALBUM,
@@ -121,6 +121,7 @@ public class MediaPlaybackService extends Service {
     //Also used by MultiPlayer
     private Handler mMediaplayerHandler = new Handler() {
         float mCurrentVolume = 1.0f;
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -194,7 +195,7 @@ public class MediaPlaybackService extends Service {
                     // handles fade-in
                     switch (msg.arg1) {
                         case AudioManager.AUDIOFOCUS_LOSS:
-                            if(isPlaying()) {
+                            if (isPlaying()) {
                                 mPausedByTransientLossOfFocus = false;
                             }
                             pause();
@@ -204,13 +205,13 @@ public class MediaPlaybackService extends Service {
                             mMediaplayerHandler.sendEmptyMessage(FADEDOWN);
                             break;
                         case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                            if(isPlaying()) {
+                            if (isPlaying()) {
                                 mPausedByTransientLossOfFocus = true;
                             }
                             pause();
                             break;
                         case AudioManager.AUDIOFOCUS_GAIN:
-                            if(!isPlaying() && mPausedByTransientLossOfFocus) {
+                            if (!isPlaying() && mPausedByTransientLossOfFocus) {
                                 mPausedByTransientLossOfFocus = false;
                                 mCurrentVolume = 0f;
                                 mPlayer.setVolume(mCurrentVolume);
@@ -307,7 +308,7 @@ public class MediaPlaybackService extends Service {
 
         mMediaNotificationManager = new MediaNotificationManager(this, mTransportControls);
 
-        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this.getClass().getName());
         mWakeLock.setReferenceCounted(false);
 
@@ -467,7 +468,7 @@ public class MediaPlaybackService extends Service {
                 }
             }
             if (shufmode == Playlist.SHUFFLE_AUTO) {
-                if (! makeAutoShuffleList()) {
+                if (!makeAutoShuffleList()) {
                     shufmode = Playlist.SHUFFLE_NONE;
                 }
             }
@@ -517,7 +518,7 @@ public class MediaPlaybackService extends Service {
         // If there is a playlist but playback is paused, then wait a while
         // before stopping the service, so that pause/resume isn't slow.
         // Also delay stopping the service if we're transitioning between tracks.
-        if (mPlaylist.size() > 0  || mMediaplayerHandler.hasMessages(TRACK_ENDED)) {
+        if (mPlaylist.size() > 0 || mMediaplayerHandler.hasMessages(TRACK_ENDED)) {
             Message msg = mDelayedStopHandler.obtainMessage();
             mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
             return true;
@@ -609,17 +610,16 @@ public class MediaPlaybackService extends Service {
      * or that the play-state changed (paused/resumed).
      *
      * @param what is some action(example, MediaPlaybackService.QUEUE_CHANGED)
-     *
      */
     private void notifyChange(String what) {
 
         Intent i = new Intent(what);
         i.putExtra("id", Long.valueOf(getAudioId()));
         i.putExtra("artist", getArtistName());
-        i.putExtra("album",getAlbumName());
+        i.putExtra("album", getAlbumName());
         i.putExtra("track", getTrackName());
         i.putExtra("playing", isPlaying());
-        sendStickyBroadcast(i);
+        sendBroadcast(i);
 
         if (what.equals(QUEUE_CHANGED)) {
             saveQueue(true);
@@ -635,17 +635,19 @@ public class MediaPlaybackService extends Service {
             notifyChange(META_CHANGED);
         }
     }
+
     /**
      * Appends a list of tracks to the current playlist.
      * If nothing is playing currently, playback will be started at
      * the first track.
      * If the action is NOW, playback will switch to the first of
      * the new tracks immediately.
-     * @param list The list of tracks to append.
+     *
+     * @param list   The list of tracks to append.
      * @param action NOW, NEXT or LAST
      */
-    public void enqueue(long [] list, int action) {
-        synchronized(this) {
+    public void enqueue(long[] list, int action) {
+        synchronized (this) {
             if (action == NEXT && mPlaylist.getPlayPosition() + 1 < mPlaylist.size()) {
                 //addToPlayList(list, mPlaylist.getPlayPosition() + 1);
                 mPlaylist.addAllTracks(mPlaylist.getPlayPosition() + 1, list);
@@ -682,9 +684,10 @@ public class MediaPlaybackService extends Service {
      * and prepares for starting playback at the specified
      * position in the list, or a random position if the
      * specified position is 0.
+     *
      * @param list The new list of tracks.
      */
-    public void open(long [] list, int position) {
+    public void open(long[] list, int position) {
         synchronized (this) {
             if (mPlaylist.getShuffleMode() == Playlist.SHUFFLE_AUTO) {
                 //mShuffleMode = Playlist.SHUFFLE_NORMAL;
@@ -729,6 +732,7 @@ public class MediaPlaybackService extends Service {
 
     /**
      * Moves the item at index1 to index2.
+     *
      * @param index1
      * @param index2
      */
@@ -758,12 +762,13 @@ public class MediaPlaybackService extends Service {
 
     /**
      * Returns the current play list
+     *
      * @return An array of integers containing the IDs of the tracks in the play list
      */
-    public long [] getQueue() {
+    public long[] getQueue() {
         synchronized (this) {
             int len = mPlaylist.size();
-            long [] list = new long[len];
+            long[] list = new long[len];
             for (int i = 0; i < len; i++) {
                 //list[i] = mPlayList[i];
                 list[i] = mPlaylist.getTrack(i);
@@ -777,7 +782,7 @@ public class MediaPlaybackService extends Service {
 
         Cursor c = getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                mCursorCols, "_id=" + id , null, null);
+                mCursorCols, "_id=" + id, null, null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -807,7 +812,7 @@ public class MediaPlaybackService extends Service {
             //trying to open song
             //if can't try next, if can't try next and so on 10 times or
             //until playlist ends
-            while(true) {
+            while (true) {
                 if (mCursor != null && mCursor.getCount() != 0 &&
                         open(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI + "/" +
                                 mCursor.getLong(IDCOLIDX))) {
@@ -819,7 +824,7 @@ public class MediaPlaybackService extends Service {
                     mCursor.close();
                     mCursor = null;
                 }
-                if (mOpenFailedCounter++ < 10 &&  mPlaylist.size() > 1) {
+                if (mOpenFailedCounter++ < 10 && mPlaylist.size() > 1) {
 
                     int pos = getNextPosition(false);
                     if (pos < 0) {
@@ -897,14 +902,14 @@ public class MediaPlaybackService extends Service {
                     where = null;
                     selectionArgs = null;
                 } else {
-                   uri = MediaStore.Audio.Media.getContentUriForPath(path);
-                   where = MediaStore.Audio.Media.DATA + "=?";
-                   selectionArgs = new String[] { path };
+                    uri = MediaStore.Audio.Media.getContentUriForPath(path);
+                    where = MediaStore.Audio.Media.DATA + "=?";
+                    selectionArgs = new String[]{path};
                 }
 
                 try {
                     mCursor = resolver.query(uri, mCursorCols, where, selectionArgs, null);
-                    if  (mCursor != null) {
+                    if (mCursor != null) {
                         if (mCursor.getCount() == 0) {
                             mCursor.close();
                             mCursor = null;
@@ -944,7 +949,7 @@ public class MediaPlaybackService extends Service {
             // if we are at the end of the song, go to the next song first
             long duration = mPlayer.duration();
             if (mPlaylist.getRepeatMode() != Playlist.REPEAT_CURRENT && duration > 2000 &&
-                mPlayer.position() >= duration - 2000) {
+                    mPlayer.position() >= duration - 2000) {
                 gotoNext(true);
             }
 
@@ -999,7 +1004,7 @@ public class MediaPlaybackService extends Service {
      * Pauses playback (call play() to resume)
      */
     public void pause() {
-        synchronized(this) {
+        synchronized (this) {
             mMediaplayerHandler.removeMessages(FADEUP);
             if (isPlaying()) {
                 mPlayer.pause();
@@ -1011,7 +1016,8 @@ public class MediaPlaybackService extends Service {
         }
     }
 
-    /** Returns whether something is currently playing
+    /**
+     * Returns whether something is currently playing
      *
      * @return true if something is playing (or will be playing shortly, in case
      * we're currently transitioning between tracks), false if not.
@@ -1095,13 +1101,13 @@ public class MediaPlaybackService extends Service {
 
             int numTracks = mPlaylist.size();
             int[] tracks = new int[numTracks];
-            for (int i=0;i < numTracks; i++) {
+            for (int i = 0; i < numTracks; i++) {
                 tracks[i] = i;
             }
 
             int numHistory = mHistory.size();
             int numUnplayed = numTracks;
-            for (int i=0;i < numHistory; i++) {
+            for (int i = 0; i < numHistory; i++) {
                 int idx = mHistory.get(i);
                 if (idx < numTracks && tracks[idx] >= 0) {
                     numUnplayed--;
@@ -1112,12 +1118,12 @@ public class MediaPlaybackService extends Service {
             // 'numUnplayed' now indicates how many tracks have not yet
             // been played, and 'tracks' contains the indices of those
             // tracks.
-            if (numUnplayed <=0) {
+            if (numUnplayed <= 0) {
                 // everything's already been played
                 if (mPlaylist.getRepeatMode() == Playlist.REPEAT_ALL || force) {
                     //pick from full set
                     numUnplayed = numTracks;
-                    for (int i=0;i < numTracks; i++) {
+                    for (int i = 0; i < numTracks; i++) {
                         tracks[i] = i;
                     }
                 } else {
@@ -1158,8 +1164,8 @@ public class MediaPlaybackService extends Service {
 
 
     /**
-     *
      * Goes to next song in playlist
+     *
      * @param force
      */
     public void gotoNext(boolean force) {
@@ -1246,7 +1252,7 @@ public class MediaPlaybackService extends Service {
 
             int lookback = mHistory.size();
             int idx = -1;
-            while(true) {
+            while (true) {
                 idx = mRand.nextInt(mAutoShuffleList.length);
                 if (!wasRecentlyUsed(idx, lookback)) {
                     break;
@@ -1297,6 +1303,7 @@ public class MediaPlaybackService extends Service {
     private static class Shuffler {
         private int mPrevious;
         private Random mRandom = new Random();
+
         public int nextInt(int interval) {
             int ret;
             do {
@@ -1305,20 +1312,22 @@ public class MediaPlaybackService extends Service {
             mPrevious = ret;
             return ret;
         }
-    };
+    }
+
+    ;
 
     private boolean makeAutoShuffleList() {
         ContentResolver res = getContentResolver();
         Cursor c = null;
         try {
             c = res.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                    new String[] {MediaStore.Audio.Media._ID}, MediaStore.Audio.Media.IS_MUSIC + "=1",
+                    new String[]{MediaStore.Audio.Media._ID}, MediaStore.Audio.Media.IS_MUSIC + "=1",
                     null, null);
             if (c == null || c.getCount() == 0) {
                 return false;
             }
             int len = c.getCount();
-            long [] list = new long[len];
+            long[] list = new long[len];
             for (int i = 0; i < len; i++) {
                 c.moveToNext();
                 list[i] = c.getLong(0);
@@ -1338,8 +1347,9 @@ public class MediaPlaybackService extends Service {
      * Removes the range of tracks specified from the play list. If a file within the range is
      * the file currently being played, playback will move to the next file after the
      * range.
+     *
      * @param first The first file to be removed
-     * @param last The last file to be removed
+     * @param last  The last file to be removed
      * @return the number of tracks deleted
      */
     public int removeTracks(int first, int last) {
@@ -1354,7 +1364,7 @@ public class MediaPlaybackService extends Service {
         synchronized (this) {
 
             int removedQuantity = mPlaylist.removeTracksRange(first, last);
-            if(removedQuantity == 0) {
+            if (removedQuantity == 0) {
                 return 0;
             }
 
@@ -1394,6 +1404,7 @@ public class MediaPlaybackService extends Service {
     /**
      * Removes all instances of the track with the given id
      * from the playlist.
+     *
      * @param id The id to be removed
      * @return how many instances of the track were removed
      */
@@ -1417,8 +1428,28 @@ public class MediaPlaybackService extends Service {
         return numremoved;
     }
 
+    public int removeTracks(long[] ids) {
+        int numremoved = 0;
+        synchronized (this) {
+            for (int i = 0; i < ids.length; i++) {
+                long id = ids[i];
+                for (int j = 0; j < mPlaylist.size(); j++) {
+                    //if (mPlayList[i] == id) {
+                    if (mPlaylist.getTrack(j) == id) {
+                        numremoved += removeTracksInternal(j, j);
+                        j--;
+                    }
+                }
+            }
+        }
+        if (numremoved > 0) {
+            notifyChange(QUEUE_CHANGED);
+        }
+        return numremoved;
+    }
+
     public void setShuffleMode(int shufflemode) {
-        synchronized(this) {
+        synchronized (this) {
             if (mPlaylist.getShuffleMode() == shufflemode && mPlaylist.size() > 0) {
                 return;
             }
@@ -1449,17 +1480,19 @@ public class MediaPlaybackService extends Service {
             saveQueue(false);
         }
     }
+
     public int getShuffleMode() {
         return mPlaylist.getShuffleMode();
     }
 
     public void setRepeatMode(int repeatmode) {
-        synchronized(this) {
+        synchronized (this) {
             mPlaylist.setRepeatMode(repeatmode);
             setNextTrack();
             saveQueue(false);
         }
     }
+
     public int getRepeatMode() {
         return mPlaylist.getRepeatMode();
     }
@@ -1492,10 +1525,11 @@ public class MediaPlaybackService extends Service {
 
     /**
      * Returns the position in the queue
+     *
      * @return the position in the queue
      */
     public int getQueuePosition() {
-        synchronized(this) {
+        synchronized (this) {
             //return mPlayPos;
             return mPlaylist.getPlayPosition();
         }
@@ -1503,10 +1537,11 @@ public class MediaPlaybackService extends Service {
 
     /**
      * Starts playing the track at the given position in the queue.
+     *
      * @param pos The position in the queue of the track that will be played.
      */
     public void setQueuePosition(int pos) {
-        synchronized(this) {
+        synchronized (this) {
             stop(false);
             mPlaylist.setPlayPosition(pos);
             openCurrentAndNext();
@@ -1519,7 +1554,7 @@ public class MediaPlaybackService extends Service {
     }
 
     public String getArtistName() {
-        synchronized(this) {
+        synchronized (this) {
             if (mCursor == null) {
                 return null;
             }
@@ -1653,102 +1688,136 @@ public class MediaPlaybackService extends Service {
             mService = new WeakReference<MediaPlaybackService>(service);
         }
 
-        public void openFile(String path)
-        {
+        public void openFile(String path) {
             mService.get().open(path);
         }
-        public void open(long [] list, int position) {
+
+        public void open(long[] list, int position) {
             mService.get().open(list, position);
         }
+
         public int getQueuePosition() {
             return mService.get().getQueuePosition();
         }
+
         public void setQueuePosition(int index) {
             mService.get().setQueuePosition(index);
         }
+
         public boolean isPlaying() {
             return mService.get().isPlaying();
         }
+
         public void stop() {
             mService.get().stop();
         }
+
         public void pause() {
             mService.get().pause();
         }
+
         public void play() {
             mService.get().play();
         }
+
         public void prev() {
             mService.get().prev();
         }
+
         public void next() {
             mService.get().gotoNext(true);
         }
+
         public String getTrackName() {
             return mService.get().getTrackName();
         }
+
         public String getAlbumName() {
             return mService.get().getAlbumName();
         }
+
         public long getAlbumId() {
             return mService.get().getAlbumId();
         }
+
         public String getArtistName() {
             return mService.get().getArtistName();
         }
+
         public long getArtistId() {
             return mService.get().getArtistId();
         }
-        public void enqueue(long [] list , int action) {
+
+        public void enqueue(long[] list, int action) {
             mService.get().enqueue(list, action);
         }
-        public long [] getQueue() {
+
+        public long[] getQueue() {
             return mService.get().getQueue();
         }
+
         public void moveQueueItem(int from, int to) {
             mService.get().moveQueueItem(from, to);
         }
+
         public String getPath() {
             return mService.get().getPath();
         }
+
         public long getAudioId() {
             return mService.get().getAudioId();
         }
+
         public long position() {
             return mService.get().position();
         }
+
         public long duration() {
             return mService.get().duration();
         }
+
         public long seek(long pos) {
             return mService.get().seek(pos);
         }
+
         public void setShuffleMode(int shufflemode) {
             mService.get().setShuffleMode(shufflemode);
         }
+
         public int getShuffleMode() {
             return mService.get().getShuffleMode();
         }
+
         public int removeTracks(int first, int last) {
             return mService.get().removeTracks(first, last);
         }
+
         public int removeTrack(long id) {
             return mService.get().removeTrack(id);
         }
+
         public void setRepeatMode(int repeatmode) {
             mService.get().setRepeatMode(repeatmode);
         }
+
         public int getRepeatMode() {
             return mService.get().getRepeatMode();
         }
+
         public int getMediaMountedCount() {
             return mService.get().getMediaMountedCount();
         }
+
         public int getAudioSessionId() {
             return mService.get().getAudioSessionId();
         }
+
         public void updateCurrentTrackInfo() {
             mService.get().updateCurrentTrackInfo();
+        }
+
+        public void removeFromQueue(long[] ids) {
+            mService.get().removeTracks(ids);
         }
     }
 

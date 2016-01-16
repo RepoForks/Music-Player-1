@@ -1,19 +1,25 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.NowPlayingTrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
@@ -32,6 +38,19 @@ public class NowPlayingFragment extends BaseListFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(MediaPlaybackService.QUEUE_CHANGED);
+        getActivity().registerReceiver(mQueueChangedReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mQueueChangedReceiver);
+    }
+
+    @Override
     protected IndicatorCursorAdapter createCursorAdapter() {
         NowPlayingCursorLoaderCreator loaderCreator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderCreator.getTrackColumnName(),
@@ -44,8 +63,9 @@ public class NowPlayingFragment extends BaseListFragment {
 
     @Override
     protected AbstractCursorLoaderCreator createCursorLoaderCreator() {
-        long[] nowPlayingQueue = mServiceWrapper.getQueue();
-        return new NowPlayingCursorLoaderCreator(getActivity(), nowPlayingQueue);
+        NowPlayingCursorLoaderCreator creator = new NowPlayingCursorLoaderCreator(getActivity());
+        creator.setCurrentQueue(mServiceWrapper.getQueue());
+        return creator;
     }
 
     //TODO: maybe move to BaseLoaderFragment
@@ -66,7 +86,7 @@ public class NowPlayingFragment extends BaseListFragment {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         NowPlayingCursorLoaderCreator loaderCreator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), listView,
-                new TrackMenuCommandSet(this, mServiceWrapper),
+                new NowPlayingTrackMenuCommandSet(this, mServiceWrapper),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }
@@ -84,4 +104,14 @@ public class NowPlayingFragment extends BaseListFragment {
         NowPlayingCursorLoaderCreator creator = (NowPlayingCursorLoaderCreator)loaderCreator;
         adapter.setIndicatorFor(creator.getTrackIdColumnName(), serviceWrapper.getTrackID());
     }
+
+    private BroadcastReceiver mQueueChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NowPlayingCursorLoaderCreator creator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
+            Log.d(TAG, "mService.getQueue == null" + (mServiceWrapper.getQueue() == null));
+            creator.setCurrentQueue(mServiceWrapper.getQueue());
+            restartLoader();
+        }
+    };
 }

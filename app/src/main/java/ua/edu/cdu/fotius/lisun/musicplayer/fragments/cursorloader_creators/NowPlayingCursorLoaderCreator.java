@@ -8,11 +8,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 
 public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCreator {
 
-    private long[] mPlayingQueue;
+    private long[] mQueue;
 
-    public NowPlayingCursorLoaderCreator(Context context, long[] playingQueue) {
+    public NowPlayingCursorLoaderCreator(Context context) {
         super(context);
-        mPlayingQueue = playingQueue;
+
+    }
+
+    public void setCurrentQueue(long[] queue) {
+        mQueue = queue;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
     }
 
     private boolean isAbleToFormQuery() {
-        return ((mPlayingQueue != null) && (mPlayingQueue.length > 0));
+        return ((mQueue != null) && (mQueue.length > 0));
     }
 
     @Override
@@ -58,9 +62,9 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
 
     private String makeInBody() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(mPlayingQueue[0]);
-        for (int i = 1; i < mPlayingQueue.length; i++) {
-            stringBuffer.append(", " + mPlayingQueue[i]);
+        stringBuffer.append(mQueue[0]);
+        for (int i = 1; i < mQueue.length; i++) {
+            stringBuffer.append(", " + mQueue[i]);
         }
         return stringBuffer.toString();
     }
@@ -76,8 +80,8 @@ public class NowPlayingCursorLoaderCreator extends AbstractTracksCursorLoaderCre
 
     private String makeCaseBody() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < mPlayingQueue.length; i++) {
-            stringBuffer.append(" when " + mPlayingQueue[i] +
+        for (int i = 0; i < mQueue.length; i++) {
+            stringBuffer.append(" when " + mQueue[i] +
                     " then " + i);
         }
         stringBuffer.append(" end");

@@ -11,11 +11,13 @@ import android.os.RemoteException;
 
 import java.util.Vector;
 
-/**Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
+/**
+ * Wrapper for {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * Class is mediator between this specific application and more general
  * {@link ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService}.
  * This class implemented as Singleton.
- * Also some class methods are written to perform one operation - handle exception.*/
+ * Also some class methods are written to perform one operation - handle exception.
+ */
 // TODO: проблема может быть в следующем:
 // При config changes этот класс может быть уничтожен
 // и перевоссоздан, таким образом потеряем данные об обзёрверах
@@ -30,7 +32,6 @@ public class PlaybackServiceWrapper
 
     //TODO: maybe its AudioStorage.WRONG_ID
     public static int ERROR_RETURN_VALUE = -1;
-
 
 
     private static PlaybackServiceWrapper instance = null;
@@ -50,7 +51,7 @@ public class PlaybackServiceWrapper
 
     private IMediaPlaybackService mService = null;
 
-    private PlaybackServiceWrapper(){
+    private PlaybackServiceWrapper() {
     }
 
     public void bindToService(Context context, ServiceConnectionObserver connectionObserver) {
@@ -58,13 +59,13 @@ public class PlaybackServiceWrapper
         mConnectionObservers.add(connectionObserver);
 
         //first element binding to service
-        if(mConnectionObservers.size() == 1) {
+        if (mConnectionObservers.size() == 1) {
             //TODO: maybe remove all commands from onStartCommand()
             context.startService(new Intent(context, MediaPlaybackService.class));
         }
 
         //service hasn't been connected yet
-        if(mService == null) {
+        if (mService == null) {
             /*Better to use application context, because
             * after recreating activity on configuration changes
             * activity context which was bind to service doesn't exists*/
@@ -152,7 +153,7 @@ public class PlaybackServiceWrapper
     }
 
     public void pause() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 mService.pause();
             } catch (RemoteException e) {
@@ -161,8 +162,8 @@ public class PlaybackServiceWrapper
     }
 
 
-    public void removeTrack(long trackId){
-        if(mService != null) {
+    public void removeTrack(long trackId) {
+        if (mService != null) {
             try {
                 mService.removeTrack(trackId);
             } catch (RemoteException e) {
@@ -170,8 +171,8 @@ public class PlaybackServiceWrapper
         }
     }
 
-    public void addToTheEndOfPlayingQueue(long[] list) {
-        if(mService != null) {
+    public void addToTheEndOfPlayQueue(long[] list) {
+        if (mService != null) {
             try {
                 mService.enqueue(list, MediaPlaybackService.LAST);
             } catch (RemoteException e) {
@@ -179,8 +180,18 @@ public class PlaybackServiceWrapper
         }
     }
 
+    public void removeFromPlayQueue(long[] list) {
+        if (mService != null) {
+            try {
+                mService.removeFromQueue(list);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean isPlaying() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.isPlaying();
             } catch (RemoteException e) {
@@ -230,7 +241,7 @@ public class PlaybackServiceWrapper
     }
 
     public void setRepeatMode(int repeatMode) {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 mService.setRepeatMode(repeatMode);
             } catch (RemoteException e) {
@@ -239,7 +250,7 @@ public class PlaybackServiceWrapper
     }
 
     public int getRepeatMode() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getRepeatMode();
             } catch (RemoteException e) {
@@ -249,7 +260,7 @@ public class PlaybackServiceWrapper
     }
 
     public void setShuffleMode(int shuffleMode) {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 mService.setShuffleMode(shuffleMode);
             } catch (RemoteException e) {
@@ -258,7 +269,7 @@ public class PlaybackServiceWrapper
     }
 
     public int getShuffleMode() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getShuffleMode();
             } catch (RemoteException e) {
@@ -268,17 +279,17 @@ public class PlaybackServiceWrapper
     }
 
     public long getAlbumID() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getAlbumId();
-            } catch(RemoteException e) {
+            } catch (RemoteException e) {
             }
         }
         return AudioStorage.WRONG_ID;
     }
 
     public long getArtistID() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getArtistId();
             } catch (RemoteException e) {
@@ -289,10 +300,10 @@ public class PlaybackServiceWrapper
     }
 
     public long getTrackID() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getAudioId();
-            } catch(RemoteException e) {
+            } catch (RemoteException e) {
             }
         }
         return AudioStorage.WRONG_ID;
@@ -308,7 +319,7 @@ public class PlaybackServiceWrapper
     }
 
     public long[] getQueue() {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 return mService.getQueue();
             } catch (RemoteException e) {
@@ -318,7 +329,7 @@ public class PlaybackServiceWrapper
     }
 
     public void moveQueueItem(int from, int to) {
-        if(mService != null) {
+        if (mService != null) {
             try {
                 mService.moveQueueItem(from, to);
             } catch (RemoteException e) {
@@ -333,13 +344,13 @@ public class PlaybackServiceWrapper
          * one observer, which is added to collection first.
          * But sometimes binding can delays and in this case
          * more than one observer can be notified */
-        for(ServiceConnectionObserver observer : mConnectionObservers) {
+        for (ServiceConnectionObserver observer : mConnectionObservers) {
             observer.ServiceConnected();
         }
     }
 
     public void onServiceDisconnected(ComponentName name) {
-        for(ServiceConnectionObserver observer : mConnectionObservers) {
+        for (ServiceConnectionObserver observer : mConnectionObservers) {
             observer.ServiceDisconnected();
         }
         mService = null;
