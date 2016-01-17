@@ -13,6 +13,7 @@ public abstract class BaseMenuCommandSet {
     public static int ADD_TO_PLAYLIST_ID = 5;
     public static int EDIT_INFO_ID = 6;
     public static int REMOVE_FROM_PLAY_QUEUE_ID = 7;
+    public static int REMOVE_FROM_PLAYLIST = 8;
 
     protected Fragment mFragment;
     protected PlaybackServiceWrapper mServiceWrapper;

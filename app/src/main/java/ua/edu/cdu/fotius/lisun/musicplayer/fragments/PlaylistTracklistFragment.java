@@ -1,11 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.PlaylistTracksCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
@@ -54,7 +53,7 @@ public class PlaylistTracklistFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_dragndrop_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_playlist_tracks, container, false);
         DragNDropListView listView = (DragNDropListView) v.findViewById(R.id.list);
         listView.setDragHandlerResourceID(R.id.handler);
         listView.setDropListener(new OnDropPlaylistTrackListener(this, mPlaylistID));
@@ -64,7 +63,7 @@ public class PlaylistTracklistFragment extends BaseListFragment {
         PlaylistTracksCursorLoaderCreator loaderCreator =
                 (PlaylistTracksCursorLoaderCreator) mLoaderCreator;
         listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), listView,
-                new TrackMenuCommandSet(this, mServiceWrapper),
+                new PlaylistTracksCommandSet(this, mServiceWrapper, mPlaylistID),
                 loaderCreator.getTrackIdColumnName()));
         return v;
     }

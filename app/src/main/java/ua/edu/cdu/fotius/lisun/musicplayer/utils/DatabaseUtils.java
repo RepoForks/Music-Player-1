@@ -124,6 +124,18 @@ public class DatabaseUtils {
         return trackIds;
     }
 
+    public static String makeInBody(long[] ids) {
+        if ((ids != null) && (ids.length > 0)) {
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append(ids[0]);
+            for (int i = 1; i < ids.length; i++) {
+                stringBuffer.append(", " + ids[i]);
+            }
+            return stringBuffer.toString();
+        }
+        return ("");
+    }
+
     private static long[] toPrimitiveArray(ArrayList<Long> list) {
         Long[] objectsArray = list.toArray(new Long[list.size()]);
         long[] array = new long[objectsArray.length];
@@ -134,27 +146,27 @@ public class DatabaseUtils {
     }
 
     //TODO: only for debug
-//    public static void queryParamsInLog(Uri uri, String[] projection, String selection, String[] selectionArgs) {
-//        if (uri != null) {
-//            Log.d(TAG, "Uri: " + uri.toString());
-//        }
-//
-//        if (projection != null) {
-//            Log.d(TAG, "Projection: ");
-//            for (int i = 0; i < projection.length; i++) {
-//                Log.d(TAG, projection[i]);
-//            }
-//        }
-//
-//        if (selection != null) {
-//            Log.d(TAG, "Selection: " + selection);
-//        }
-//
-//        if (selectionArgs != null) {
-//            Log.d(TAG, "SelectionArgs: ");
-//            for (int i = 0; i < selectionArgs.length; i++) {
-//                Log.d(TAG, selectionArgs[i]);
-//            }
-//        }
-//    }
+    public static void queryParamsInLog(Uri uri, String[] projection, String selection, String[] selectionArgs) {
+        if (uri != null) {
+            Log.d(TAG, "Uri: " + uri.toString());
+        }
+
+        if (projection != null) {
+            Log.d(TAG, "Projection: ");
+            for (int i = 0; i < projection.length; i++) {
+                Log.d(TAG, projection[i]);
+            }
+        }
+
+        if (selection != null) {
+            Log.d(TAG, "Selection: " + selection);
+        }
+
+        if (selectionArgs != null) {
+            Log.d(TAG, "SelectionArgs: ");
+            for (int i = 0; i < selectionArgs.length; i++) {
+                Log.d(TAG, selectionArgs[i]);
+            }
+        }
+    }
 }

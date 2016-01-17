@@ -33,7 +33,7 @@ public abstract class AbstractCursorLoaderCreator {
     }
 
     public CursorLoader createCursorLoader() {
-        //DatabaseUtils.queryParamsInLog(getUri(), getProjection(), getSelection(), getSelectionArgs());
+        DatabaseUtils.queryParamsInLog(getUri(), getProjection(), getSelection(), getSelectionArgs());
 
         return new CursorLoader(mContext, getUri(), getProjection(),
                 getSelection(), getSelectionArgs(), getSortOrder());

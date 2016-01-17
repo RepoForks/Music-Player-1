@@ -105,6 +105,7 @@ public abstract class BaseListFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+        Log.d(TAG, "Loader: " + loader);
         Log.d(TAG, "onLoadFinished(). Data size: " + data.getCount());
 
         mCursorAdapter.swapCursor(data);
@@ -129,6 +130,7 @@ public abstract class BaseListFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(TAG, "Reset. Loader: " + loader);
         mCursorAdapter.swapCursor(null);
     }
 

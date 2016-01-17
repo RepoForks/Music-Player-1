@@ -14,6 +14,6 @@
         android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_albums_label" />
+        android:text="@string/no_now_playing_tracks_label" />
     
 </RelativeLayout>

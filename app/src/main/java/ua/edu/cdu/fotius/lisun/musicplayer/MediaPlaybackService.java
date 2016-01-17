@@ -232,8 +232,26 @@ public class MediaPlaybackService extends Service {
         }
     };
 
+    //TODO:
+    private final String TAG = getClass().getSimpleName();
 
-    //private BroadcastReceiver mIntentReceiver = new PlaybackCommandsReceiver(this);
+    private BroadcastReceiver mHeadSetPlug = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+                int state = intent.getIntExtra("state", -1);
+                switch (state) {
+                    case 0:
+                        pause();
+                        Log.d(TAG, "Headset unplugged");
+                        break;
+                    case 1:
+                        Log.d(TAG, "Headset plugged");
+                        break;
+                }
+            }
+        }
+    };
 
     private OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
         /**
@@ -286,6 +304,9 @@ public class MediaPlaybackService extends Service {
         //Register listener which listens if if storage mounted or
         //ejected
         registerExternalStorageListener();
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(mHeadSetPlug, filter);
 
         // Needs to be done in this thread, since otherwise ApplicationContext.getPowerManager() crashes.
         mPlayer = new MultiPlayer(this);
@@ -353,6 +374,8 @@ public class MediaPlaybackService extends Service {
         }
 
         //unregisterReceiver(mIntentReceiver);
+        unregisterReceiver(mHeadSetPlug);
+
         if (mUnmountReceiver != null) {
             unregisterReceiver(mUnmountReceiver);
             mUnmountReceiver = null;

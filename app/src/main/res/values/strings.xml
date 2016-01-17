@@ -29,6 +29,13 @@
     <!--UserPlaylistsBrowserFragment-->
     <string name="no_users_playlists_label">There is no playlists</string>
 
+    <!--PlaylistTracklistFragment-->
+    <string name="no_playlist_tracks_label">There is no playlist tracks</string>
+
+    <!--NowPlayingFragment-->
+    <string name="no_now_playing_tracks_label">There is no tracks in current playing queue</string>
+
+
     <!--GenresFragment-->
     <string name="no_genres_label">There is no genres</string>
 
@@ -101,6 +108,7 @@
     <string name="cab_menu_as_ringtone">As ringtone</string>
     <string name="cab_menu_edit_into">Edit info</string>
     <string name="cab_remove_from_queue">Remove from queue</string>
+    <string name="cab_remove_from_playlist">Remove from playlist</string>
     <string name="title_activity_now_playing">NowPlayingActivity</string>
 
     <!--NowPlayingActivity-->

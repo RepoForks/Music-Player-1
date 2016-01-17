@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.NowPlayingTrackMenuCommandSet;
-import ua.edu.cdu.fotius.lisun.musicplayer.context_action_bar_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractTracksCursorLoaderCreator;
@@ -77,7 +75,7 @@ public class NowPlayingFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_dragndrop_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_now_playing, container, false);
         DragNDropListView listView = (DragNDropListView) v.findViewById(R.id.list);
         listView.setDragHandlerResourceID(R.id.handler);
         listView.setDropListener(new OnDropNowPlayingListener(mServiceWrapper));
@@ -109,7 +107,6 @@ public class NowPlayingFragment extends BaseListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             NowPlayingCursorLoaderCreator creator = (NowPlayingCursorLoaderCreator) mLoaderCreator;
-            Log.d(TAG, "mService.getQueue == null" + (mServiceWrapper.getQueue() == null));
             creator.setCurrentQueue(mServiceWrapper.getQueue());
             restartLoader();
         }
