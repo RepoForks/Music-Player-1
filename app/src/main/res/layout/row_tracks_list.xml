@@ -5,7 +5,7 @@
     android:layout_height="@dimen/row_height"
     android:background="@drawable/list_item_selector" >
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader
+    <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"
         android:layout_width="@dimen/row_album_art_size"
         android:layout_height="@dimen/row_album_art_size" />
@@ -26,7 +26,7 @@
             android:singleLine="true"
             android:gravity="center_vertical" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
             android:id="@+id/artist_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"

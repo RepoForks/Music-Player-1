@@ -8,18 +8,11 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
-        android:minHeight="?attr/actionBarSize"
-        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+        style="@style/Toolbar" />
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ColoredProgressBar
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.ColoredProgressBar
         android:id="@+id/progress_bar"
-        android:visibility="visible"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true" />
+        style="@style/ProgressBar"/>
 
     <RelativeLayout
         android:id="@+id/root_view"

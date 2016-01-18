@@ -12,13 +12,12 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Action;
-import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.NavigationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.SlidingPanelActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageLoader;
+import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
 
 public class MediaNotificationManager {
 

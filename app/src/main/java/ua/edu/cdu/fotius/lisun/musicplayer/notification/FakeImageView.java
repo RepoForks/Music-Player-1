@@ -1,20 +1,14 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.notification;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader;
+import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader;
 
 
 public class FakeImageView extends ImageViewForLoader{
-
-
-
-
     private int mNotificationId;
     private NotificationCompat.Builder mNotificationBuilder;
     private NotificationManager mNotificationManager;

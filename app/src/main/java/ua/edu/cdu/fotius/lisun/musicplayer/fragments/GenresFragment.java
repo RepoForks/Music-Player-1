@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.PlaybackServiceWrapper;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AbstractCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.GenresCursorLoaderCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.PlaylistCursorLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.GenresLoaderCreator;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnGenreClickListener;
 
-public class GenresFragment extends BaseListFragment{
+public class GenresFragment extends BaseFragment {
 
     public static final String GENRE_ID_KEY = "genre_id_key";
 
@@ -25,16 +26,16 @@ public class GenresFragment extends BaseListFragment{
         View v = inflater.inflate(R.layout.fragment_genres, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
-        GenresCursorLoaderCreator loaderCreator = (GenresCursorLoaderCreator) mLoaderCreator;
+        GenresLoaderCreator loaderCreator = (GenresLoaderCreator) mLoaderCreator;
         listView.setOnItemClickListener(new OnGenreClickListener(getActivity(), mCursorAdapter,
-                loaderCreator.getGenreIdColumnName(), loaderCreator.getGenreColumnName()));
+                loaderCreator.getGenreIdColumn(), loaderCreator.getGenreColumn()));
         return v;
     }
 
     @Override
     protected IndicatorCursorAdapter createCursorAdapter() {
-        GenresCursorLoaderCreator loaderFactory = (GenresCursorLoaderCreator) mLoaderCreator;
-        String[] from = new String[] { loaderFactory.getGenreColumnName()};
+        GenresLoaderCreator loaderFactory = (GenresLoaderCreator) mLoaderCreator;
+        String[] from = new String[] { loaderFactory.getGenreColumn()};
         int[] to = new int[] { R.id.genre};
 
         return new IndicatorCursorAdapter(getActivity(),
@@ -42,8 +43,8 @@ public class GenresFragment extends BaseListFragment{
     }
 
     @Override
-    protected AbstractCursorLoaderCreator createCursorLoaderCreator() {
-        return new GenresCursorLoaderCreator(getActivity());
+    protected BaseLoaderCreator createCursorLoaderCreator() {
+        return new GenresLoaderCreator(getActivity());
     }
 
     //TODO: move to super
@@ -53,7 +54,7 @@ public class GenresFragment extends BaseListFragment{
     }
 
     @Override
-    protected void setIndicator(PlaybackServiceWrapper serviceWrapper,
+    protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
                                 IndicatorCursorAdapter adapter,
-                                AbstractCursorLoaderCreator loaderCreator) {}
+                                BaseLoaderCreator loaderCreator) {}
 }

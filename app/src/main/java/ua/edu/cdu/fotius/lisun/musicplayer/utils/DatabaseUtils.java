@@ -5,17 +5,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import ua.edu.cdu.fotius.lisun.musicplayer.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.cursorloader_creators.AlbumTracksCursorLoaderCreator;
 
 public class DatabaseUtils {
 

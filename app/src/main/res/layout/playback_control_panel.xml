@@ -1,6 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -34,34 +34,34 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout>
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@color/material_deep_teal_500"
         android:orientation="horizontal">
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ShuffleButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.ShuffleButton
             android:id="@+id/shuffle"
             style="@style/MediaButton.Shuffle" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
             android:id="@+id/prev"
             style="@style/MediaButton.Rewind" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.PlayPauseButton
             android:id="@+id/play"
             style="@style/MediaButton.PlayPause" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
             android:id="@+id/next"
             style="@style/MediaButton.FastForward" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.RepeatButton
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.RepeatButton
             android:id="@+id/repeat"
             style="@style/MediaButton.Repeat" />
 
-    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout>
 </merge>

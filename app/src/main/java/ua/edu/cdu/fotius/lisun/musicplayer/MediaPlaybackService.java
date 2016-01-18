@@ -33,6 +33,10 @@ import java.lang.ref.WeakReference;
 import java.util.Random;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.ExternalCard;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.MultiPlayer;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.PlaybackHistory;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.Playlist;
 
 /**
  * Provides "background" audio playback capabilities, allowing the

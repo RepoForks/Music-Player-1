@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.DragNDropListView
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.DragNDropListView
         android:id="@id/list"
         android:background="#0000"
         android:layout_width="match_parent"

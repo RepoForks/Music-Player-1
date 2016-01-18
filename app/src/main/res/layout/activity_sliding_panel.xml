@@ -1,4 +1,4 @@
-<ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_panel"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     <include layout="@layout/activity_toolbar" />
 
     <!--SLIDING VIEW-->
-    <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,10 +24,10 @@
 
         <fragment
             android:id="@+id/playback_fragment"
-            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackFragment"
+            android:name="ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </ua.edu.cdu.fotius.lisun.musicplayer.custom_views.NotClickableLinearLayout>
+    </ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout>
 
-</ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout>
+</ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingUpPanelLayout>

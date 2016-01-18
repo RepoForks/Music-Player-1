@@ -10,11 +10,8 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        style="@style/NavigationView"
         app:headerLayout="@layout/navigation_view_header"
-        app:menu="@menu/menu_navigation_drawer"/>
+        app:menu="@menu/menu_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

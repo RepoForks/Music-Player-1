@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/accent_material_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader
+    <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"
-        android:layout_width="150dp"
-        android:layout_height="150dp" />
+        android:adjustViewBounds="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:layout_alignBottom="@+id/album_art"
@@ -23,14 +25,15 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/album_art" >
+        android:layout_alignBottom="@+id/album_art"
+        android:layout_alignLeft="@+id/album_art">
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.AlbumNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.AlbumNameTextView
             android:id="@+id/album_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
             android:id="@+id/artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

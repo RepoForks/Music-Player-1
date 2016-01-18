@@ -1,8 +1,32 @@
-<resources >
+<resources>
 
-    <!-- Base application theme. -->
     <style name="MusicPlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="NavigationView" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="Toolbar" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/abc_action_bar_default_height_material</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+    </style>
+
+    <style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal" >
+        <item name="android:visibility">visible</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="SingleLineEditText" >
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="MediaButton">

@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
+        <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
             android:id="@+id/artist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

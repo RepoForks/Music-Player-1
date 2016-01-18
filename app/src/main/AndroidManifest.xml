@@ -35,24 +35,24 @@
         <service android:name=".MediaPlaybackService" />
 
         <activity
-            android:name=".activities.AlbumsDetalizationActivity"
+            android:name=".activities.AlbumsActivity"
             android:label="@string/title_activity_detalization" >
         </activity>
         <activity
-            android:name=".activities.TrackDetalizationActivity"
+            android:name=".activities.TracksActivity"
             android:label="@string/title_activity_track_detalization" >
         </activity>
         <activity
-            android:name=".activities.EditInfoActivity.EditInfoActivity"
+            android:name=".activities.InfoEditorActivity.InfoEditorActivity"
             android:label="@string/title_activity_edit_info" >
         </activity>
         <activity
-            android:name=".activities.NowPlayingActivity"
+            android:name=".activities.QueueActivity"
             android:label="@string/title_activity_now_playing" >
         </activity>
 
         <activity
-            android:name=".activities.PlaylistTracklistActivity"
+            android:name=".activities.PlaylistTracksActivity"
             android:label="@string/playlist_tracklist_default_toolbar_title" >
         </activity>
     </application>

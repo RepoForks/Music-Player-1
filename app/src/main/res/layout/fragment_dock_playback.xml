@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <ua.edu.cdu.fotius.lisun.musicplayer.images_stuff.ImageViewForLoader
+    <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -46,7 +46,7 @@
                     android:gravity="center"
                     android:textSize="@dimen/minimal_panel_song_text_size" />
 
-                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.ArtistNameTextView
+                <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
                     android:id="@+id/artist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,15 +61,15 @@
                 android:layout_weight="0.5"
                 android:gravity="center">
 
-                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+                <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
                     android:id="@+id/prev"
                     style="@style/MediaButton.Small.Rewind" />
 
-                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.PlayPauseButton
+                <ua.edu.cdu.fotius.lisun.musicplayer.views.PlayPauseButton
                     android:id="@+id/play"
                     style="@style/MediaButton.Small.PlayPause" />
 
-                <ua.edu.cdu.fotius.lisun.musicplayer.custom_views.LoopingImageButton
+                <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
                     android:id="@+id/next"
                     style="@style/MediaButton.Small.FastForward" />
             </LinearLayout>

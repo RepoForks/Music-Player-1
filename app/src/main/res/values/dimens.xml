@@ -22,4 +22,7 @@
     <dimen name = "large_icon_height">64dp</dimen>
     <dimen name = "large_icon_width">64dp</dimen>
 
+    <dimen name = "new_playlist_edit_text_width">70dp</dimen>
+
+    <dimen name = "albums_grid_view_spacing">1dp</dimen>
 </resources>

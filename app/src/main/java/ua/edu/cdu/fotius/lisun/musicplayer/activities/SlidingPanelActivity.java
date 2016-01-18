@@ -1,18 +1,13 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.DockPlaybackFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.playback_fragment.PlaybackToolbarFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingUpPanelLayout;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.DockPlaybackFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackHeaderFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingUpPanelLayout;
 
 public abstract class SlidingPanelActivity extends ToolbarActivity {
 
@@ -80,7 +75,7 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
             if(mPanelState == PanelState.COLLAPSED) {
                 fragment = new DockPlaybackFragment();
             } else {
-                fragment = new PlaybackToolbarFragment();
+                fragment = new PlaybackHeaderFragment();
             }
 
             getSupportFragmentManager().beginTransaction()

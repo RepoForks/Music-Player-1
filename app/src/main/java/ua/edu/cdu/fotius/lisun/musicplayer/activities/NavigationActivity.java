@@ -4,19 +4,18 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.slidingup_panel.SlidingPanelListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsBrowserFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TrackBrowserFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TracksFragment;
 
 
 public class NavigationActivity extends SlidingPanelActivity {
@@ -30,8 +29,8 @@ public class NavigationActivity extends SlidingPanelActivity {
         setContentView(R.layout.activity_navigation);
 
         if(!isFragmentSet()) {
-            setDefaultFragment(new TrackBrowserFragment(),
-                    TrackBrowserFragment.TAG, getIntent().getExtras());
+            setDefaultFragment(new TracksFragment(),
+                    TracksFragment.TAG, getIntent().getExtras());
         }
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -54,25 +53,25 @@ public class NavigationActivity extends SlidingPanelActivity {
                         //Fragment#OnCreate() where database time consuming operations are performed
                         switch (menuItem.getItemId()){
                             case R.id.navigation_item_artists:{
-                                replaceFragment(new ArtistsBrowserFragment(),
-                                        ArtistsBrowserFragment.TAG);
+                                replaceFragment(new ArtistsFragment(),
+                                        ArtistsFragment.TAG);
                                 break;}
                             case R.id.navigation_item_albums: {
-                                replaceFragment(new AlbumsBrowserFragment(),
-                                        AlbumsBrowserFragment.TAG);
+                                replaceFragment(new AlbumsFragment(),
+                                        AlbumsFragment.TAG);
                                 break;}
                             case R.id.navigation_item_songs:
-                                replaceFragment(new TrackBrowserFragment(),
-                                        TrackBrowserFragment.TAG);
+                                replaceFragment(new TracksFragment(),
+                                        TracksFragment.TAG);
                                 break;
                             case R.id.navigation_item_my_playlists:
-                                replaceFragment(new PlaylistsBrowserFragment(),
-                                        PlaylistsBrowserFragment.TAG);
+                                replaceFragment(new PlaylistsFragment(),
+                                        PlaylistsFragment.TAG);
                                 break;
 
                             case R.id.navigation_item_genres:
                                 replaceFragment(new GenresFragment(),
-                                        PlaylistsBrowserFragment.TAG);
+                                        PlaylistsFragment.TAG);
                                 break;
 
                             case R.id.navigation_item_settings:
