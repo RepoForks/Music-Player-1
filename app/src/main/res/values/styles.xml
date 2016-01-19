@@ -4,17 +4,26 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="NavigationViewTheme">
+        <item name="android:textSize">@dimen/navigation_view_text_size</item>
+    </style>
+
     <style name="NavigationView" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
+        <item name="itemTextColor">@color/navigation_view_item</item>
+        <item name="itemIconTint">@color/navigation_view_item</item>
+        <item name="itemBackground">@drawable/navigation_view_item_background</item>
+        <item name="theme">@style/NavigationViewTheme</item>
     </style>
 
     <style name="Toolbar" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/abc_action_bar_default_height_material</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@color/primary</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
     </style>
 
@@ -25,8 +34,14 @@
         <item name="android:indeterminate">true</item>
     </style>
 
-    <style name="SingleLineEditText" >
+    <style name="SingleLineText" >
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="SingleLineText.AlbumTitleTextView" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/album_title</item>
     </style>
 
     <style name="MediaButton">

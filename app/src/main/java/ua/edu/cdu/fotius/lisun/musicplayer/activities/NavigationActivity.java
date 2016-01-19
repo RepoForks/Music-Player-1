@@ -74,10 +74,10 @@ public class NavigationActivity extends SlidingPanelActivity {
                                         PlaylistsFragment.TAG);
                                 break;
 
-                            case R.id.navigation_item_settings:
-                                //TODO: initialize selectedFragment
-                                Toast.makeText(NavigationActivity.this, "Settings", Toast.LENGTH_SHORT).show();
-                                break;
+//                            case R.id.navigation_item_settings:
+//                                //TODO: initialize selectedFragment
+//                                Toast.makeText(NavigationActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+//                                break;
                         }
 
                         drawer.closeDrawers();

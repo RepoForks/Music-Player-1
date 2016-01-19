@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
     private long mCurrentId = AudioStorage.WRONG_ID;
     private String mIdColumn = null;
+    private int mIndicatorColor = -1;
 
     public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
@@ -66,7 +68,7 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
     }
 
     private void tryToSetIndicator(View rowLayout, Cursor cursor) {
-        View indicator = rowLayout.findViewById(R.id.play_indicator);
+        ImageView indicator = (ImageView)rowLayout.findViewById(R.id.play_indicator);
         /*if resource doesn't contain indicator.*/
         if(indicator == null) return;
 
@@ -80,16 +82,24 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
         int visibility;
         if (id == mCurrentId) {
-            visibility = View.VISIBLE;
+            AnimationDrawable animation = (AnimationDrawable)
+                    mContext.getDrawable(R.drawable.ic_equalizer_white_24dp);
+            indicator.setImageDrawable(animation);
+            //holder.mImageView.setImageTintList(sColorStatePlaying);
+            indicator.setVisibility(View.VISIBLE);
+            if (animation != null) animation.start();
+            //visibility = View.VISIBLE;
         } else {
-            visibility = View.GONE;
+            //visibility = View.GONE;
+            indicator.setVisibility(View.GONE);
         }
-        indicator.setVisibility(visibility);
+        //indicator.setVisibility(visibility);
     }
 
     public void setIndicatorFor(String idColumn, long currentId) {
         mCurrentId = currentId;
         mIdColumn = idColumn;
+        //mIndicatorColor = indicatorColor;
         notifyDataSetChanged();
     }
 }

@@ -6,8 +6,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"
-        android:columnWidth="150dp"
+        android:numColumns="@integer/num_column"
         android:verticalSpacing="@dimen/albums_grid_view_spacing"
         android:horizontalSpacing="@dimen/albums_grid_view_spacing">
     </GridView>

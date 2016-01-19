@@ -8,36 +8,37 @@
     <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"
         android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
-        android:layout_alignBottom="@+id/album_art"
-        android:layout_alignRight="@+id/album_art"
-        android:id="@+id/play_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone" />
-
     <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_alignBottom="@+id/album_art"
-        android:layout_alignLeft="@+id/album_art">
+        android:background="@color/album_title_container"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-        <ua.edu.cdu.fotius.lisun.musicplayer.views.AlbumNameTextView
-            android:id="@+id/album_title"
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1" >
+
+            <ua.edu.cdu.fotius.lisun.musicplayer.views.AlbumNameTextView
+                android:id="@+id/album_title"
+                style="@style/SingleLineText.AlbumTitleTextView" />
+
+            <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
+                android:id="@+id/artist_name"
+                style="@style/SingleLineText.AlbumTitleTextView"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/play_indicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
-            android:id="@+id/artist_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
-
 </RelativeLayout>

@@ -25,4 +25,7 @@
     <dimen name = "new_playlist_edit_text_width">70dp</dimen>
 
     <dimen name = "albums_grid_view_spacing">1dp</dimen>
+
+    <dimen name="navigation_view_image_height">150dp</dimen>
+    <dimen name="navigation_view_text_size">14sp</dimen>
 </resources>

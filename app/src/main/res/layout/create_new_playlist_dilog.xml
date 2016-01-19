@@ -8,6 +8,6 @@
         android:id="@+id/playlist_name"
         android:layout_width="@dimen/new_playlist_edit_text_width"
         android:layout_height="wrap_content"
-        style="@style/SingleLineEditText"/>
+        style="@style/SingleLineText"/>
 
 </LinearLayout>
