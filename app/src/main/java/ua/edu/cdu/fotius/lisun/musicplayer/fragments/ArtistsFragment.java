@@ -76,6 +76,7 @@ public class ArtistsFragment extends BaseFragment {
                                 BaseLoaderCreator loaderCreator) {
         ArtistLoaderCreator creator =
                 (ArtistLoaderCreator) loaderCreator;
-        adapter.setIndicatorFor(creator.getArtistIdColumn(), serviceWrapper.getArtistID());
+        adapter.setIndicatorFor(creator.getArtistIdColumn(),
+                serviceWrapper.getArtistID(), serviceWrapper.isPlaying());
     }
 }

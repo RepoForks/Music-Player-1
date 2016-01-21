@@ -22,10 +22,12 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
 
     private long mCurrentId = AudioStorage.WRONG_ID;
     private String mIdColumn = null;
-    private int mIndicatorColor = -1;
+    private boolean mIsPlaying = false;
+    private int mIndicatorColor;
 
     public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
+        mIndicatorColor = context.getResources().getColor(R.color.accent);
     }
 
     @Override
@@ -80,25 +82,22 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         int idIdx = cursor.getColumnIndexOrThrow(mIdColumn);
         long id = cursor.getLong(idIdx);
 
-        int visibility;
-        if (id == mCurrentId) {
+        if ((id == mCurrentId) && mIsPlaying) {
             AnimationDrawable animation = (AnimationDrawable)
-                    mContext.getDrawable(R.drawable.ic_equalizer_white_24dp);
+                    mContext.getResources().getDrawable(R.drawable.ic_equalizer_white_18dp);
             indicator.setImageDrawable(animation);
-            //holder.mImageView.setImageTintList(sColorStatePlaying);
+            indicator.setColorFilter(mIndicatorColor);
             indicator.setVisibility(View.VISIBLE);
             if (animation != null) animation.start();
-            //visibility = View.VISIBLE;
         } else {
-            //visibility = View.GONE;
             indicator.setVisibility(View.GONE);
         }
-        //indicator.setVisibility(visibility);
     }
 
-    public void setIndicatorFor(String idColumn, long currentId) {
+    public void setIndicatorFor(String idColumn, long currentId, boolean isPlaying) {
         mCurrentId = currentId;
         mIdColumn = idColumn;
+        mIsPlaying = isPlaying;
         //mIndicatorColor = indicatorColor;
         notifyDataSetChanged();
     }

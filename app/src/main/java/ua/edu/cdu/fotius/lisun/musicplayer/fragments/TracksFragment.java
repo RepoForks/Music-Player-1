@@ -110,6 +110,7 @@ public class TracksFragment extends BaseFragment {
                                 BaseLoaderCreator loaderCreator) {
         BaseTracksLoaderCreator creator =
                 (BaseTracksLoaderCreator) loaderCreator;
-        adapter.setIndicatorFor(creator.getTrackIdColumn(), serviceWrapper.getTrackID());
+        adapter.setIndicatorFor(creator.getTrackIdColumn(), serviceWrapper.getTrackID(),
+                serviceWrapper.isPlaying());
     }
 }

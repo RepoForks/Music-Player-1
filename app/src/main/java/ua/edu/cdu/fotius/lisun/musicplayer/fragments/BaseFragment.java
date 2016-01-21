@@ -148,7 +148,7 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onPlaybackStateChanged() {
         if (!mServiceWrapper.isPlaying()) {
-            mCursorAdapter.setIndicatorFor(null, AudioStorage.WRONG_ID);
+            mCursorAdapter.setIndicatorFor(null, AudioStorage.WRONG_ID, false);
         } else {
             setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);
         }

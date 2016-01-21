@@ -43,7 +43,6 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        //mToolbarStateListener.showToolbar();
         mAbsListView.clearChoices();
     }
 

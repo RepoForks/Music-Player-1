@@ -28,4 +28,6 @@
 
     <dimen name="navigation_view_image_height">150dp</dimen>
     <dimen name="navigation_view_text_size">14sp</dimen>
+
+    <dimen name="progressbar_height">5dp</dimen>
 </resources>

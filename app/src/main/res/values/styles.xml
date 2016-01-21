@@ -1,6 +1,7 @@
 <resources>
 
     <style name="MusicPlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:actionModeBackground">@color/primary</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
@@ -22,15 +23,18 @@
     <style name="Toolbar" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/abc_action_bar_default_height_material</item>
-        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:maxHeight">@dimen/toolbar_height</item>
         <item name="android:background">@color/primary</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
     <style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal" >
         <item name="android:visibility">visible</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/primary</item>
+        <item name="android:minHeight">@dimen/progressbar_height</item>
+        <item name="android:maxHeight">@dimen/progressbar_height</item>
         <item name="android:indeterminate">true</item>
     </style>
 

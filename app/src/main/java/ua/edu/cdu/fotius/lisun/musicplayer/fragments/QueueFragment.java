@@ -104,7 +104,8 @@ public class QueueFragment extends BaseFragment {
     protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper, IndicatorCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {
         QueueLoaderCreator creator = (QueueLoaderCreator)loaderCreator;
-        adapter.setIndicatorFor(creator.getTrackIdColumn(), serviceWrapper.getTrackID());
+        adapter.setIndicatorFor(creator.getTrackIdColumn(),
+                serviceWrapper.getTrackID(), serviceWrapper.isPlaying());
     }
 
     private BroadcastReceiver mQueueChangedReceiver = new BroadcastReceiver() {

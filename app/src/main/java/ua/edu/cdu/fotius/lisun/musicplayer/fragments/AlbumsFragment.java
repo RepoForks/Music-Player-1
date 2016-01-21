@@ -91,6 +91,7 @@ public class AlbumsFragment extends BaseFragment {
                                 BaseLoaderCreator loaderCreator) {
         BaseAlbumsLoaderCreator creator =
                 (BaseAlbumsLoaderCreator) loaderCreator;
-        adapter.setIndicatorFor(creator.getAlbumIdColumn(), mServiceWrapper.getAlbumID());
+        adapter.setIndicatorFor(creator.getAlbumIdColumn(), mServiceWrapper.getAlbumID(),
+                mServiceWrapper.isPlaying());
     }
 }
