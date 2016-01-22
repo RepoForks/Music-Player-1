@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,22 +15,24 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.BaseNameTextView;
 
-/**
- *An easy adapter to map columns from a cursor to TextViews or ImageViews defined in an XML file.
- * Template method pattern is used to define fragment specific behaviour, such as getting unknown
- * string({@link ua.edu.cdu.fotius.lisun.musicplayer.fragments
- * .BaseSimpleCursorAdapter#getUnknownText(android.content.Context, android.database.Cursor, int)})
- */
-public class IndicatorCursorAdapter extends SimpleCursorAdapter {
-
+public class BaseCursorAdapter extends SimpleCursorAdapter {
     private long mCurrentId = AudioStorage.WRONG_ID;
     private String mIdColumn = null;
     private boolean mIsPlaying = false;
-    private int mIndicatorColor;
+    private int mPlayIndicatorColor;
+    private AbsListView mAbsListView = null;
+    //private int mCurrentPositionInList = -1;
 
-    public IndicatorCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
+    public BaseCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
-        mIndicatorColor = context.getResources().getColor(R.color.accent);
+        mPlayIndicatorColor = context.getResources().getColor(R.color.accent);
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        mAbsListView = (AbsListView) parent;
+        //mCurrentPositionInList = cursor.getPosition();
+        return super.newView(context, cursor, parent);
     }
 
     @Override
@@ -57,7 +62,8 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
             }
         }
 
-        tryToSetIndicator(rowLayout, cursor);
+        tryToSetCheckedIndicator(rowLayout, cursor);
+        tryToSetPlayIndicator(rowLayout, cursor);
     }
 
     @Override
@@ -69,7 +75,29 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         }
     }
 
-    private void tryToSetIndicator(View rowLayout, Cursor cursor) {
+    private void tryToSetCheckedIndicator(View rowLayout, Cursor cursor) {
+        if(mAbsListView.getChoiceMode() == AbsListView.CHOICE_MODE_NONE) return;
+
+        View checkedIndicator = rowLayout.findViewById(R.id.checked_indicator);
+        if(checkedIndicator == null) {
+            throw new RuntimeException(
+                    "Your content must have a view " +
+                            "whose id attribute is " +
+                            "'R.id.checked_indicator' or you should " +
+                            "set AbsListView.CHOICE_MODE_NONE for AbsListView");
+        }
+
+        SparseBooleanArray checkedPositions = mAbsListView.getCheckedItemPositions();
+        boolean checked = checkedPositions.get(cursor.getPosition(), false);
+
+        if(checked) {
+            checkedIndicator.setVisibility(View.VISIBLE);
+        } else {
+            checkedIndicator.setVisibility(View.GONE);
+        }
+    }
+
+    private void tryToSetPlayIndicator(View rowLayout, Cursor cursor) {
         ImageView indicator = (ImageView)rowLayout.findViewById(R.id.play_indicator);
         /*if resource doesn't contain indicator.*/
         if(indicator == null) return;
@@ -86,7 +114,7 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
             AnimationDrawable animation = (AnimationDrawable)
                     mContext.getResources().getDrawable(R.drawable.ic_equalizer_white_18dp);
             indicator.setImageDrawable(animation);
-            indicator.setColorFilter(mIndicatorColor);
+            indicator.setColorFilter(mPlayIndicatorColor);
             indicator.setVisibility(View.VISIBLE);
             if (animation != null) animation.start();
         } else {
@@ -98,7 +126,7 @@ public class IndicatorCursorAdapter extends SimpleCursorAdapter {
         mCurrentId = currentId;
         mIdColumn = idColumn;
         mIsPlaying = isPlaying;
-        //mIndicatorColor = indicatorColor;
+        //mPlayIndicatorColor = indicatorColor;
         notifyDataSetChanged();
     }
 }

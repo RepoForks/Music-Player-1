@@ -8,7 +8,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
 
-public class AlbumArtCursorAdapter extends IndicatorCursorAdapter {
+public class AlbumArtCursorAdapter extends BaseCursorAdapter {
 
     private String mAlbumIDColumn;
     private int mAlbumArtViewResourceId;
@@ -26,7 +26,6 @@ public class AlbumArtCursorAdapter extends IndicatorCursorAdapter {
     public void bindView(View rowLayout, Context context, Cursor cursor) {
         View v = rowLayout.findViewById(mAlbumArtViewResourceId);
         if(v != null) {
-            //TODO : cursor == null
             int albumIdIdx = cursor.getColumnIndexOrThrow(mAlbumIDColumn);
             long albumId = cursor.getLong(albumIdIdx);
             mImageLoader.load(albumId).withDefault(R.drawable.default_album_art_512dp)

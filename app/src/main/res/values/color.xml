@@ -9,6 +9,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+    <color name="toolbar_text">#ffffff</color>
+
     <color name="album_title_container">#80444444</color>
     <color name="album_title">#80ffffff</color>
 </resources>

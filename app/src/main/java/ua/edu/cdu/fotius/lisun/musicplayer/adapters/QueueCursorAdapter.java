@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.view.View;
 import java.util.HashMap;
 
-public class QueueCursorAdapter extends IndicatorCursorAdapter {
-
-
+public class QueueCursorAdapter extends BaseCursorAdapter {
 
     private final int INVALID_POSITION = -1;
     private HashMap<Long, Integer> mCursorTracksID;

@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.GenresLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnGenreClickListener;
@@ -33,12 +33,12 @@ public class GenresFragment extends BaseFragment {
     }
 
     @Override
-    protected IndicatorCursorAdapter createCursorAdapter() {
+    protected BaseCursorAdapter createCursorAdapter() {
         GenresLoaderCreator loaderFactory = (GenresLoaderCreator) mLoaderCreator;
         String[] from = new String[] { loaderFactory.getGenreColumn()};
         int[] to = new int[] { R.id.genre};
 
-        return new IndicatorCursorAdapter(getActivity(),
+        return new BaseCursorAdapter(getActivity(),
                 R.layout.row_genres_list, from, to);
     }
 
@@ -55,6 +55,6 @@ public class GenresFragment extends BaseFragment {
 
     @Override
     protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
-                                IndicatorCursorAdapter adapter,
+                                BaseCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {}
 }

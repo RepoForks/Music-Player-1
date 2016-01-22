@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.ArtistMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderCreator;
@@ -32,14 +32,14 @@ public class ArtistsFragment extends BaseFragment {
     }
 
     @Override
-    protected IndicatorCursorAdapter createCursorAdapter() {
+    protected BaseCursorAdapter createCursorAdapter() {
         ArtistLoaderCreator loaderFactory = (ArtistLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getArtistColumn(),
                 loaderFactory.getAlbumsQuantityColumn(),
                 loaderFactory.getTracksQuantityColumn()};
         int[] to = new int[]{R.id.artist_name, R.id.albums_quantity, R.id.tracks_quantity};
 
-        return new IndicatorCursorAdapter(getActivity(),
+        return new BaseCursorAdapter(getActivity(),
                 R.layout.row_artist_list, from, to);
     }
 
@@ -72,7 +72,7 @@ public class ArtistsFragment extends BaseFragment {
 
     @Override
     protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
-                                IndicatorCursorAdapter adapter,
+                                BaseCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {
         ArtistLoaderCreator creator =
                 (ArtistLoaderCreator) loaderCreator;

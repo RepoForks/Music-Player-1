@@ -20,12 +20,15 @@
         <item name="theme">@style/NavigationViewTheme</item>
     </style>
 
-    <style name="Toolbar" >
+    <style name="ToolbarStyle" >
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/abc_action_bar_default_height_material</item>
-        <item name="android:maxHeight">@dimen/toolbar_height</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:background">@color/primary</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:textColorPrimary">@color/toolbar_text</item>
+        <item name="android:textColorSecondary">@color/toolbar_text</item>
     </style>
 
     <style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal" >

@@ -17,7 +17,7 @@ import android.widget.ListView;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.adapters.QueueCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.QueueTrackMenuCommandSet;
@@ -53,7 +53,7 @@ public class QueueFragment extends BaseFragment {
     }
 
     @Override
-    protected IndicatorCursorAdapter createCursorAdapter() {
+    protected BaseCursorAdapter createCursorAdapter() {
         QueueLoaderCreator loaderCreator = (QueueLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderCreator.getTrackColumn(),
                 loaderCreator.getAlbumColumn()};
@@ -101,7 +101,7 @@ public class QueueFragment extends BaseFragment {
     }
 
     @Override
-    protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper, IndicatorCursorAdapter adapter,
+    protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper, BaseCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {
         QueueLoaderCreator creator = (QueueLoaderCreator)loaderCreator;
         adapter.setIndicatorFor(creator.getTrackIdColumn(),

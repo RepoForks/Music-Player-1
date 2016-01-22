@@ -19,7 +19,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateChangesObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateReceiver;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderCreator;
 
 /*Methods from ServiceConnectionObserver do anything. Interface is needed to distinguish elements connected to service.
@@ -29,7 +29,7 @@ public abstract class BaseFragment extends Fragment
 
     private final String TAG = getClass().getSimpleName();
 
-    protected IndicatorCursorAdapter mCursorAdapter;
+    protected BaseCursorAdapter mCursorAdapter;
     protected BaseLoaderCreator mLoaderCreator;
     private ToolbarActivity mToolbarActivity;
     protected MediaPlaybackServiceWrapper mServiceWrapper;
@@ -93,7 +93,7 @@ public abstract class BaseFragment extends Fragment
         getLoaderManager().restartLoader(mLoaderCreator.getLoaderId(), null, this);
     }
 
-    protected abstract IndicatorCursorAdapter createCursorAdapter();
+    protected abstract BaseCursorAdapter createCursorAdapter();
 
     protected abstract BaseLoaderCreator createCursorLoaderCreator();
 
@@ -155,6 +155,6 @@ public abstract class BaseFragment extends Fragment
     }
 
     protected abstract void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
-                                         IndicatorCursorAdapter adapter,
+                                         BaseCursorAdapter adapter,
                                          BaseLoaderCreator loaderCreator);
 }

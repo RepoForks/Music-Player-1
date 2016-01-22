@@ -3,18 +3,23 @@ package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 
 import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
+
+    private final String TAG = getClass().getSimpleName();
+
     private AbsListView mAbsListView;
     private BaseMenuCommandSet mBaseMenuCommandsSet;
     private Context mContext;
@@ -78,7 +83,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
     }
 
     private long[] getCheckedIds(ArrayList<Integer> checkedPositions) {
-        IndicatorCursorAdapter adapter = (IndicatorCursorAdapter) mAbsListView.getAdapter();
+        BaseCursorAdapter adapter = (BaseCursorAdapter) mAbsListView.getAdapter();
         Cursor cursor = adapter.getCursor();
         long[] checkedIds = new long[checkedPositions.size()];
         int idColumnIndex = cursor.getColumnIndexOrThrow(mChoosingItemIdColumn);
@@ -100,5 +105,14 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
         }
         Resources resources = mContext.getResources();
         mode.setTitle(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
+
+        Log.d(TAG, "onItemCheckedStateChanged");
+        View clickedView = mAbsListView.getChildAt(position);
+        View checkedIndicator = clickedView.findViewById(R.id.checked_indicator);
+        if(needToCheck) {
+            checkedIndicator.setVisibility(View.VISIBLE);
+        } else {
+            checkedIndicator.setVisibility(View.GONE);
+        }
     }
 }

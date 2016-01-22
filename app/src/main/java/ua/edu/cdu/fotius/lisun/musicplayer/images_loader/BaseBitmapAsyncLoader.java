@@ -27,7 +27,6 @@ public abstract class BaseBitmapAsyncLoader extends AsyncTask<Object, Void, Bitm
         ImageViewForLoader imageView = mImageViewWeakReference.get();
         Bitmap bitmap = null;
         if (imageView != null) {
-            Log.d(TAG, "imageView: " + imageView);
             bitmap = decodeBitmap(bitmapSource, imageView.getViewWidth(), imageView.getViewHeight());
             addToMemoryCache(bitmap, imageView.getViewWidth(), imageView.getViewHeight());
         }

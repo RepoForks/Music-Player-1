@@ -13,7 +13,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.adapters.AlbumArtCursorAdapter;
-import ua.edu.cdu.fotius.lisun.musicplayer.adapters.IndicatorCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.MultiChoiceListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.TrackMenuCommandSet;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderCreator;
@@ -41,7 +41,7 @@ public class TracksFragment extends BaseFragment {
     }
 
     @Override
-    protected IndicatorCursorAdapter createCursorAdapter() {
+    protected BaseCursorAdapter createCursorAdapter() {
         BaseTracksLoaderCreator loaderFactory = (BaseTracksLoaderCreator) mLoaderCreator;
         String[] from = new String[]{loaderFactory.getTrackColumn(),
                 loaderFactory.getArtistColumn()};
@@ -106,7 +106,7 @@ public class TracksFragment extends BaseFragment {
 
     @Override
     protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
-                                IndicatorCursorAdapter adapter,
+                                BaseCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {
         BaseTracksLoaderCreator creator =
                 (BaseTracksLoaderCreator) loaderCreator;

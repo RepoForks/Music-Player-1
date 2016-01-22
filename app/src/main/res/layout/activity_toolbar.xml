@@ -8,7 +8,8 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/Toolbar" />
+        android:theme="@style/ToolbarTheme"
+        style="@style/ToolbarStyle" />
 
     <ua.edu.cdu.fotius.lisun.musicplayer.views.ColoredProgressBar
         android:id="@+id/progress_bar"

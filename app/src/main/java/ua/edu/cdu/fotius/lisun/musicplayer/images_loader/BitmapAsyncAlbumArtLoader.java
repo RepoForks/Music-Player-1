@@ -24,8 +24,6 @@ public class BitmapAsyncAlbumArtLoader extends BaseBitmapAsyncLoader {
 
     @Override
     protected Bitmap decodeBitmap(Object albumId, int width, int height) {
-        Log.e(TAG, "albumArt.width: " + width);
-        Log.e(TAG, "albumArt.height: " + height);
         String albumArtPath = DatabaseUtils.queryAlbumArtPath(mContext, (Long) albumId);
         if ((albumArtPath != null) && (new File(albumArtPath).exists())) {
             mData = albumId;
