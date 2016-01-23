@@ -8,7 +8,6 @@ import java.io.File;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
-//TODO: rename this class
 public class BitmapAsyncAlbumArtLoader extends BaseBitmapAsyncLoader {
 
     private final String TAG = getClass().getSimpleName();

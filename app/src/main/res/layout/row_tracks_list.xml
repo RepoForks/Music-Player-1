@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/row_height"
-    android:background="@drawable/list_item_selector" >
+    style="@style/ListRow">
 
     <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"

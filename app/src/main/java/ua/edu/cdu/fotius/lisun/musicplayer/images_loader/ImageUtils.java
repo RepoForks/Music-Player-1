@@ -3,8 +3,12 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_loader;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
+
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class ImageUtils {
 

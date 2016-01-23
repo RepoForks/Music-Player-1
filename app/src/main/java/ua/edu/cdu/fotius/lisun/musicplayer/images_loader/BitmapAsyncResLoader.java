@@ -17,8 +17,6 @@ public class BitmapAsyncResLoader extends BaseBitmapAsyncLoader{
 
     @Override
     protected Bitmap decodeBitmap(Object bitmapSource, int width, int height) {
-        Log.e(TAG, "width: " + width);
-        Log.e(TAG, "height: " + height);
         mData = bitmapSource;
         return ImageUtils.decodeSampledBitmapFromResource(mResources, (Integer) mData, width, height);
     }

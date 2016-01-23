@@ -1,10 +1,11 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.images_loader;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class ImageMemoryCache {
 
-
+    private final String TAG = getClass().getSimpleName();
 
     public static ImageMemoryCache mInstance = null;
 
@@ -37,7 +38,7 @@ public class ImageMemoryCache {
 
     public void addBitmap(String key, Bitmap bitmap) {
         if(getBitmap(key) == null) {
-//            Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
+            Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
             mCache.put(key, bitmap);
         }
     }
