@@ -37,11 +37,10 @@
                 style="@style/SingleLineText.AlbumTitle.Secondary" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/play_indicator"
+        <include
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            layout="@layout/play_indicator"/>
     </LinearLayout>
 
     <RelativeLayout

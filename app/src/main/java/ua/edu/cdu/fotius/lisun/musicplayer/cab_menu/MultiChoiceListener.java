@@ -107,7 +107,8 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
         mode.setTitle(resources.getString(R.string.selected_text, mAbsListView.getCheckedItemCount()));
 
         Log.d(TAG, "onItemCheckedStateChanged");
-        View clickedView = mAbsListView.getChildAt(position);
+        int actualPosition = position - mAbsListView.getFirstVisiblePosition();
+        View clickedView = mAbsListView.getChildAt(actualPosition);
         View checkedIndicator = clickedView.findViewById(R.id.checked_indicator);
 
         //TODO: here checked indicator sometimes null. Why?

@@ -33,18 +33,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/checked_indicator"
+    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/play_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone" />
+        layout="@layout/play_indicator"/>
 
 </LinearLayout>

@@ -22,6 +22,8 @@
 
     <!--ArtistsBrowserFragment-->
     <string name="no_artists_label">There is no artists</string>
+    <string name="albums_quantity_label">Albums:&#160;</string>
+    <string name="tracks_quantity_label">Tracks:&#160;</string>
 
     <!--AlbumBrowserFragment-->
     <string name="no_albums_label">There is no albums</string>

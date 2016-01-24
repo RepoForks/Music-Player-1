@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/row_height"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     style="@style/ListRow">
 
     <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
@@ -11,43 +12,28 @@
         android:layout_height="@dimen/row_album_art_size" />
 
     <LinearLayout
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/track_title"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:singleLine="true"
-            android:gravity="center_vertical" />
+            android:layout_height="wrap_content"
+            style="@style/SingleLineText.Primary" />
 
         <ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView
             android:id="@+id/artist_name"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:singleLine="true"
-            android:gravity="center_vertical" />
+            android:layout_height="wrap_content"
+            style="@style/SingleLineText.Secondary" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/checked_indicator"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/play_indicator"
+    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:src="@mipmap/ic_launcher"/>
+        layout="@layout/play_indicator"/>
 
 </LinearLayout>

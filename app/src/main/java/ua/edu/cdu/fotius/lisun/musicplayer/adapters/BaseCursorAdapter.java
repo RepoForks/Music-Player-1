@@ -79,13 +79,14 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
         if(mAbsListView.getChoiceMode() == AbsListView.CHOICE_MODE_NONE) return;
 
         View checkedIndicator = rowLayout.findViewById(R.id.checked_indicator);
-        if(checkedIndicator == null) {
-            throw new RuntimeException(
-                    "Your content must have a view " +
-                            "whose id attribute is " +
-                            "'R.id.checked_indicator' or you should " +
-                            "set AbsListView.CHOICE_MODE_NONE for AbsListView");
-        }
+        if(checkedIndicator == null) return;
+//        if(checkedIndicator == null) {
+//            throw new RuntimeException(
+//                    "Your content must have a view " +
+//                            "whose id attribute is " +
+//                            "'R.id.checked_indicator' or you should " +
+//                            "set AbsListView.CHOICE_MODE_NONE for AbsListView");
+//        }
 
         SparseBooleanArray checkedPositions = mAbsListView.getCheckedItemPositions();
         boolean checked = checkedPositions.get(cursor.getPosition(), false);
