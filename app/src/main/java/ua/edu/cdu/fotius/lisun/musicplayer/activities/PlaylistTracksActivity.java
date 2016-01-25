@@ -22,7 +22,7 @@ public class PlaylistTracksActivity extends ToolbarActivity {
         // Better to throw exception when there is no custom title
         setTitle(getIntent().getExtras(), getResources()
                 .getString(R.string.playlist_tracklist_default_toolbar_title));
-        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
     }
 }

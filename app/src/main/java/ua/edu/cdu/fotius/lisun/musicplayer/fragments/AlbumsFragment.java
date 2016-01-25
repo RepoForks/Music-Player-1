@@ -66,7 +66,7 @@ public class AlbumsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_albums_browser, container, false);
+        View v = inflater.inflate(R.layout.fragment_albums, container, false);
         GridView gridView = (GridView) v.findViewById(R.id.list);
         gridView.setAdapter(mCursorAdapter);
         BaseAlbumsLoaderCreator loaderCreator = (BaseAlbumsLoaderCreator) mLoaderCreator;
@@ -83,6 +83,11 @@ public class AlbumsFragment extends BaseFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return mLoaderCreator.createCursorLoader();
+    }
+
+    @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.albums);
     }
 
     @Override

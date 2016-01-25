@@ -1,16 +1,26 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dock_playback_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content" >
 
     <ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader
         android:id="@+id/album_art"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_alignParentLeft="true"
+        android:layout_width="@dimen/dock_playback_art_size"
+        android:layout_height="@dimen/dock_playback_art_size" />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        style="@style/MySeekbar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:clickable="false"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:background="@color/primary"
+        android:thumb="@null"
+        android:thumbOffset="0dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -18,14 +28,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <SeekBar
-            android:id="@+id/seek_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:clickable="false"
-            android:background="@null"
-            android:thumb="@null" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,4 +78,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

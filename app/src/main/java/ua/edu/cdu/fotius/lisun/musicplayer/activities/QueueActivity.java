@@ -18,7 +18,7 @@ public class QueueActivity extends ToolbarActivity {
         }
 
         setTitle(getResources().getString(R.string.now_playing_activity_title));
-        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
     }
 }

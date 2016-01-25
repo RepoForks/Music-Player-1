@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.CheckedIndicatorController;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.BaseNameTextView;
 
 public class BaseCursorAdapter extends SimpleCursorAdapter {
@@ -31,7 +32,6 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         mAbsListView = (AbsListView) parent;
-        //mCurrentPositionInList = cursor.getPosition();
         return super.newView(context, cursor, parent);
     }
 
@@ -78,24 +78,10 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
     private void tryToSetCheckedIndicator(View rowLayout, Cursor cursor) {
         if(mAbsListView.getChoiceMode() == AbsListView.CHOICE_MODE_NONE) return;
 
-        View checkedIndicator = rowLayout.findViewById(R.id.checked_indicator);
-        if(checkedIndicator == null) return;
-//        if(checkedIndicator == null) {
-//            throw new RuntimeException(
-//                    "Your content must have a view " +
-//                            "whose id attribute is " +
-//                            "'R.id.checked_indicator' or you should " +
-//                            "set AbsListView.CHOICE_MODE_NONE for AbsListView");
-//        }
-
         SparseBooleanArray checkedPositions = mAbsListView.getCheckedItemPositions();
         boolean checked = checkedPositions.get(cursor.getPosition(), false);
 
-        if(checked) {
-            checkedIndicator.setVisibility(View.VISIBLE);
-        } else {
-            checkedIndicator.setVisibility(View.GONE);
-        }
+        CheckedIndicatorController.setCheckedIndicator(rowLayout, checked);
     }
 
     private void tryToSetPlayIndicator(View rowLayout, Cursor cursor) {
@@ -127,7 +113,6 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
         mCurrentId = currentId;
         mIdColumn = idColumn;
         mIsPlaying = isPlaying;
-        //mPlayIndicatorColor = indicatorColor;
         notifyDataSetChanged();
     }
 }

@@ -22,7 +22,7 @@ public class TracksActivity extends SlidingPanelActivity {
 
         setTitle(getIntent().getExtras(),
                 getResources().getString(R.string.default_track_detalization_activity_title));
-        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
         setPanelSlideListener(new SlidingPanelListener(null, getSupportFragmentManager()));
     }

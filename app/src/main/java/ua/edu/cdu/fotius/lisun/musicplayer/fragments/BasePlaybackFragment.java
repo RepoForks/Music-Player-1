@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,7 +32,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
-public abstract class AbstractPlaybackFragment extends Fragment implements ServiceConnectionObserver,
+public abstract class BasePlaybackFragment extends Fragment implements ServiceConnectionObserver,
         OnRewindListener.RewindClickedListener, OnForwardListener.ForwardClickedListener, ServiceStateChangesObserver{
 
     protected final long ERROR_REFRESH_DELAY_IN_MILLIS = -1;
@@ -147,7 +148,8 @@ public abstract class AbstractPlaybackFragment extends Fragment implements Servi
 
     private void initSeekBar(View parent) {
         mSeekBar = (SeekBar) parent.findViewById(R.id.seek_bar);
-        if(mArtistTitle == null) {
+        mSeekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.accent), PorterDuff.Mode.SRC_IN);
+        if(mSeekBar == null) {
             throw new RuntimeException(
                     "Your layout must have a SeekBar " +
                             "whose id attribute is " +

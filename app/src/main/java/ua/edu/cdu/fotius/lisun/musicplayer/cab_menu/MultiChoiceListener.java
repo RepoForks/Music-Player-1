@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.CheckedIndicatorController;
 
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
@@ -109,14 +110,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
         Log.d(TAG, "onItemCheckedStateChanged");
         int actualPosition = position - mAbsListView.getFirstVisiblePosition();
         View clickedView = mAbsListView.getChildAt(actualPosition);
-        View checkedIndicator = clickedView.findViewById(R.id.checked_indicator);
 
-        //TODO: here checked indicator sometimes null. Why?
-
-        if(needToCheck) {
-            checkedIndicator.setVisibility(View.VISIBLE);
-        } else {
-            checkedIndicator.setVisibility(View.GONE);
-        }
+        CheckedIndicatorController.setCheckedIndicator(clickedView, needToCheck);
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
-public class DockPlaybackFragment extends AbstractPlaybackFragment{
+public class DockPlaybackFragment extends BasePlaybackFragment {
 
     public DockPlaybackFragment() {
     }

@@ -36,7 +36,7 @@ public class GenresFragment extends BaseFragment {
     protected BaseCursorAdapter createCursorAdapter() {
         GenresLoaderCreator loaderFactory = (GenresLoaderCreator) mLoaderCreator;
         String[] from = new String[] { loaderFactory.getGenreColumn()};
-        int[] to = new int[] { R.id.genre};
+        int[] to = new int[] { R.id.genre };
 
         return new BaseCursorAdapter(getActivity(),
                 R.layout.row_genres_list, from, to);
@@ -51,6 +51,11 @@ public class GenresFragment extends BaseFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return mLoaderCreator.createCursorLoader();
+    }
+
+    @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.genres);
     }
 
     @Override

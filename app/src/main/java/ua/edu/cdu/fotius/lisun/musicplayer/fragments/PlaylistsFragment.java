@@ -56,6 +56,11 @@ public class PlaylistsFragment extends BaseFragment {
     }
 
     @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.playlists);
+    }
+
+    @Override
     protected void setIndicator(MediaPlaybackServiceWrapper serviceWrapper,
                                 BaseCursorAdapter adapter,
                                 BaseLoaderCreator loaderCreator) {}

@@ -77,6 +77,11 @@ public class QueueFragment extends BaseFragment {
     }
 
     @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.songs);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_now_playing, container, false);

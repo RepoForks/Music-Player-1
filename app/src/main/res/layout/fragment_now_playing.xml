@@ -11,10 +11,10 @@
         android:layout_height="match_parent"
         style="@style/ListView" />
 
-    <TextView
-        android:id="@+id/empty"
+    <include
+        layout="@layout/empty_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_now_playing_tracks_label" />
+        android:layout_centerInParent="true" />
     
 </RelativeLayout>

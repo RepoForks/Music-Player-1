@@ -19,7 +19,7 @@ public class InfoEditorActivity extends ToolbarActivity {
         }
 
         setTitle(getResources().getString(R.string.default_edit_info_activity));
-        setNavigationIconResourceID(R.drawable.ic_arrow_back_black_24dp);
+        setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
     }
 }

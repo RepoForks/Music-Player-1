@@ -9,11 +9,10 @@
         style="@style/ListView" >
     </ListView>
 
-    <TextView
-        android:id="@+id/empty"
+    <include
+        layout="@layout/empty_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/no_users_playlists_label" />
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

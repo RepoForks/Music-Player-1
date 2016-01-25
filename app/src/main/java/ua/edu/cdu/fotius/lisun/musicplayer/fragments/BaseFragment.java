@@ -10,11 +10,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateChangesObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateReceiver;
@@ -110,8 +111,8 @@ public abstract class BaseFragment extends Fragment
         if (mToolbarActivity == null) return;
 
         mToolbarActivity.hideProgress();
-        View v = mToolbarActivity.findViewById(R.id.empty);
 
+        View v = mToolbarActivity.findViewById(R.id.empty);
         if (v == null) {
             throw new RuntimeException(
                     "Your content must have a View " +
@@ -119,12 +120,15 @@ public abstract class BaseFragment extends Fragment
                             "'R.id.empty'");
         }
 
-        if (mCursorAdapter.getCount() > 0) {
-            v.setVisibility(View.GONE);
-        } else {
+        if (mCursorAdapter.getCount() <= 0) {
+            TextView emptyListMessage = (TextView) v;
+            emptyListMessage.setText(mToolbarActivity
+                    .getString(R.string.empty_list_message, defineEmptyListMessage()));
             v.setVisibility(View.VISIBLE);
         }
     }
+
+    public abstract String defineEmptyListMessage();
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

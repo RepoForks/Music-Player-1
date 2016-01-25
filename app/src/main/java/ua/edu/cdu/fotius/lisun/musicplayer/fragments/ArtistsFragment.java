@@ -51,7 +51,7 @@ public class ArtistsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_artists_browser, container, false);
+        View v = inflater.inflate(R.layout.fragment_artists, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
         ArtistLoaderCreator loaderCreator =
@@ -68,6 +68,11 @@ public class ArtistsFragment extends BaseFragment {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return mLoaderCreator.createCursorLoader();
+    }
+
+    @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.artists);
     }
 
     @Override

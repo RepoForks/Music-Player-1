@@ -53,7 +53,7 @@ public class TracksFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tracks_browser, container, false);
+        View v = inflater.inflate(R.layout.fragment_tracks, container, false);
         ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setAdapter(mCursorAdapter);
         listView.setOnItemClickListener(createOnItemClickListener());
@@ -97,6 +97,11 @@ public class TracksFragment extends BaseFragment {
                 (BaseTracksLoaderCreator) mLoaderCreator;
         return new OnTrackClickListener(getActivity(), mCursorAdapter,
                 mServiceWrapper, loaderCreator.getTrackIdColumn());
+    }
+
+    @Override
+    public String defineEmptyListMessage() {
+        return getActivity().getResources().getString(R.string.songs);
     }
 
     @Override

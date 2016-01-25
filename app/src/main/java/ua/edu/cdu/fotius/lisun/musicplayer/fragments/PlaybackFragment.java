@@ -15,7 +15,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.views.RepeatButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.ShuffleButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.TimeUtils;
 
-public class PlaybackFragment extends AbstractPlaybackFragment implements OnRepeatClickListener.RepeatClickedListener,
+public class PlaybackFragment extends BasePlaybackFragment implements OnRepeatClickListener.RepeatClickedListener,
         OnShuffleClickListener.ShuffleClickedListener, OnSeekBarChangeListener.SeekBarProgressChangedListener{
 
     private TextView mCurrentTime;

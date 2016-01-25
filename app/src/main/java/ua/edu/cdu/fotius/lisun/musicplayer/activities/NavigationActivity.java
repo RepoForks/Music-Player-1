@@ -37,7 +37,7 @@ public class NavigationActivity extends SlidingPanelActivity {
         NavigationView navigationView = setUpNavigationView(drawerLayout);
 
         setTitle(getResources().getString(R.string.app_name));
-        setNavigationIconResourceID(R.drawable.ic_menu_black_24dp);
+        setNavigationIconResourceID(R.drawable.ic_menu_white_24dp);
         setNavigationClickListener(new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
         setPanelSlideListener(new SlidingPanelListener(drawerLayout, getSupportFragmentManager()));
     }
