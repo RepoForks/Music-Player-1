@@ -12,7 +12,6 @@
 
     <SeekBar
         android:id="@+id/seek_bar"
-        style="@style/MySeekbar"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:clickable="false"

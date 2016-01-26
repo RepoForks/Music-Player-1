@@ -12,7 +12,11 @@
 
     <ua.edu.cdu.fotius.lisun.musicplayer.views.ColoredProgressBar
         android:id="@+id/progress_bar"
-        style="@style/ProgressBar" />
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_progressbar_height"
+        android:background="@color/primary"
+        style="@style/ProgressBarHorizontal.Indeterminate" />
 
     <View
         android:layout_width="match_parent"
@@ -25,5 +29,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <!--<style name="ProgressBar" parent="Base.Widget.AppCompat.ProgressBar.Horizontal" >-->
+        <!--<item name="android:visibility">visible</item>-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">wrap_content</item>-->
+        <!--<item name="android:background">@color/primary</item>-->
+        <!--<item name="android:minHeight">@dimen/progressbar_height</item>-->
+        <!--<item name="android:maxHeight">@dimen/progressbar_height</item>-->
+        <!--<item name="android:indeterminate">true</item>-->
+    <!--</style>-->
 
 </LinearLayout>

@@ -58,7 +58,7 @@ public class PlaybackFragment extends BasePlaybackFragment implements OnRepeatCl
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_media_playback;
+        return R.layout.fragment_playback;
     }
 
     @Override

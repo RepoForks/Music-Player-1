@@ -28,7 +28,7 @@
     <dimen name="navigation_view_image_height">150dp</dimen>
     <dimen name="navigation_view_text_size">14sp</dimen>
 
-    <dimen name="progressbar_height">5dp</dimen>
+    <dimen name="toolbar_progressbar_height">1dp</dimen>
 
     <dimen name="list_divider_height">0.1dp</dimen>
 

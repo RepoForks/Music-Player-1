@@ -103,10 +103,6 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        Log.d(TAG, "Loader: " + loader);
-        Log.d(TAG, "onLoadFinished(). Data size: " + data.getCount());
-
         mCursorAdapter.swapCursor(data);
         if (mToolbarActivity == null) return;
 
