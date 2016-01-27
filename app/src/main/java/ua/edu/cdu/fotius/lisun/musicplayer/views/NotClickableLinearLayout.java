@@ -14,9 +14,6 @@ import android.widget.LinearLayout;
 // find out why unpredictable behaviour is happens in SlidingUpPanelLayout when click
 // on default LinearLayout(it resets the media player)
 public class NotClickableLinearLayout extends LinearLayout {
-
-
-
     public NotClickableLinearLayout(Context context) {
         super(context);
     }

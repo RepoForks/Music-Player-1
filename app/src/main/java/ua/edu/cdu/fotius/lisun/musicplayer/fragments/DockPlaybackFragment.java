@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
@@ -18,6 +19,9 @@ public class DockPlaybackFragment extends BasePlaybackFragment {
                              Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    @Override
+    public void styleProgressBar(ProgressBar bar) {}
 
     @Override
     public int getLayoutID() {

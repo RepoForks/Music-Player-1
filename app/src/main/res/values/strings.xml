@@ -8,6 +8,8 @@
     <string translatable="false" name="durationformatshort"><xliff:g id="time_format">%2$d:%5$02d</xliff:g></string>
     <!-- Do not translate. Duration format for duration >= 1 hour -->
     <string translatable="false" name="durationformatlong"><xliff:g id="time_format">%1$d:%3$02d:%5$02d</xliff:g></string>
+    <!-- Do not translate. Duration format for duration >= 1 hour -->
+    <string name="seek_bar_time_initial" translatable="false">00:00</string>
     
     <!--NavigationView-->
     <string name="artists_label">Artists</string>
@@ -111,4 +113,6 @@
     <string name="notification_action_next">Next</string>
     <string name="notification_action_play">Play</string>
     <string name="notification_action_pause">Pause</string>
+
+    <string name="now_playing_label">Now playing</string>
 </resources>

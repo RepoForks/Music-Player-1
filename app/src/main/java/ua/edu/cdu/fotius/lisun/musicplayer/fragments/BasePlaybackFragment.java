@@ -1,7 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 import android.content.IntentFilter;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
@@ -20,13 +19,10 @@ import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceConnectionObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateChangesObserver;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceStateReceiver;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnForwardListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnNextClickListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnPlayPauseClickListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnPreviousClickListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnRewindListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnSeekBarChangeListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.ArtistNameTextView;
-import ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.PlayPauseButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader;
@@ -47,7 +43,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     private PlayPauseButton mPlayButton;
     private TextView mTrackTitle;
     private ArtistNameTextView mArtistTitle;
-    protected SeekBar mSeekBar;
+    protected ProgressBar mProgressBar;
     private ImageLoader mImageLoader;
 
     private ServiceStateReceiver mServiceStateReceiver;
@@ -68,41 +64,12 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(getLayoutID(), container, false);
-        initPrevButton(v);
-        initNextButton(v);
         initPlayButton(v);
         initAlbumArtView(v);
         initTrackTitleView(v);
         initArtistTitleView(v);
         initSeekBar(v);
         return v;
-    }
-
-    private void initPrevButton(View parent) {
-        LoopingImageButton prevButton =
-                (LoopingImageButton) parent.findViewById(R.id.prev);
-        if(prevButton == null) {
-            throw new RuntimeException(
-                    "Your layout must have a LoopingImageButton " +
-                            "whose id attribute is " +
-                            "'R.id.prev'");
-        }
-
-        prevButton.setOnClickListener(new OnPreviousClickListener(mServiceWrapper));
-        prevButton.setRepeatListener(new OnRewindListener(mServiceWrapper, this));
-    }
-
-    private void initNextButton(View parent) {
-        LoopingImageButton nextButton =
-                (LoopingImageButton) parent.findViewById(R.id.next);
-        if(nextButton == null) {
-            throw new RuntimeException(
-                    "Your layout must have a LoopingImageButton " +
-                            "whose id attribute is " +
-                            "'R.id.next'");
-        }
-        nextButton.setOnClickListener(new OnNextClickListener(mServiceWrapper));
-        nextButton.setRepeatListener(new OnForwardListener(mServiceWrapper, this));
     }
 
     private void initPlayButton(View parent) {
@@ -147,16 +114,18 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     }
 
     private void initSeekBar(View parent) {
-        mSeekBar = (SeekBar) parent.findViewById(R.id.seek_bar);
-        mSeekBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.accent), PorterDuff.Mode.SRC_IN);
-        if(mSeekBar == null) {
+        mProgressBar = (ProgressBar) parent.findViewById(R.id.progress_bar);
+        if(mProgressBar == null) {
             throw new RuntimeException(
-                    "Your layout must have a SeekBar " +
+                    "Your layout must have a ProgressBar " +
                             "whose id attribute is " +
-                            "'R.id.seek_bar'");
+                            "'R.id.progress_bar'");
         }
-        mSeekBar.setMax(OnSeekBarChangeListener.SEEK_BAR_MAX);
+        mProgressBar.setMax(OnSeekBarChangeListener.SEEK_BAR_MAX);
+        styleProgressBar(mProgressBar);
     }
+
+    public abstract void styleProgressBar(ProgressBar bar);
 
     @Override
     public void onStart() {
@@ -177,7 +146,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
         long duration = mServiceWrapper.getTrackDuration();
         if (position >= 0 && duration > 0) {
             int progress = (int) (OnSeekBarChangeListener.SEEK_BAR_MAX * position / duration);
-            mSeekBar.setProgress(progress);
+            mProgressBar.setProgress(progress);
             return getSmoothRefreshTime(position, duration);
         } else {
             refreshViewsOnError();
@@ -192,7 +161,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
                 (position % TimeUtils.MILLIS_IN_SECOND);
         // approximate how often we would need to refresh the slider to
         // move it smoothly
-        int width = mSeekBar.getWidth();
+        int width = mProgressBar.getWidth();
         if (width == 0) width = 320;
         long smoothRefreshTime = duration / width;
         if (smoothRefreshTime > remaining) return remaining;
@@ -214,7 +183,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     protected void refreshViewsOnError() {
         mTrackTitle.setText("");
         mArtistTitle.setName("");
-        mSeekBar.setProgress(0);
+        mProgressBar.setProgress(0);
         //this will set default image
         mImageLoader.load(MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE)
                 .withDefault(R.drawable.default_album_art_512dp).into(mAlbumArt);

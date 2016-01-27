@@ -1,19 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="@dimen/dock_playback_height" >
 
     <ImageButton
-        android:id="@+id/dock_panel"
+        android:id="@+id/conceal_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:src="@drawable/ic_expand_more_white_24dp"
+        android:tint="@color/secondary_text"
+        style="@style/Button"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/conceal_view"
+        android:text="@string/now_playing_label"
+        android:textSize="@dimen/now_playing_label_text_size"
+        style="@style/SingleLineText.Secondary" />
 
     <ImageButton
         android:id="@+id/show_current_queue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_queue_music_white_36dp"
+        android:tint="@color/secondary_text"
+        style="@style/ButtonClickable" />
 
 </RelativeLayout>

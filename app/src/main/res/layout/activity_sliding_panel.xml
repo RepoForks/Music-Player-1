@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp">
+    sothree:umanoPanelHeight="@dimen/dock_playback_height">
 
     <!--MAIN VIEW-->
     <include layout="@layout/activity_toolbar" />
