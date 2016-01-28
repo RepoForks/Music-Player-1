@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.Playlist;
 
-public class RepeatButton extends ImageButton{
+public class RepeatButton extends ImageButton {
 
     public RepeatButton(Context context) {
         super(context);
@@ -22,19 +22,16 @@ public class RepeatButton extends ImageButton{
     }
 
     public void setImage(int repeatMode) {
-        switch (repeatMode) {
-            case Playlist.REPEAT_ALL:
-                setImageResource(R.drawable.ic_repeat_all_18dp);
-                break;
-            case Playlist.REPEAT_CURRENT:
-                setImageResource(R.drawable.ic_repeat_one_18dp);
-                break;
-            case Playlist.REPEAT_NONE:
-                setImageResource(R.drawable.ic_repeat_off_18dp);
-                break;
-            default:
-                setImageResource(R.drawable.ic_repeat_off_18dp);
-                break;
+        int image = R.drawable.ic_repeat_white_18dp;
+        int color = getResources().getColor(R.color.secondary_text);
+
+        if(repeatMode == Playlist.REPEAT_CURRENT) {
+            image = R.drawable.ic_repeat_one_white_18dp;
+            color = getResources().getColor(R.color.primary);
+        } else if(repeatMode == Playlist.REPEAT_ALL) {
+            color = getResources().getColor(R.color.primary);
         }
+        setImageResource(image);
+        setColorFilter(color);
     }
 }

@@ -10,6 +10,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+    <color name="media_control_buttons">#212121</color>
+
     <color name="primary_text_dark_background">#ffffff</color>
     <color name="secondary_text_dark_background">#B6B6B6</color>
 

@@ -1,4 +1,5 @@
 <ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -64,39 +65,45 @@
         android:orientation="horizontal">
 
         <LinearLayout style="@style/MediaButtonContainer">
-
             <ua.edu.cdu.fotius.lisun.musicplayer.views.ShuffleButton
                 android:id="@+id/shuffle"
-                style="@style/Button.Media.Shuffle" />
+                android:src="@drawable/ic_shuffle_white_18dp"
+                android:contentDescription="@string/shuffle_content_description"
+                style="@style/ButtonClickable.Media"/>
         </LinearLayout>
 
         <LinearLayout style="@style/MediaButtonContainer">
             <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
                 android:id="@+id/prev"
-                style="@style/Button.Media.Rewind"
-                android:tint="@color/secondary_text"/>
+                android:contentDescription="@string/rewind_content_description"
+                android:src="@drawable/ic_fast_rewind_white_36dp"
+                style="@style/ButtonClickable.Media.Main"/>
         </LinearLayout>
 
         <LinearLayout style="@style/MediaButtonContainer">
             <ua.edu.cdu.fotius.lisun.musicplayer.views.PlayPauseButton
                 android:id="@+id/play"
-                style="@style/Button.Media.PlayPause"
-                android:tint="@color/accent"/>
+                android:contentDescription="@string/play_pause_content_description"
+                app:play_src="@drawable/ic_play_arrow_white_36dp"
+                app:pause_src="@drawable/ic_pause_white_36dp"
+                style="@style/ButtonClickable.Media.Main" />
         </LinearLayout>
 
         <LinearLayout style="@style/MediaButtonContainer">
-
             <ua.edu.cdu.fotius.lisun.musicplayer.views.LoopingImageButton
                 android:id="@+id/next"
-                style="@style/Button.Media.FastForward"
-                android:tint="@color/secondary_text"/>
+                android:contentDescription="@string/fast_forward_content_description"
+                android:src="@drawable/ic_fast_forward_white_36dp"
+                style="@style/ButtonClickable.Media.Main"/>
         </LinearLayout>
 
         <LinearLayout style="@style/MediaButtonContainer">
 
             <ua.edu.cdu.fotius.lisun.musicplayer.views.RepeatButton
                 android:id="@+id/repeat"
-                style="@style/Button.Media.Repeat" />
+                android:src="@drawable/ic_repeat_white_18dp"
+                android:contentDescription="@string/repeat_content_description"
+                style="@style/ButtonClickable.Media" />
         </LinearLayout>
 
     </ua.edu.cdu.fotius.lisun.musicplayer.views.NotClickableLinearLayout>

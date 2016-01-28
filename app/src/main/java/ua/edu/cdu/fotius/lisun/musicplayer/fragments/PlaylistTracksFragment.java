@@ -86,7 +86,7 @@ public class PlaylistTracksFragment extends BaseFragment {
                 loaderCreator.getArtistColumn()};
         int[] to = new int[]{R.id.track_title, R.id.track_details};
 
-        return new QueueCursorAdapter(getActivity(), R.layout.row_drag_n_drop_list, from, to,
+        return new QueueCursorAdapter(getActivity(), R.layout.row_playlist_tracks, from, to,
                 loaderCreator.getTrackIdColumn());
     }
 

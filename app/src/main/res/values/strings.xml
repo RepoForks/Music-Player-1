@@ -103,7 +103,7 @@
     <string name="title_activity_now_playing">NowPlayingActivity</string>
 
     <!--NowPlayingActivity-->
-    <string name="now_playing_activity_title">NowPlayingActivity</string>
+    <string name="queue_activity_title">Queue</string>
 
     <!--PlaylistTracklistActivity-->
     <string name="playlist_tracklist_default_toolbar_title">Playlist\'s tracks</string>

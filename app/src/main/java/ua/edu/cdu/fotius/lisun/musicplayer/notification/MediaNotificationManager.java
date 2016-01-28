@@ -107,6 +107,7 @@ public class MediaNotificationManager {
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(Notification.CATEGORY_TRANSPORT)
                 .setSmallIcon(R.drawable.ic_notification)
+                .setColor(mService.getResources().getColor(R.color.primary))
                 .setShowWhen(false) /*don't show time*/
                 .setContentTitle(metaData.getString(MediaMetadataCompat.METADATA_KEY_TITLE))
                 .setContentText(metaData.getString(MediaMetadataCompat.METADATA_KEY_ALBUM) +

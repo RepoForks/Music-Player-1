@@ -59,7 +59,7 @@ public class QueueFragment extends BaseFragment {
                 loaderCreator.getAlbumColumn()};
         int[] to = new int[]{R.id.track_title, R.id.track_details};
 
-        return new QueueCursorAdapter(getActivity(), R.layout.row_drag_n_drop_list, from, to,
+        return new QueueCursorAdapter(getActivity(), R.layout.row_queue, from, to,
                 loaderCreator.getTrackIdColumn());
     }
 

@@ -17,7 +17,7 @@ public class QueueActivity extends ToolbarActivity {
                     QueueFragment.TAG, getIntent().getExtras());
         }
 
-        setTitle(getResources().getString(R.string.now_playing_activity_title));
+        setTitle(getResources().getString(R.string.queue_activity_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
     }
