@@ -149,4 +149,8 @@ public class MediaNotificationManager {
         mNotificationManager.cancel(mNotificationID);
         mIsStarted = false;
     }
+
+    public MediaControlActionsReceiver getControlsReceiver() {
+        return mMediaControlActionsReceiver;
+    }
 }

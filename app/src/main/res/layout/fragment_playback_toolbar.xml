@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dock_playback_height" >
+    android:layout_height="@dimen/dock_playback_height"
+    android:paddingLeft="@dimen/fragment_playback_left_right_padding"
+    android:paddingRight="@dimen/fragment_playback_left_right_padding">
 
     <ImageButton
         android:id="@+id/conceal_view"

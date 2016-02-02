@@ -1,0 +1,4 @@
+<resources>
+    <!--PlaybackActivity-->
+    <dimen name="fragment_palyback_album_art_size">200dp</dimen>
+</resources>

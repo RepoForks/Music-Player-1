@@ -1,0 +1,106 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name='activity_horizontal_margin'>
+        24.0dp
+    </dimen>
+
+    <dimen name='activity_vertical_margin'>
+        24.0dp
+    </dimen>
+
+    <!--PlaybackActivity-->
+    <dimen name='fragment_palyback_album_art_size'>
+        375.0dp
+    </dimen>
+
+    <!--PlaybackFragment-->
+    <dimen name='fragment_playback_top_bottom_padding'>
+        30.0dp
+    </dimen>
+
+    <dimen name='fragment_playback_seek_bar_time__text_size'>
+        15.0sp
+    </dimen>
+
+    <!--TracksBrowserFragment row-->
+    <dimen name='row_album_art_size'>
+        75.0dp
+    </dimen>
+
+    <!--Notification-->
+    <dimen name='large_icon_height'>
+        96.0dp
+    </dimen>
+
+    <dimen name='large_icon_width'>
+        96.0dp
+    </dimen>
+
+    <dimen name='new_playlist_edit_text_width'>
+        105.0dp
+    </dimen>
+
+    <dimen name='albums_grid_view_spacing'>
+        1.5dp
+    </dimen>
+
+    <dimen name='navigation_view_image_height'>
+        225.0dp
+    </dimen>
+
+    <dimen name='toolbar_progressbar_height'>
+        1.5dp
+    </dimen>
+
+    <dimen name='list_divider_height'>
+        1.5dp
+    </dimen>
+
+    <dimen name='check_circle_padding'>
+        10.5dp
+    </dimen>
+
+    <dimen name='list_row_without_art_height'>
+        75.0dp
+    </dimen>
+
+    <dimen name='dock_playback_height'>
+        75.0dp
+    </dimen>
+
+    <dimen name='dock_playback_progress_height'>
+        3.0dp
+    </dimen>
+
+    <dimen name='seekbar_height'>
+        3.0dp
+    </dimen>
+
+    <dimen name='seekbar_thumb_inner'>
+        18.0dp
+    </dimen>
+
+    <dimen name='font_size'>
+        21.0sp
+    </dimen>
+
+    <dimen name='equalizer_margin'>
+        7.5dp
+    </dimen>
+
+    <dimen name='text_view_padding'>
+        7.5dp
+    </dimen>
+
+    <dimen name='fragment_playback_left_right_padding'>
+        7.5dp
+    </dimen>
+
+    <dimen name='default_padding'>
+        4.5dp
+    </dimen>
+
+    <dimen name='default_margin'>
+        4.5dp
+    </dimen>
+</resources>

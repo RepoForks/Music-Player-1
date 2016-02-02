@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -24,6 +25,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaControlActionsReceiver;
 import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ExternalCard;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MultiPlayer;
@@ -321,7 +324,9 @@ public class MediaPlaybackService extends Service {
         notifyChange(QUEUE_CHANGED);
         notifyChange(META_CHANGED);
 
-        mSession = new MediaSessionCompat(this, "MusicService");
+        ComponentName actionsReceiver = new ComponentName(getPackageName(),
+                MediaControlActionsReceiver.class.getName());
+        mSession = new MediaSessionCompat(this, "MusicService", actionsReceiver, null);
         mSession.setCallback(mMediaSessionCallback);
 
         try {

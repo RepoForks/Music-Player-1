@@ -9,10 +9,6 @@
         <item name="colorControlHighlight">@color/primary</item>
     </style>
 
-    <style name="NavigationViewTheme">
-        <item name="android:textSize">@dimen/navigation_view_text_size</item>
-    </style>
-
     <style name="NavigationView" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -21,7 +17,6 @@
         <item name="itemTextColor">@color/navigation_view_item</item>
         <item name="itemIconTint">@color/navigation_view_item</item>
         <item name="itemBackground">@drawable/navigation_view_item_background</item>
-        <item name="theme">@style/NavigationViewTheme</item>
     </style>
 
     <style name="SeekBar">
@@ -53,10 +48,6 @@
         <item name="android:textColorSecondary">@color/toolbar_text</item>
     </style>
 
-    <style name="SingleLineText" >
-        <item name="android:singleLine">true</item>
-    </style>
-
     <style name="ListView" >
         <item name="android:divider">@color/divider</item>
         <item name="android:dividerHeight">@dimen/list_divider_height</item>
@@ -64,6 +55,13 @@
 
     <style name="ListRow" >
         <item name="android:background">@drawable/list_item_selector</item>
+    </style>
+
+    <style name="SingleLineText" >
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:paddingLeft">@dimen/text_view_padding</item>
+        <item name="android:paddingRight">@dimen/text_view_padding</item>
     </style>
 
     <style name="SingleLineText.AlbumTitle" >
@@ -109,12 +107,6 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <!--TODO: remove all this media buttons stuff-->
-    <style name="ButtonClickable.Media">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
     <style name="ButtonClickable.Media.Main">
         <item name="android:tint">@color/media_control_buttons</item>
     </style>
@@ -132,4 +124,8 @@
         <item name="android:enabled">false</item>
     </style>
 
+    <style name="ButtonClickable.Media">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
