@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageViewForLoader;
@@ -9,6 +10,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
 
 public class AlbumArtCursorAdapter extends BaseCursorAdapter {
+
+    private final String TAG = getClass().getSimpleName();
 
     private String mAlbumIDColumn;
     private int mAlbumArtViewResourceId;
@@ -31,6 +34,7 @@ public class AlbumArtCursorAdapter extends BaseCursorAdapter {
             mImageLoader.load(albumId).withDefault(R.drawable.default_album_art_512dp)
                     .into((ImageViewForLoader) v);
         }
+        Log.d(TAG, "Cursor position: " + cursor.getPosition());
         super.bindView(rowLayout, context, cursor);
     }
 

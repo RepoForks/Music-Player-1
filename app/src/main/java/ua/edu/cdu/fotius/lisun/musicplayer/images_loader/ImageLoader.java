@@ -34,29 +34,17 @@ public class ImageLoader {
             throw new IllegalStateException("Default image must be set " +
                     "with \"withDefault(int)\" method before calling  \"into()\" method()");
         }
-
-        if (mAlbumId != AudioStorage.WRONG_ID) {
-            loadBitmap(mAlbumId, mDefaultImageId, imageView);
-        } else {
-            loadBitmap(mDefaultImageId, imageView);
-        }
+        loadBitmap(mAlbumId, mDefaultImageId, imageView);
     }
 
     private void loadBitmap(long albumId, int defaultImageId, ImageViewForLoader imageView) {
-        BitmapAsyncAlbumArtLoader bitmapAsyncAlbumArtLoader =
-                new BitmapAsyncAlbumArtLoader(mContext, defaultImageId, imageView, mImageMemoryCache);
+        AlbumArtAsyncLoader bitmapAsyncAlbumArtLoader =
+                new AlbumArtAsyncLoader(mContext, imageView, mImageMemoryCache);
         loadBitmapGeneral(albumId, imageView, bitmapAsyncAlbumArtLoader);
     }
 
-    private void loadBitmap(final int resId, final ImageViewForLoader imageView) {
-        BitmapAsyncResLoader bitmapAsyncResLoader =
-                new BitmapAsyncResLoader(mContext.getResources(),
-                        imageView, mImageMemoryCache);
-        loadBitmapGeneral(resId, imageView, bitmapAsyncResLoader);
-    }
-
-    private void loadBitmapGeneral(final Object imageSource, final ImageViewForLoader imageView, final BaseBitmapAsyncLoader asyncLoader) {
-        if (cancelPotentialWork(imageSource, imageView)) {
+    private void loadBitmapGeneral(final long albumId, final ImageViewForLoader imageView, final AlbumArtAsyncLoader asyncLoader) {
+        if (cancelPotentialWork(albumId, imageView)) {
             //if we have no view sizes for now
             if((imageView.getViewWidth() == 0) || (imageView.getViewHeight() == 0)) {
             /*Post's runnable will be executed after creating view.
@@ -65,30 +53,30 @@ public class ImageLoader {
                 imageView.post(new Runnable() {
                     @Override
                     public void run() {
-                        startLoadingBitmap(imageSource, imageView, asyncLoader);
+                        startLoadingBitmap(albumId, imageView, asyncLoader);
                     }
                 });
             } else {
-                startLoadingBitmap(imageSource, imageView, asyncLoader);
+                startLoadingBitmap(albumId, imageView, asyncLoader);
             }
         }
     }
 
-    private void startLoadingBitmap(Object imageSource, ImageViewForLoader imageView, BaseBitmapAsyncLoader asyncLoader) {
-        Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(imageSource,
+    private void startLoadingBitmap(long albumId, ImageViewForLoader imageView, AlbumArtAsyncLoader asyncLoader) {
+        Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(albumId,
                 imageView.getMeasuredWidth(), imageView.getMeasuredHeight()));
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
-            startAsyncBitmapLoad(asyncLoader, imageView, imageSource);
+            startAsyncBitmapLoad(asyncLoader, imageView, albumId);
         }
     }
 
-    private boolean cancelPotentialWork(Object newData, ImageViewForLoader imageView) {
-        BaseBitmapAsyncLoader bitmapAsyncLoader = ImageUtils.retreiveAsyncLoader(imageView);
+    private boolean cancelPotentialWork(long newData, ImageViewForLoader imageView) {
+        AlbumArtAsyncLoader bitmapAsyncLoader = ImageUtils.retreiveAsyncLoader(imageView);
         if (bitmapAsyncLoader != null) {
-            Object data = bitmapAsyncLoader.getData();
-            if (data == null || !data.equals(newData)) {
+            long data = bitmapAsyncLoader.getData();
+            if (data != newData) {
                 bitmapAsyncLoader.cancel(true);
             } else {
                 /*same task is running*/
@@ -98,10 +86,10 @@ public class ImageLoader {
         return true;
     }
 
-    private void startAsyncBitmapLoad(final BaseBitmapAsyncLoader asyncLoader,
-                                      final ImageViewForLoader imageView, final Object imageSource) {
+    private void startAsyncBitmapLoad(final AlbumArtAsyncLoader asyncLoader,
+                                      final ImageViewForLoader imageView, final long albumId) {
         AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(asyncLoader);
         imageView.setImageDrawable(asyncTempDrawable);
-        asyncLoader.execute(imageSource);
+        asyncLoader.execute(albumId);
     }
 }

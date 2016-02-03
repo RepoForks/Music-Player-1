@@ -6,14 +6,14 @@ import java.lang.ref.WeakReference;
 
 public class AsyncTempDrawable extends BitmapDrawable {
 
-    private WeakReference<BaseBitmapAsyncLoader> mBitmapAsyncLoaderWeakReference;
+    private WeakReference<AlbumArtAsyncLoader> mBitmapAsyncLoaderWeakReference;
 
-    public AsyncTempDrawable(BaseBitmapAsyncLoader bitmapAsyncFileLoader) {
+    public AsyncTempDrawable(AlbumArtAsyncLoader bitmapAsyncFileLoader) {
         mBitmapAsyncLoaderWeakReference =
-                new WeakReference<BaseBitmapAsyncLoader>(bitmapAsyncFileLoader);
+                new WeakReference<AlbumArtAsyncLoader>(bitmapAsyncFileLoader);
     }
 
-    public BaseBitmapAsyncLoader getBitmapAsyncLoader() {
+    public AlbumArtAsyncLoader getBitmapAsyncLoader() {
         return mBitmapAsyncLoaderWeakReference.get();
     }
 }
