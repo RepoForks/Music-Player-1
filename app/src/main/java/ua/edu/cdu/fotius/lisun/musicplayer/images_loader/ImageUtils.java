@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import java.io.FileDescriptor;
 import java.io.InputStream;
 
 public class ImageUtils {
@@ -23,11 +24,10 @@ public class ImageUtils {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(in, null, options);
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        return options;
+        return calculateOptions(options, reqWidth, reqHeight);
     }
 
-    private static int calculateInSampleSize(
+    private static BitmapFactory.Options calculateOptions(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
 
         final int height = options.outHeight;
@@ -42,7 +42,18 @@ public class ImageUtils {
                 inSampleSize *= 2;
             }
         }
-        return inSampleSize;
+
+        BitmapFactory.Options returnOptions = new BitmapFactory.Options();
+        returnOptions.inSampleSize = inSampleSize;
+        returnOptions.inJustDecodeBounds = false;
+        return returnOptions;
+    }
+
+    public static BitmapFactory.Options getFileDescriptorBitmapOptions(FileDescriptor fd, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFileDescriptor(fd, null, options);
+        return calculateOptions(options, reqWidth, reqHeight);
     }
 
     public static Bitmap decodeSampledBitmapFromPath(String pathName, int reqWidth, int reqHeight){
@@ -71,5 +82,24 @@ public class ImageUtils {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(resources, resId, options);
         return calculateInSampleSize(options, reqWidth, reqHeight);
+    }
+
+    private static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

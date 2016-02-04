@@ -8,17 +8,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
-public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap>{
+public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -30,7 +33,7 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap>{
 
     public AlbumArtAsyncLoader(Context context, ImageViewForLoader imageView, ImageMemoryCache imageMemoryCache) {
         mImageViewWeakReference = new WeakReference<ImageViewForLoader>(imageView);
-        mImageMemoryCache  = imageMemoryCache;
+        mImageMemoryCache = imageMemoryCache;
         mContext = context;
     }
 
@@ -47,34 +50,55 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap>{
     }
 
     private Bitmap decodeBitmap(Long albumId, int width, int height) {
-        if(albumId < 0) {
+        if (albumId < 0) {
             return loadDefault(width, height);
         }
 
         ContentResolver res = mContext.getContentResolver();
         Uri uri = ContentUris.withAppendedId(AlbumArtUri, albumId);
 
-        if(uri != null) {
+        if (uri != null) {
             InputStream in = null;
             try {
                 in = res.openInputStream(uri);
                 BitmapFactory.Options options
                         = ImageUtils.getStreamBitmapOptions(in, width, height);
+                in.close();
+                in = res.openInputStream(uri);
                 return BitmapFactory.decodeStream(in, null, options);
             } catch (FileNotFoundException ex) {
-                Log.e(TAG, "File not found");
+                Bitmap bm = loadFromFile(uri, width, height);
+                if(bm == null) {
+                    bm = loadDefault(width, height);
+                }
+                return bm;
+            } catch (IOException e) {
+            } finally {
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                } catch (IOException ex) {
+                }
             }
         }
-
         return null;
-//        String albumArtPath = DatabaseUtils.queryAlbumArtPath(mContext, (Long) albumId);
-//        if ((albumArtPath != null) && (new File(albumArtPath).exists())) {
-//            mData = albumId;
-//            return ImageUtils.decodeSampledBitmapFromPath(albumArtPath, width, height);
-//        } else {
-//            mData = mDefaultImageResId;
-//            return ImageUtils.decodeSampledBitmapFromResource(mContext.getResources(), mDefaultImageResId, width, height);
-//        }
+    }
+
+    private Bitmap loadFromFile(Uri uri, int width, int height) {
+        Bitmap bm = null;
+        try {
+            ParcelFileDescriptor pfd = mContext.getContentResolver()
+                    .openFileDescriptor(uri, "r");
+            if (pfd != null) {
+                FileDescriptor fd = pfd.getFileDescriptor();
+                BitmapFactory.Options options =
+                        ImageUtils.getFileDescriptorBitmapOptions(fd, width, height);
+                bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
+            }
+        } catch (FileNotFoundException ex) {
+        }
+        return bm;
     }
 
     private Bitmap loadDefault(int width, int height) {
@@ -88,14 +112,14 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap>{
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        if(isCancelled()) {
+        if (isCancelled()) {
             bitmap = null;
         }
 
         ImageViewForLoader imageView = mImageViewWeakReference.get();
-        if(imageView != null) {
+        if (imageView != null) {
             AlbumArtAsyncLoader bitmapAsyncFileLoader = ImageUtils.retreiveAsyncLoader(imageView);
-            if((this == bitmapAsyncFileLoader) && (bitmap != null)) {
+            if ((this == bitmapAsyncFileLoader) && (bitmap != null)) {
                 imageView.setImageBitmap(bitmap);
             }
         }
