@@ -12,12 +12,14 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Action;
+import android.widget.ImageView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.NavigationActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.SlidingPanelActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageLoader;
+import ua.edu.cdu.fotius.lisun.musicplayer.images_loader.ImageMemoryCache;
 
 public class MediaNotificationManager {
 
@@ -38,6 +40,8 @@ public class MediaNotificationManager {
 
     private Resources mResources;
 
+    private ImageMemoryCache mImageCache;
+
 
     private boolean mIsStarted = false;
 
@@ -45,6 +49,8 @@ public class MediaNotificationManager {
         mService = service;
         mResources = mService.getResources();
         mImageLoader = new ImageLoader(mService);
+
+        mImageCache = ImageMemoryCache.getImageMemoryCache();
 
         mMediaControlActionsReceiver =
                 new MediaControlActionsReceiver(controls);
@@ -96,8 +102,9 @@ public class MediaNotificationManager {
                 mResources.getDimensionPixelSize(R.dimen.large_icon_width),
                 mResources.getDimensionPixelSize(R.dimen.large_icon_height));
 
-        mImageLoader.load(playingAlbumId).withDefault(R.drawable.ic_notification)
-                .into(fakeImageView);
+
+
+        mImageLoader.load(playingAlbumId).into(fakeImageView);
 
         return builder.build();
     }

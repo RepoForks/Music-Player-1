@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,8 +186,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
         mArtistTitle.setName("");
         mProgressBar.setProgress(0);
         //this will set default image
-        mImageLoader.load(MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE)
-                .withDefault(R.drawable.default_album_art_512dp).into(mAlbumArt);
+        mImageLoader.load(MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE).withDefault().into(mAlbumArt);
         //TODO: maybe go to next song
     }
 
@@ -242,8 +242,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
 
         mTrackTitle.setText(trackName);
         mArtistTitle.setName(artistName);
-        mImageLoader.load(albumID)
-                .withDefault(R.drawable.default_album_art_512dp).into(mAlbumArt);
+        mImageLoader.load(albumID).withDefault().into(mAlbumArt);
 
         return true;
     }

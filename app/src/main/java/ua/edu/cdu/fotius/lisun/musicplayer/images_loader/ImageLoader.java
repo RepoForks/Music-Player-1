@@ -2,17 +2,18 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_loader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class ImageLoader {
 
+    private final String TAG = getClass().getSimpleName();
+
     private long mAlbumId = AudioStorage.WRONG_ID;
     private ImageMemoryCache mImageMemoryCache;
     private Context mContext;
-
-    private final int WRONG_RES_ID = 0;
-    private int mDefaultImageId = WRONG_RES_ID;
+    private boolean mLoadDefault = false;
 
     public ImageLoader(Context c) {
         mContext = c;
@@ -24,22 +25,18 @@ public class ImageLoader {
         return this;
     }
 
-    public ImageLoader withDefault(int defaultResId) {
-        mDefaultImageId = defaultResId;
+    public ImageLoader withDefault() {
+        mLoadDefault = true;
         return this;
     }
 
     public void into(ImageViewForLoader imageView) {
-        if(mDefaultImageId == WRONG_RES_ID) {
-            throw new IllegalStateException("Default image must be set " +
-                    "with \"withDefault(int)\" method before calling  \"into()\" method()");
-        }
-        loadBitmap(mAlbumId, mDefaultImageId, imageView);
+        loadBitmap(mAlbumId, imageView);
     }
 
-    private void loadBitmap(long albumId, int defaultImageId, ImageViewForLoader imageView) {
+    private void loadBitmap(long albumId, ImageViewForLoader imageView) {
         AlbumArtAsyncLoader bitmapAsyncAlbumArtLoader =
-                new AlbumArtAsyncLoader(mContext, imageView, mImageMemoryCache);
+                new AlbumArtAsyncLoader(mContext, imageView, mImageMemoryCache, mLoadDefault);
         loadBitmapGeneral(albumId, imageView, bitmapAsyncAlbumArtLoader);
     }
 
@@ -64,7 +61,7 @@ public class ImageLoader {
 
     private void startLoadingBitmap(long albumId, ImageViewForLoader imageView, AlbumArtAsyncLoader asyncLoader) {
         Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(albumId,
-                imageView.getMeasuredWidth(), imageView.getMeasuredHeight()));
+                imageView.getViewWidth(), imageView.getViewHeight()));
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {

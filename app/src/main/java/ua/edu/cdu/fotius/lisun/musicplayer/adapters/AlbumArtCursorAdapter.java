@@ -31,8 +31,7 @@ public class AlbumArtCursorAdapter extends BaseCursorAdapter {
         if(v != null) {
             int albumIdIdx = cursor.getColumnIndexOrThrow(mAlbumIDColumn);
             long albumId = cursor.getLong(albumIdIdx);
-            mImageLoader.load(albumId).withDefault(R.drawable.default_album_art_512dp)
-                    .into((ImageViewForLoader) v);
+            mImageLoader.load(albumId).withDefault().into((ImageViewForLoader) v);
         }
         Log.d(TAG, "Cursor position: " + cursor.getPosition());
         super.bindView(rowLayout, context, cursor);

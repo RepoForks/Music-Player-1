@@ -36,7 +36,7 @@ public class ImageMemoryCache {
         mCache = new BitmapLruCache(maxMemory / 8);
     }
 
-    public void addBitmap(String key, Bitmap bitmap) {
+    public synchronized void addBitmap(String key, Bitmap bitmap) {
         if(getBitmap(key) == null) {
             Log.e(TAG, "MemCache.Add. key: " + key + " value: " + bitmap);
             mCache.put(key, bitmap);
@@ -44,7 +44,7 @@ public class ImageMemoryCache {
     }
 
     public Bitmap getBitmap(String key) {
-//        Log.d(TAG, "MemCache.Get. key: " + key + " value: " + ((key != null) ? mCache.get(key) : ""));
+        Log.d(TAG, "MemCache.Get. key: " + key + " value: " + ((key != null) ? mCache.get(key) : ""));
         return mCache.get(key);
     }
 }

@@ -22,35 +22,37 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
-
-    private final String TAG = getClass().getSimpleName();
-
     private WeakReference<ImageViewForLoader> mImageViewWeakReference;
     private static final Uri AlbumArtUri = Uri.parse("content://media/external/audio/albumart");
     protected ImageMemoryCache mImageMemoryCache = null;
     protected long mAlbumId = AudioStorage.WRONG_ID;
     private Context mContext;
+    private boolean mLoadDefault;
 
-    public AlbumArtAsyncLoader(Context context, ImageViewForLoader imageView, ImageMemoryCache imageMemoryCache) {
+    public AlbumArtAsyncLoader(Context context, ImageViewForLoader imageView,
+                               ImageMemoryCache imageMemoryCache, boolean loadDefault) {
         mImageViewWeakReference = new WeakReference<ImageViewForLoader>(imageView);
         mImageMemoryCache = imageMemoryCache;
         mContext = context;
+        mLoadDefault = loadDefault;
     }
 
     @Override
     protected Bitmap doInBackground(Long[] params) {
-        Long albumId = params[0];
+        mAlbumId = params[0];
         ImageViewForLoader imageView = mImageViewWeakReference.get();
         Bitmap bitmap = null;
         if (imageView != null) {
-            bitmap = decodeBitmap(albumId, imageView.getViewWidth(), imageView.getViewHeight());
-            //addToMemoryCache(bitmap, imageView.getViewWidth(), imageView.getViewHeight());
+            bitmap = decodeBitmap(mAlbumId, imageView.getViewWidth(), imageView.getViewHeight());
+            if(bitmap != null) {
+                addToMemoryCache(bitmap, imageView.getViewWidth(), imageView.getViewHeight());
+            }
         }
         return bitmap;
     }
 
     private Bitmap decodeBitmap(Long albumId, int width, int height) {
-        if (albumId < 0) {
+        if ((albumId < 0) && (mLoadDefault)) {
             return loadDefault(width, height);
         }
 
@@ -68,7 +70,7 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
                 return BitmapFactory.decodeStream(in, null, options);
             } catch (FileNotFoundException ex) {
                 Bitmap bm = loadFromFile(uri, width, height);
-                if(bm == null) {
+                if((bm == null) && (mLoadDefault)) {
                     bm = loadDefault(width, height);
                 }
                 return bm;
@@ -102,8 +104,10 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
     }
 
     private Bitmap loadDefault(int width, int height) {
-        return ImageUtils.decodeSampledBitmapFromResource(mContext.getResources(),
+        BitmapFactory.Options options = ImageUtils.getResourceBitmapOptions(mContext.getResources(),
                 R.drawable.default_album_art_512dp, width, height);
+        return BitmapFactory.decodeResource(mContext.getResources(),
+                R.drawable.default_album_art_512dp, options);
     }
 
     protected void addToMemoryCache(Bitmap bitmap, int imageViewWidth, int imageViewHeight) {

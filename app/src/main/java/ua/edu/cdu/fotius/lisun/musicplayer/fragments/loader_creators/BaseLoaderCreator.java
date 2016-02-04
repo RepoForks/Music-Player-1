@@ -32,8 +32,6 @@ public abstract class BaseLoaderCreator {
     }
 
     public CursorLoader createCursorLoader() {
-        DatabaseUtils.queryParamsInLog(getUri(), getProjection(), getSelection(), getSelectionArgs());
-
         return new CursorLoader(mContext, getUri(), getProjection(),
                 getSelection(), getSelectionArgs(), getSortOrder());
     }
