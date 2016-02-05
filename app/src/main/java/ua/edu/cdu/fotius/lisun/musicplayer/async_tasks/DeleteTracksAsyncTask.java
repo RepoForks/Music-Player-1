@@ -14,12 +14,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.AsyncTaskWithProgressBar;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 
-public class DeleteAsyncTask extends AsyncTaskWithProgressBar {
+public class DeleteTracksAsyncTask extends AsyncTaskWithProgressBar {
 
     private long[] mTrackIds;
     private WeakReference<MediaPlaybackServiceWrapper> mServiceWrapperReference;
 
-    public DeleteAsyncTask(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper, long[] tracksId) {
+    public DeleteTracksAsyncTask(Fragment fragment, MediaPlaybackServiceWrapper serviceWrapper, long[] tracksId) {
         super(fragment);
         mTrackIds = tracksId;
         mServiceWrapperReference = new WeakReference<MediaPlaybackServiceWrapper>(serviceWrapper);

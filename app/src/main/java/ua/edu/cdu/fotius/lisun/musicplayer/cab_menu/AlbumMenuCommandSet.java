@@ -18,17 +18,17 @@ public class AlbumMenuCommandSet extends BaseMenuCommandSet{
     @Override
     protected void initMinimalGroup(MenuCommandsContainer minimalGroup) {
         Resources resources = mFragment.getResources();
-        minimalGroup.add(PLAY_ID, resources.getString(R.string.cab_menu_play), R.mipmap.ic_launcher,
+        minimalGroup.add(PLAY_ID, resources.getString(R.string.cab_menu_play), MenuItem.NO_ICON_ID,
                 new AlbumPlay(mFragment, mServiceWrapper, mArtistID),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         minimalGroup.add(ADD_TO_PLAYLIST_ID, resources.getString(R.string.cab_menu_add_to_playlist),
-                R.mipmap.ic_launcher, new AlbumAddToPlaylist(mFragment, mServiceWrapper, mArtistID),
+                MenuItem.NO_ICON_ID, new AlbumAddToPlaylist(mFragment, mServiceWrapper, mArtistID),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         minimalGroup.add(DELETE_ID, resources.getString(R.string.cab_menu_delete),
-                R.mipmap.ic_launcher, new AlbumDelete(mFragment, mServiceWrapper, mArtistID),
+                MenuItem.NO_ICON_ID, new AlbumDelete(mFragment, mServiceWrapper, mArtistID),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         minimalGroup.add(ADD_TO_PLAY_QUEUE_ID, resources.getString(R.string.cab_menu_add_to_queue),
-                R.mipmap.ic_launcher, new AlbumAddToPlayQueue(mFragment, mServiceWrapper, mArtistID),
+                MenuItem.NO_ICON_ID, new AlbumAddToPlayQueue(mFragment, mServiceWrapper, mArtistID),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
     }
 

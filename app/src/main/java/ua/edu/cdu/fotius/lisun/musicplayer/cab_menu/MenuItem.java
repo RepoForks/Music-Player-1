@@ -2,7 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 
 public class MenuItem {
 
-
+    public static int NO_ICON_ID = -1;
 
     private String mTitle;
     private int mIconResource;

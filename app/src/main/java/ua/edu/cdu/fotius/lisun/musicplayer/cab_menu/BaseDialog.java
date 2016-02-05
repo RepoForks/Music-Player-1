@@ -5,11 +5,11 @@ import android.support.v4.app.Fragment;
 public abstract class BaseDialog {
 
     protected Fragment mFragment;
-    protected long[] mTrackIds;
+    protected long[] mIds;
 
-    public BaseDialog(Fragment fragment, long[] trackIds) {
+    public BaseDialog(Fragment fragment, long[] ids) {
         mFragment = fragment;
-        mTrackIds = trackIds;
+        mIds = ids;
     }
 
     public abstract void show();

@@ -2,14 +2,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer.images_loader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class ImageLoader {
-
-    private final String TAG = getClass().getSimpleName();
-
     private long mAlbumId = AudioStorage.WRONG_ID;
     private ImageMemoryCache mImageMemoryCache;
     private Context mContext;
@@ -35,12 +31,10 @@ public class ImageLoader {
     }
 
     private void loadBitmap(long albumId, ImageViewForLoader imageView) {
-        AlbumArtAsyncLoader bitmapAsyncAlbumArtLoader =
-                new AlbumArtAsyncLoader(mContext, imageView, mImageMemoryCache, mLoadDefault);
-        loadBitmapGeneral(albumId, imageView, bitmapAsyncAlbumArtLoader);
+        loadBitmapGeneral(albumId, imageView);
     }
 
-    private void loadBitmapGeneral(final long albumId, final ImageViewForLoader imageView, final AlbumArtAsyncLoader asyncLoader) {
+    private void loadBitmapGeneral(final long albumId, final ImageViewForLoader imageView) {
         if (cancelPotentialWork(albumId, imageView)) {
             //if we have no view sizes for now
             if((imageView.getViewWidth() == 0) || (imageView.getViewHeight() == 0)) {
@@ -50,22 +44,22 @@ public class ImageLoader {
                 imageView.post(new Runnable() {
                     @Override
                     public void run() {
-                        startLoadingBitmap(albumId, imageView, asyncLoader);
+                        startLoadingBitmap(albumId, imageView);
                     }
                 });
             } else {
-                startLoadingBitmap(albumId, imageView, asyncLoader);
+                startLoadingBitmap(albumId, imageView);
             }
         }
     }
 
-    private void startLoadingBitmap(long albumId, ImageViewForLoader imageView, AlbumArtAsyncLoader asyncLoader) {
+    private void startLoadingBitmap(long albumId, ImageViewForLoader imageView) {
         Bitmap bitmap = mImageMemoryCache.getBitmap(ImageMemoryCache.formKey(albumId,
                 imageView.getViewWidth(), imageView.getViewHeight()));
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
-            startAsyncBitmapLoad(asyncLoader, imageView, albumId);
+            startAsyncBitmapLoad(imageView, albumId);
         }
     }
 
@@ -83,8 +77,9 @@ public class ImageLoader {
         return true;
     }
 
-    private void startAsyncBitmapLoad(final AlbumArtAsyncLoader asyncLoader,
-                                      final ImageViewForLoader imageView, final long albumId) {
+    private void startAsyncBitmapLoad(final ImageViewForLoader imageView, final long albumId) {
+        AlbumArtAsyncLoader asyncLoader =
+                new AlbumArtAsyncLoader(mContext, imageView, mImageMemoryCache, mLoadDefault);
         AsyncTempDrawable asyncTempDrawable = new AsyncTempDrawable(asyncLoader);
         imageView.setImageDrawable(asyncTempDrawable);
         asyncLoader.execute(albumId);

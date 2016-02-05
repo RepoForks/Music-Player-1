@@ -44,7 +44,7 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
         Bitmap bitmap = null;
         if (imageView != null) {
             bitmap = decodeBitmap(mAlbumId, imageView.getViewWidth(), imageView.getViewHeight());
-            if(bitmap != null) {
+            if (bitmap != null) {
                 addToMemoryCache(bitmap, imageView.getViewWidth(), imageView.getViewHeight());
             }
         }
@@ -70,7 +70,7 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
                 return BitmapFactory.decodeStream(in, null, options);
             } catch (FileNotFoundException ex) {
                 Bitmap bm = loadFromFile(uri, width, height);
-                if((bm == null) && (mLoadDefault)) {
+                if ((bm == null) && (mLoadDefault)) {
                     bm = loadDefault(width, height);
                 }
                 return bm;
@@ -88,19 +88,28 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
     }
 
     private Bitmap loadFromFile(Uri uri, int width, int height) {
-        Bitmap bm = null;
+        Bitmap bitmap = null;
+        ParcelFileDescriptor parcelFileDescriptor = null;
         try {
-            ParcelFileDescriptor pfd = mContext.getContentResolver()
+            parcelFileDescriptor = mContext.getContentResolver()
                     .openFileDescriptor(uri, "r");
-            if (pfd != null) {
-                FileDescriptor fd = pfd.getFileDescriptor();
+            if (parcelFileDescriptor != null) {
+                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
                 BitmapFactory.Options options =
-                        ImageUtils.getFileDescriptorBitmapOptions(fd, width, height);
-                bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
+                        ImageUtils.getFileDescriptorBitmapOptions(fileDescriptor, width, height);
+                bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
             }
         } catch (FileNotFoundException ex) {
+        } finally {
+            try {
+                if (parcelFileDescriptor != null) {
+                    parcelFileDescriptor.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return bm;
+        return bitmap;
     }
 
     private Bitmap loadDefault(int width, int height) {

@@ -101,9 +101,6 @@ public class MediaNotificationManager {
                 mNotificationManager, builder, mNotificationID,
                 mResources.getDimensionPixelSize(R.dimen.large_icon_width),
                 mResources.getDimensionPixelSize(R.dimen.large_icon_height));
-
-
-
         mImageLoader.load(playingAlbumId).into(fakeImageView);
 
         return builder.build();

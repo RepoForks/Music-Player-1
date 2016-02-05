@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 
 public abstract class BaseMenuCommandSet {
-
     public static int DELETE_ID = 1;
     public static int PLAY_ID = 2;
     public static int AS_RINGTONE_ID = 3;
@@ -14,6 +13,7 @@ public abstract class BaseMenuCommandSet {
     public static int EDIT_INFO_ID = 6;
     public static int REMOVE_FROM_PLAY_QUEUE_ID = 7;
     public static int REMOVE_FROM_PLAYLIST = 8;
+    public static int DELETE_PLAYLIST = 9;
 
     protected Fragment mFragment;
     protected MediaPlaybackServiceWrapper mServiceWrapper;

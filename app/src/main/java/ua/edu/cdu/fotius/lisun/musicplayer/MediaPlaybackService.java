@@ -249,11 +249,11 @@ public class MediaPlaybackService extends Service {
                 int state = intent.getIntExtra("state", -1);
                 switch (state) {
                     case 0:
-                        pause();
-                        Log.d(TAG, "Headset unplugged");
+                        if(isPlaying()) {
+                            pause();
+                        }
                         break;
-                    case 1:
-                        Log.d(TAG, "Headset plugged");
+                    case 1: //PLUGGED
                         break;
                 }
             }

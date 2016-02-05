@@ -18,7 +18,7 @@ public class QueueTrackMenuCommandSet extends BaseTrackMenuCommandSet {
         Context context = mFragment.getActivity();
         Resources resources = context.getResources();
         minimalGroup.add(REMOVE_FROM_PLAY_QUEUE_ID, resources.getString(R.string.cab_remove_from_queue),
-                R.mipmap.ic_launcher, new RemoveFromPlayQueue(mFragment, mServiceWrapper),
+                MenuItem.NO_ICON_ID, new RemoveFromPlayQueue(mFragment, mServiceWrapper),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
     }
 }

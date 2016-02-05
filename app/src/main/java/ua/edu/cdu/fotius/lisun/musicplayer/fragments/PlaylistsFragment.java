@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.MultiChoiceListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.PlaylistMenuCommandSet;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.TrackMenuCommandSet;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseTracksLoaderCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.adapters.BaseCursorAdapter;
@@ -47,6 +51,10 @@ public class PlaylistsFragment extends BaseFragment {
         PlaylistLoaderCreator loaderCreator = (PlaylistLoaderCreator) mLoaderCreator;
         listView.setOnItemClickListener(new OnPlaylistClickListener(getActivity(), mCursorAdapter,
                 loaderCreator.getPlaylistIdColumn(), loaderCreator.getPlaylistColumn()));
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new MultiChoiceListener(getActivity(), listView,
+                new PlaylistMenuCommandSet(this, mServiceWrapper),
+                loaderCreator.getPlaylistIdColumn()));
         return v;
     }
 

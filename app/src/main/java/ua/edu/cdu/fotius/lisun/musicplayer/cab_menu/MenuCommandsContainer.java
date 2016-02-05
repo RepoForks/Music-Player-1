@@ -70,20 +70,4 @@ public class MenuCommandsContainer {
     public int getShowAsAction() {
         return mMapEntry.getValue().getShowAsAction();
     }
-
-//    public void fillMenuWithThisGroup(android.view.Menu menu) {
-//        Iterator iter = mIdToCABMenuItem.entrySet().iterator();
-//        Map.Entry<Integer, MenuItem> pair;
-//        Integer itemId;
-//        MenuItem menuItem;
-//        int showAsAction;
-//        while (iter.hasNext()) {
-//            pair = (Map.Entry<Integer, MenuItem>) iter.next();
-//            itemId = pair.getKey();
-//            menuItem = pair.getValue();
-//            showAsAction = menuItem.getShowAsAction();
-//            menu.add(mContainerId, itemId, android.view.Menu.NONE, menuItem.getTitle()).setIcon(menuItem.getIconResource())
-//                    .setShowAsAction(showAsAction);
-//        }
-//    }
 }

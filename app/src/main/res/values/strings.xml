@@ -94,6 +94,7 @@
     <!--CAB Menu-->
     <string name="cab_menu_play">Play</string>
     <string name="cab_menu_delete">Delete</string>
+    <string name="cab_menu_delete_playlist">Delete playlist</string>
     <string name="cab_menu_add_to_queue">Add to play queue</string>
     <string name="cab_menu_add_to_playlist">Add to playlist</string>
     <string name="cab_menu_as_ringtone">As ringtone</string>

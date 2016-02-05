@@ -45,10 +45,10 @@ public class ChoosePlaylistDialog extends BaseDialog {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             if(which == 0) { //create new playlist item clicked
-                new CreateNewPlaylistDialog(mFragment, mTrackIds).show();
+                new CreateNewPlaylistDialog(mFragment, mIds).show();
             } else {
                 AddToPlaylistAsyncTask addTask =
-                        new AddToPlaylistAsyncTask(mFragment, mAvailablePlaylists.get(which), mTrackIds);
+                        new AddToPlaylistAsyncTask(mFragment, mAvailablePlaylists.get(which), mIds);
                 addTask.execute();
             }
         }

@@ -22,7 +22,7 @@ public class PlaylistTrackMenuCommandSet extends TrackMenuCommandSet{
         Resources resources = context.getResources();
         super.initMinimalGroup(minimalGroup);
         minimalGroup.add(REMOVE_FROM_PLAYLIST, resources.getString(R.string.cab_remove_from_playlist),
-                R.mipmap.ic_launcher, new RemoveFromPlaylist(mFragment, mServiceWrapper, mPlaylistId),
+                MenuItem.NO_ICON_ID, new RemoveFromPlaylist(mFragment, mServiceWrapper, mPlaylistId),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);
     }
 }
