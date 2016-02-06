@@ -43,8 +43,6 @@ public class DeleteTracksAsyncTask extends AsyncTaskWithProgressBar {
             deleteFromStorage(cursor);
             deleteFromDatabase(resolver, whereClause);
             cursor.close();
-            context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
-
         }
 
         return null;

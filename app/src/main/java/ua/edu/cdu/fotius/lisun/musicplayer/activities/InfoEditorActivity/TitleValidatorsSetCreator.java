@@ -13,7 +13,6 @@ public class TitleValidatorsSetCreator extends BaseValidatorsSetCreator{
     @Override
     public ArrayList<BaseValidator> create() {
         ArrayList<BaseValidator> validators = new ArrayList<BaseValidator>();
-        //TODO: add invalidity message
         validators.add(new EmptyStringValidator(mContext));
         return validators;
     }

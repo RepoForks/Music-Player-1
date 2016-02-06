@@ -7,20 +7,13 @@ import android.support.v7.app.AlertDialog;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class DeleteDialog {
-    public static class Builder extends AlertDialog.Builder {
-
-        private AsyncTask mAsyncTask;
-
+    public static class Builder extends BaseDialog.Builder {
         public Builder(Context context) {
             super(context);
         }
 
         public Builder(Context context, int theme) {
             super(context, theme);
-        }
-
-        public void setAsyncTask(AsyncTask deletionAsyncTask) {
-            mAsyncTask = deletionAsyncTask;
         }
 
         @Override

@@ -6,7 +6,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.R;
 
 public class EmptyStringValidator extends BaseValidator{
 
-    protected EmptyStringValidator(Context context) {
+    public EmptyStringValidator(Context context) {
         super(context);
     }
 

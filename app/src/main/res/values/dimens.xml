@@ -45,4 +45,6 @@
 
     <dimen name="default_padding">3dp</dimen>
     <dimen name="default_margin">3dp</dimen>
+
+    <dimen name="dialog_rename_padding">20dp</dimen>
 </resources>

@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class DeletePlaylistsAsyncTask extends AsyncTaskWithProgressBar {
+
+    private final String TAG = getClass().getSimpleName();
 
     private long[] mIds;
 
@@ -26,12 +29,11 @@ public class DeletePlaylistsAsyncTask extends AsyncTaskWithProgressBar {
 
         String whereClause = getWhereClause();
         ContentResolver resolver = context.getContentResolver();
-        resolver.delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, whereClause, null);
-        context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
+        resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, whereClause, null);
         return null;
     }
 
-    //TODO: move ti utils with DeleteTracks
+    //TODO: move to utils with DeleteTracks
     private String getWhereClause() {
         StringBuffer whereClause = new StringBuffer();
         whereClause.append(AudioStorage.Playlist.PLAYLIST_ID + " IN (");

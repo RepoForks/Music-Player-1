@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.InfoEditorActivity.BaseValidator;
 
 public class EditTextWithValidation extends EditText {
-
-
-
     private ArrayList<BaseValidator> mValidators;
     private String mInitiallyInputedData;
 

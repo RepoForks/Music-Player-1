@@ -38,8 +38,7 @@
             android:label="@string/title_activity_edit_info" >
         </activity>
         <activity
-            android:name=".activities.QueueActivity"
-            android:label="@string/title_activity_now_playing" >
+            android:name=".activities.QueueActivity" >
         </activity>
 
         <activity

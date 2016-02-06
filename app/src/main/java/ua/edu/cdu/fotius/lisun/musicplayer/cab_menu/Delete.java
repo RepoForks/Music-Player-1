@@ -15,15 +15,17 @@ public class Delete extends Command {
     }
 
     @Override
-    public void execute(long[] idsOverWhichToExecute) {
-        DeleteDialog.Builder builder = new DeleteDialog.Builder(mFragment.getContext());
-
+    public void execute(long[] ids) {
         DeleteTracksAsyncTask deleteTask =
-                new DeleteTracksAsyncTask(mFragment, mServiceWrapper, idsOverWhichToExecute);
-        builder.setAsyncTask(deleteTask);
-
+                new DeleteTracksAsyncTask(mFragment, mServiceWrapper, ids);
         Resources resources = mFragment.getActivity().getResources();
-        String message = resources.getString(R.string.delete_dialog_message);
+        String changeablePart = ((ids.length > 1) ?
+                resources.getString(R.string.delete_dialog_tracks_prompt) :
+                resources.getString(R.string.delete_dialog_track_prompt));
+        String message = resources.getString(R.string.delete_dialog_message, ids.length, changeablePart);
+
+        DeleteDialog.Builder builder = new DeleteDialog.Builder(mFragment.getContext());
+        builder.setAsyncTask(deleteTask);
         builder.setTitle(resources.getString(R.string.delete_dialog_title))
                 .setMessage(message);
         builder.create().show();

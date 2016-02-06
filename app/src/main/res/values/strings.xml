@@ -45,10 +45,17 @@
 
     <!--ConfirmationAndDeletionDialog-->
     <string name="delete_dialog_title">Delete</string>
-    <string name="delete_dialog_message">Permanently delete track %1$s from device</string>
+    <string name="delete_dialog_message">Permanently delete %1$d %2$s from device</string>
+    <string name="delete_dialog_track_prompt">track</string>
+    <string name="delete_dialog_tracks_prompt">tracks</string>
     <string name="delete_dialog_positive_button">Delete</string>
-
+    <string name="delete_playlist_dialog_message">Delete %1$d %2$s</string>
+    <string name="delete_dialog_playlist_prompt">playlist</string>
+    <string name="delete_dialog_playlists_prompt">playlists</string>
     <string name="dialog_negative_button">Cancel</string>
+
+    <string name="rename_dialog_title">Rename playlist</string>
+    <string name="rename_dialog_positive_button">Rename</string>
 
     <!--MultiChoiceListener-->
     <string name="selected_text">%1$d selected</string>
@@ -95,13 +102,14 @@
     <string name="cab_menu_play">Play</string>
     <string name="cab_menu_delete">Delete</string>
     <string name="cab_menu_delete_playlist">Delete playlist</string>
+    <string name="cab_menu_rename_playlist">Rename</string>
     <string name="cab_menu_add_to_queue">Add to play queue</string>
     <string name="cab_menu_add_to_playlist">Add to playlist</string>
     <string name="cab_menu_as_ringtone">As ringtone</string>
     <string name="cab_menu_edit_into">Edit info</string>
     <string name="cab_remove_from_queue">Remove from queue</string>
     <string name="cab_remove_from_playlist">Remove from playlist</string>
-    <string name="title_activity_now_playing">NowPlayingActivity</string>
+
 
     <!--NowPlayingActivity-->
     <string name="queue_activity_title">Queue</string>

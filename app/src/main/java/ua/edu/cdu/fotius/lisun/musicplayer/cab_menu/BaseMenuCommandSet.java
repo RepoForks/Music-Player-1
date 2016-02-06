@@ -14,6 +14,7 @@ public abstract class BaseMenuCommandSet {
     public static int REMOVE_FROM_PLAY_QUEUE_ID = 7;
     public static int REMOVE_FROM_PLAYLIST = 8;
     public static int DELETE_PLAYLIST = 9;
+    public static int RENAME_PLAYLIST = 10;
 
     protected Fragment mFragment;
     protected MediaPlaybackServiceWrapper mServiceWrapper;

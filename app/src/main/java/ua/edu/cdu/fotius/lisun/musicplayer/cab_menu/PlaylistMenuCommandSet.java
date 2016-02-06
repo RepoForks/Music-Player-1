@@ -24,6 +24,10 @@ public class PlaylistMenuCommandSet extends BaseMenuCommandSet {
 
     @Override
     protected void initAdditionalGroup(MenuCommandsContainer additionalGroup) {
-
+        Context context = mFragment.getActivity();
+        Resources resources = context.getResources();
+        additionalGroup.add(RENAME_PLAYLIST, resources.getString(R.string.cab_menu_rename_playlist),
+                MenuItem.NO_ICON_ID, new RenamePlaylist(mFragment, mServiceWrapper),
+                android.view.MenuItem.SHOW_AS_ACTION_NEVER);
     }
 }
