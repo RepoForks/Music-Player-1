@@ -5,12 +5,12 @@ import android.content.Context;
 public abstract class BaseValidator {
 
     public static class ValidationResult {
-        public boolean mIsSuccessful = true;
-        public String mInvalidityMessage = null;
+        public boolean isSuccessful = true;
+        public String invalidityMessage = null;
 
         public void clear() {
-            mIsSuccessful = true;
-            mInvalidityMessage = null;
+            isSuccessful = true;
+            invalidityMessage = null;
         }
     }
 

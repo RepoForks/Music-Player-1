@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/dialog_rename_padding" >
 
-    <EditText
+    <ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation
         android:id="@+id/playlist_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

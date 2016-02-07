@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.InfoEditorActivity.BaseValidator;
 
 public class EditTextWithValidation extends EditText {
+    private final String TAG = getClass().getSimpleName();
     private ArrayList<BaseValidator> mValidators;
-    private String mInitiallyInputedData;
+    private String mInitialText;
 
     public EditTextWithValidation(Context context) {
         super(context);
@@ -25,29 +27,41 @@ public class EditTextWithValidation extends EditText {
     }
 
     public void setInitialText(String s) {
-        mInitiallyInputedData = s;
+        mInitialText = s;
         setText(s);
     }
 
-    public void validateInput(BaseValidator.ValidationResult validationResult) {
-        validate(getText().toString(), validationResult);
+    /**
+     * @param validationResult - after validation includes
+     *                         validation result and error message if invalid;
+     * @return - valid input or null(if invalid)
+     */
+    public String validateInput(BaseValidator.ValidationResult validationResult) {
+        String trimedInput = getText().toString().trim();
+        Log.d(TAG, "Trimed string-->" + trimedInput + "<--");
+        return validate(trimedInput, validationResult);
     }
 
     public boolean isChanged() {
-        if(mInitiallyInputedData == null) {
+        if(mInitialText == null) {
             throw new IllegalStateException("Should call setInitialText(String s) first");
         }
-        return !mInitiallyInputedData.equals(getText().toString());
+        return !mInitialText.equals(getText().toString());
     }
 
     public void setValidators(ArrayList<BaseValidator> validators) {
         mValidators = validators;
     }
 
-    private void validate(String forValidation, BaseValidator.ValidationResult validationResult) {
+    private String validate(String forValidation, BaseValidator.ValidationResult validationResult) {
         for (BaseValidator validator : mValidators) {
             validator.validate(forValidation, validationResult);
-            if (!validationResult.mIsSuccessful) return;
+            if (!validationResult.isSuccessful) return null;
         }
+        return forValidation;
+    }
+
+    public String getInitialText() {
+        return mInitialText;
     }
 }

@@ -18,8 +18,8 @@ public class EmptyStringValidator extends BaseValidator{
     @Override
     public void validate(String forValidation, ValidationResult validationResult) {
         if((forValidation == null) || (forValidation.isEmpty())) {
-            validationResult.mIsSuccessful = false;
-            validationResult.mInvalidityMessage = mInvalidityMessage;
+            validationResult.isSuccessful = false;
+            validationResult.invalidityMessage = mInvalidityMessage;
         }
     }
 }

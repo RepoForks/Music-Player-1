@@ -6,12 +6,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.RenameDialogBuilder;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.OnDialogNegativeClick;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.OnRenameDialogPositiveClick;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.PlaylistNameValidatorsSetCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
+import ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation;
 
 public class PlaylistNameAsyncRetriever extends AsyncTaskWithProgressBar {
 
@@ -56,10 +63,24 @@ public class PlaylistNameAsyncRetriever extends AsyncTaskWithProgressBar {
             if (activity == null) return;
             LayoutInflater inflater = activity.getLayoutInflater();
 
-            RenameDialogBuilder builder = new RenameDialogBuilder(activity, inflater, playlist);
-            builder.create().show();
+            createDialog(activity, inflater, playlist).show();
         }
         super.onPostExecute(obj);
+    }
+
+    public AlertDialog createDialog(Context c, LayoutInflater inflater, String playlist) {
+        View v = inflater.inflate(R.layout.rename_dialog, null);
+        EditTextWithValidation inputField = (EditTextWithValidation) v.findViewById(R.id.playlist_name);
+        inputField.setInitialText(playlist);
+        inputField.setSelection(playlist.length());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setView(v);
+        builder.setTitle(c.getResources().getString(R.string.rename_dialog_title));
+        builder.setPositiveButton(R.string.rename_dialog_positive_button,
+                new OnRenameDialogPositiveClick(mFragmentWrapper.getFragment(), mID));
+        builder.setNegativeButton(R.string.dialog_negative_button, new OnDialogNegativeClick());
+        return builder.create();
     }
 }
 

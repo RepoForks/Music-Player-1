@@ -20,8 +20,8 @@ public class StringToIntValidator extends BaseValidator{
         try {
             Integer.parseInt(forValidation);
         } catch (NumberFormatException nfe){
-            validationResult.mIsSuccessful = false;
-            validationResult.mInvalidityMessage = mInvalidityMessage;
+            validationResult.isSuccessful = false;
+            validationResult.invalidityMessage = mInvalidityMessage;
         }
     }
 }

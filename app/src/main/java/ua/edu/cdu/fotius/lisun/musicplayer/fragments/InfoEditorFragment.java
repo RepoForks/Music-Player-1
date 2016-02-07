@@ -73,16 +73,9 @@ public class InfoEditorFragment extends Fragment implements QueryTrackInfoAsyncT
         doneEditingButton.setOnClickListener(mOnDoneEditingClick);
 
         mTitle = (EditTextWithValidation) v.findViewById(R.id.title_input);
-        mTitle.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
-
         mAlbum = (EditTextWithValidation) v.findViewById(R.id.album_input);
-        mAlbum.setValidators(new AlbumValidatorsSetCreator(getActivity()).create());
-
         mArtist = (EditTextWithValidation) v.findViewById(R.id.artist_input);
-        mArtist.setValidators(new ArtistValidatorSetCreator(getActivity()).create());
-
         mYear = (EditTextWithValidation) v.findViewById(R.id.year_input);
-        mYear.setValidators(new YearValidatorSetCreator(getActivity()).create());
 
         /*Should be called after initializing EditText views*/
         if (savedInstanceState == null) {
@@ -145,11 +138,12 @@ public class InfoEditorFragment extends Fragment implements QueryTrackInfoAsyncT
     }
 
     private boolean isSpecificEnteredTextValid(EditTextWithValidation editText) {
+        editText.setValidators(new TitleValidatorsSetCreator(getActivity()).create());
         BaseValidator.ValidationResult validationResult = new BaseValidator.ValidationResult();
         editText.validateInput(validationResult);
-        if (!validationResult.mIsSuccessful) {
+        if (!validationResult.isSuccessful) {
             notifyUserAboutInvalidInput(editText.getContentDescription().toString(),
-                    validationResult.mInvalidityMessage);
+                    validationResult.invalidityMessage);
             return false;
         }
         return true;
