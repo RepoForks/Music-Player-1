@@ -1,7 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 
+import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 

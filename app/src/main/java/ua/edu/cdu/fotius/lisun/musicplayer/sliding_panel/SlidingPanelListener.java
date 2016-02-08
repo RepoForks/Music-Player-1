@@ -1,6 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel;
 
-import android.support.v4.app.FragmentManager;
+import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 

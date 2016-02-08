@@ -1,7 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -10,9 +10,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaybackHeaderFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingUpPanelLayout;
 
 public abstract class SlidingPanelActivity extends ToolbarActivity {
-
-
-
     public static final String PANEL_STATE_KEY = "panel_state_key";
 
     public static enum PanelState {
@@ -69,7 +66,7 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
         mSlidingPanel.setDragView(panelDragHandler);
         mSlidingPanel.setPanelState(mPanelState.getPanelState());
 
-        if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+        if(getFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
             Fragment fragment = null;
 
             if(mPanelState == PanelState.COLLAPSED) {
@@ -78,7 +75,7 @@ public abstract class SlidingPanelActivity extends ToolbarActivity {
                 fragment = new PlaybackHeaderFragment();
             }
 
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.drag_handler_fragment_container,
                             fragment, FRAGMENT_TAG).commit();
         }

@@ -2,8 +2,8 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators;
 
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.net.Uri;
-import android.support.v4.content.CursorLoader;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 

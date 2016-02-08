@@ -57,6 +57,7 @@
     <string name="rename_dialog_title">Rename playlist</string>
     <string name="rename_dialog_positive_button">Rename</string>
     <string name="rename_dialog_result_message">Playlist renamed from \'%1$s\' to \'%2$s\'</string>
+    <string name="rename_playlist_with_same_name">Same playlist name exists</string>
 
     <!--MultiChoiceListener-->
     <string name="selected_text">%1$d selected</string>

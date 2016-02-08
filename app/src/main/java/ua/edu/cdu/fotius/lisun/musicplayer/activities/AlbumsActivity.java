@@ -23,6 +23,6 @@ public class AlbumsActivity extends SlidingPanelActivity {
                 getResources().getString(R.string.default_albums_detalization_activity_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
-        setPanelSlideListener(new SlidingPanelListener(null, getSupportFragmentManager()));
+        setPanelSlideListener(new SlidingPanelListener(null, getFragmentManager()));
     }
 }

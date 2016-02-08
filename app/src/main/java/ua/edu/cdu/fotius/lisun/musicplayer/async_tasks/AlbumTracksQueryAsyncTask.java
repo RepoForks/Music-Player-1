@@ -1,8 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
+import android.app.Fragment;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
 public class AlbumTracksQueryAsyncTask extends BaseTracksQueryAsyncTask {

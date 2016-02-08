@@ -7,8 +7,6 @@
 
     <ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation
         android:id="@+id/playlist_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/SingleLineText" />
+        style="@style/SingleLineText.EditInfo.Input" />
 
 </LinearLayout>

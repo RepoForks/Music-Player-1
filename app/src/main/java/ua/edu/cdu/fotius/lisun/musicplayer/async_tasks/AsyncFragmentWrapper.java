@@ -1,7 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
-import android.graphics.RadialGradient;
-import android.support.v4.app.Fragment;
+
+import android.app.Fragment;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;

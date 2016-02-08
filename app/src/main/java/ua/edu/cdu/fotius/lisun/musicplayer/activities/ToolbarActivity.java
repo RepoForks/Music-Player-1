@@ -1,7 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -24,7 +24,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
-            mCurrentFragment = getSupportFragmentManager()
+            mCurrentFragment = getFragmentManager()
                     .findFragmentByTag(savedFragmentTag);
         }
     }
@@ -65,7 +65,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
         if(mCurrentFragment == null) {
             checkFragmentContainerResourceID();
             fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.root_view, fragment, tag)
                     .commit();
             mCurrentFragment = fragment;
@@ -74,7 +74,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
 
     public void replaceFragment(Fragment fragment, String fragmentTag) {
         checkFragmentContainerResourceID();
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
                 .replace(R.id.root_view, fragment, fragmentTag)
                 .commit();
         mCurrentFragment = fragment;

@@ -1,11 +1,11 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;

@@ -1,8 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 
 
+import android.app.Fragment;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;

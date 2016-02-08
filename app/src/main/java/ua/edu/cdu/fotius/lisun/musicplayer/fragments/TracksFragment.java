@@ -1,8 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.content.CursorLoader;
 import android.os.Bundle;
-import android.support.v4.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

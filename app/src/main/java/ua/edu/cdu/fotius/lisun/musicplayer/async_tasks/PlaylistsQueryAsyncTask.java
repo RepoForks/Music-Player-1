@@ -1,9 +1,9 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.listeners;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 import java.util.HashMap;
 

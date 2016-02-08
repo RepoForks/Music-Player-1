@@ -12,7 +12,7 @@
 
     <ua.edu.cdu.fotius.lisun.musicplayer.views.ColoredProgressBar
         android:id="@+id/progress_bar"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_progressbar_height"
         android:background="@color/primary"
