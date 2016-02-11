@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_negative_button"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="CANCEL"
+    android:layout_weight="0.5" />

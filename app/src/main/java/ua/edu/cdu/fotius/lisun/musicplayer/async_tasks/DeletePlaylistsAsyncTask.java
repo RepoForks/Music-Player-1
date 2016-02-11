@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,9 +12,7 @@ import android.util.Log;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class DeletePlaylistsAsyncTask extends AsyncTaskWithProgressBar {
-
     private final String TAG = getClass().getSimpleName();
-
     private long[] mIds;
 
     public DeletePlaylistsAsyncTask(Fragment fragment, long[] ids) {
@@ -28,6 +27,7 @@ public class DeletePlaylistsAsyncTask extends AsyncTaskWithProgressBar {
         if (context == null) return null;
 
         String whereClause = getWhereClause();
+        Log.d(TAG, "Where clause: " + whereClause);
         ContentResolver resolver = context.getContentResolver();
         resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, whereClause, null);
         return null;
@@ -45,5 +45,13 @@ public class DeletePlaylistsAsyncTask extends AsyncTaskWithProgressBar {
         }
         whereClause.append(")");
         return whereClause.toString();
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        DialogFragment fragment = (DialogFragment) mFragmentWrapper.getFragment();
+        if(fragment == null) return;
+        fragment.dismiss();
     }
 }

@@ -1221,7 +1221,6 @@ public class MediaPlaybackService extends Service {
             saveBookmarkIfNeeded();
             //stop current playing
             stop(false);
-            //TODO already assigned two lines early
             //mPlayPos = pos;
             mPlaylist.setPlayPosition(pos);
             //trying set data source of mPlayList[mPlayPos] to mCurrentMediaPlayer
@@ -1236,7 +1235,9 @@ public class MediaPlaybackService extends Service {
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         Message msg = mDelayedStopHandler.obtainMessage();
         mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
-        mMediaNotificationManager.stopNotification();
+        if(mMediaNotificationManager != null) {
+            mMediaNotificationManager.stopNotification();
+        }
     }
 
     private void saveBookmarkIfNeeded() {

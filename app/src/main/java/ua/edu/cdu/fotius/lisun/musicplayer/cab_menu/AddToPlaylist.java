@@ -3,8 +3,10 @@ package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 
 import android.app.Fragment;
 
+import ua.edu.cdu.fotius.lisun.musicplayer.dialogs.ChoosePlaylistDialogFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.PlaylistsQueryAsyncTask;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.StringConstants;
 
 public class AddToPlaylist extends Command {
 
@@ -14,6 +16,9 @@ public class AddToPlaylist extends Command {
 
     @Override
     public void execute(long[] tracksID) {
-        new PlaylistsQueryAsyncTask(mFragment, tracksID).execute();
+        ChoosePlaylistDialogFragment playlistDialogFragment =
+                ChoosePlaylistDialogFragment.newInstance(tracksID);
+        playlistDialogFragment.show(mFragment.getActivity().getFragmentManager(),
+                StringConstants.DIALOG_FRAGMENT_TAG);
     }
 }

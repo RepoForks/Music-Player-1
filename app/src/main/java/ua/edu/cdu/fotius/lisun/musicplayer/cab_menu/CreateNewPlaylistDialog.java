@@ -54,9 +54,9 @@ public class CreateNewPlaylistDialog extends BaseDialog {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             String name = mEditText.getText().toString();
-            AddToPlaylistAsyncTask addTask =
-                    new AddToPlaylistAsyncTask(mFragment, new PlaylistNameIdTuple(AudioStorage.WRONG_ID, name), mIds);
-            addTask.execute();
+//            AddToPlaylistAsyncTask addTask =
+//                    new AddToPlaylistAsyncTask(mFragment, new PlaylistNameIdTuple(AudioStorage.WRONG_ID, name), mIds);
+            //addTask.execute();
         }
     };
 

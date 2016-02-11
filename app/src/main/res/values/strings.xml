@@ -45,6 +45,7 @@
 
     <!--ConfirmationAndDeletionDialog-->
     <string name="delete_dialog_title">Delete</string>
+    <string name="delete_playlist_dialog_title">Delete playlist</string>
     <string name="delete_dialog_message">Permanently delete %1$d %2$s from device</string>
     <string name="delete_dialog_track_prompt">track</string>
     <string name="delete_dialog_tracks_prompt">tracks</string>

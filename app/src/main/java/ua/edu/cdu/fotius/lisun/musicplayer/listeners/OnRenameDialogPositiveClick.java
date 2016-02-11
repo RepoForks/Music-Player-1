@@ -1,20 +1,14 @@
-package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
+package ua.edu.cdu.fotius.lisun.musicplayer.listeners;
 
-import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.InfoEditorActivity.BaseValidator;
-import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.PlaylistNameAsyncUpdater;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.RenamePlaylistDialog;
+import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.PlaylistNameValidatorsSetCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation;
 
 public class OnRenameDialogPositiveClick implements View.OnClickListener {

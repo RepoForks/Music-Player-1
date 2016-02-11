@@ -6,22 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.activities.ToolbarActivity;
-import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.OnDialogNegativeClick;
-import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.OnRenameDialogPositiveClick;
-import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.PlaylistNameValidatorsSetCreator;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.RenamePlaylistDialog;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
-import ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation;
 
 public class PlaylistNameAsyncRetriever extends AsyncTaskWithProgressBar {
 

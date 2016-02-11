@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.async_tasks;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -89,6 +90,14 @@ public class DeleteTracksAsyncTask extends AsyncTaskWithProgressBar {
 
     private void deleteFromDatabase(ContentResolver resolver, String where) {
         resolver.delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, where, null);
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        DialogFragment fragment = (DialogFragment) mFragmentWrapper.getFragment();
+        if(fragment == null) return;
+        fragment.dismiss();
     }
 
 }
