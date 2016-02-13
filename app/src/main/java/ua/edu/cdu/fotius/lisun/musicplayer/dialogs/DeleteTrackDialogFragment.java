@@ -1,20 +1,11 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.dialogs;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.DeleteTracksAsyncTask;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDeleteDialogClick;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogNegativeClick;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogDeleteClick;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 
 public class DeleteTrackDialogFragment extends BaseDeleteDialogFragment {
@@ -43,6 +34,6 @@ public class DeleteTrackDialogFragment extends BaseDeleteDialogFragment {
     protected View.OnClickListener getPositiveButtonListener() {
         DeleteTracksAsyncTask deleteTask =
                 new DeleteTracksAsyncTask(this, mServiceWrapper, mIds);
-        return new OnDeleteDialogClick(this, deleteTask);
+        return new OnDialogDeleteClick(deleteTask);
     }
 }

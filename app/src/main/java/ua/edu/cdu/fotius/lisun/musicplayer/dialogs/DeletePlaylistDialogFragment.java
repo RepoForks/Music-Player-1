@@ -4,7 +4,7 @@ import android.view.View;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.DeletePlaylistsAsyncTask;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDeleteDialogClick;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogDeleteClick;
 
 public class DeletePlaylistDialogFragment extends BaseDeleteDialogFragment {
     @Override
@@ -24,6 +24,6 @@ public class DeletePlaylistDialogFragment extends BaseDeleteDialogFragment {
     protected View.OnClickListener getPositiveButtonListener() {
         DeletePlaylistsAsyncTask deleteTask =
                 new DeletePlaylistsAsyncTask(this, mIds);
-        return new OnDeleteDialogClick(this, deleteTask);
+        return new OnDialogDeleteClick(deleteTask);
     }
 }

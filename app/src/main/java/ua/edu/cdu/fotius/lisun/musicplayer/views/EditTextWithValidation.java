@@ -44,7 +44,9 @@ public class EditTextWithValidation extends EditText {
 
     public boolean isChanged() {
         if(mInitialText == null) {
-            throw new IllegalStateException("Should call setInitialText(String s) first");
+            //if value hasn't been set
+            //any value(even empty string) is change
+            return true;
         }
         return !mInitialText.equals(getText().toString());
     }

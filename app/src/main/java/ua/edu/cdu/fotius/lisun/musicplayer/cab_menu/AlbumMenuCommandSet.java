@@ -18,9 +18,9 @@ public class AlbumMenuCommandSet extends BaseMenuCommandSet{
     @Override
     protected void initMinimalGroup(MenuCommandsContainer minimalGroup) {
         Resources resources = mFragment.getResources();
-        minimalGroup.add(PLAY_ID, resources.getString(R.string.cab_menu_play), MenuItem.NO_ICON_ID,
+        minimalGroup.add(PLAY_ID, resources.getString(R.string.cab_menu_play), R.drawable.ic_play_white_24dp,
                 new AlbumPlay(mFragment, mServiceWrapper, mArtistID),
-                android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+                android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM);
         minimalGroup.add(ADD_TO_PLAYLIST_ID, resources.getString(R.string.cab_menu_add_to_playlist),
                 MenuItem.NO_ICON_ID, new AlbumAddToPlaylist(mFragment, mServiceWrapper, mArtistID),
                 android.view.MenuItem.SHOW_AS_ACTION_NEVER);

@@ -73,9 +73,13 @@ public class InfoEditorFragment extends Fragment implements QueryTrackInfoAsyncT
         doneEditingButton.setOnClickListener(mOnDoneEditingClick);
 
         mTitle = (EditTextWithValidation) v.findViewById(R.id.title_input);
+        mTitle.setEnabled(false);
         mAlbum = (EditTextWithValidation) v.findViewById(R.id.album_input);
+        mAlbum.setEnabled(false);
         mArtist = (EditTextWithValidation) v.findViewById(R.id.artist_input);
+        mArtist.setEnabled(false);
         mYear = (EditTextWithValidation) v.findViewById(R.id.year_input);
+        mYear.setEnabled(false);
 
         /*Should be called after initializing EditText views*/
         if (savedInstanceState == null) {

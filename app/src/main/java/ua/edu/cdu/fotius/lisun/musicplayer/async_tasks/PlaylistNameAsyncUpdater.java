@@ -16,7 +16,7 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 public class PlaylistNameAsyncUpdater extends AsyncTaskWithProgressBar{
 
     public interface Callback {
-        public void updated();
+        public void updated(String oldName, String newName);
     }
 
     private String mOldName;
@@ -55,12 +55,7 @@ public class PlaylistNameAsyncUpdater extends AsyncTaskWithProgressBar{
 
     @Override
     protected void onPostExecute(Object o) {
-        mCallback.updated();
-        Context context = mFragmentWrapper.getActivity();
-        if (context == null) return;
-        String message =
-                context.getResources().getString(R.string.rename_dialog_result_message, mOldName, mNewName);
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        mCallback.updated(mOldName, mNewName);
         super.onPostExecute(o);
     }
 }

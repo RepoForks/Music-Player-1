@@ -127,4 +127,6 @@
     <string name="notification_action_pause">Pause</string>
 
     <string name="now_playing_label">Now playing</string>
+
+    <string name="choose_playing_title">Choose playlist</string>
 </resources>
