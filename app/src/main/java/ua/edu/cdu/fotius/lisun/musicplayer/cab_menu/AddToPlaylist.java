@@ -2,6 +2,8 @@ package ua.edu.cdu.fotius.lisun.musicplayer.cab_menu;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.dialogs.ChoosePlaylistDialogFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
@@ -18,7 +20,7 @@ public class AddToPlaylist extends Command {
     public void execute(long[] tracksID) {
         ChoosePlaylistDialogFragment playlistDialogFragment =
                 ChoosePlaylistDialogFragment.newInstance(tracksID);
-        playlistDialogFragment.show(mFragment.getActivity().getFragmentManager(),
+        playlistDialogFragment.show(mFragment.getFragmentManager(),
                 StringConstants.DIALOG_FRAGMENT_TAG);
     }
 }

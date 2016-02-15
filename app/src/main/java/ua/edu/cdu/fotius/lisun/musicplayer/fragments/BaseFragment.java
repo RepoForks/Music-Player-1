@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -27,9 +28,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderC
 TODO: maybe should distinguish by fragment*/
 public abstract class BaseFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver, ServiceStateChangesObserver {
-
-    private final String TAG = getClass().getSimpleName();
-
     protected BaseCursorAdapter mCursorAdapter;
     protected BaseLoaderCreator mLoaderCreator;
     private ToolbarActivity mToolbarActivity;
@@ -38,9 +36,9 @@ public abstract class BaseFragment extends Fragment
     private ServiceStateReceiver mServiceStateReceiver;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mToolbarActivity = (ToolbarActivity) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mToolbarActivity = (ToolbarActivity) activity;
     }
 
     @Override
@@ -105,7 +103,6 @@ public abstract class BaseFragment extends Fragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
         if (mToolbarActivity == null) return;
-
         mToolbarActivity.hideProgress();
 
         View v = mToolbarActivity.findViewById(R.id.empty);
@@ -128,7 +125,6 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.d(TAG, "Reset. Loader: " + loader);
         mCursorAdapter.swapCursor(null);
     }
 

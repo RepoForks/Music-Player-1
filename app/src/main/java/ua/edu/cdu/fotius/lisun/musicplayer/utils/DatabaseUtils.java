@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DatabaseUtils {
 
@@ -36,13 +38,24 @@ public class DatabaseUtils {
 
         Cursor cursor = resolver.query(uri, null, null, null, null);
         int lastInPlayOrder = cursor.getColumnCount();
+        cursor.close();
 
-        ContentValues[] contentValues = new ContentValues[trackIds.length];
+        List valuesList = new ArrayList();
         for (int i = 0; i < trackIds.length; i++) {
-            contentValues[i] = new ContentValues();
-            contentValues[i].put(AudioStorage.PlaylistMember.PLAY_ORDER, lastInPlayOrder + i);
-            contentValues[i].put(AudioStorage.PlaylistMember.TRACK_ID, trackIds[i]);
+            cursor = resolver.query(uri, new String[]{AudioStorage.PlaylistMember.TRACK_ID},
+                    AudioStorage.PlaylistMember.TRACK_ID + "=?",
+                    new String[]{Long.toString(trackIds[i])}, null);
+            /*if this track already exists don't add it*/
+            if (cursor.getCount() == 0) {
+                ContentValues cv = new ContentValues();
+                cv.put(AudioStorage.PlaylistMember.PLAY_ORDER, lastInPlayOrder + i);
+                cv.put(AudioStorage.PlaylistMember.TRACK_ID, trackIds[i]);
+                valuesList.add(cv);
+            }
+            cursor.close();
         }
+        ContentValues[] contentValues = new ContentValues[valuesList.size()];
+        valuesList.toArray(contentValues);
         return resolver.bulkInsert(uri, contentValues);
     }
 
@@ -70,14 +83,14 @@ public class DatabaseUtils {
         ArrayList<Long> tracksID = new ArrayList<>();
         StringBuffer selectionBuffer = new StringBuffer();
         selectionBuffer.append(AudioStorage.Track.ALBUM_ID + " = ?");
-        if(artistID != AudioStorage.WRONG_ID) {
+        if (artistID != AudioStorage.WRONG_ID) {
             selectionBuffer.append(" AND " + AudioStorage.Track.ARTIST_ID + " = ?");
         }
 
-        for(int i = 0; i < albumsID.length; i++) {
+        for (int i = 0; i < albumsID.length; i++) {
             String[] selectionArgs = (artistID != AudioStorage.WRONG_ID)
                     ? new String[]{Long.toString(albumsID[i]), Long.toString(artistID)}
-                    : new String[] {Long.toString(albumsID[i])};
+                    : new String[]{Long.toString(albumsID[i])};
             tracksID.addAll(queryTracks(context, selectionBuffer.toString(), selectionArgs));
         }
         return toPrimitiveArray(tracksID);
@@ -86,7 +99,7 @@ public class DatabaseUtils {
     public static long[] queryArtistsTracks(Context context, long[] artistsID) {
         ArrayList<Long> tracksID = new ArrayList<>();
         String selection = AudioStorage.Track.ARTIST_ID + " = ?";
-        for(int i = 0; i < artistsID.length; i++) {
+        for (int i = 0; i < artistsID.length; i++) {
             String[] selectionArgs = new String[]{Long.toString(artistsID[i])};
             tracksID.addAll(queryTracks(context, selection, selectionArgs));
         }
@@ -97,7 +110,7 @@ public class DatabaseUtils {
         ContentResolver contentResolver = context.getContentResolver();
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 AudioStorage.Track.TRACK_ID
         };
 
@@ -133,7 +146,7 @@ public class DatabaseUtils {
     private static long[] toPrimitiveArray(ArrayList<Long> list) {
         Long[] objectsArray = list.toArray(new Long[list.size()]);
         long[] array = new long[objectsArray.length];
-        for(int i = 0; i < objectsArray.length; i++) {
+        for (int i = 0; i < objectsArray.length; i++) {
             array[i] = objectsArray[i];
         }
         return array;

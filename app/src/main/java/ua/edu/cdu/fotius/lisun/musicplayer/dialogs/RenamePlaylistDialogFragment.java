@@ -2,6 +2,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation;
 
 public class RenamePlaylistDialogFragment extends SingleInputDialogFragment
         implements PlaylistNameAsyncRetriever.Callback, PlaylistNameAsyncUpdater.Callback{
+
+    private final String TAG = getClass().getSimpleName();
 
     private static String PLAYLIST_ID_ARG_KEY = "playlist_id_key";
 
@@ -43,10 +46,19 @@ public class RenamePlaylistDialogFragment extends SingleInputDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        mPositiveButton.setEnabled(false);
-        mNegativeButton.setEnabled(false);
-        new PlaylistNameAsyncRetriever(this, mPlaylistId, this).execute();
+
+        if(savedInstanceState == null) {
+            mPositiveButton.setEnabled(false);
+            mNegativeButton.setEnabled(false);
+            mInputView.setEnabled(false);
+            new PlaylistNameAsyncRetriever(this, mPlaylistId, this).execute();
+        }
         return v;
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.rename_dialog_title);
     }
 
     @Override

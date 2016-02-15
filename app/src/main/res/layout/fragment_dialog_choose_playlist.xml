@@ -9,23 +9,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back_white_24dp"
-            android:tint="@color/primary_text"
-            style="@style/ButtonClickable"/>
+        <include
+            layout="@layout/dialog_negative_button"/>
 
-        <TextView
-            android:id="@+id/title"
+        <include
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/choose_playing_title"
-            android:gravity="center"
-            android:layout_gravity="center"
-            style="@style/SingleLineText.Primary" />
+            layout="@layout/dialog_title" />
 
         <ImageButton
             android:id="@+id/new_playlist"
@@ -39,7 +30,6 @@
 
     <ListView
         android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/DialogFragmentBody"/>
 
 </LinearLayout>

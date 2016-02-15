@@ -1,19 +1,13 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.dialogs;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.AddToPlaylistAsyncTask;
 import ua.edu.cdu.fotius.lisun.musicplayer.cab_menu.PlaylistNameValidatorsSetCreator;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogNegativeClick;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogDeleteClick;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnNewPlaylistDialogPositiveClick;
-import ua.edu.cdu.fotius.lisun.musicplayer.views.EditTextWithValidation;
 
 public class NewPlaylistDialogFragment extends SingleInputDialogFragment implements AddToPlaylistAsyncTask.Callback{
     private static String TRACKS_IDS_KEY = "tracks_ids_key";
@@ -33,6 +27,11 @@ public class NewPlaylistDialogFragment extends SingleInputDialogFragment impleme
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         mTracksIds = arguments.getLongArray(TRACKS_IDS_KEY);
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.new_playlist_dialog_title);
     }
 
     @Override

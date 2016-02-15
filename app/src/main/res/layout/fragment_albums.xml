@@ -6,10 +6,11 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="@integer/num_column"
+        android:numColumns="auto_fit"
+        android:columnWidth="@dimen/album_art_column_width"
+        android:stretchMode="columnWidth"
         android:verticalSpacing="@dimen/albums_grid_view_spacing"
-        android:horizontalSpacing="@dimen/albums_grid_view_spacing">
-    </GridView>
+        android:horizontalSpacing="@dimen/albums_grid_view_spacing" />
 
     <include
         android:layout_height="wrap_content"

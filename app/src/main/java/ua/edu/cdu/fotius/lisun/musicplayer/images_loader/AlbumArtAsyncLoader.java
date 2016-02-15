@@ -29,6 +29,8 @@ public class AlbumArtAsyncLoader extends AsyncTask<Long, Void, Bitmap> {
     private Context mContext;
     private boolean mLoadDefault;
 
+    private final String TAG = getClass().getSimpleName();
+
     public AlbumArtAsyncLoader(Context context, ImageViewForLoader imageView,
                                ImageMemoryCache imageMemoryCache, boolean loadDefault) {
         mImageViewWeakReference = new WeakReference<ImageViewForLoader>(imageView);
