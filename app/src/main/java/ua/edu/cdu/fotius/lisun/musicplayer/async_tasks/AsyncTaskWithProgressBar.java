@@ -26,11 +26,11 @@ public abstract class AsyncTaskWithProgressBar extends AsyncTask<Object, Object,
     @Override
     protected Object doInBackground(Object... params) {
         //TODO: debug
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return null;
     }
 

@@ -14,9 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DatabaseUtils {
-
     private static final String TAG = "DatabaseUtils";
-
     /**
      * @return newly created list id
      */

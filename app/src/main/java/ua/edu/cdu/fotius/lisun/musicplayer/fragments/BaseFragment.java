@@ -9,8 +9,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
@@ -28,6 +31,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.loader_creators.BaseLoaderC
 TODO: maybe should distinguish by fragment*/
 public abstract class BaseFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ServiceConnectionObserver, ServiceStateChangesObserver {
+
+    private final String TAG = getClass().getSimpleName();
+
     protected BaseCursorAdapter mCursorAdapter;
     protected BaseLoaderCreator mLoaderCreator;
     private ToolbarActivity mToolbarActivity;
@@ -55,6 +61,13 @@ public abstract class BaseFragment extends Fragment
         mServiceWrapper.bindToService(getActivity(), this);
         mLoaderCreator = createCursorLoaderCreator();
         mCursorAdapter = createCursorAdapter();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

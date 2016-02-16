@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 import java.util.Vector;
 
@@ -33,6 +34,8 @@ import ua.edu.cdu.fotius.lisun.musicplayer.MediaPlaybackService;
 // Еще неудачный вариант: использование onRetainNonConfigurationInstance(), который deprecated.
 public class MediaPlaybackServiceWrapper
         implements ServiceConnection {
+
+    private final String TAG = getClass().getSimpleName();
 
     //TODO: maybe its AudioStorage.WRONG_ID
     public static int ERROR_RETURN_VALUE = -1;
@@ -342,6 +345,7 @@ public class MediaPlaybackServiceWrapper
     }
 
     public void onServiceConnected(ComponentName name, IBinder service) {
+        Log.d(TAG, "ServiceConntected");
         mService = IMediaPlaybackService.Stub.asInterface(service);
         /* Notify all observers.
          * In most cases here will be notified

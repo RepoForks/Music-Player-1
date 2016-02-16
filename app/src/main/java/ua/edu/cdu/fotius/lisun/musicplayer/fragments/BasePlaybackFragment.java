@@ -36,8 +36,6 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     protected final long DEFAULT_REFRESH_DELAY_IN_MILLIS = 500;
     private final int REFRESH = 1;
 
-    private final String TAG = getClass().getSimpleName();
-
     protected MediaPlaybackServiceWrapper mServiceWrapper;
 
     private ImageViewForLoader mAlbumArt;
@@ -50,7 +48,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
     private ServiceStateReceiver mServiceStateReceiver;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
@@ -63,7 +61,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(getLayoutID(), container, false);
         initPlayButton(v);
         initAlbumArtView(v);
@@ -71,6 +69,12 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
         initArtistTitleView(v);
         initSeekBar(v);
         return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        refreshPlaybackInfoViews();
     }
 
     private void initPlayButton(View parent) {
@@ -187,7 +191,6 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
         mProgressBar.setProgress(0);
         //this will set default image
         mImageLoader.load(MediaPlaybackServiceWrapper.ERROR_RETURN_VALUE).withDefault().into(mAlbumArt);
-        //TODO: maybe go to next song
     }
 
     @Override
@@ -240,9 +243,17 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
             return false;
         }
 
-        mTrackTitle.setText(trackName);
-        mArtistTitle.setName(artistName);
-        mImageLoader.load(albumID).withDefault().into(mAlbumArt);
+        if(mTrackTitle != null) {
+            mTrackTitle.setText(trackName);
+        }
+
+        if(mArtistTitle != null) {
+            mArtistTitle.setName(artistName);
+        }
+
+        if(mAlbumArt != null) {
+            mImageLoader.load(albumID).withDefault().into(mAlbumArt);
+        }
 
         return true;
     }

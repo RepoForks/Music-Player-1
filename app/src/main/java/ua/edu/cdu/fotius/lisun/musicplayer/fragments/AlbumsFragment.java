@@ -3,6 +3,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class AlbumsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_albums, container, false);
         GridView gridView = (GridView) v.findViewById(R.id.list);
         gridView.setAdapter(mCursorAdapter);
@@ -96,6 +98,7 @@ public class AlbumsFragment extends BaseFragment {
                                 BaseLoaderCreator loaderCreator) {
         BaseAlbumsLoaderCreator creator =
                 (BaseAlbumsLoaderCreator) loaderCreator;
+        Log.e(TAG, "Album ID: " + mServiceWrapper.getAlbumID());
         adapter.setIndicatorFor(creator.getAlbumIdColumn(), mServiceWrapper.getAlbumID(),
                 mServiceWrapper.isPlaying());
     }

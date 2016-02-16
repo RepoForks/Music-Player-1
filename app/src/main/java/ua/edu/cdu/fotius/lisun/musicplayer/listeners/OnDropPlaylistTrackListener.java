@@ -8,7 +8,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.ChangeOrderInPlaylistAsyn
 import ua.edu.cdu.fotius.lisun.musicplayer.views.DragNDropListView;
 
 public class OnDropPlaylistTrackListener implements DragNDropListView.DropListener {
-
     private Fragment mFragment;
     private long mPlaylistId;
 

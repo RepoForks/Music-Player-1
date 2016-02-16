@@ -32,7 +32,9 @@ public class GenresLoaderCreator extends BaseLoaderCreator {
 
     @Override
     public String getSelection() {
-        return null;
+        //FIXME: very quick fix. maybe possible to do this in other way
+        return " _id in (select genre_id from audio_genres_map where audio_id " +
+                "in (select _id from audio_meta where is_music != 0))";
     }
 
     @Override

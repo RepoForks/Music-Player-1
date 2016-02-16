@@ -37,12 +37,14 @@ public class ImageMemoryCache {
     }
 
     public synchronized void addBitmap(String key, Bitmap bitmap) {
-        if(getBitmap(key) == null) {
+        if((getBitmap(key) == null) && (bitmap != null)) {
+            //Log.e(TAG, "Putting in cache: " + bitmap);
             mCache.put(key, bitmap);
         }
     }
 
     public Bitmap getBitmap(String key) {
+        //Log.d(TAG, "Getting from cache: " + mCache.get(key));
         return mCache.get(key);
     }
 }

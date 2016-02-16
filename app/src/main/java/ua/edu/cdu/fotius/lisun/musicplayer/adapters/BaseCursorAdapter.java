@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
     private int mPlayIndicatorColor;
     private AbsListView mAbsListView = null;
     //private int mCurrentPositionInList = -1;
+
+    private final String TAG = getClass().getSimpleName();
 
     public BaseCursorAdapter(Context context, int rowLayout, String[] from, int[] to) {
         super(context, rowLayout, /*cursor*/null, from, to, /*don't register content observer*/0);
@@ -87,6 +90,10 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
     private void tryToSetPlayIndicator(View rowLayout, Cursor cursor) {
         ImageView indicator = (ImageView)rowLayout.findViewById(R.id.play_indicator);
         /*if resource doesn't contain indicator.*/
+
+        Log.d(TAG, "indicator " + indicator);
+        Log.d(TAG, "current id: " + mCurrentId);
+
         if(indicator == null) return;
 
         if(mCurrentId == AudioStorage.WRONG_ID) {
@@ -97,7 +104,9 @@ public class BaseCursorAdapter extends SimpleCursorAdapter {
         int idIdx = cursor.getColumnIndexOrThrow(mIdColumn);
         long id = cursor.getLong(idIdx);
 
+        Log.d(TAG, "id: " + id);
         if ((id == mCurrentId) && mIsPlaying) {
+            Log.e(TAG, "setting it...");
             AnimationDrawable animation = (AnimationDrawable)
                     mContext.getResources().getDrawable(R.drawable.ic_equalizer_white_18dp);
             indicator.setImageDrawable(animation);
