@@ -47,7 +47,8 @@ public class TracksFragment extends BaseFragment {
                 loaderFactory.getArtistColumn()};
         int[] to = new int[]{R.id.track_title, R.id.artist_name};
 
-        return new AlbumArtCursorAdapter(getActivity(), R.layout.row_tracks_list, from, to, R.id.album_art, loaderFactory.getAlbumIdColumn());
+        return new AlbumArtCursorAdapter(getActivity(), R.layout.row_tracks_list,
+                from, to, R.id.album_art, loaderFactory.getAlbumIdColumn());
     }
 
     @Override

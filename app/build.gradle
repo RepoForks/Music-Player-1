@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'io.realm:realm-android:0.87.5'
 }

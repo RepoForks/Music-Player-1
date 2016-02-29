@@ -11,6 +11,7 @@ import android.widget.Toast;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.model.ListeningLogWorker;
 import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsFragment;
@@ -40,6 +41,11 @@ public class NavigationActivity extends SlidingPanelActivity {
         setNavigationIconResourceID(R.drawable.ic_menu_white_24dp);
         setNavigationClickListener(new OnOpenCloseNavigationViewClickListener(drawerLayout, navigationView));
         setPanelSlideListener(new SlidingPanelListener(drawerLayout, getFragmentManager()));
+
+        //TODO: check this
+        ListeningLogWorker logWorker = new ListeningLogWorker(this);
+        logWorker.synchronizeStorages();
+        logWorker.close();
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {

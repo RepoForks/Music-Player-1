@@ -7,8 +7,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ListView" >
-    </ListView>
+        style="@style/ListView" />
 
     <include
         layout="@layout/empty_list"
