@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
@@ -30,27 +29,54 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        // 1. Retrieve all ids from MediaStore
         Set<Long> mediaStoreIds = retrieveMediaStoreIds();
-        Log.e(TAG, "MEDIA STORE IDS. SET: ");
-        displaySet(mediaStoreIds);
-        // 2. Retrieve all ids from Model
-        Realm realm = Realm.getInstance(mContext);
-        Set<Long> modelIds = retrieveModelIds(realm);
-        Log.e(TAG, "MODEL IDS.BEFORE SYNC. SET: ");
-        displaySet(modelIds);
-        // 3. Delete all Model's ids which doesn't exists in MediaStore
-        modelIds = deleteOldIdsFromModel(modelIds, mediaStoreIds);
-        Log.e(TAG, "MODEL IDS.AFTER DELETING OLD. SET: ");
-        displaySet(modelIds);
-        // 4. Add ids which doesn't exist in Model
-        addNewIdsToModel(modelIds, mediaStoreIds);
-        Log.e(TAG, "MODEL IDS.AFTER ADDING NEW. SET: ");
-        displaySet(modelIds);
 
-        //TODO: add to realm
+//        Log.e(TAG, "MEDIA STORE IDS. SET: ");
+//        displaySet(mediaStoreIds);
+
+        Realm realm = Realm.getInstance(mContext);
+
+//        Log.e(TAG, "MODEL IDS. BEFORE SYNCH. SET: ");
+//        Set<Long> beforeSynch = retrieveModelIds(realm);
+//        displaySet(beforeSynch);
+
+        RealmResults<ListeningLog> modelIds = realm.allObjects(ListeningLog.class);
+        synchronizeStorages(mediaStoreIds, realm, modelIds);
+
+//        Log.e(TAG, "MODEL IDS. AFTER SYNCH. SET: ");
+//        Set<Long> afterSynch = retrieveModelIds(realm);
+//        displaySet(afterSynch);
+
+        realm.close();
 
         return null;
+    }
+
+    private void synchronizeStorages(Set<Long> mediaStoreIds, Realm realm, RealmResults<ListeningLog> modelIds) {
+        long id;
+
+        for(int i = modelIds.size() - 1; i >= 0; i--) {
+            ListeningLog log = modelIds.get(i);
+            id = log.getTrackId();
+            if(mediaStoreIds.contains(id)) {
+                //just preparing this set
+                mediaStoreIds.remove(id);
+            } else { /*does not contain, so delete from Realm*/
+                realm.beginTransaction();
+                log.removeFromRealm();
+                realm.commitTransaction();
+            }
+        }
+
+        Iterator<Long> iter = mediaStoreIds.iterator();
+        while (iter.hasNext()) {
+            id = iter.next();
+            realm.beginTransaction();
+            ListeningLog newObject = realm.createObject(ListeningLog.class);
+            newObject.setTrackId(id);
+            newObject.setListenedCounter(0);
+            realm.commitTransaction();
+        }
     }
 
     private Set<Long> retrieveMediaStoreIds() {
@@ -79,6 +105,7 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
         return set;
     }
 
+    //TODO: only for debug. can be deleted
     private Set<Long> retrieveModelIds(Realm realm) {
         //1. Retrieve all ids from model
         RealmResults<ListeningLog> allLogs = realm.allObjects(ListeningLog.class);
@@ -88,30 +115,6 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
             set.add(log.getTrackId());
         }
         return set;
-    }
-
-    private Set<Long> deleteOldIdsFromModel(Set<Long> modelIds, Set<Long> mediaStoreIds) {
-        Iterator modelIter = modelIds.iterator();
-        Set<Long> result = new HashSet<>();
-        long id;
-        while (modelIter.hasNext()) {
-            id = (long) modelIter.next();
-            if(mediaStoreIds.contains(id)) {
-               result.add(id);
-            }
-        }
-        return result;
-    }
-
-    private void addNewIdsToModel(Set<Long> modelIds, Set<Long> mediaStoreIds) {
-        Iterator mediaStoreIter = mediaStoreIds.iterator();
-        long id;
-        while(mediaStoreIter.hasNext()) {
-            id = (long) mediaStoreIter.next();
-            if(!modelIds.contains(id)) {
-                modelIds.add(id);
-            }
-        }
     }
 
     //TODO: only for debug. can be deleted
