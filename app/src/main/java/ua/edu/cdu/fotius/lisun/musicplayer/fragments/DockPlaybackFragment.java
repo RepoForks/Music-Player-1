@@ -21,9 +21,6 @@ public class DockPlaybackFragment extends BasePlaybackFragment {
     }
 
     @Override
-    public void styleProgressBar(ProgressBar bar) {}
-
-    @Override
     public int getLayoutID() {
         return R.layout.fragment_dock_playback;
     }

@@ -127,10 +127,7 @@ public abstract class BasePlaybackFragment extends Fragment implements ServiceCo
                             "'R.id.progress_bar'");
         }
         mProgressBar.setMax(OnSeekBarChangeListener.SEEK_BAR_MAX);
-        styleProgressBar(mProgressBar);
     }
-
-    public abstract void styleProgressBar(ProgressBar bar);
 
     @Override
     public void onStart() {

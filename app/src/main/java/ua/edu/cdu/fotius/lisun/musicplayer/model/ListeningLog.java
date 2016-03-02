@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 public class ListeningLog extends RealmObject{
 

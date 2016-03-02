@@ -62,23 +62,6 @@ public class PlaybackFragment extends BasePlaybackFragment implements OnRepeatCl
         return v;
     }
 
-    @Override
-    public void styleProgressBar(ProgressBar bar) {
-//        SeekBar seekBar = (SeekBar) bar;
-//        int color = getResources().getColor(R.color.primary);
-//        ColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
-//        seekBar.getProgressDrawable().setColorFilter(colorFilter);
-////        int[][] states = new int[][] {
-////                new int[] { android.R.attr.state_}, // enabled
-////        };
-//
-//        int[] colors = new int[] {
-//                color
-//        };
-//        ColorStateList stateList = new ColorStateList(null, colors);
-//        seekBar.setThumbTintList(stateList);
-    }
-
     private void initPrevButton(View parent) {
         LoopingImageButton prevButton =
                 (LoopingImageButton) parent.findViewById(R.id.prev);

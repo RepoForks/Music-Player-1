@@ -999,9 +999,6 @@ public class MediaPlaybackService extends Service {
             mMediaNotificationManager.startOrUpdateNotification(composeMetadata(), getAlbumId(), isPlaying());
 
         } else if (mPlaylist.size() <= 0) {
-            // This is mostly so that if you press 'play' on a bluetooth headset
-            // without every having played anything before, it will still play
-            // something.
             setShuffleMode(Playlist.SHUFFLE_AUTO);
         }
     }
