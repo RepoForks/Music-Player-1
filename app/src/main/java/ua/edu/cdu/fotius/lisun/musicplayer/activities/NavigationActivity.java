@@ -43,9 +43,7 @@ public class NavigationActivity extends SlidingPanelActivity {
         setPanelSlideListener(new SlidingPanelListener(drawerLayout, getFragmentManager()));
 
         //TODO: check this
-        ListeningLogWorker logWorker = new ListeningLogWorker(this);
-        logWorker.synchronizeStorages();
-        logWorker.close();
+        new ListeningLogWorker(this).synchronizeStorages();
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {

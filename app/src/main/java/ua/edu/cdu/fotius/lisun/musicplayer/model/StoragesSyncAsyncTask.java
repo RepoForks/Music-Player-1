@@ -3,7 +3,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer.model;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -18,9 +17,6 @@ import io.realm.RealmResults;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 
 public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
-
-    private final String TAG = getClass().getSimpleName();
-
     private Context mContext;
 
     public StoragesSyncAsyncTask(Context context) {
@@ -30,25 +26,10 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Set<Long> mediaStoreIds = retrieveMediaStoreIds();
-
-//        Log.e(TAG, "MEDIA STORE IDS. SET: ");
-//        displaySet(mediaStoreIds);
-
         Realm realm = Realm.getInstance(mContext);
-
-//        Log.e(TAG, "MODEL IDS. BEFORE SYNCH. SET: ");
-//        Set<Long> beforeSynch = retrieveModelIds(realm);
-//        displaySet(beforeSynch);
-
         RealmResults<ListeningLog> modelIds = realm.allObjects(ListeningLog.class);
         synchronizeStorages(mediaStoreIds, realm, modelIds);
-
-//        Log.e(TAG, "MODEL IDS. AFTER SYNCH. SET: ");
-//        Set<Long> afterSynch = retrieveModelIds(realm);
-//        displaySet(afterSynch);
-
         realm.close();
-
         return null;
     }
 
@@ -80,7 +61,6 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     private Set<Long> retrieveMediaStoreIds() {
-        // 1. Create cursor
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
                 AudioStorage.Track.TRACK_ID
@@ -93,12 +73,10 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
             return null;
         }
 
-        // 2. Iterate through cursor.
         cursor.moveToFirst();
         Set<Long> set = new HashSet<>(cursor.getCount());
 
         while (!cursor.isAfterLast()) {
-            // 3. Add id to set
             set.add(cursor.getLong(0));
             cursor.moveToNext();
         }
@@ -106,7 +84,7 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     //TODO: only for debug. can be deleted
-    private Set<Long> retrieveModelIds(Realm realm) {
+    public static Set<Long> retrieveModelIds(Realm realm) {
         //1. Retrieve all ids from model
         RealmResults<ListeningLog> allLogs = realm.allObjects(ListeningLog.class);
         //2. Add ids to set
@@ -118,10 +96,10 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     //TODO: only for debug. can be deleted
-    private void displaySet(Set<Long> set) {
+    public static void displaySet(Set<Long> set) {
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
-            Log.d(TAG, "ID: " + iterator.next());
+            Log.d("DISPLAY SET", "ID: " + iterator.next());
         }
     }
 }
