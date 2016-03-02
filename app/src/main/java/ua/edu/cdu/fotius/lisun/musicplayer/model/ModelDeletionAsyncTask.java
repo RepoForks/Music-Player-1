@@ -13,9 +13,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class ModelDeletionAsyncTask extends AsyncTask<Long, Void, Void> {
-
-    private final String TAG = getClass().getSimpleName();
-
     private Context mContext;
 
     public ModelDeletionAsyncTask(Context context) {
@@ -24,43 +21,30 @@ public class ModelDeletionAsyncTask extends AsyncTask<Long, Void, Void> {
 
     @Override
     protected Void doInBackground(Long... ids) {
-        Realm realm = Realm.getInstance(mContext);
+        Realm realm = null;
+        try {
+            realm = Realm.getInstance(mContext);
+            RealmResults<ListeningLog> allLogs = realm.allObjects(ListeningLog.class);
+            RealmQuery query = allLogs.where();
+            for (int i = 0; i < ids.length; i++) {
+                query.equalTo("trackId", ids[i]);
+                if (i != (ids.length - 1)) {
+                    query.or();
+                }
+            }
 
-        //TODO: only debug
-        Log.e(TAG, "FOR DELETION");
-        for(int i = 0; i < ids.length; i++) {
-            Log.d(TAG, "ID : " + ids[i]);
-        }
+            RealmResults<ListeningLog> forDeletion = query.findAll();
 
-        //TODO: only debug
-        Log.e(TAG, "MODEL BEFOR DELETION");
-        Set<Long> set = StoragesSyncAsyncTask.retrieveModelIds(realm);
-        StoragesSyncAsyncTask.displaySet(set);
-
-
-        RealmResults<ListeningLog> allLogs = realm.allObjects(ListeningLog.class);
-        RealmQuery query = allLogs.where();
-        for(int i = 0; i < ids.length; i++) {
-            query.equalTo("trackId", ids[i]);
-            if(i != (ids.length - 1)) {
-                query.or();
+            realm.beginTransaction();
+            for (int i = forDeletion.size() - 1; i >= 0; i--) {
+                forDeletion.get(i).removeFromRealm();
+            }
+            realm.commitTransaction();
+        } finally {
+            if(realm != null) {
+                realm.close();
             }
         }
-
-        RealmResults<ListeningLog> forDeletion =  query.findAll();
-
-        realm.beginTransaction();
-        for(int i = forDeletion.size() - 1; i >= 0; i--) {
-            forDeletion.get(i).removeFromRealm();
-        }
-        realm.commitTransaction();
-
-        //TODO: only debug
-        Log.e(TAG, "MODEL AFTER DELETION");
-        set = StoragesSyncAsyncTask.retrieveModelIds(realm);
-        StoragesSyncAsyncTask.displaySet(set);
-
-        realm.close();
         return null;
     }
 }
