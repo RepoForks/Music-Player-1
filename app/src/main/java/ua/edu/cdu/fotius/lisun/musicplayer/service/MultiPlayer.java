@@ -26,8 +26,6 @@ public class MultiPlayer {
     private boolean mIsInitialized = false;
     private Context mContext;
 
-    private final String TAG = getClass().getSimpleName();
-
     public MultiPlayer(Context context) {
         mContext = context;
         //CPU should be running. Screen is allowed to go off
@@ -117,12 +115,10 @@ public class MultiPlayer {
     }
 
     public void start() {
-        Log.e(TAG, "MediaPlayer.Start");
         mCurrentMediaPlayer.start();
     }
 
     public void stop() {
-        Log.e(TAG, "MediaPlayer.Stop");
         mCurrentMediaPlayer.reset();
         mIsInitialized = false;
     }
@@ -136,7 +132,6 @@ public class MultiPlayer {
     }
 
     public void pause() {
-        Log.e(TAG, "MediaPlayer.Pause");
         mCurrentMediaPlayer.pause();
     }
 
@@ -146,9 +141,6 @@ public class MultiPlayer {
 
     MediaPlayer.OnCompletionListener listener = new MediaPlayer.OnCompletionListener() {
         public void onCompletion(MediaPlayer mp) {
-
-            Log.e(TAG, "MediaPlayer.OnCompletion");
-
             if (mp == mCurrentMediaPlayer && mNextMediaPlayer != null) {
                 mCurrentMediaPlayer.release();
                 mCurrentMediaPlayer = mNextMediaPlayer;

@@ -46,20 +46,9 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
         for(int i = modelIds.size() - 1; i >= 0; i--) {
             ListeningLog log = modelIds.get(i);
             id = log.getTrackId();
-            if(mediaStoreIds.contains(id)) {
-                //just preparing this set
-                mediaStoreIds.remove(id);
-            } else { /*does not contain, so delete from Realm*/
+            if(!mediaStoreIds.contains(id)) {
                 log.removeFromRealm();
             }
-        }
-
-        Iterator<Long> iter = mediaStoreIds.iterator();
-        while (iter.hasNext()) {
-            id = iter.next();
-            ListeningLog newObject = realm.createObject(ListeningLog.class);
-            newObject.setTrackId(id);
-            newObject.setListenedCounter(0);
         }
         realm.commitTransaction();
     }
