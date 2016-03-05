@@ -8,11 +8,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ListeningLogWorker {
+public class ListenLogWorker {
     private Context mContext;
 
-    public ListeningLogWorker(Context context) {
+    public ListenLogWorker(Context context) {
         mContext = context;
+    }
+
+    public void updateCounter(long trackId) {
+        new ListenedUpdaterAsyncTask(mContext).execute(trackId);
     }
 
     public void synchronizeStorages() {

@@ -25,7 +25,6 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
@@ -34,11 +33,10 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.notification.FakeImageView;
 import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaControlActionsReceiver;
 import ua.edu.cdu.fotius.lisun.musicplayer.notification.MediaNotificationManager;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ExternalCard;
-import ua.edu.cdu.fotius.lisun.musicplayer.service.FavoriteSongDetector;
+import ua.edu.cdu.fotius.lisun.musicplayer.service.ListenedDetector;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MultiPlayer;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.PlaybackHistory;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.Playlist;
@@ -127,7 +125,7 @@ public class MediaPlaybackService extends Service {
     private MediaControllerCompat.TransportControls mTransportControls;
     private MediaNotificationManager mMediaNotificationManager;
 
-    private FavoriteSongDetector mFavoriteSongDetector;
+    private ListenedDetector mListenedDetector;
 
     //Also used by MultiPlayer
     private Handler mMediaplayerHandler = new Handler() {
@@ -167,7 +165,7 @@ public class MediaPlaybackService extends Service {
                     break;
                 case TRACK_WENT_TO_NEXT:
                     //TODO: favorite
-                    mFavoriteSongDetector.endPlayback(FavoriteSongDetector.TRACK_ENDED_POSITION);
+                    mListenedDetector.onPlaybackEnded(ListenedDetector.DEFAULT_VALUE);
 
                     mPlaylist.setPlayPosition(mPlaylist.getNextPlayPosition());
                     if (mCursor != null) {
@@ -189,14 +187,14 @@ public class MediaPlaybackService extends Service {
                     setNextTrack();
 
                     //TODO: favorite
-                    mFavoriteSongDetector.setPlaybackStarted(getAudioId(), duration(), position());
+                    mListenedDetector.onPlaybackStarted(getAudioId(), duration(), position());
 
                     break;
                 case TRACK_ENDED:
                     Log.d(TAG, "Track ended");
 
                     //TODO: favorite
-                    mFavoriteSongDetector.endPlayback(FavoriteSongDetector.TRACK_ENDED_POSITION);
+                    mListenedDetector.onPlaybackEnded(ListenedDetector.DEFAULT_VALUE);
 
                     if (mPlaylist.getRepeatMode() == Playlist.REPEAT_CURRENT) {
                         seek(0);
@@ -332,7 +330,7 @@ public class MediaPlaybackService extends Service {
         IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mHeadSetPlug, filter);
 
-        mFavoriteSongDetector = new FavoriteSongDetector(this);
+        mListenedDetector = new ListenedDetector(this);
         // Needs to be done in this thread, since otherwise ApplicationContext.getPowerManager() crashes.
         mPlayer = new MultiPlayer(this);
         mPlayer.setHandler(mMediaplayerHandler);
@@ -662,7 +660,6 @@ public class MediaPlaybackService extends Service {
      * @param what is some action(example, MediaPlaybackService.QUEUE_CHANGED)
      */
     private void notifyChange(String what) {
-
         Intent i = new Intent(what);
         i.putExtra("id", Long.valueOf(getAudioId()));
         i.putExtra("artist", getArtistName());
@@ -1004,7 +1001,7 @@ public class MediaPlaybackService extends Service {
             }
 
             mPlayer.start();
-            mFavoriteSongDetector.setPlaybackStarted(getAudioId(), duration(), position());
+            mListenedDetector.onPlaybackStarted(getAudioId(), duration(), position());
             // make sure we fade in, in case a previous fadein was stopped because
             // of another focus loss
             mMediaplayerHandler.removeMessages(FADEDOWN);
@@ -1024,7 +1021,7 @@ public class MediaPlaybackService extends Service {
 
     private void stop(boolean remove_status_icon) {
         if (mPlayer != null && mPlayer.isInitialized()) {
-            mFavoriteSongDetector.endPlayback(position());
+            mListenedDetector.onPlaybackEnded(position());
             mPlayer.stop();
         }
         mFileToPlay = null;
@@ -1056,7 +1053,12 @@ public class MediaPlaybackService extends Service {
         synchronized (this) {
             mMediaplayerHandler.removeMessages(FADEUP);
             if (isPlaying()) {
-                mFavoriteSongDetector.endPlayback(position());
+                mListenedDetector.onPlaybackEnded(position());
+                //spoil values, so if stop(...) calls mFavoriteSongDetector.onPlaybackEnded(...)
+                //song will not be counted 2 times
+                mListenedDetector.onPlaybackStarted(ListenedDetector.DEFAULT_VALUE,
+                        ListenedDetector.DEFAULT_VALUE, ListenedDetector.DEFAULT_VALUE);
+
                 mPlayer.pause();
                 gotoIdleState();
                 mIsSupposedToBePlaying = false;

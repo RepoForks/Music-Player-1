@@ -5,19 +5,12 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.async_tasks.AsyncTaskWithProgressBar;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.ListeningLogWorker;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.ModelDeletionAsyncTask;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.StoragesSyncAsyncTask;
+import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.AudioStorage;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 
@@ -49,7 +42,7 @@ public class DeleteTracksAsyncTask extends AsyncTaskWithProgressBar {
             deleteFromCurrentPlayQueue(cursor);
             deleteFromStorage(cursor);
             deleteFromDatabase(resolver, whereClause);
-            new ListeningLogWorker(context).deleteFromLog(mTrackIds);
+            new ListenLogWorker(context).deleteFromLog(mTrackIds);
             cursor.close();
         }
 

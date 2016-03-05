@@ -6,12 +6,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.ListeningLogWorker;
+import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
 import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsFragment;
@@ -43,7 +42,7 @@ public class NavigationActivity extends SlidingPanelActivity {
         setPanelSlideListener(new SlidingPanelListener(drawerLayout, getFragmentManager()));
 
         //TODO: check this
-        new ListeningLogWorker(this).synchronizeStorages();
+        new ListenLogWorker(this).synchronizeStorages();
     }
 
     private NavigationView setUpNavigationView(final DrawerLayout drawer) {

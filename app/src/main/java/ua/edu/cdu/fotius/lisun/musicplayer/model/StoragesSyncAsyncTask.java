@@ -6,10 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import io.realm.Realm;
@@ -30,7 +28,7 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
         Realm realm = null;
         try {
             realm = Realm.getInstance(mContext);
-            RealmResults<ListeningLog> modelIds = realm.allObjects(ListeningLog.class);
+            RealmResults<ListenLog> modelIds = realm.allObjects(ListenLog.class);
             synchronizeStorages(mediaStoreIds, realm, modelIds);
         } finally {
             if(realm != null) {
@@ -40,11 +38,11 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private void synchronizeStorages(Set<Long> mediaStoreIds, Realm realm, RealmResults<ListeningLog> modelIds) {
+    private void synchronizeStorages(Set<Long> mediaStoreIds, Realm realm, RealmResults<ListenLog> modelIds) {
         long id;
         realm.beginTransaction();
         for(int i = modelIds.size() - 1; i >= 0; i--) {
-            ListeningLog log = modelIds.get(i);
+            ListenLog log = modelIds.get(i);
             id = log.getTrackId();
             if(!mediaStoreIds.contains(id)) {
                 log.removeFromRealm();
