@@ -1,5 +1,6 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.RecommendationsFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
 import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
@@ -77,6 +79,10 @@ public class NavigationActivity extends SlidingPanelActivity {
                                         PlaylistsFragment.TAG);
                                 break;
 
+                            case R.id.navigation_item_recommendations:
+                                replaceFragment(new RecommendationsFragment(),
+                                        RecommendationsFragment.TAG);
+                                break;
 //                            case R.id.navigation_item_settings:
 //                                //TODO: initialize selectedFragment
 //                                Toast.makeText(NavigationActivity.this, "Settings", Toast.LENGTH_SHORT).show();

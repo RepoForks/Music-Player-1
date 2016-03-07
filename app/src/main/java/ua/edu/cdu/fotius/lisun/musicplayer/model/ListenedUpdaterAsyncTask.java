@@ -25,51 +25,54 @@ public class ListenedUpdaterAsyncTask extends AsyncTask<Long, Void, Void> {
     @Override
     protected Void doInBackground(Long... params) {
         long trackId = params[0];
-        Realm mRealm = Realm.getInstance(mContext);
+        Realm realm = null;
+        try {
+            realm = Realm.getInstance(mContext);
+            ListenLog justListenedLog =
+                    realm.where(ListenLog.class).equalTo(ListenLog.TRACK_ID_ATTR, trackId).findFirst();
+            if (justListenedLog == null) {
+                ContentResolver resolver = mContext.getContentResolver();
+                String genre = retrieveGenre(resolver, trackId);
+                String artist = retrieveArtist(resolver, trackId);
+                String album = retrieveAlbum(resolver, trackId);
+                realm.beginTransaction();
+                ListenLog newLog = realm.createObject(ListenLog.class);
+                newLog.setTrackId(trackId);
+                newLog.setListenedCounter(1);
+                newLog.setGenre(genre);
+                newLog.setArtist(artist);
+                newLog.setAlbum(album);
+                realm.commitTransaction();
+            } else {
+                realm.beginTransaction();
+                long counter = justListenedLog.getListenedCounter();
+                justListenedLog.setListenedCounter(++counter);
+                realm.commitTransaction();
+            }
+            //TODO: debug only
+            RealmResults<ListenLog> results = realm.allObjects(ListenLog.class);
+            for (ListenLog l : results) {
+                Log.d(TAG, "ID : " + l.getTrackId() + " COUNTER: " + l.getListenedCounter() +
+                        " GENRE: " + l.getGenre() + " ARTIST: " + l.getArtist() + " ALBUM: " + l.getAlbum());
+            }
 
-        ListenLog justListenedLog  =
-                mRealm.where(ListenLog.class).equalTo(ListenLog.TRACK_ID_ATTR, trackId).findFirst();
-
-        if(justListenedLog == null) {
-            ContentResolver resolver = mContext.getContentResolver();
-            String genre = retrieveGenre(resolver, trackId);
-            String artist = retrieveArtist(resolver, trackId);
-            String album = retrieveAlbum(resolver, trackId);
-
-            mRealm.beginTransaction();
-            ListenLog newLog = mRealm.createObject(ListenLog.class);
-            newLog.setTrackId(trackId);
-            newLog.setListenedCounter(1);
-            newLog.setGenre(genre);
-            newLog.setArtist(artist);
-            newLog.setAlbum(album);
-            mRealm.commitTransaction();
-        } else {
-            mRealm.beginTransaction();
-            long counter = justListenedLog.getListenedCounter();
-            justListenedLog.setListenedCounter(++counter);
-            mRealm.commitTransaction();
-        }
-
-
-        //TODO: debug only
-        RealmResults<ListenLog> results = mRealm.allObjects(ListenLog.class);
-        for(ListenLog l : results) {
-            Log.d(TAG, "ID : " + l.getTrackId() + " COUNTER: " + l.getListenedCounter() +
-                    " GENRE: " + l.getGenre() + " ARTIST: " + l.getArtist() + " ALBUM: " + l.getAlbum());
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
         }
         return null;
     }
 
     private String retrieveGenre(ContentResolver contentResolver, long trackId) {
         Uri uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", (int) trackId);
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 AudioStorage.Genres.GENRE
         };
         Cursor cursor = contentResolver.query(uri, projection, null, null, null);
         String genre = null;
-        if(cursor != null) {
-            if(cursor.moveToFirst()) {
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 genre = cursor.getString(0);
             }
             cursor.close();
@@ -79,16 +82,16 @@ public class ListenedUpdaterAsyncTask extends AsyncTask<Long, Void, Void> {
 
     private String retrieveArtist(ContentResolver contentResolver, long trackId) {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 AudioStorage.Track.ARTIST
         };
         String selection = AudioStorage.Track.TRACK_ID + "=?";
-        String[] selectionArgs = new String[] {
+        String[] selectionArgs = new String[]{
                 Long.toString(trackId)
         };
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
         String artist = null;
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 artist = cursor.getString(0);
             }
@@ -99,16 +102,16 @@ public class ListenedUpdaterAsyncTask extends AsyncTask<Long, Void, Void> {
 
     private String retrieveAlbum(ContentResolver contentResolver, long trackId) {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 AudioStorage.Track.ALBUM
         };
         String selection = AudioStorage.Track.TRACK_ID + "=?";
-        String[] selectionArgs = new String[] {
+        String[] selectionArgs = new String[]{
                 Long.toString(trackId)
         };
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
         String album = null;
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 album = cursor.getString(0);
             }

@@ -23,6 +23,10 @@ android {
             aidl.srcDirs = ['src/main/java']
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 dependencies {
@@ -33,4 +37,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'io.realm:realm-android:0.87.5'
     compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
