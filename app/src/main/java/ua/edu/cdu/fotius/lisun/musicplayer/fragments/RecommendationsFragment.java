@@ -1,11 +1,14 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import static butterknife.ButterKnife.findById;
 
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.adapters.RecommendationsAdapter;
+import ua.edu.cdu.fotius.lisun.musicplayer.recommendations.FavoriteGenresRetrieverAsyncTask;
 
 public class RecommendationsFragment extends Fragment {
 
@@ -25,9 +29,17 @@ public class RecommendationsFragment extends Fragment {
     private Context mContext;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Activity context) {
         super.onAttach(context);
+        Log.d(TAG, "onAttach");
         mContext = context;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //TODO: debug only
+        new FavoriteGenresRetrieverAsyncTask(null).execute(mContext);
     }
 
     @Override
