@@ -6,8 +6,11 @@ import android.util.Log;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,95 +32,68 @@ public class FavoriteGenresRetrieverAsyncTask extends AsyncTask<Context, Void, M
     }
 
     private Callback mCallback;
+    private Context mContext;
 
-    public FavoriteGenresRetrieverAsyncTask(Callback callback) {
+    public FavoriteGenresRetrieverAsyncTask(Context c, Callback callback) {
         mCallback = callback;
+        mContext = c;
     }
 
     @Override
     protected Map<String, Long> doInBackground(Context... contexts) {
-        BiMap<String, Long> genresListenedQtyMap = getGroupedByGenres(contexts[0]);
+        Map<String, Long> genresListenedQtyMap = getGroupedByGenres(contexts[0]);
 
-        //remove duplicates
-        Set<Long> unduplicatedListenedQty = new HashSet<>(genresListenedQtyMap.values());
+        //TODO: Debug.
+        Log.d(TAG, "BEFORE");
+        displayMap(genresListenedQtyMap);
 
-        //displaySet(unduplicatedListenedQty);
-
-        List<Long> list = new ArrayList<>(unduplicatedListenedQty);
-        Collections.sort(list);
-
-        Long median = getMedian(list);
-
-        List<Long> greaterThanMedianList = getGreateThanMedian(median, list);
-
-        BiMap<Long, String> genresListenedQtyInversed = genresListenedQtyMap.inverse();
-        Map<Long, String> greaterThanMedianMap = new HashMap<>();
-        Long sum = 0L;
-        for(Long l : greaterThanMedianList) {
-            sum += l;
-            greaterThanMedianMap.put(l, genresListenedQtyInversed.get(l));
+        Multimap<Long, String> multimap = HashMultimap.create();
+        for(Map.Entry<String, Long> entry : genresListenedQtyMap.entrySet()) {
+            multimap.put(entry.getValue(), entry.getKey());
         }
 
-        Map<String, Long> genreToPercents = getGenresToPercentsMap(greaterThanMedianMap, sum);
+        FavoritesStatAnalyser statAnalyser = new FavoritesStatAnalyser();
+        List<Long>  unduplicatedSortedList = statAnalyser.unduplicatedSortedListFrom(multimap);
+
+        List<Long> lessThanMedianList = statAnalyser.getLessThanMedianList(unduplicatedSortedList);
+        unduplicatedSortedList = null;
+
+        statAnalyser.removeLessThanMedianFromMap(multimap, lessThanMedianList);
+        lessThanMedianList = null;
+
+        long sumOfGreaterThanMedian = statAnalyser.sumOfGreaterThanMedian(multimap);
+
+        Map<String, Long> genreToPercents = statAnalyser.genresToPercentsMap(multimap,
+                sumOfGreaterThanMedian);
+
+        //TODO: Debug.
+        Log.d(TAG, "AFTER");
+        displayMap(genreToPercents);
+
+        new CachingTask(mContext, genreToPercents).execute();
 
         return null;
     }
 
-    private BiMap<String, Long> getGroupedByGenres(Context context) {
+    private Map<String, Long> getGroupedByGenres(Context context) {
         Realm realm = Realm.getInstance(context);
         RealmResults<ListenLog> allObjects = realm.allObjects(ListenLog.class);
-        BiMap<String, Long> genreListenedQtyMap = HashBiMap.create();
+        Map<String, Long> genreListenedQtyMap = new HashMap<>();
         for(ListenLog log : allObjects) {
-            String genre = log.getGenre().toLowerCase();
-            Long listenedQty = genreListenedQtyMap.get(genre);
-            Long value = null;
-            if(listenedQty == null) {
-                value = log.getListenedCounter();
-            } else {
-                value = listenedQty + log.getListenedCounter();
+            String genre = log.getGenre();
+            if (genre != null) {
+                genre = genre.toLowerCase();
+                Long listenedQty = genreListenedQtyMap.get(genre);
+                Long value = null;
+                if (listenedQty == null) {
+                    value = log.getListenedCounter();
+                } else {
+                    value = listenedQty + log.getListenedCounter();
+                }
+                genreListenedQtyMap.put(genre, value);
             }
-            genreListenedQtyMap.put(genre, value);
         }
         return genreListenedQtyMap;
-    }
-
-    private Long getMedian(List<Long> list) {
-        Long median = 0L;
-        if (list.size() > 0) {
-            if (list.size() % 2 == 0) {
-                int middleIdx = list.size() / 2;
-                median = ((list.get(middleIdx) + list.get(middleIdx - 1)) / 2);
-            } else {
-                median = list.get(list.size() / 2);
-            }
-        }
-        return median;
-    }
-
-    private List<Long> getGreateThanMedian(long median, List<Long> list) {
-        List<Long> greaterThanMedianList = new ArrayList<>();
-        for(Long l : list) {
-            if(l >= median) {
-                greaterThanMedianList.add(l);
-            }
-        }
-        return greaterThanMedianList;
-    }
-
-    private Map<String, Long> getGenresToPercentsMap(Map<Long, String> greaterThanMedianMap, Long sum) {
-        Map<String, Long> genreToPercents = new HashMap<>();
-        for (Map.Entry<Long, String> entry : greaterThanMedianMap.entrySet()) {
-            long listenedQty = entry.getKey();
-            long percents = (listenedQty * 100) / sum;
-            genreToPercents.put(entry.getValue(), percents);
-        }
-        return genreToPercents;
-    }
-
-    @Override
-    protected void onPostExecute(Map<String, Long> favorites) {
-        super.onPostExecute(favorites);
-        //mCallback.onFavoriteRetrieved(favorites);
     }
 
     //TODO: only for debug. can be deleted
@@ -125,6 +101,13 @@ public class FavoriteGenresRetrieverAsyncTask extends AsyncTask<Context, Void, M
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Log.d("DISPLAY SET", "Quantities: " + iterator.next());
+        }
+    }
+
+    //TODO: only for debug. can be deleted
+    public void displayMap(Map<String, Long> map) {
+        for(Map.Entry<String, Long> entry : map.entrySet()) {
+            Log.d("DISPLAY SET", "key: " + entry.getKey() + " value: " + entry.getValue());
         }
     }
 

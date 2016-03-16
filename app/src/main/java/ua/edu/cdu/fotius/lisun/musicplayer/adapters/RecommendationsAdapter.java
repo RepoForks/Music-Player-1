@@ -1,6 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +10,20 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.RealmBasedRecyclerViewAdapter;
+import io.realm.RealmResults;
+import io.realm.RealmViewHolder;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.recommendations.TrackInfoRealm;
 
-public class RecommendationsAdapter extends RecyclerView.Adapter<RecommendationsAdapter.ViewHolder>{
+public class RecommendationsAdapter extends RealmBasedRecyclerViewAdapter<TrackInfoRealm,
+        RecommendationsAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    public static class ViewHolder extends RealmViewHolder {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.text) public TextView mText;
+        @Bind(R.id.track_name) public TextView mTrackName;
+        @Bind(R.id.artist_name) public TextView mArtistName;
+        @Bind(R.id.album_name) public TextView mAlbumName;
 
         public ViewHolder(View rootView) {
             super(rootView);
@@ -24,24 +31,29 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
         }
     }
 
-    public RecommendationsAdapter(String[] dataset) {
-        mDataset = dataset;
+    private final String TAG = getClass().getSimpleName();
+
+    public RecommendationsAdapter(
+            Context context,
+            RealmResults<TrackInfoRealm> realmResults,
+            boolean automaticUpdate,
+            boolean animateIdType) {
+        super(context, realmResults, automaticUpdate, animateIdType);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recommendations_single_item, parent, false);
+    public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int i) {
+        View root = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.recommendations_single_item, viewGroup, false);
         return new ViewHolder(root);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mText.setText(mDataset[position]);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mDataset.length;
+    public void onBindRealmViewHolder(ViewHolder viewHolder, int i) {
+        TrackInfoRealm trackInfo = realmResults.get(i);
+        Log.d(TAG, "OnBindViewHolder: " + trackInfo.isValid());
+        viewHolder.mTrackName.setText(trackInfo.getTrack_name());
+        viewHolder.mArtistName.setText(trackInfo.getArtist());
+        viewHolder.mAlbumName.setText(trackInfo.getAlbum());
     }
 }
