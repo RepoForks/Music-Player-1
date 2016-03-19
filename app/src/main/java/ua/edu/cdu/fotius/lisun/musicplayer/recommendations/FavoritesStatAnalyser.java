@@ -1,13 +1,13 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.recommendations;
 
-import com.google.common.collect.BiMap;
+import android.util.Log;
+
 import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +22,10 @@ public class FavoritesStatAnalyser {
     }
 
     public List<Long> getLessThanMedianList(List<Long> init) {
-        return init.subList(0, init.size() / 2);
+        if(init.size() <= 1) {
+            return init.subList(0, init.size() / 2);
+        }
+        return init.subList(0, init.size() / 2 - 1);
     }
 
     public void removeLessThanMedianFromMap(Multimap<Long, String> map, List<Long> lessThanMedian) {
@@ -48,7 +51,7 @@ public class FavoritesStatAnalyser {
             Collection<String> valuesForKey = greaterThanMedianMap.get(listenedQty);
             long percents = (listenedQty * 100) / sum;
             for(String genre : valuesForKey) {
-                genreToPercents.put(genre, percents);
+                genreToPercents.put(genre.toLowerCase(), percents);
             }
         }
         return genreToPercents;

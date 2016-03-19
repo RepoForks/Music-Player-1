@@ -2,17 +2,17 @@ package ua.edu.cdu.fotius.lisun.musicplayer.recommendations;
 
 
 public class TrackInfoHolder {
-    int id;
+    String id;
     String genre;
     String track_name;
     String artist;
     String album;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

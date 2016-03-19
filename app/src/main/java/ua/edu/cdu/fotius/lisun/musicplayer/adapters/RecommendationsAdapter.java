@@ -1,6 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnRecommendationClick;
 import ua.edu.cdu.fotius.lisun.musicplayer.recommendations.TrackInfoRealm;
 
 public class RecommendationsAdapter extends RealmBasedRecyclerViewAdapter<TrackInfoRealm,
@@ -21,17 +24,19 @@ public class RecommendationsAdapter extends RealmBasedRecyclerViewAdapter<TrackI
 
     public static class ViewHolder extends RealmViewHolder {
 
+        public View mRootView;
         @Bind(R.id.track_name) public TextView mTrackName;
         @Bind(R.id.artist_name) public TextView mArtistName;
         @Bind(R.id.album_name) public TextView mAlbumName;
 
         public ViewHolder(View rootView) {
             super(rootView);
+            mRootView = rootView;
             ButterKnife.bind(this, rootView);
         }
     }
 
-    private final String TAG = getClass().getSimpleName();
+    private Context mContext;
 
     public RecommendationsAdapter(
             Context context,
@@ -39,6 +44,7 @@ public class RecommendationsAdapter extends RealmBasedRecyclerViewAdapter<TrackI
             boolean automaticUpdate,
             boolean animateIdType) {
         super(context, realmResults, automaticUpdate, animateIdType);
+        mContext = context;
     }
 
     @Override
@@ -50,10 +56,10 @@ public class RecommendationsAdapter extends RealmBasedRecyclerViewAdapter<TrackI
 
     @Override
     public void onBindRealmViewHolder(ViewHolder viewHolder, int i) {
-        TrackInfoRealm trackInfo = realmResults.get(i);
-        Log.d(TAG, "OnBindViewHolder: " + trackInfo.isValid());
+        final TrackInfoRealm trackInfo = realmResults.get(i);
         viewHolder.mTrackName.setText(trackInfo.getTrack_name());
         viewHolder.mArtistName.setText(trackInfo.getArtist());
         viewHolder.mAlbumName.setText(trackInfo.getAlbum());
+        viewHolder.mRootView.setOnClickListener(new OnRecommendationClick(trackInfo));
     }
 }

@@ -25,17 +25,11 @@ import ua.edu.cdu.fotius.lisun.musicplayer.recommendations.TrackInfoRealm;
 public class RecommendationsFragment extends Fragment {
 
     public static String TAG = "recommendations_fragment";
-
-    private String[] mDataset = new String[] {
-            "One", "Two", "Three", "Four", "Five"
-    };
-
-    private Context mContext;
+    private Activity mContext;
 
     @Override
     public void onAttach(Activity context) {
         super.onAttach(context);
-        Log.d(TAG, "onAttach");
         mContext = context;
     }
 
@@ -53,7 +47,7 @@ public class RecommendationsFragment extends Fragment {
 
         Realm realm = Realm.getInstance(mContext);
         RealmResults<TrackInfoRealm> results = realm.allObjects(TrackInfoRealm.class);
-        Log.d(TAG, "RESULTS: " + results.size());
+
         recyclerView.setAdapter(new RecommendationsAdapter(mContext, results, true, true));
 
         new FavoriteGenresRetrieverAsyncTask(getActivity().getApplicationContext(), null).execute(mContext);

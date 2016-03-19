@@ -1,6 +1,8 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.recommendations;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,9 +16,8 @@ import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnDialogDeleteClick;
 
-public class CachingTask extends AsyncTask<Void, Void, Void>{
+public class CachingTask extends AsyncTask<Void, Void, Void> {
 
     private Map<String, Long> mGenresToPercents;
     private Context mContext;
@@ -28,68 +29,83 @@ public class CachingTask extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected Void doInBackground(Void... params) {
-
         Firebase.setAndroidContext(mContext);
         final Firebase myFirebaseRef = new Firebase("https://music-player-dataset.firebaseio.com/tracks");
 
+        if(mGenresToPercents.size() == 0) return null;
+
         Query queryRef = myFirebaseRef.orderByKey().startAt("1");
-
-        queryRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                Log.d("OUT", snapshot.toString() + "\n-----------------------");
-
-                TrackInfoHolder tr = snapshot.getValue(TrackInfoHolder.class);
-
-                String genre = tr.genre;
-                Long qty = mGenresToPercents.get(genre);
-                if(qty != null) {
-                    final Realm realm = Realm.getInstance(mContext);
-                    realm.beginTransaction();
-                    TrackInfoRealm trRealm = realm.createObject(TrackInfoRealm.class);
-                    trRealm.setArtist(tr.artist);
-                    trRealm.setAlbum(tr.album);
-                    trRealm.setGenre(tr.genre);
-                    trRealm.setTrack_name(tr.track_name);
-                    realm.commitTransaction();
-                    mGenresToPercents.put(genre, --qty);
-                    realm.close();
-                }
-
-                Realm realm = Realm.getInstance(mContext);
-                RealmResults<TrackInfoRealm> allObcts = realm.allObjects(TrackInfoRealm.class);
-                for(TrackInfoRealm s : allObcts) {
-                    Log.e("At END", s.getTrack_name() + " " + s.getArtist() + " " + s.getAlbum());
-                }
-                realm.close();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        queryRef.addChildEventListener(new FirebaseQueryEventListener());
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    class FirebaseQueryEventListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+            if(mGenresToPercents.size() == 0) return;
 
+            TrackInfoHolder firebaseTrackInfoHolder = snapshot.getValue(TrackInfoHolder.class);
+            firebaseTrackInfoHolder.id = snapshot.getKey();
+
+            String genre = firebaseTrackInfoHolder.genre.toLowerCase();
+            Long qty = mGenresToPercents.get(genre);
+
+            if(qty == null) {
+                return;
+            }
+
+            if (qty <= 0) {
+                mGenresToPercents.remove(genre);
+                return;
+            }
+
+            if (singleItemToCache(firebaseTrackInfoHolder)) {
+                mGenresToPercents.put(genre, --qty);
+            }
+        }
+
+        private boolean singleItemToCache(TrackInfoHolder firebase) {
+            Realm realm = null;
+            try {
+
+                realm = Realm.getInstance(mContext);
+                realm.beginTransaction();
+                if (realm.where(TrackInfoRealm.class).equalTo("id", firebase.id).findFirst() == null) {
+                    TrackInfoRealm trRealm = new TrackInfoRealm();
+                    trRealm.setId(firebase.id);
+                    trRealm.setArtist(firebase.artist);
+                    trRealm.setAlbum(firebase.album);
+                    trRealm.setGenre(firebase.genre);
+                    trRealm.setTrack_name(firebase.track_name);
+                    realm.copyToRealm(trRealm);
+                }
+                realm.commitTransaction();
+
+            } catch (Exception e) {
+                if (realm != null) {
+                    if (!realm.isClosed()) {
+                        realm.close();
+                    }
+                }
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+        }
     }
 }
