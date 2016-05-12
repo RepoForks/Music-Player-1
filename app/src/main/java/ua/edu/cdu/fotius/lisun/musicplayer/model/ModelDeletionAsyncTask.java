@@ -18,7 +18,7 @@ public class ModelDeletionAsyncTask extends AsyncTask<Long, Void, Void> {
     protected Void doInBackground(Long... ids) {
         Realm realm = null;
         try {
-            realm = Realm.getInstance(mContext);
+            realm = Realm.getDefaultInstance();
             RealmResults<ListenLog> allLogs = realm.allObjects(ListenLog.class);
             RealmQuery query = allLogs.where();
             for (int i = 0; i < ids.length; i++) {

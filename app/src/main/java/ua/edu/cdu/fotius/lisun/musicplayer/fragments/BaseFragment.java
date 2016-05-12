@@ -65,7 +65,6 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         setIndicator(mServiceWrapper, mCursorAdapter, mLoaderCreator);
         return super.onCreateView(inflater, container, savedInstanceState);
     }

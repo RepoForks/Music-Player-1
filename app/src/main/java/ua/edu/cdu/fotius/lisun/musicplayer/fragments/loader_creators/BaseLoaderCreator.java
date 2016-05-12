@@ -9,8 +9,6 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.DatabaseUtils;
 
 public abstract class BaseLoaderCreator {
 
-
-
     /*Need to declare all children's loaders here,
     because will be more convenient when will adding new child*/
     protected static final int TRACKS_LOADER_ID = 1;

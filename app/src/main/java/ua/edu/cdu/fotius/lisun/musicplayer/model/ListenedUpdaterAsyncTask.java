@@ -27,7 +27,7 @@ public class ListenedUpdaterAsyncTask extends AsyncTask<Long, Void, Void> {
         long trackId = params[0];
         Realm realm = null;
         try {
-            realm = Realm.getInstance(mContext);
+            realm = Realm.getDefaultInstance();
             ListenLog justListenedLog =
                     realm.where(ListenLog.class).equalTo(ListenLog.TRACK_ID_ATTR, trackId).findFirst();
             if (justListenedLog == null) {

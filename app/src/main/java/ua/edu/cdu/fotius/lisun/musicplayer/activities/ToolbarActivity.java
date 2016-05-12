@@ -22,7 +22,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String savedFragmentTag = savedInstanceState.getString(EXTRA_FRAGMENT_TAG);
             mCurrentFragment = getFragmentManager()
                     .findFragmentByTag(savedFragmentTag);
@@ -34,7 +34,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
         super.onContentChanged();
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        if(mToolbar == null) {
+        if (mToolbar == null) {
             throw new RuntimeException(
                     "Your content must have a android.support.v7.widget.Toolbar " +
                             "whose id attribute is " +
@@ -43,7 +43,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        if(mProgressBar == null) {
+        if (mProgressBar == null) {
             throw new RuntimeException(
                     "Your content must have a ProgressBar" +
                             "whose id attribute is " +
@@ -62,7 +62,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     }
 
     public void setDefaultFragment(Fragment fragment, String tag, Bundle arguments) {
-        if(mCurrentFragment == null) {
+        if (mCurrentFragment == null) {
             checkFragmentContainerResourceID();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
@@ -81,7 +81,7 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     }
 
     private void checkFragmentContainerResourceID() {
-        if(findViewById(R.id.root_view) == null) {
+        if (findViewById(R.id.root_view) == null) {
             throw new RuntimeException(
                     "Your content must have a container for fragment " +
                             "whose id attribute is " +
@@ -90,40 +90,40 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     }
 
     public void setTitle(String title) {
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
     }
 
     public void setTitle(Bundle extras, String defaultString) {
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getToolbarTitle(extras, defaultString));
         }
     }
 
     public void setNavigationClickListener(View.OnClickListener listener) {
-        if(mToolbar != null) {
+        if (mToolbar != null) {
             mToolbar.setNavigationOnClickListener(listener);
         }
     }
 
     public void setNavigationIconResourceID(int resourceID) {
-        if(mToolbar != null) {
+        if (mToolbar != null) {
             mToolbar.setNavigationIcon(resourceID);
         }
     }
 
     private String getToolbarTitle(Bundle extras, String defaultString) {
-        if(defaultString == null) {
+        if (defaultString == null) {
             return getResources().getString(R.string.app_name);
         }
 
-        if(extras == null) {
+        if (extras == null) {
             return defaultString;
         }
 
         String title = extras.getString(TOOLBAR_TITLE_KEY);
-        if(title == null) {
+        if (title == null) {
             title = defaultString;
         }
         return title;
@@ -134,6 +134,8 @@ public abstract class ToolbarActivity extends AppCompatActivity {
     }
 
     public void hideProgress() {
-        mProgressBar.setVisibility(View.GONE);
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

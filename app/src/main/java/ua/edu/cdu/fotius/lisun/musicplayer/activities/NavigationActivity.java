@@ -1,6 +1,5 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.activities;
 
-import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,19 +7,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.fragments.RecommendationsFragment;
-import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
-import ua.edu.cdu.fotius.lisun.musicplayer.recommendations.TrackInfoRealm;
-import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.AlbumsFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.ArtistsFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.GenresFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.PlaylistsFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.fragments.RecommendationsFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.fragments.TracksFragment;
+import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnOpenCloseNavigationViewClickListener;
+import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
+import ua.edu.cdu.fotius.lisun.musicplayer.sliding_panel.SlidingPanelListener;
 
 
 public class NavigationActivity extends SlidingPanelActivity {

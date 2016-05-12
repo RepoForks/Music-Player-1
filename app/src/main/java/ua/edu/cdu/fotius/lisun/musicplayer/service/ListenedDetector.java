@@ -3,9 +3,6 @@ package ua.edu.cdu.fotius.lisun.musicplayer.service;
 import android.content.Context;
 import android.util.Log;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLog;
 import ua.edu.cdu.fotius.lisun.musicplayer.model.ListenLogWorker;
 import ua.edu.cdu.fotius.lisun.musicplayer.utils.MathUtils;
 

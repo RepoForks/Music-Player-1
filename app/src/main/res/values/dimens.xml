@@ -55,4 +55,12 @@
     <dimen name="dialog_body_up_bottom_padding">10dp</dimen>
 
     <dimen name="album_art_column_width">150dp</dimen>
+
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="cardview_elevation">6dp</dimen>
+    <dimen name="height_list_item">72dp</dimen>
+
 </resources>

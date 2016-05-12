@@ -27,7 +27,7 @@ public class StoragesSyncAsyncTask extends AsyncTask<Void, Void, Void> {
 
         Realm realm = null;
         try {
-            realm = Realm.getInstance(mContext);
+            realm = Realm.getDefaultInstance();
             RealmResults<ListenLog> modelIds = realm.allObjects(ListenLog.class);
             synchronizeStorages(mediaStoreIds, realm, modelIds);
         } finally {
