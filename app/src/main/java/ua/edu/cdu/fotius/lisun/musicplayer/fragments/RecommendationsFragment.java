@@ -1,6 +1,7 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.fragments;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -59,9 +60,10 @@ public class RecommendationsFragment extends Fragment {
     private RealmResults<TrackInfoRealm> mRealmResult;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mActivity = (ToolbarActivity) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = (ToolbarActivity) activity;
+        Log.d(RecommendationsFragment.class.getSimpleName(), "onAttach. ");
     }
 
     @Override
@@ -78,18 +80,21 @@ public class RecommendationsFragment extends Fragment {
         RecyclerView recyclerView = findById(v, R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setAdapter(mAdapter);
-
-        mActivity.showProgress();
-        mRealm = Realm.getDefaultInstance();
-        mRealmResult = mRealm.where(TrackInfoRealm.class).findAllAsync();
-        mRealmResult.addChangeListener(mDataChangeListener);
-
         return v;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStart() {
+        super.onStart();
+        mActivity.showProgress();
+        mRealm = Realm.getDefaultInstance();
+        mRealmResult = mRealm.where(TrackInfoRealm.class).findAllAsync();
+        mRealmResult.addChangeListener(mDataChangeListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         mRealm.close();
     }
 
