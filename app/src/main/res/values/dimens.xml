@@ -55,4 +55,6 @@
     <dimen name="dialog_body_up_bottom_padding">10dp</dimen>
 
     <dimen name="album_art_column_width">150dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
 </resources>

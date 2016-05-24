@@ -17,7 +17,6 @@ public class RemoteManager {
 
     public interface OnLyricsRetrievedListener {
         void onLyricsSuccess(LyricsResponse response);
-
         void onLyricsError();
     }
 
@@ -28,7 +27,6 @@ public class RemoteManager {
     }
 
     static class GetLyricsTask extends AsyncTask<String, Void, LyricsResponse> {
-
         private OnLyricsRetrievedListener listener;
         private Exception exception = null;
 
@@ -58,7 +56,6 @@ public class RemoteManager {
             try {
                 response = service.lyrics(artist, song).execute().body();
             } catch (IOException e) {
-                Log.e(GetLyricsTask.class.getSimpleName(), "doInBackground. " + e.getMessage());
                 exception = e;
             }
             return response;
@@ -71,7 +68,6 @@ public class RemoteManager {
                 listener.onLyricsError();
                 return;
             }
-
             listener.onLyricsSuccess(lyricsResponse);
         }
     }
