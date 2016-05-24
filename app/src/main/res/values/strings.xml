@@ -133,6 +133,7 @@
     <string name="choose_playing_title">Choose playlist</string>
 
     <string name="lyrics_activity_title">Lyrics</string>
-    <string name="lyrics_tv">%1$s - %2$s\n%3$s</string>
+    <string name="lyrics_header_tv">%1$s - %2$s</string>
     <string name="lyrics_loading_error">Sorry, couldn\'t load lyrics for this song.</string>
+    <string name="lyrics_no_internet_connection">No internet connection. Lyrics can\'t be fetched</string>
 </resources>

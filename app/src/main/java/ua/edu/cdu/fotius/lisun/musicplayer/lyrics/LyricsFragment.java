@@ -4,6 +4,7 @@ package ua.edu.cdu.fotius.lisun.musicplayer.lyrics;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,15 @@ import ua.edu.cdu.fotius.lisun.musicplayer.utils.ConnectionUtil;
 
 public class LyricsFragment extends Fragment implements RemoteManager.OnLyricsRetrievedListener {
 
+    private final String KEY_LYRICS = "lyrics";
+
     private ToolbarActivity activity;
     @BindView(R.id.tv_lyrics)
     TextView lyricsView;
+    @BindView(R.id.tv_lyrics_header)
+    TextView lyricsHeaderView;
+
+    private LyricsResponse lyrics;
 
     @Override
     public void onAttach(Activity activity) {
@@ -36,33 +43,51 @@ public class LyricsFragment extends Fragment implements RemoteManager.OnLyricsRe
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lyrics, container, false);
         ButterKnife.bind(this, v);
-
-//        if(!ConnectionUtil.isConnectedToWifi(activity)) {
-//            return v;
-//        }
         //retrieve only for the first time. don't on config change
-        if(savedInstanceState == null) {
-            Bundle bundle = getArguments();
-            String artist = bundle.getString(LyricsActivity.KEY_ARTIST);
-            String song = bundle.getString(LyricsActivity.KEY_SONG);
-            Log.d(LyricsActivity.class.getSimpleName(), "onCreate. Artist: " + artist +
-                    " Song: " + song);
-            activity.showProgress();
-            RemoteManager.lyrics(artist, song, this);
+        if (savedInstanceState != null) {
+            lyrics = ((LyricsResponse.StateSaver)savedInstanceState.getParcelable(KEY_LYRICS)).getData();
+            setUpViews(lyrics);
+        }
+
+        if (lyrics == null) {
+            if (!ConnectionUtil.isConnectedToInternet(activity)) {
+                activity.setResult(LyricsActivity.NO_CONNECTION_RESULT_CODE);
+                activity.finish();
+            } else {
+                Bundle bundle = getArguments();
+                String artist = bundle.getString(LyricsActivity.KEY_ARTIST);
+                String song = bundle.getString(LyricsActivity.KEY_SONG);
+                activity.showProgress();
+                RemoteManager.lyrics(artist, song, this);
+            }
         }
         return v;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_LYRICS, new LyricsResponse.StateSaver(lyrics));
     }
 
     @Override
     public void onLyricsSuccess(LyricsResponse response) {
         activity.hideProgress();
-        lyricsView.setText(getString(R.string.lyrics_tv, response.getArtist(),
-                response.getSong(), response.getLyrics()));
+        lyrics = response;
+        setUpViews(response);
     }
 
     @Override
     public void onLyricsError() {
         activity.hideProgress();
-        Toast.makeText(activity, R.string.lyrics_loading_error, Toast.LENGTH_LONG);
+        activity.setResult(LyricsActivity.NO_LYRICS);
+        activity.finish();
+    }
+
+    private void setUpViews(LyricsResponse lyrics) {
+        lyricsHeaderView.setText(getString(R.string.lyrics_header_tv, lyrics.getArtist(),
+                lyrics.getSong()));
+        lyricsView.setText(lyrics.getLyrics());
     }
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,7 +19,9 @@ import ua.edu.cdu.fotius.lisun.musicplayer.lyrics.LyricsActivity;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.service.ServiceConnectionObserver;
 
-public class PlaybackHeaderFragment extends Fragment implements ServiceConnectionObserver{
+public class PlaybackHeaderFragment extends Fragment implements ServiceConnectionObserver {
+
+    private static int LYRICS_REQUEST_CODE = 1;
 
     protected MediaPlaybackServiceWrapper mServiceWrapper;
 
@@ -54,7 +57,21 @@ public class PlaybackHeaderFragment extends Fragment implements ServiceConnectio
         bundle.putString(LyricsActivity.KEY_ARTIST, mServiceWrapper.getArtistName());
         bundle.putString(LyricsActivity.KEY_SONG, mServiceWrapper.getTrackName());
         intent.putExtras(bundle);
-        getActivity().startActivity(intent);
+        startActivityForResult(intent, LYRICS_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LYRICS_REQUEST_CODE) {
+            if (resultCode == LyricsActivity.NO_CONNECTION_RESULT_CODE) {
+                Toast.makeText(getActivity(), R.string.lyrics_no_internet_connection, Toast.LENGTH_LONG)
+                        .show();
+            } else if(resultCode == LyricsActivity.NO_LYRICS) {
+                Toast.makeText(getActivity(), R.string.lyrics_loading_error, Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
     }
 
     @Override

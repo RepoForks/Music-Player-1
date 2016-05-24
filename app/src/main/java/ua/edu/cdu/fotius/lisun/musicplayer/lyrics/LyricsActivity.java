@@ -12,8 +12,12 @@ import ua.edu.cdu.fotius.lisun.musicplayer.fragments.QueueFragment;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnUpClickListener;
 import ua.edu.cdu.fotius.lisun.musicplayer.lyrics.remote.LyricsResponse;
 import ua.edu.cdu.fotius.lisun.musicplayer.lyrics.remote.RemoteManager;
+import ua.edu.cdu.fotius.lisun.musicplayer.utils.ConnectionUtil;
 
 public class LyricsActivity extends ToolbarActivity {
+
+    public static final int NO_CONNECTION_RESULT_CODE = 1;
+    public static final int NO_LYRICS = 2;
 
     public static final String KEY_ARTIST = "artist";
     public static final String KEY_SONG = "song";
@@ -22,12 +26,10 @@ public class LyricsActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toolbar);
-
-        if(!isFragmentSet()) {
+        if (!isFragmentSet()) {
             setDefaultFragment(new LyricsFragment(),
                     LyricsFragment.class.getName(), getIntent().getExtras());
         }
-
         setTitle(getResources().getString(R.string.lyrics_activity_title));
         setNavigationIconResourceID(R.drawable.ic_arrow_back_white_24dp);
         setNavigationClickListener(new OnUpClickListener(this));
