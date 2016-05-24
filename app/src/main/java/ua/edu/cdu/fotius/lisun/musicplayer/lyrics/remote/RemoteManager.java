@@ -3,6 +3,8 @@ package ua.edu.cdu.fotius.lisun.musicplayer.lyrics.remote;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.simpleframework.xml.core.ValueRequiredException;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +17,7 @@ public class RemoteManager {
 
     public interface OnLyricsRetrievedListener {
         void onLyricsSuccess(LyricsResponse response);
+
         void onLyricsError();
     }
 
@@ -57,18 +60,19 @@ public class RemoteManager {
             } catch (IOException e) {
                 Log.e(GetLyricsTask.class.getSimpleName(), "doInBackground. " + e.getMessage());
                 exception = e;
-            };
+            }
             return response;
         }
 
         @Override
         protected void onPostExecute(LyricsResponse lyricsResponse) {
             super.onPostExecute(lyricsResponse);
-            if((exception != null) || (lyricsResponse == null)) {
+            if ((exception != null) || (lyricsResponse == null) || (!lyricsResponse.isValid())) {
                 listener.onLyricsError();
-            } else {
-                listener.onLyricsSuccess(lyricsResponse);
+                return;
             }
+
+            listener.onLyricsSuccess(lyricsResponse);
         }
     }
 }

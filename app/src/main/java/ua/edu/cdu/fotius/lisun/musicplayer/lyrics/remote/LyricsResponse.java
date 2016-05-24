@@ -11,11 +11,11 @@ import java.io.Serializable;
 @Root(name = "GetLyricResult", strict = false)
 public class LyricsResponse implements Serializable {
 
-    @Element(name = "LyricSong")
+    @Element(name = "LyricSong", required = false)
     private String song;
-    @Element(name = "LyricArtist")
+    @Element(name = "LyricArtist", required = false)
     private String artist;
-    @Element(name = "Lyric")
+    @Element(name = "Lyric", required = false)
     private String lyrics;
 
     public String getLyrics() {
@@ -40,6 +40,10 @@ public class LyricsResponse implements Serializable {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public boolean isValid() {
+        return ((getArtist() != null) && (getSong() != null) && (getLyrics() != null));
     }
 
     public static class StateSaver implements Parcelable {

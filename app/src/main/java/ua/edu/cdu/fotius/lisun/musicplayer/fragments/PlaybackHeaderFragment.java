@@ -41,7 +41,6 @@ public class PlaybackHeaderFragment extends Fragment implements ServiceConnectio
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(PlaybackHeaderFragment.class.getSimpleName(), "onCreateView. ");
         View v = inflater.inflate(R.layout.fragment_playback_toolbar, container, false);
         ButterKnife.bind(this, v);
         ImageButton showQueue = (ImageButton) v.findViewById(R.id.show_current_queue);
@@ -51,7 +50,6 @@ public class PlaybackHeaderFragment extends Fragment implements ServiceConnectio
 
     @OnClick(R.id.ib_show_lyrics)
     public void showLyrics() {
-        Log.d(PlaybackHeaderFragment.class.getSimpleName(), "showLyrics. ");
         Intent intent = new Intent(getActivity(), LyricsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(LyricsActivity.KEY_ARTIST, mServiceWrapper.getArtistName());
