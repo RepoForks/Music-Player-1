@@ -5,18 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import ua.edu.cdu.fotius.lisun.musicplayer.service.MediaPlaybackServiceWrapper;
 import ua.edu.cdu.fotius.lisun.musicplayer.activities.QueueActivity;
 
 public class OnShowQueueClickListener implements View.OnClickListener{
-
-
-
     private Context mContext;
-    private MediaPlaybackServiceWrapper mServiceWrapper;
 
-    public OnShowQueueClickListener(Context context, MediaPlaybackServiceWrapper serviceWrapper) {
-        mServiceWrapper = serviceWrapper;
+    public OnShowQueueClickListener(Context context) {
         mContext = context;
     }
 
