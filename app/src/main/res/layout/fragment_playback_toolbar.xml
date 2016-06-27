@@ -25,12 +25,23 @@
         style="@style/SingleLineText.Secondary" />
 
     <ImageButton
+        android:id="@+id/ib_show_lyrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/show_current_queue"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_lyrics_24dp"
+        android:tint="@color/secondary_text"
+        android:layout_marginRight="@dimen/margin_large"
+        style="@style/ButtonClickable" />
+
+    <ImageButton
         android:id="@+id/show_current_queue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_queue_music_white_24dp"
+        android:src="@drawable/ic_queue_play_24dp"
         android:tint="@color/secondary_text"
         style="@style/ButtonClickable" />
 

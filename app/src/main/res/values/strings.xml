@@ -5,12 +5,12 @@
     <string name="action_settings">Settings</string>
 
     <!-- Do not translate. Duration format for duration < 1 hour -->
-    <string translatable="false" name="durationformatshort"><xliff:g id="time_format">%2$d:%5$02d</xliff:g></string>
+    <string name="durationformatshort" translatable="false"><xliff:g id="time_format">%2$d:%5$02d</xliff:g></string>
     <!-- Do not translate. Duration format for duration >= 1 hour -->
-    <string translatable="false" name="durationformatlong"><xliff:g id="time_format">%1$d:%3$02d:%5$02d</xliff:g></string>
+    <string name="durationformatlong" translatable="false"><xliff:g id="time_format">%1$d:%3$02d:%5$02d</xliff:g></string>
     <!-- Do not translate. Duration format for duration >= 1 hour -->
     <string name="seek_bar_time_initial" translatable="false">00:00</string>
-    
+
     <!--NavigationView-->
     <string name="artists_label">Artists</string>
     <string name="albums_label">Albums</string>
@@ -135,4 +135,8 @@
     <string name="choose_playing_title">Choose playlist</string>
     <string name="title_activity_recommendations">RecommendationsActivity</string>
     <string name="recom_no_internet">Connect to Internet to update recommendations</string>
+    <string name="lyrics_activity_title">Lyrics</string>
+    <string name="lyrics_header_tv">%1$s - %2$s</string>
+    <string name="lyrics_loading_error">Sorry, couldn\'t load lyrics for this song.</string>
+    <string name="lyrics_no_internet_connection">No internet connection. Lyrics can\'t be fetched</string>
 </resources>

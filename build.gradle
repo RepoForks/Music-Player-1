@@ -6,7 +6,11 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
+<<<<<<< HEAD
 
+=======
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+>>>>>>> cab64b797cf34a6c20a7b8e715b545f43cb5a6f1
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

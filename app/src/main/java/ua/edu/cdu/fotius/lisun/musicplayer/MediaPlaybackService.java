@@ -59,9 +59,9 @@ public class MediaPlaybackService extends Service {
     public static final int LAST = 3;
 
     //TODO:
-    public static final String PLAYSTATE_CHANGED = "com.android.music.playstatechanged";
-    public static final String META_CHANGED = "com.android.music.metachanged";
-    public static final String QUEUE_CHANGED = "com.android.music.queuechanged";
+    public static final String PLAYSTATE_CHANGED = "ua.edu.cdu.fotius.lisun.musicplayer.playstatechanged";
+    public static final String META_CHANGED = "ua.edu.cdu.fotius.lisun.musicplayer.metachanged";
+    public static final String QUEUE_CHANGED = "ua.edu.cdu.fotius.lisun.musicplayer.queuechanged";
 
     public static final int TRACK_ENDED = 1;
     public static final int RELEASE_WAKELOCK = 2;
@@ -639,24 +639,6 @@ public class MediaPlaybackService extends Service {
     }
 
     /**
-     * Notify the change-receivers that something has changed.
-     * The intent that is sent contains the following data
-     * for the currently playing track:
-     * "id" - Integer: the database row ID
-     * "artist" - String: the name of the artist
-     * "album" - String: the name of the album
-     * "track" - String: the name of the track
-     * The intent has an action that is one of
-     * "com.android.music.metachanged"
-     * "com.android.music.queuechanged",
-     * "com.android.music.playbackcomplete"
-     * "com.android.music.playstatechanged"
-     * respectively indicating that a new track has
-     * started playing, that the playback queue has
-     * changed, that playback has stopped because
-     * the last file in the list has been played,
-     * or that the play-state changed (paused/resumed).
-     *
      * @param what is some action(example, MediaPlaybackService.QUEUE_CHANGED)
      */
     private void notifyChange(String what) {

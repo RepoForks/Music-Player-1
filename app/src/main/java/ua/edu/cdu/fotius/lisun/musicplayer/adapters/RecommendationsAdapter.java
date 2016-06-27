@@ -1,6 +1,5 @@
 package ua.edu.cdu.fotius.lisun.musicplayer.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ua.edu.cdu.fotius.lisun.musicplayer.R;
 import ua.edu.cdu.fotius.lisun.musicplayer.listeners.OnRecommendationClick;
@@ -53,8 +51,8 @@ public class RecommendationsAdapter extends RecyclerView.Adapter<Recommendations
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mRootView;
-        @Bind(R.id.track_name) public TextView mTrackName;
-        @Bind(R.id.artist_name) public TextView mArtistName;
+        @BindView(R.id.track_name) public TextView mTrackName;
+        @BindView(R.id.artist_name) public TextView mArtistName;
 
         public ViewHolder(View rootView) {
             super(rootView);
