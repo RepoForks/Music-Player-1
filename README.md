@@ -1,4 +1,4 @@
-# Depracated
+# DEPRECATED
 
 This project is deprecated because of old technologies and architectural pattern used in it. Published just for the history.
 
@@ -31,6 +31,8 @@ Screenshots
 ![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/queue.png)
 
 ![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/songs.png)
+
+![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/notification.png)
 
 
 
