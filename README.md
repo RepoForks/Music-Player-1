@@ -2,8 +2,29 @@
 
 This project is deprecated because of old technologies and architectural pattern used in it. Published just for the history.
 
-License
-=======
+![Alt text](/screenshots/albums.png)
+
+![Alt text](/screenshots/all_songs.png)
+
+![Alt text](/screenshots/artists.png)
+
+![Alt text](/screenshots/contextual_menu.png)
+
+![Alt text](/screenshots/currently_playing.png)
+
+![Alt text](/screenshots/genres.png)
+
+![Alt text](/screenshots/my_playlists.png)
+
+![Alt text](/screenshots/notification.png)
+
+![Alt text](/screenshots/playing_queue.png)
+
+![Alt text](/screenshots/playlist_songs.png)
+
+
+
+##License
 
     Copyright 2016 Lisun Andrei
 
@@ -19,20 +40,6 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-Screenshots
-=======
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/lyrics.png)
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/albums.png)
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/playback.png)
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/queue.png)
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/songs.png)
-
-![Alt text](https://github.com/jydimir/Music-Player/blob/screenshots/screenshots/notification.png)
 
 
 
