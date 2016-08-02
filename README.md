@@ -3,26 +3,15 @@
 This project is deprecated because of old technologies and architectural pattern used in it. Published just for the history.
 
 ![Alt text](/screenshots/albums.png)
-
 ![Alt text](/screenshots/all_songs.png)
-
 ![Alt text](/screenshots/artists.png)
-
 ![Alt text](/screenshots/contextual_menu.png)
-
 ![Alt text](/screenshots/currently_playing.png)
-
 ![Alt text](/screenshots/genres.png)
-
 ![Alt text](/screenshots/my_playlists.png)
-
 ![Alt text](/screenshots/notification.png)
-
 ![Alt text](/screenshots/playing_queue.png)
-
 ![Alt text](/screenshots/playlist_songs.png)
-
-
 
 ##License
 
